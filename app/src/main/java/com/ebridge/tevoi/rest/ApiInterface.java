@@ -76,14 +76,24 @@ public interface ApiInterface {
     @POST("api/Services/AddComment")
     Call<AddCommentResponse> AddComment(@Field("TrackId") int TrackId, @Field("CommentText") String CommentText);
 
+    @GET("api/Services/RemoveFromHistory")
+    Call<IResponse> RemoveFromHistory(@Query("ActivityId") int ActivityId);
+
+    @GET("api/Services/RemoveTrackFromFavourite")
+    Call<IResponse> RemoveTrackFromFavourite(@Query("ActivityId") int ActivityId);
+
+    @GET("api/Services/AddListenTrackActivity")
+    Call<IResponse> AddListenTrackActivity(@Query("TrackId") int TrackId);
+
+
     @GET("api/Services/AddTrackToFavourite")
-    Call<AddTrackToFavouriteResponse> AddTrackToFavourite(@Query("TrackId") int TrackId);
+    Call<IResponse> AddTrackToFavourite(@Query("TrackId") int TrackId);
 
     @POST("api/Services/GetTrackFavouritionState")
     Call<GetTrackFavouriteResponse> GetTrackFavouritionState(@Query("TrackId") int TrackId, @Query("UserId") int UserId);
 
-    @POST("api/Services/AddTrackToUserList")
-    Call<IResponse> AddTrackToUserList(@Query("TrackId") int TrackId);
+    @GET("api/Services/AddTrackToUserList")
+    Call<IResponse> AddTrackToUserList(@Query("TrackId") int TrackId, @Query("ListId") int ListId);
 
 
     @GET("api/Services/AddUserList")

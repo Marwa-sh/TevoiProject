@@ -38,4 +38,9 @@ public class UserListObject
     public void setDuration(String duration) {
         Duration = duration;
     }
+
+    @Override
+    public String toString() {
+        return Name;
+    }
 }

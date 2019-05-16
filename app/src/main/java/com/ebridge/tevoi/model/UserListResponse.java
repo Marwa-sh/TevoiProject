@@ -13,4 +13,6 @@ public class UserListResponse {
     public void setLstUserList(List<UserListObject> lstUserList) {
         this.lstUserList = lstUserList;
     }
+
+
 }

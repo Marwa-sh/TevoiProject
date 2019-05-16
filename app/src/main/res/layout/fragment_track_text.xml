@@ -12,31 +12,41 @@ android:layout_height="match_parent"
 android:orientation="horizontal"
 android:isScrollContainer="true"
     android:scrollbars="vertical"
-tools:context=".TrackText">
+
+tools:context=".TrackText"
+    android:weightSum="6"
+    >
 
 <!-- TODO: Update blank fragment layout -->
 <TextView
-    android:layout_width="300dp"
+    android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:id="@+id/text_track"
-    android:text="@string/hello_blank_fragment" />
+    android:text="@string/hello_blank_fragment"
+    android:layout_weight="6"
+    android:paddingLeft="20dp"
+    android:paddingTop="20dp"
+    />
 <LinearLayout
     android:layout_width="50dp"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:layout_weight="1"
     >
     <ImageView
         android:id="@+id/imgBtnCloseText"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:clickable="true"
-        android:src="@mipmap/cross_blue" />
+        android:src="@mipmap/cross_blue"
+        android:layout_gravity="center_horizontal"
+        />
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@null"
         android:src="@mipmap/more_arrow_light_grey"
-
+        android:layout_gravity="center_horizontal"
         />
     <SeekBar
         android:id="@+id/seekBar"
@@ -45,7 +55,8 @@ tools:context=".TrackText">
         android:layout_marginTop="350dp"
         android:progress="10"
         android:rotation="90"
-        android:layout_gravity="center"
+        android:layout_gravity="center_horizontal"
+
 
         android:progressBackgroundTint="@color/tevoiBlueSecondary"
         android:progressTint="@color/tevoiBluePrimary"

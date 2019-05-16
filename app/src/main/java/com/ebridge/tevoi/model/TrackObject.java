@@ -29,6 +29,8 @@ public class TrackObject {
     private String PartnerLogo;
     @SerializedName("ActivityId")
     private int ActivityId;
+    private boolean IsFaourite;
+
     //private int TypeId;
     //private int TypeName;
 
@@ -54,6 +56,14 @@ public class TrackObject {
 
     public void setCategories(String categories) {
         Categories = categories;
+    }
+
+    public boolean isFaourite() {
+        return IsFaourite;
+    }
+
+    public void setFaourite(boolean faourite) {
+        IsFaourite = faourite;
     }
 
     public void setHasLocation(boolean hasLocation) {

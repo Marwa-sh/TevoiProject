@@ -492,7 +492,7 @@ public class SideMenu extends FragmentActivity {
     public void AddTrackToList(int TrackId, SideMenu activity )
     {
         ApiInterface client = ApiClient.getClient().create(ApiInterface.class);
-        Call<IResponse> call = client.AddTrackToUserList(TrackId);
+        Call<IResponse> call = client.AddTrackToUserList(TrackId, 1);
         call.enqueue(new Callback<IResponse>(){
             public void onResponse(Call<IResponse> call, Response<IResponse> response) {
                 //generateDataList(response.body());

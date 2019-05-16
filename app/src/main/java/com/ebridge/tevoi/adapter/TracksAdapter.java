@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.ebridge.tevoi.MediaPlayerActivity;
 import com.ebridge.tevoi.R;
 import com.ebridge.tevoi.SideMenu;
+import com.ebridge.tevoi.TrackText;
 import com.ebridge.tevoi.Utils.Global;
 import com.ebridge.tevoi.model.AddCommentResponse;
 import com.ebridge.tevoi.model.AddCommetRequest;
@@ -164,35 +165,6 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
             btnReadText = (Button)itemView.findViewById(R.id.btn_read_text);
             btnRemove = (Button)itemView.findViewById(R.id.btn_remove);
 
-            /*switch (fragmentName) {
-                case Global.HistoryFragmentName: {
-                    btnRemove.setVisibility(View.VISIBLE);
-                    btnAddPlayNext.setVisibility(View.VISIBLE);
-                    break;
-                }
-                case Global.FavouriteFragmentName: {
-                    btnRemove.setVisibility(View.VISIBLE);
-                    btnAddPlayNext.setVisibility(View.VISIBLE);
-                    break;
-                }
-                case Global.PlayNowFragmentName: {
-                    btnRemove.setVisibility(View.VISIBLE);
-                    btnAddPlayNext.setVisibility(View.INVISIBLE);
-                    break;
-                }
-                case Global.ListTracksFragmentName: {
-                    btnRemove.setVisibility(View.INVISIBLE);
-                    btnAddPlayNext.setVisibility(View.VISIBLE);
-                    break;
-                }
-                default:
-                {
-                    btnRemove.setVisibility(View.INVISIBLE);
-                    btnAddPlayNext.setVisibility(View.VISIBLE);
-                }
-            }
-*/
-
             //--------//
 
             imgBtnPlay.setOnClickListener(new View.OnClickListener()
@@ -229,7 +201,6 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
                 public void onClick(View v) {
                     final Context context = v.getContext();
 
-
                     if(hoverLayout.getVisibility()==View.VISIBLE)
                     {
                         hoverLayout.setVisibility(View.INVISIBLE);
@@ -242,9 +213,6 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
                         //imgBtnPlay.setVisibility(View.INVISIBLE);
                         //trackDetailsLayout.setVisibility(View.INVISIBLE);
                     }
-
-
-
                 }
             });
 
@@ -252,7 +220,21 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
                 @Override
                 public void onClick(View v) {
                     //Show text fragment.
-                    Toast.makeText(context, "Hiiiiiiii", Toast.LENGTH_SHORT).show();
+                    int i = getPosition();
+                    TrackObject selectedTrack = tracks.get(i);
+                    SideMenu activity = (SideMenu) context;
+                    if(selectedTrack.isHasText()) {
+                        FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
+                        TrackText textFargment = TrackText.newInstance(selectedTrack.getId(), Global.ListTracksFragmentName);
+                        ft.replace(R.id.content_frame, textFargment);
+                        // or ft.add(R.id.your_placeholder, new FooFragment());
+                        // Complete the changes added above
+                        ft.commit();
+                    }
+                    else
+                    {
+                        Toast.makeText(context, R.string.track_has_no_text, Toast.LENGTH_LONG).show();
+                    }
                 }
             });
 
@@ -260,22 +242,64 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
                 btnRemove.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        int i = getPosition();
+                        TrackObject selectedTrack = tracks.get(i);
                         switch (fragmentName) {
-                            case Global.HistoryFragmentName: {
+                            case Global.HistoryFragmentName:
+                                {
                                 Toast.makeText(context, "HistoryFragmentName", Toast.LENGTH_SHORT).show();
+                                Call<IResponse> call = Global.client.RemoveFromHistory(selectedTrack.getActivityId());
+                                call.enqueue(new Callback<IResponse>() {
+                                    @Override
+                                    public void onResponse(Call<IResponse> call, Response<IResponse> response) {
+                                        IResponse res = response.body();
+                                        if(res.getNumber()==0)
+                                        {
+                                            Toast.makeText(context,"Remove From History successfully",Toast.LENGTH_SHORT);
+                                        }
+                                        else
+                                        {
+                                            Toast.makeText(context,"Error Remove From History",Toast.LENGTH_SHORT);
+                                        }
+                                    }
+                                    @Override
+                                    public void onFailure(Call<IResponse> call, Throwable t) {
+
+                                    }
+                                });
                                 break;
                             }
                             case Global.FavouriteFragmentName: {
-                                Toast.makeText(context, "FavouriteFragmentName", Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(context, "FavouriteFragmentName", Toast.LENGTH_SHORT).show();
+                                Call<IResponse> call = Global.client.RemoveTrackFromFavourite(selectedTrack.getActivityId());
+                                call.enqueue(new Callback<IResponse>() {
+                                    @Override
+                                    public void onResponse(Call<IResponse> call, Response<IResponse> response) {
+                                        IResponse res = response.body();
+                                        if(res.getNumber()==0)
+                                        {
+                                            Toast.makeText(context,"Remove From Favourite successfully",Toast.LENGTH_SHORT);
+                                        }
+                                        else
+                                        {
+                                            Toast.makeText(context,"Error Remove From Favourite",Toast.LENGTH_SHORT);
+                                        }
+                                    }
+                                    @Override
+                                    public void onFailure(Call<IResponse> call, Throwable t) {
+
+                                    }
+                                });
                                 break;
                             }
-                            case Global.PlayNowFragmentName: {
+                            case Global.PlayNowFragmentName:
+                                {
                                 Toast.makeText(context, "PlayNowFragmentName", Toast.LENGTH_SHORT).show();
                                 break;
                             }
                         }
                         //Show text fragment.
-                        Toast.makeText(context, "btnRemove", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "btnRemove ddddd", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -285,36 +309,35 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
                     //Like or dislike this track.
                     int i = getPosition();
                     TrackObject t = tracks.get(i);
-                    ApiInterface client = ApiClient.getClient().create(ApiInterface.class);
-                    Call<AddTrackToFavouriteResponse> call = client.AddTrackToFavourite(t.getId());
-                    call.enqueue(new Callback<AddTrackToFavouriteResponse>() {
-                        @Override
-                        public void onResponse(Call<AddTrackToFavouriteResponse> call, Response<AddTrackToFavouriteResponse> response) {
-                            AddTrackToFavouriteResponse res = response.body();
-                            if(res.getNumber()==0)
-                            {
-                                Log.d("Favourite :", "onResponse: track liked ");
-                                Toast.makeText(context,"Like",Toast.LENGTH_SHORT);
+                    if(t.isFaourite())
+                    {
+                        Call<IResponse> call = Global.client.AddTrackToFavourite(t.getId());
+                        call.enqueue(new Callback<IResponse>() {
+                            @Override
+                            public void onResponse(Call<IResponse> call, Response<IResponse> response) {
+                                IResponse res = response.body();
+                                if (res.getNumber() == 0) {
+                                    Log.d("Favourite :", "onResponse: track liked ");
+                                    Toast.makeText(context, "Like", Toast.LENGTH_SHORT);
+                                } else {
+                                    Log.d("Favourite Error", "onResponse: " + res.getMessage());
+                                    Toast.makeText(context, "Error Like", Toast.LENGTH_SHORT);
+                                }
                             }
-                            else
-                            {
-                                Log.d("Favourite Error", "onResponse: "+res.getMessage());
-                                Toast.makeText(context,"Like",Toast.LENGTH_SHORT);
+                            @Override
+                            public void onFailure(Call<IResponse> call, Throwable t) {
+
                             }
-                        }
-
-                        @Override
-                        public void onFailure(Call<AddTrackToFavouriteResponse> call, Throwable t) {
-
-                        }
-                    });
-
+                        });
+                    }
                 }
             });
-
             btnAddToList.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
+                    int i = getPosition();
+                   final TrackObject trackSelected =  tracks.get(i);
 
                     Call<UserListResponse> call = Global.client.getUserLists(0,0);
                     call.enqueue(new Callback<UserListResponse>(){
@@ -322,7 +345,7 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
                         {
                             UserListResponse listsNames = response.body();
                             LayoutInflater li = LayoutInflater.from(context);
-                            View promptsView = li.inflate(R.layout.layout_user_lists_spinner, null);
+                            final View promptsView = li.inflate(R.layout.layout_user_lists_spinner, null);
 
                             Spinner spinner = (Spinner) promptsView.findViewById(R.id.user_lists_spinner);
                             // TODO:  get user lists
@@ -345,12 +368,32 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
                                     .setPositiveButton("OK",
                                             new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface dialog,int id) {
+                                                    UserListObject selectedList = (UserListObject) ( ((Spinner) promptsView.findViewById(R.id.user_lists_spinner) ).getSelectedItem());
+                                                    //Toast.makeText(context, selectedList.getName(), Toast.LENGTH_SHORT).show();
+
+                                                    Call<IResponse> call = Global.client.AddTrackToUserList(trackSelected.getId(), selectedList.getId());
+                                                    call.enqueue(new Callback<IResponse>(){
+                                                        public void onResponse(Call<IResponse> call, Response<IResponse> response)
+                                                        {
+                                                            IResponse result = response.body();
+                                                            if(result.Number != 0)
+                                                            {
+                                                                Toast.makeText(context, result.getMessage(), Toast.LENGTH_SHORT).show();
+                                                            }
+                                                        }
+                                                        public void onFailure(Call<IResponse> call, Throwable t)
+                                                        {
+                                                            Toast.makeText(context, "You have to lists", Toast.LENGTH_LONG).show();
+                                                        }
+                                                    });
+
 
                                                 }
                                             })
                                     .setNegativeButton("Cancel",
                                             new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface dialog,int id) {
+                                                    Toast.makeText(context, "No Select", Toast.LENGTH_SHORT).show();
                                                     dialog.cancel();
                                                 }
                                             });

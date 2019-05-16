@@ -73,11 +73,11 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginLeft="32dp"
-                android:background="@drawable/rounded_button"
+                android:background="@null"
                 android:scaleType="fitXY"
                 android:src="@drawable/tick"
                 android:layout_gravity="center_vertical"
-                android:rotation="180"
+
                 />
 
             <TextView
@@ -92,7 +92,7 @@
             <ImageButton
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:background="@drawable/rounded_button"
+                android:background="@null"
                 android:scaleType="fitXY"
                 android:src="@drawable/cross"
                 android:layout_gravity="center_vertical"
@@ -170,11 +170,11 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginLeft="32dp"
-                android:background="@drawable/rounded_button"
+                android:background="@null"
                 android:scaleType="fitXY"
                 android:src="@drawable/tick"
                 android:layout_gravity="center_vertical"
-                android:rotation="180"
+                
                 />
 
             <TextView

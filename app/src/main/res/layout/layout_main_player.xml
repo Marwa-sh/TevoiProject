@@ -1,18 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/tevoiBluePrimary"
-        android:orientation="vertical">
-        <TextView
-            android:id="@+id/textMessage"
+        android:orientation="vertical"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/under_construction"
+            android:src="@drawable/baseline_pause_24"
+            android:background="@null"
             />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Track  name"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/fontColor"
+                android:layout_marginLeft="27dp"
+                />
+        </LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:orientation="horizontal"
+            android:background="@null"
+            android:layout_marginTop="10dp">
+
+            <SeekBar
+                android:id="@+id/seekBar"
+                android:layout_width="376dp"
+                android:layout_height="50dp"
+                android:background="@null"
+                android:thumbTint="@color/fontColor"
+
+                android:progress="50"
+                android:progressTint="@color/fontColor"
+                tools:layout_editor_absoluteX="3dp"
+                tools:layout_editor_absoluteY="295dp"
+
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/currentTime"
+                android:layout_gravity="left"
+                android:layout_weight="1"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:textColor="@color/fontColor"
+
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/fullTime"
+                android:layout_gravity="right"
+                android:layout_weight="1"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:textColor="@color/fontColor"
+
+                />
+
+        </RelativeLayout>
+
     </LinearLayout>
-</FrameLayout>
+
+
+</LinearLayout>

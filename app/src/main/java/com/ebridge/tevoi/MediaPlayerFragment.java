@@ -38,8 +38,10 @@ import android.widget.Toast;
 import com.ebridge.tevoi.Utils.CommentFragment;
 import com.ebridge.tevoi.Utils.Global;
 import com.ebridge.tevoi.Utils.HelperFunctions;
+import com.ebridge.tevoi.adapter.Track;
 import com.ebridge.tevoi.adapter.TracksAdapter;
 import com.ebridge.tevoi.model.AudioDataSource;
+import com.ebridge.tevoi.model.IResponse;
 import com.ebridge.tevoi.model.TrackObject;
 import com.ebridge.tevoi.model.TrackResponseList;
 import com.ebridge.tevoi.model.TrackSerializableObject;
@@ -95,7 +97,7 @@ public class MediaPlayerFragment extends Fragment {
     TrackAddToList addToListFragment = new TrackAddToList();
     TrackShare trackShareFragment = new TrackShare();
     CommentFragment commentFragment = new CommentFragment();
-    TrackText textFargment = new TrackText();
+    TrackText textFargment;
     CarPlayFragment carPlayFargment = new CarPlayFragment();
 
     public int currentTrackId;
@@ -116,6 +118,21 @@ public class MediaPlayerFragment extends Fragment {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.activity_media_player, container, false);
         final SideMenu activity = (SideMenu)getActivity();
+
+        Call<IResponse> callUrlAudio = Global.client.AddListenTrackActivity(currentTrackId);
+        callUrlAudio.enqueue(new Callback<IResponse>(){
+            public void onResponse(Call<IResponse> call, Response<IResponse> response) {
+                IResponse reponse = response.body();
+                // access response code with response.code()
+                // access string of the response with response.body().string()
+                if (response != null && response.body() != null) {
+                }
+            }
+            public void onFailure(Call<IResponse> call, Throwable t)
+            {
+            }
+        });
+
         //serviceBound = activity.serviceBound;
         //player = activity.player;
 
@@ -137,13 +154,18 @@ public class MediaPlayerFragment extends Fragment {
                 {
                     if(activity.serviceBound)
                     {
+                        if(activity.isPlaying)
+                        {
+                            activity.numberOfListenedSeconds += 1;
+                            activity.numberOfTotalSeconds += activity.numberOfCurrentSeconds;
+                        }
                         seekBar.setMax(activity.player.mMediaPlayer.getDuration()/ 1000);
                         String timeFormat2 = GetTimeFormat(activity.player.mMediaPlayer.getDuration()/ 1000);
                         fullTime.setText(timeFormat2);
 
                         //player = activity.player;
                         int mCurrentPosition = activity.player.mMediaPlayer.getCurrentPosition() / 1000;
-                        numberOfListenedSeconds = mCurrentPosition;
+
                         seekBar.setProgress(mCurrentPosition);
                         String timeFormat = GetTimeFormat(mCurrentPosition);
                         currentTime.setText(timeFormat);
@@ -204,6 +226,7 @@ public class MediaPlayerFragment extends Fragment {
             trackAuthors = (TextView) rootView.findViewById(R.id.textViewAuthors);
             trackAuthors.setText(currentTrack.getAuthors());
             commentFragment = CommentFragment.newInstance(currentTrack.getId());
+            textFargment = TrackText.newInstance(currentTrack.getId(), Global.MediaPlayerFragmentName);
 
             ratingBar = (RatingBar) rootView.findViewById(R.id.ratingBar);
             ratingBar.setRating(currentTrack.getRate());
