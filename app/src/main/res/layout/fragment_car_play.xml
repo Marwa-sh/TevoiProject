@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/liancher_background"
+    tools:context=".CarPlayFragment"
+    >
+    <ImageButton
+        android:id="@+id/imgBtnCloseCarPlayer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:layout_marginStart="290dp"
+        android:layout_marginLeft="2dp"
+        android:background="@null"
+        android:scaleType="fitXY"
+        android:src="@mipmap/cross_white_null_background"
+        />
+    <TextView
+        android:id="@+id/txtTrackNameCar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+
+        android:layout_marginTop="30dp"
+        android:text="TrackName"
+
+        android:textColor="@color/tevoiBlueSecondary"
+        android:textSize="35dp" />
+
+    <ImageButton
+        android:id="@+id/imgBtnPlayCar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@null"
+        android:src="@drawable/baseline_play_arrow_24"
+        tools:layout_editor_absoluteX="157dp"
+        tools:layout_editor_absoluteY="248dp"
+        android:layout_marginTop="41dp"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/tevoiBluePrimary"
+        android:weightSum="2"
+
+        >
+        <ImageButton
+            android:id="@+id/imgBtnCarPrevious"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:src="@drawable/baseline_fast_rewind_24"
+            android:layout_weight="1"
+            />
+
+        <ImageButton
+            android:id="@+id/imgBtnCarNext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:src="@drawable/baseline_fast_forward_24"
+            android:layout_weight="1"
+
+
+            />
+    </LinearLayout>
+    <ImageButton
+        android:id="@+id/imgBtnCarShuffle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:src="@drawable/round_shuffle_white_48"
+        android:layout_alignParentTop="true"
+        android:layout_gravity="center_horizontal"
+        />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        >
+        <SeekBar
+            android:id="@+id/seekBarCar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:progress="50"
+            android:background="@null"
+            android:progressBackgroundTint="@color/design_default_color_primary"
+            android:progressTint="@color/tevoiStar"
+            android:thumbTint="@color/tevoiStar"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtcurrentTimeCar"
+            android:layout_gravity="left"
+            android:layout_weight="1"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtfullTimeCar"
+            android:layout_gravity="right"
+            android:layout_weight="1"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            />
+
+
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp"
+        android:weightSum="2">
+
+        <TextView
+            android:id="@+id/txtPartnerNameCar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="partnername"
+            android:textColor="@color/fontColor"
+            android:textSize="30dp"
+            android:layout_weight="1"
+
+            />
+        <ImageView
+            android:id="@+id/imgPartnerLogoCar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:src="@drawable/microsoft_41"
+            android:layout_weight="1"
+            />
+    </LinearLayout>
+
+</LinearLayout>
+
+

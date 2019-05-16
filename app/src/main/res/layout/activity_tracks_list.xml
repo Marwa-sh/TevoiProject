@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".TracksList">
+    <include layout="@layout/layout_searchbar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        />
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:id="@+id/checkBoxLocationEnable"
+        android:text="Enable Location for Nearby Tracks"
+        />
+
+    <android.support.v7.widget.LinearLayoutCompat
+        android:id="@+id/tabsLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="3">
+
+        <Button
+            android:id="@+id/btnNewList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/tevoiBluePrimary"
+            android:text="New"
+            android:textColor="@color/fontColor"
+            android:onClick="changeTabToNew"/>
+
+        <Button
+            android:id="@+id/btnTopRatedList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/tevoiBlueSecondary"
+            android:text="Top Rated"
+            android:textColor="@color/fontColor"
+            android:onClick="changeTabToTopRated"/>
+
+        <Button
+            android:id="@+id/btnPopularList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/tevoiBlueSecondary"
+            android:text="Popular"
+            android:textColor="@color/fontColor"
+            android:onClick="changeToPopular"/>
+    </android.support.v7.widget.LinearLayoutCompat>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/tracks_recycler_View"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+    </android.support.v7.widget.RecyclerView>
+
+</LinearLayout>

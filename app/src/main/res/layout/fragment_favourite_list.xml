@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context=".FavouriteFragment"
+        android:orientation="vertical" >
+
+        <android.support.v7.widget.LinearLayoutCompat
+            android:id="@+id/tabsFavouriteLinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="3">
+
+            <Button
+                android:id="@+id/btnNewListFavourite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/tevoiBluePrimary"
+                android:text="New"
+                android:textColor="@color/fontColor"
+                android:onClick="changeTabToNewFavourite"/>
+
+            <Button
+                android:id="@+id/btnTopRatedListFavourite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/tevoiBlueSecondary"
+                android:text="Top Rated"
+                android:textColor="@color/fontColor"
+                android:onClick="changeTabToTopRatedFavourite"/>
+
+            <Button
+                android:id="@+id/btnPopularListFavourite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/tevoiBlueSecondary"
+                android:text="Popular"
+                android:textColor="@color/fontColor"
+                android:onClick="changeToPopularFavourite"/>
+        </android.support.v7.widget.LinearLayoutCompat>
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/favourite_tracks_recycler_View"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+        </android.support.v7.widget.RecyclerView>
+    </LinearLayout>

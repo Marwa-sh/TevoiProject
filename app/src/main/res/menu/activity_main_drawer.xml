@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/balance_inquiry"
+            android:icon="@drawable/rounded_button"
+            android:title="Balance Inquiry" />
+        <item
+            android:id="@+id/transfer"
+            android:icon="@drawable/cross"
+            android:title="Transfer" />
+        <item
+            android:id="@+id/summary"
+            android:icon="@android:drawable/ic_menu_my_calendar"
+            android:title="Summary" />
+        <item
+            android:id="@+id/payment_requests"
+            android:icon="@drawable/baseline_pause_24"
+            android:title="Payment Requests" />
+        <item
+            android:id="@+id/payments_summary"
+            android:icon="@drawable/baseline_fast_forward_24"
+            android:title="Payments Summary" />
+        <item
+            android:id="@+id/charge_ewallet"
+            android:icon="@drawable/liancher_background"
+            android:title="Charge EWallet" />
+    </group>
+
+</menu>
+
+    <!--
+        <item android:title="Agent">
+            <menu>
+                <item
+                    android:id="@+id/feed_ewallet"
+                    android:icon="@drawable/ic_menu_share"
+                    android:title="Feed EWallet Balance" />
+            </menu>
+        </item>
+    -->

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="tevoiBrown">#84754b</color>
+    <color name="fontColor">#ffffff</color>
+    <color name="tevoiBluePrimary">#00BFC6</color>
+    <color name="tevoiBlueSecondary">#75d5b6</color>
+    <color name="tevoiSeperator">#707070</color>
+    <color name="tevoiFontColor">#535353</color>
+    <color name="tevoiStar">#FFE0A1</color>
+    <color name="tevoiComment">#EBEBEB</color>
+    <color name="White"></color>
+    <color name="grey">#EBEBEB</color>
+    <color name="thumbgrey">#535353</color>
+
+</resources>
