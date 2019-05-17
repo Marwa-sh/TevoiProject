@@ -19,6 +19,9 @@ public class MyStorage {
     public static final String PlayNowTrack = "PlayNowTrack";
 
 
+
+
+
     public void storePlayNowTracks(Context context, List playNowTracks)
     {
         // used for store arrayList in json format

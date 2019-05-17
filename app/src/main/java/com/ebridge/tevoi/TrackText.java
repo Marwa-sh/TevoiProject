@@ -66,7 +66,7 @@ public class TrackText extends DialogFragment {
                 // Replace the contents of the container with the new fragment
                 //TrackAddToList frag = new TrackAddToList();
                 if(PreviousFragmentName.equals(Global.ListTracksFragmentName))
-                    ft.replace(R.id.content_frame, activity.listTracksFargment);
+                    ft.replace(R.id.content_frame, activity.lisTracksFragment);
                 else
                     ft.replace(R.id.content_frame, activity.mediaPlayerFragment);
                 // or ft.add(R.id.your_placeholder, new FooFragment());

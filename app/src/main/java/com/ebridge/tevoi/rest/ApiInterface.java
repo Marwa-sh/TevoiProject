@@ -11,6 +11,7 @@ import com.ebridge.tevoi.model.GetTrackFavouriteResponse;
 import com.ebridge.tevoi.model.IResponse;
 import com.ebridge.tevoi.model.LoginRequest;
 import com.ebridge.tevoi.model.LoginResponse;
+import com.ebridge.tevoi.model.PartnerListResponse;
 import com.ebridge.tevoi.model.TokenRequest;
 import com.ebridge.tevoi.model.TokenResponse;
 import com.ebridge.tevoi.model.TrackCommentRequest;
@@ -108,6 +109,9 @@ public interface ApiInterface {
     Call<IResponse> DeleteUserList(@Query("ListId") int ListId);
 
 
+    @Headers({"Content-Type:application/json","Authorization:TevoiTokenSample"})
+    @GET("api/Services/GetPartnersList")
+    Call<PartnerListResponse> GetPartnersList(@Query("TypeOfOrder") int TypeOfOrder, @Query("index") int index, @Query("size") int size);
 
 
 }

@@ -12,7 +12,6 @@ android:layout_height="match_parent"
 android:orientation="horizontal"
 android:isScrollContainer="true"
     android:scrollbars="vertical"
-
 tools:context=".TrackText"
     android:weightSum="6"
     >

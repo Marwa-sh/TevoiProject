@@ -24,9 +24,6 @@ public class Global {
 
     public static  final  String BASE_AUDIO_URL = "http://h2817272.stratoserver.net/TevoiAPI/api/Services/GetStreamAudio?id=";
 
-
-
-
     //public static final String BASE_URL = "http://192.168.1.100/TevoiAPIEmulator/";
 
     //public static  final  String BASE_AUDIO_URL = "http://192.168.1.100/TevoiAPIEmulator/api/Services/GetStreamAudio?id=";

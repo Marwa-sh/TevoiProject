@@ -44,6 +44,7 @@ public class TracksList extends Fragment implements AdapterView.OnItemSelectedLi
     Button[] tabs =  new Button[3];
     ApiInterface client;
     public int defaultTab;
+    SideMenu activity;
 
     View rootView;
 
@@ -53,6 +54,7 @@ public class TracksList extends Fragment implements AdapterView.OnItemSelectedLi
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_tracks_list, container, false);
         mProgressDialog = new ProgressDialog(getActivity());
+        activity  = (SideMenu)getActivity();
 
         Spinner spinner = (Spinner) rootView.findViewById(R.id.user_lists_spinner);
         if(spinner != null)
@@ -132,6 +134,7 @@ public class TracksList extends Fragment implements AdapterView.OnItemSelectedLi
         mProgressDialog.show();
 
         final int kk= k;
+
         for(int i=0;i<recyclerViews.length;i++)
         {
             recyclerViews[i]=null;
@@ -139,11 +142,11 @@ public class TracksList extends Fragment implements AdapterView.OnItemSelectedLi
         recyclerViews[k] = rootView.findViewById(R.id.tracks_recycler_View);
         for(int i=0;i<tabs.length;i++)
         {
-            tabs[i].setBackgroundColor(ContextCompat.getColor(getContext(),R.color.tevoiBlueSecondary));
+            tabs[i].setBackgroundColor(ContextCompat.getColor(activity,R.color.tevoiBlueSecondary));
             //tabs[i].refreshDrawableState();
         }
 
-        tabs[k].setBackgroundColor(ContextCompat.getColor(getContext(),R.color.tevoiBluePrimary));
+        tabs[k].setBackgroundColor(ContextCompat.getColor(activity,R.color.tevoiBluePrimary));
         //tabs[k].refreshDrawableState();
         Call<TrackResponseList> call = client.getListMainTrack(k, 0, 10);
         call.enqueue(new Callback <TrackResponseList>(){
@@ -152,15 +155,15 @@ public class TracksList extends Fragment implements AdapterView.OnItemSelectedLi
                 TrackResponseList tracks=response.body();
                 int x=tracks.getTrack().size();
                 recyclerViews[kk].setAdapter(adapter);
-                adapter = new TracksAdapter(tracks.getTrack(),getContext(), Global.ListTracksFragmentName);
+                adapter = new TracksAdapter(tracks.getTrack(),activity, Global.ListTracksFragmentName);
                 recyclerViews[kk].setAdapter(adapter);
                 mProgressDialog.dismiss();
-                Toast.makeText(getContext(),"tracks:"+x, Toast.LENGTH_SHORT);
+                Toast.makeText(activity,"tracks:"+x, Toast.LENGTH_SHORT);
             }
             public void onFailure(Call<TrackResponseList> call, Throwable t)
             {
                 mProgressDialog.dismiss();
-                Toast.makeText(getContext(),"something went wrong", Toast.LENGTH_SHORT);
+                Toast.makeText(activity,"something went wrong", Toast.LENGTH_SHORT);
             }
         });
 

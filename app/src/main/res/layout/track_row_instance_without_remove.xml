@@ -80,7 +80,7 @@
                 android:weightSum="4"
                 android:clickable="true"
                 android:focusable="true"
-                android:visibility="visible"
+                android:visibility="invisible"
                 android:background="@color/tevoiBlueSecondary"
                 >
                 <Button

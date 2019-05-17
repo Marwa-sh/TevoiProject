@@ -5,23 +5,13 @@
     android:layout_height="100dp"
     android:weightSum="10"
     android:paddingBottom="3dp"
-    android:id="@+id/user_list_row_layout"
+    android:id="@+id/partner_row_layout"
     >
-    <ImageButton
-        android:id="@+id/btn_play_pause_user_list"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:background="@color/tevoiBlueSecondary"
-        android:clickable="true"
-        android:layout_weight="1"
-        android:onClick="startMediaplayer"
-        android:src="@drawable/baseline_play_arrow_24"
-        />
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_weight="8">
+        android:layout_weight="9">
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -32,32 +22,34 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:id="@+id/layout_user_list_details"
+                android:id="@+id/layout_partner_details"
                 android:layout_marginHorizontal="5dp"
                 android:background="@android:color/white"
                 >
                 <TextView
-                    android:id="@+id/tv_user_list_name"
+                    android:id="@+id/tv_partner_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="List Name"
-                    android:textColor="@color/tevoiBlueSecondary"
+                    android:textColor="@color/tevoiBluePrimary"
                     android:textSize="25dp"
                     />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/tv_creation_date"
-                    android:text="Creation Date"
+                    android:text="Partner Description"
+                    android:id="@+id/tv_partner_description"
                     />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Duration"
-                    android:id="@+id/tv_duration_user_list"/>
+                    android:id="@+id/tv_number_of_tracks"
+                    android:text="Number of tracks"
+                    />
+
             </LinearLayout>
             <LinearLayout
-                android:id="@+id/hoverButtonsLayoutUserList"
+                android:id="@+id/hoverButtonsLayoutPartnerList"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="right"
@@ -65,7 +57,7 @@
                 android:layout_alignParentRight="true"
                 android:clickable="true"
                 android:focusable="true"
-                android:weightSum="2"
+                android:weightSum="1"
                 android:background="@color/tevoiBlueSecondary"
                 >
                 <Button
@@ -74,26 +66,12 @@
                     android:layout_weight="1"
                     android:background="@color/tevoiBlueSecondary"
                     android:drawableTop="@mipmap/rename"
-                    android:text="Rename"
+                    android:text="Add To filter"
                     android:clickable="true"
                     android:layout_gravity="center_vertical"
-                    android:id="@+id/btn_rename_user_list"
+                    android:id="@+id/btn_add_partner_to_filter"
                     android:textSize="@dimen/text_size"
                     android:textColor="@color/fontColor"
-                    android:textStyle="bold"
-                    />
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:clickable="true"
-                    android:textColor="@color/fontColor"
-                    android:background="@color/tevoiBlueSecondary"
-                    android:drawableTop="@mipmap/remove"
-                    android:id="@+id/btn_delete_user_list"
-                    android:text="Delete"
-                    android:textSize="@dimen/text_size"
-                    android:layout_gravity="center_vertical"
                     android:textStyle="bold"
                     />
             </LinearLayout>
@@ -111,7 +89,7 @@
             android:src="@drawable/outline_reorder_rotated_24"
             android:clickable="true"
             android:layout_weight="1"
-            android:id="@+id/btn_user_list_drawer"
+            android:id="@+id/btn_partner_drawer"
             android:rotation="90"
             />
     </LinearLayout>

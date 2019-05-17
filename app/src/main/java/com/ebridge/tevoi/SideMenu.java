@@ -1,6 +1,5 @@
 package com.ebridge.tevoi;
 
-import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.ComponentName;
@@ -16,24 +15,17 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.DownloadListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.ebridge.tevoi.Utils.CommentFragment;
-import com.ebridge.tevoi.Utils.Global;
 import com.ebridge.tevoi.Utils.MyStorage;
-import com.ebridge.tevoi.adapter.CommentsAdapter;
-import com.ebridge.tevoi.adapter.SideMenuAdapter;
-import com.ebridge.tevoi.adapter.Track;
 import com.ebridge.tevoi.model.IResponse;
 import com.ebridge.tevoi.model.TrackSerializableObject;
 import com.ebridge.tevoi.rest.ApiClient;
 import com.ebridge.tevoi.rest.ApiInterface;
 
-import android.support.v4.app.Fragment;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -103,7 +95,8 @@ public class SideMenu extends FragmentActivity {
     // endregion
 
     // region side menu fragments objects
-    TracksList listTracksFargment = new TracksList();
+    TracksList lisTracksFragment = new TracksList();
+   // TracksList listTracksFargment = new TracksList();
     InterfaceLanguageFragment interfaceLanguageFragment = new InterfaceLanguageFragment();
     LoginFragment loginFragment = new LoginFragment();
     PartnersFragment partnersFragment = new PartnersFragment();
@@ -124,7 +117,7 @@ public class SideMenu extends FragmentActivity {
 
     // endregion
 
-    TracksList lisTracks = new TracksList();
+    //
     MenuItem searchBtn ;
 
     @Override
@@ -268,7 +261,7 @@ public class SideMenu extends FragmentActivity {
                     }
                     case "List Tracks" :
                     {
-                        fragmentTransaction.replace(R.id.content_frame, listTracksFargment);
+                        fragmentTransaction.replace(R.id.content_frame, lisTracksFragment);
                         fragmentTransaction.commit();
                         break;
                     }
@@ -305,7 +298,7 @@ public class SideMenu extends FragmentActivity {
         android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         // Replace the contents of the container with the new fragment
         //TrackShare frag = new TrackShare();
-        ft.replace(R.id.content_frame, lisTracks);
+        ft.replace(R.id.content_frame, lisTracksFragment);
 
         // Committing the transaction
         ft.commit();
@@ -360,13 +353,13 @@ public class SideMenu extends FragmentActivity {
 
     public void changeTabToNew(View view)
     {
-        lisTracks.changeTabToNew(view);
+        lisTracksFragment.changeTabToNew(view);
     }
     public void changeTabToTopRated(View view) {
-        lisTracks.changeTabToTopRated(view);
+        lisTracksFragment.changeTabToTopRated(view);
     }
     public void changeToPopular(View view) {
-        lisTracks.changeToPopular(view);
+        lisTracksFragment.changeToPopular(view);
     }
     // endregion
 
@@ -512,7 +505,23 @@ public class SideMenu extends FragmentActivity {
     
     //endregion
 
+    // region Parter fragment actions
+    public  void changeToAlphabetOrder(View view)
+    {
+        partnersFragment.activateTab(0);
+    }
+    public void changeTabToNewListPartners(View view) {
+        partnersFragment.activateTab(1);
+    }
 
+    public void changeTabToTopRatedPartners(View view) {
+        partnersFragment.activateTab(2);
+    }
+
+    public void changeToPopularPartners(View view) {
+        partnersFragment.activateTab(3);
+    }
+    // endregion
 
     public void playAudio(String media)
     {

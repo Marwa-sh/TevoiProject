@@ -1,19 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".PartnersFragment">
-    <LinearLayout
+
+    <android.support.v7.widget.LinearLayoutCompat
+        android:id="@+id/tabsLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/tevoiBluePrimary"
-        android:orientation="vertical">
-        <TextView
-            android:id="@+id/textMessage"
+        android:weightSum="4">
+
+        <Button
+            android:id="@+id/btnAlphabetOrder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/under_construction"
-            />
-    </LinearLayout>
-</FrameLayout>
+            android:layout_weight="1"
+            android:background="@color/tevoiBlueSecondary"
+            android:text="A-Z"
+            android:textColor="@color/fontColor"
+            android:onClick="changeToAlphabetOrder"/>
+
+        <Button
+            android:id="@+id/btnNewListPartners"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/tevoiBluePrimary"
+            android:text="New"
+            android:textColor="@color/fontColor"
+            android:onClick="changeTabToNewListPartners"/>
+
+        <Button
+            android:id="@+id/btnTopRatedListPartners"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/tevoiBlueSecondary"
+            android:text="Top Rated"
+            android:textColor="@color/fontColor"
+            android:onClick="changeTabToTopRatedPartners"/>
+
+        <Button
+        android:id="@+id/btnPopularListPartners"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@color/tevoiBlueSecondary"
+        android:text="Popular"
+        android:textColor="@color/fontColor"
+        android:onClick="changeToPopularPartners"/>
+
+
+    </android.support.v7.widget.LinearLayoutCompat>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/partners_recycler_View"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+    </android.support.v7.widget.RecyclerView>
+
+</LinearLayout>

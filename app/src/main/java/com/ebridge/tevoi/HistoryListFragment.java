@@ -2,25 +2,18 @@ package com.ebridge.tevoi;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.ebridge.tevoi.Utils.Global;
-import com.ebridge.tevoi.adapter.Track;
 import com.ebridge.tevoi.adapter.TracksAdapter;
-import com.ebridge.tevoi.adapter.TracksSerializableAdapter;
 import com.ebridge.tevoi.model.TrackResponseList;
-import com.ebridge.tevoi.model.TrackSerializableObject;
 import com.ebridge.tevoi.rest.ApiClient;
 import com.ebridge.tevoi.rest.ApiInterface;
-
-import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -75,13 +68,13 @@ public class HistoryListFragment extends Fragment {
     public void changeTabToNewHistory(View view)
     {
         SideMenu activity = (SideMenu) getActivity();
-        activity.lisTracks.defaultTab = 0;
+        activity.lisTracksFragment.defaultTab = 0;
         String[] menuItems = getResources().getStringArray(R.array.rivers);
         // Updating the action bar title
         getActivity().getActionBar().setTitle(menuItems[0]);
 
         android.support.v4.app.FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.content_frame, activity.lisTracks);
+        ft.replace(R.id.content_frame, activity.lisTracksFragment);
         ft.commit();
 
     }
@@ -93,9 +86,9 @@ public class HistoryListFragment extends Fragment {
         // Updating the action bar title
         getActivity().getActionBar().setTitle(menuItems[0]);
 
-        activity.lisTracks.defaultTab = 1;
+        activity.lisTracksFragment.defaultTab = 1;
         android.support.v4.app.FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.content_frame, activity.lisTracks);
+        ft.replace(R.id.content_frame, activity.lisTracksFragment);
         ft.commit();
     }
 
@@ -105,9 +98,9 @@ public class HistoryListFragment extends Fragment {
         // Updating the action bar title
         getActivity().getActionBar().setTitle(menuItems[0]);
 
-        activity.lisTracks.defaultTab = 2;
+        activity.lisTracksFragment.defaultTab = 2;
         android.support.v4.app.FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.content_frame, activity.lisTracks);
+        ft.replace(R.id.content_frame, activity.lisTracksFragment);
         ft.commit();
     }
 }
