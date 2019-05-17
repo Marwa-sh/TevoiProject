@@ -111,7 +111,7 @@ public class SideMenu extends FragmentActivity {
     FavouriteFragment favouriteFragment = new FavouriteFragment();
     MyListFragment myListFragment = new MyListFragment();
     UserListFragment userListsFragment = new UserListFragment();
-
+    FilterFragment filterFragment = new FilterFragment();
 
     public MediaPlayerFragment mediaPlayerFragment;
 
@@ -262,6 +262,12 @@ public class SideMenu extends FragmentActivity {
                     case "List Tracks" :
                     {
                         fragmentTransaction.replace(R.id.content_frame, lisTracksFragment);
+                        fragmentTransaction.commit();
+                        break;
+                    }
+                    case "Filters" :
+                    {
+                        fragmentTransaction.replace(R.id.content_frame, filterFragment);
                         fragmentTransaction.commit();
                         break;
                     }

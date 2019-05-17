@@ -6,6 +6,7 @@ import com.ebridge.tevoi.adapter.Track;
 import com.ebridge.tevoi.model.AddCommentResponse;
 import com.ebridge.tevoi.model.AddCommetRequest;
 import com.ebridge.tevoi.model.AddTrackToFavouriteResponse;
+import com.ebridge.tevoi.model.CategoryResponseList;
 import com.ebridge.tevoi.model.GeneralResponse;
 import com.ebridge.tevoi.model.GetTrackFavouriteResponse;
 import com.ebridge.tevoi.model.IResponse;
@@ -113,5 +114,7 @@ public interface ApiInterface {
     @GET("api/Services/GetPartnersList")
     Call<PartnerListResponse> GetPartnersList(@Query("TypeOfOrder") int TypeOfOrder, @Query("index") int index, @Query("size") int size);
 
+    @GET("api/Services/GetCategoriesFilters")
+    Call<CategoryResponseList> GetCategoriesFilters();
 
 }
