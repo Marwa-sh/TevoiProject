@@ -38,10 +38,12 @@ import android.widget.Toast;
 import com.ebridge.tevoi.Utils.CommentFragment;
 import com.ebridge.tevoi.Utils.Global;
 import com.ebridge.tevoi.Utils.HelperFunctions;
+import com.ebridge.tevoi.adapter.PartnerAdapter;
 import com.ebridge.tevoi.adapter.Track;
 import com.ebridge.tevoi.adapter.TracksAdapter;
 import com.ebridge.tevoi.model.AudioDataSource;
 import com.ebridge.tevoi.model.IResponse;
+import com.ebridge.tevoi.model.PartnerListResponse;
 import com.ebridge.tevoi.model.TrackObject;
 import com.ebridge.tevoi.model.TrackResponseList;
 import com.ebridge.tevoi.model.TrackSerializableObject;
@@ -119,7 +121,7 @@ public class MediaPlayerFragment extends Fragment {
         rootView = inflater.inflate(R.layout.activity_media_player, container, false);
         final SideMenu activity = (SideMenu)getActivity();
 
-        Call<IResponse> callUrlAudio = Global.client.AddListenTrackActivity(currentTrackId);
+        /*Call<IResponse> callUrlAudio = Global.client.AddListenTrackActivity(currentTrackId);
         callUrlAudio.enqueue(new Callback<IResponse>(){
             public void onResponse(Call<IResponse> call, Response<IResponse> response) {
                 IResponse reponse = response.body();
@@ -131,7 +133,7 @@ public class MediaPlayerFragment extends Fragment {
             public void onFailure(Call<IResponse> call, Throwable t)
             {
             }
-        });
+        });*/
 
         //serviceBound = activity.serviceBound;
         //player = activity.player;
@@ -149,7 +151,7 @@ public class MediaPlayerFragment extends Fragment {
         {
             @Override
             public void run() {
-                SideMenu activity = (SideMenu)getActivity();
+                final SideMenu activity = (SideMenu)getActivity();
                 if(activity != null)
                 {
                     if(activity.serviceBound)
@@ -157,7 +159,26 @@ public class MediaPlayerFragment extends Fragment {
                         if(activity.isPlaying)
                         {
                             activity.numberOfListenedSeconds += 1;
-                            activity.numberOfTotalSeconds += activity.numberOfCurrentSeconds;
+                            //activity.numberOfTotalSeconds += activity.numberOfCurrentSeconds;
+                        }
+                        int n = activity.numberOfUnitsSendToServer * Global.ListenUnitInSeconds + Global.ListenUnitInSeconds;
+                        if(activity.numberOfListenedSeconds >= n)
+                        {
+                            // send to server that we used 1 unit
+                            Call<IResponse> call = Global.client.AddUnitUsageForUser(currentTrack.getId());
+                            call.enqueue(new Callback<IResponse>(){
+                                public void onResponse(Call<IResponse> call, Response<IResponse> response) {
+                                    //generateDataList(response.body());
+                                    IResponse partners=response.body();
+                                    activity.numberOfUnitsSendToServer +=1;
+
+                                    Toast.makeText(activity, "One Unit consumed from your quota", Toast.LENGTH_SHORT).show();
+                                }
+                                public void onFailure(Call<IResponse> call, Throwable t)
+                                {
+
+                                }
+                            });
                         }
                         seekBar.setMax(activity.player.mMediaPlayer.getDuration()/ 1000);
                         String timeFormat2 = GetTimeFormat(activity.player.mMediaPlayer.getDuration()/ 1000);

@@ -12,6 +12,7 @@ import android.os.IBinder;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -184,7 +185,7 @@ public class SideMenu extends FragmentActivity {
 
         // Enabling Home button
         getActionBar().setHomeButtonEnabled(true);
-        getActionBar().setTitle("title");
+        getActionBar().setTitle("Tevoi");
         getActionBar().setSubtitle("subtitle");
         //getActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.launcher_background));
 

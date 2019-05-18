@@ -127,7 +127,6 @@ public class CommentFragment extends Fragment
         TextView tv = rootView.findViewById(R.id.textComment);
         //tv.setText("TrackId = " + TrackId);
 
-
         //recyclerView = (RecyclerView) rootView.findViewById(R.id.comments_recycler_View);
         //recyclerView.setAdapter(adapter);
 

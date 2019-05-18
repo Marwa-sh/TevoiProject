@@ -8,6 +8,7 @@ import com.ebridge.tevoi.model.AddCommetRequest;
 import com.ebridge.tevoi.model.AddTrackToFavouriteResponse;
 import com.ebridge.tevoi.model.CategoryResponseList;
 import com.ebridge.tevoi.model.GeneralResponse;
+import com.ebridge.tevoi.model.GetPartnerTracksResponse;
 import com.ebridge.tevoi.model.GetSubscripedPartnersResponse;
 import com.ebridge.tevoi.model.GetTrackFavouriteResponse;
 import com.ebridge.tevoi.model.IResponse;
@@ -130,4 +131,13 @@ public interface ApiInterface {
 
     @GET("api/Services/GetSubscripedPartners")
     Call<GetSubscripedPartnersResponse> GetSubscripedPartners();
+
+
+    @GET("api/Services/AddUnitUsageForUser")
+    Call<IResponse> AddUnitUsageForUser(@Query("TrackId") int TrackId);
+
+    @GET("api/Services/GetPartnerTracks")
+    Call<GetPartnerTracksResponse> GetPartnerTracks(@Query("PartnerId") int PartnerId, @Query("index") int index, @Query("size") int size);
+
+
 }

@@ -121,7 +121,8 @@ public class PartnersFragment extends Fragment {
                 PartnerListResponse partners=response.body();
                 int x=partners.getPartners().size();
                 recyclerViews[kk].setAdapter(adapter);
-                adapter = new PartnerAdapter(partners.getPartners(),getContext());
+                SideMenu activity = (SideMenu)getActivity();
+                adapter = new PartnerAdapter(partners.getPartners(),activity);
                 recyclerViews[kk].setAdapter(adapter);
                 mProgressDialog.dismiss();
                 Toast.makeText(getContext(),"partners:"+x, Toast.LENGTH_SHORT);

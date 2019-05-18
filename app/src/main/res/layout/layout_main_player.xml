@@ -45,7 +45,7 @@
                 android:layout_height="50dp"
                 android:background="@null"
                 android:thumbTint="@color/fontColor"
-
+                android:maxHeight="1000dp"
                 android:progress="50"
                 android:progressTint="@color/fontColor"
                 tools:layout_editor_absoluteX="3dp"

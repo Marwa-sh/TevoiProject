@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ebridge.tevoi.PartnerNameFragment;
 import com.ebridge.tevoi.R;
 import com.ebridge.tevoi.SideMenu;
 import com.ebridge.tevoi.Utils.Global;
@@ -30,11 +31,11 @@ import retrofit2.Response;
 public class PartnerAdapter extends RecyclerView.Adapter<PartnerAdapter.PartnerViewHolder>
 {
 private List<PartnerObject> partners;
-private Context context;
+private SideMenu activity;
 
-public PartnerAdapter(List<PartnerObject> partners, Context context){
+public PartnerAdapter(List<PartnerObject> partners, SideMenu activity){
         this.partners=partners;
-        this.context=context;
+        this.activity=activity;
         }
 public PartnerAdapter.PartnerViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i){
         View row=LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.fragmet_partner_instance,viewGroup,false);
@@ -87,19 +88,18 @@ class PartnerViewHolder extends RecyclerView.ViewHolder {
             public void onClick(View v) {
                 int i = getAdapterPosition();
                 PartnerObject selectedpartner = partners.get(i);
-                SideMenu activity = (SideMenu) context;
-                Call<IResponse> call = Global.client.AddFollowshipToPartner(selectedpartner.getId());
+                 Call<IResponse> call = Global.client.AddFollowshipToPartner(selectedpartner.getId());
                 call.enqueue(new Callback<IResponse>() {
                     @Override
                     public void onResponse(Call<IResponse> call, Response<IResponse> response) {
                         IResponse res = response.body();
                         if(res.getNumber()==0)
                         {
-                            Toast.makeText(context,res.getMessage(),Toast.LENGTH_LONG).show();
+                            Toast.makeText(activity,res.getMessage(),Toast.LENGTH_LONG).show();
                         }
                         else
                         {
-                            Toast.makeText(context,res.getMessage(),Toast.LENGTH_LONG).show();
+                            Toast.makeText(activity,res.getMessage(),Toast.LENGTH_LONG).show();
                         }
                         hoverLayout.setVisibility(View.INVISIBLE);
                     }
@@ -120,6 +120,21 @@ class PartnerViewHolder extends RecyclerView.ViewHolder {
                 } else {
                     hoverLayout.setVisibility(View.VISIBLE);
                 }
+            }
+        });
+
+        tvPartnerName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                int i  = getPosition();
+                PartnerObject p = partners.get(i);
+
+                PartnerNameFragment fragment = PartnerNameFragment.newInstance(p.getId(), p.getName(), p.getDescripton());
+                android.support.v4.app.FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.content_frame, fragment);
+                fragmentTransaction.commit();
+
             }
         });
     }

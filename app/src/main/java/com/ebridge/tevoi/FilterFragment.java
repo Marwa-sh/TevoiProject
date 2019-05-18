@@ -1,6 +1,7 @@
 
 package com.ebridge.tevoi;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -32,7 +33,7 @@ import static android.support.v7.widget.RecyclerView.HORIZONTAL;
 import static android.support.v7.widget.RecyclerView.VERTICAL;
 
 public class FilterFragment extends Fragment {
-
+    ProgressDialog mProgressDialog;
     View rootView;
     List<CategoryObject> categoryObjectList;
     List<SubscipedPartnersObject> subscipedPartners;
@@ -53,6 +54,8 @@ public class FilterFragment extends Fragment {
         categoriesRecyclerView= rootView.findViewById(R.id.categories_recycler_view);
         subscripedPartnersRecyclerView = rootView.findViewById(R.id.subscriped_partners);
 
+        mProgressDialog = new ProgressDialog(getActivity());
+
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
@@ -66,6 +69,9 @@ public class FilterFragment extends Fragment {
 
         trackTypeRecyclerView = rootView.findViewById(R.id.track_type_recycler_view);
         trackTypeRecyclerView.setLayoutManager(layoutManager);
+
+        mProgressDialog.setMessage("Loading");
+        mProgressDialog.show();
 
         Call<CategoryResponseList> call = Global.client.GetCategoriesFilters();
         call.enqueue(new Callback<CategoryResponseList>() {
@@ -102,6 +108,8 @@ public class FilterFragment extends Fragment {
 
             }
         });
+
+        mProgressDialog.dismiss();
         return rootView;
     }
 }

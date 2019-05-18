@@ -105,7 +105,7 @@
             android:background="@null"
             tools:layout_editor_absoluteX="3dp"
             tools:layout_editor_absoluteY="295dp"
-
+            android:maxHeight="1000dp"
             />
         <TextView
             android:layout_width="wrap_content"

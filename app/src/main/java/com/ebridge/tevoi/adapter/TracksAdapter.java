@@ -81,6 +81,7 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
                 row =LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.track_row_instance_all,viewGroup,false);
                 break;
             }
+            case Global.UserListTracksFragment:
             case Global.FavouriteFragmentName: {
                 row =LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.track_row_instance_all,viewGroup,false);
                 break;
@@ -89,6 +90,7 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
                 row =LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.track_row_instance_without_play_next,viewGroup,false);
                 break;
             }
+            case Global.PartnerNameFragment:
             case Global.ListTracksFragmentName: {
                 row =LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.track_row_instance_without_remove,viewGroup,false);
                 break;
@@ -299,6 +301,11 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
                                 Toast.makeText(activity, "PlayNowFragmentName", Toast.LENGTH_SHORT).show();
                                 break;
                             }
+                            case Global.UserListTracksFragment:
+                            {
+                                Toast.makeText(activity, "remove from user list", Toast.LENGTH_SHORT).show();
+                                break;
+                            }
                         }
                         //Show text fragment.
                         //Toast.makeText(activity, "btnRemove ddddd", Toast.LENGTH_SHORT).show();
@@ -416,10 +423,11 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
                                                         public void onResponse(Call<IResponse> call, Response<IResponse> response)
                                                         {
                                                             IResponse result = response.body();
-                                                            if(result.Number != 0)
+                                                            Toast.makeText(activity, result.getMessage(), Toast.LENGTH_SHORT).show();
+                                                            /*if(result.Number != 0)
                                                             {
-                                                                Toast.makeText(activity, result.getMessage(), Toast.LENGTH_SHORT).show();
-                                                            }
+
+                                                            }*/
                                                         }
                                                         public void onFailure(Call<IResponse> call, Throwable t)
                                                         {

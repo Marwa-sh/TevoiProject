@@ -130,13 +130,25 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
                 }
             });
 
-            btnRemove.setOnClickListener(new View.OnClickListener() {
+            btnRemove.
+            setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int i = getAdapterPosition();
+                    userLists.remove(i);
+                    activity.notifyUserListAdapter();
+                    Toast.makeText(activity, "Remove list", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            tvUserListName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
                     Toast.makeText(activity, "Remove list", Toast.LENGTH_SHORT).show();
                 }
             });
+
             btnRename.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
