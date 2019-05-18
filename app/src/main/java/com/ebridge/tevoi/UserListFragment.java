@@ -132,6 +132,8 @@ public class UserListFragment extends Fragment {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
 
+        mProgressDialog.setMessage("Loading");
+        mProgressDialog.show();
 
         Call<UserListResponse> call = client.getUserLists(0, 10);
         call.enqueue(new Callback<UserListResponse>(){
@@ -143,11 +145,12 @@ public class UserListFragment extends Fragment {
                 adapter = new UserListAdapter(userLists.getLstUserList(), activity);
                 recyclerView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
-
+                mProgressDialog.dismiss();
                 Toast.makeText(getContext(),"tracks:"+x, Toast.LENGTH_SHORT);
             }
             public void onFailure(Call<UserListResponse> call, Throwable t)
             {
+                mProgressDialog.dismiss();
                 Toast.makeText(getContext(),"something went wrong", Toast.LENGTH_SHORT);
             }
         });
