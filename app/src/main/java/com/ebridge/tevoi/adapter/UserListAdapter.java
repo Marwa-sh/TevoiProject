@@ -130,14 +130,34 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
                 }
             });
 
-            btnRemove.
-            setOnClickListener(new View.OnClickListener() {
+            btnRemove.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int i = getAdapterPosition();
-                    userLists.remove(i);
-                    activity.notifyUserListAdapter();
-                    Toast.makeText(activity, "Remove list", Toast.LENGTH_SHORT).show();
+                    final int i = getAdapterPosition();
+
+                    Call<IResponse> call = Global.client.DeleteUserList(userLists.get(i).getId());
+                    call.enqueue(new Callback<IResponse>(){
+                        public void onResponse(Call<IResponse> call, Response<IResponse> response) {
+                            IResponse result = response.body();
+                            userLists.remove(i);
+                            activity.notifyUserListAdapter();
+                            if(result.Number == 0)
+                            {
+                                Toast.makeText(activity, "Remove list successfully", Toast.LENGTH_SHORT).show();
+                            }
+                            else
+                            {
+                                Toast.makeText(activity,result.Message, Toast.LENGTH_LONG).show();;
+                            }
+                            hoverLayout.setVisibility(View.INVISIBLE);
+                            //mProgressDialog.dismiss();
+                        }
+                        public void onFailure(Call<IResponse> call, Throwable t)
+                        {
+                            Toast.makeText(activity,"something went wrong", Toast.LENGTH_LONG).show();;
+                            //mProgressDialog.dismiss();
+                        }
+                    });
                 }
             });
 
