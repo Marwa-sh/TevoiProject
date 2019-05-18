@@ -8,6 +8,7 @@ import com.ebridge.tevoi.model.AddCommetRequest;
 import com.ebridge.tevoi.model.AddTrackToFavouriteResponse;
 import com.ebridge.tevoi.model.CategoryResponseList;
 import com.ebridge.tevoi.model.GeneralResponse;
+import com.ebridge.tevoi.model.GetSubscripedPartnersResponse;
 import com.ebridge.tevoi.model.GetTrackFavouriteResponse;
 import com.ebridge.tevoi.model.IResponse;
 import com.ebridge.tevoi.model.LoginRequest;
@@ -114,7 +115,19 @@ public interface ApiInterface {
     @GET("api/Services/GetPartnersList")
     Call<PartnerListResponse> GetPartnersList(@Query("TypeOfOrder") int TypeOfOrder, @Query("index") int index, @Query("size") int size);
 
+    @GET("api/Services/AddFollowshipToPartner")
+    Call<IResponse> AddFollowshipToPartner(@Query("PartnerId") int PartnerId);
+
+    @GET("api/Services/UpdateFollowshipToPartner")
+    Call<IResponse> UpdateFollowshipToPartner(@Query("FollowshipId") int FollowshipId, @Query("IsFollow") boolean IsFollow);
+
+    @GET("api/Services/UpdateCategoryPreference")
+    Call<IResponse> UpdateCategoryPreference(@Query("CategoryId") int CategoryId, @Query("IsPrefered") boolean IsPrefered);
+
+
     @GET("api/Services/GetCategoriesFilters")
     Call<CategoryResponseList> GetCategoriesFilters();
 
+    @GET("api/Services/GetSubscripedPartners")
+    Call<GetSubscripedPartnersResponse> GetSubscripedPartners();
 }

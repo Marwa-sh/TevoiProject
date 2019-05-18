@@ -21,6 +21,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.ebridge.tevoi.Utils.MyStorage;
+import com.ebridge.tevoi.adapter.DrawerListAdapter;
+import com.ebridge.tevoi.adapter.DrawerListItemObject;
 import com.ebridge.tevoi.model.IResponse;
 import com.ebridge.tevoi.model.TrackSerializableObject;
 import com.ebridge.tevoi.rest.ApiClient;
@@ -160,6 +162,16 @@ public class SideMenu extends FragmentActivity {
         };
         // Setting DrawerToggle on DrawerLayout
         mDrawerLayout.addDrawerListener(mDrawerToggle);
+
+        /*ArrayList<DrawerListItemObject> objs = new ArrayList<>();
+        for (int i =0 ; i< getResources().getStringArray(R.array.rivers).length; i++)
+        {
+            DrawerListItemObject temp = new DrawerListItemObject();
+            temp.setName(getResources().getStringArray(R.array.rivers)[i]);
+            objs.add(temp);
+        }
+        mDrawerList.setAdapter(new DrawerListAdapter(this, R.layout.drawer_list_item, objs));*/
+
         // Creating an ArrayAdapter to add items to the listview mDrawerList
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 getBaseContext(),
@@ -172,6 +184,9 @@ public class SideMenu extends FragmentActivity {
 
         // Enabling Home button
         getActionBar().setHomeButtonEnabled(true);
+        getActionBar().setTitle("title");
+        getActionBar().setSubtitle("subtitle");
+        //getActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.launcher_background));
 
         // Enabling Up navigation
         getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -327,8 +342,8 @@ public class SideMenu extends FragmentActivity {
 
         if (id == R.id.action_search)
         {
-            SideMenu activity = (SideMenu)getBaseContext();
-            RelativeLayout layout = activity.findViewById(R.id.relativeLayoutSearch);
+            //SideMenu activity = (SideMenu)getBaseContext();
+            RelativeLayout layout = findViewById(R.id.relativeLayoutSearch);
             if(layout.getVisibility() == View.INVISIBLE)
                 layout.setVisibility(View.VISIBLE);
             else
@@ -550,4 +565,29 @@ public class SideMenu extends FragmentActivity {
             sendBroadcast(broadcastIntent);
         }
     }
+
+    // region add notify functins for adapters
+    public void notifyUserListAdapter()
+    {
+        userListsFragment.notifyUserListAdapter();
+    }
+    public void notifyHistoryListAdapter()
+    {
+        historyListFragment.notifyHistoryListAdapter();
+    }
+    public void notifyFavouriteListAdapter()
+    {
+        favouriteFragment.notifyFavouriteListAdapter();
+    }
+    public void notifyPlayNextListAdapter()
+    {
+        playingNowFragment.notifyPlayNextListAdapter();
+    }
+    public void notifyTarcksListAdapter()
+    {
+        lisTracksFragment.notifyTarcksListAdapter();
+    }
+    // endregion
+
+
 }

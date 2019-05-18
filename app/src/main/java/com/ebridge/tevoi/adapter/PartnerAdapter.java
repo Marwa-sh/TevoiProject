@@ -17,6 +17,8 @@ import android.widget.Toast;
 
 import com.ebridge.tevoi.R;
 import com.ebridge.tevoi.SideMenu;
+import com.ebridge.tevoi.Utils.Global;
+import com.ebridge.tevoi.model.IResponse;
 import com.ebridge.tevoi.model.PartnerObject;
 
 import java.util.List;
@@ -86,7 +88,26 @@ class PartnerViewHolder extends RecyclerView.ViewHolder {
                 int i = getAdapterPosition();
                 PartnerObject selectedpartner = partners.get(i);
                 SideMenu activity = (SideMenu) context;
-
+                Call<IResponse> call = Global.client.AddFollowshipToPartner(selectedpartner.getId());
+                call.enqueue(new Callback<IResponse>() {
+                    @Override
+                    public void onResponse(Call<IResponse> call, Response<IResponse> response) {
+                        IResponse res = response.body();
+                        if(res.getNumber()==0)
+                        {
+                            Toast.makeText(context,res.getMessage(),Toast.LENGTH_LONG).show();
+                        }
+                        else
+                        {
+                            Toast.makeText(context,res.getMessage(),Toast.LENGTH_LONG).show();
+                        }
+                        hoverLayout.setVisibility(View.INVISIBLE);
+                    }
+                    @Override
+                    public void onFailure(Call<IResponse> call, Throwable t) {
+                        hoverLayout.setVisibility(View.INVISIBLE);
+                    }
+                });
             }
         });
 

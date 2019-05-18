@@ -50,7 +50,7 @@ public class SideMenuAdapter extends RecyclerView.Adapter<SideMenuAdapter.SideMe
         public SideMenuItemViewHolder(@NonNull View itemView) {
             super(itemView);
             //this.view=itemView.findViewWithTag(R.id.track_row_layout);
-            textMenuItem = itemView.findViewById(R.id.text1);
+            textMenuItem = itemView.findViewById(R.id.txtListItemName);
             //imgBtnPlay.setOnClickListener();
         }
     }

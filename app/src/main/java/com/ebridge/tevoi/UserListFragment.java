@@ -136,9 +136,10 @@ public class UserListFragment extends Fragment {
         call.enqueue(new Callback<UserListResponse>(){
             public void onResponse(Call<UserListResponse> call, Response<UserListResponse> response) {
                 //generateDataList(response.body());
+                SideMenu activity = (SideMenu) getActivity();
                 UserListResponse userLists =response.body();
                 int x=userLists.getLstUserList().size();
-                adapter = new UserListAdapter(userLists.getLstUserList(), rootView.getContext());
+                adapter = new UserListAdapter(userLists.getLstUserList(), activity);
                 recyclerView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
 
@@ -151,5 +152,10 @@ public class UserListFragment extends Fragment {
         });
 
         return rootView;
+    }
+
+    public void notifyUserListAdapter()
+    {
+        adapter.notifyDataSetChanged();
     }
 }

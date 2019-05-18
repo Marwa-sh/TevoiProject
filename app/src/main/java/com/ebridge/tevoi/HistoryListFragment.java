@@ -41,9 +41,10 @@ public class HistoryListFragment extends Fragment {
         call.enqueue(new Callback <TrackResponseList>(){
             public void onResponse(Call<TrackResponseList> call, Response<TrackResponseList> response) {
                 //generateDataList(response.body());
+                SideMenu activity = (SideMenu) getActivity();
                 TrackResponseList tracks=response.body();
                 int x=tracks.getTrack().size();
-                adapter = new TracksAdapter(tracks.getTrack(), rootView.getContext(), Global.HistoryFragmentName);
+                adapter = new TracksAdapter(tracks.getTrack(), activity, Global.HistoryFragmentName);
                 //recyclerView.setAdapter(adapter);
                 recyclerView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
@@ -102,5 +103,10 @@ public class HistoryListFragment extends Fragment {
         android.support.v4.app.FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.content_frame, activity.lisTracksFragment);
         ft.commit();
+    }
+
+    public void notifyHistoryListAdapter()
+    {
+        adapter.notifyDataSetChanged();
     }
 }

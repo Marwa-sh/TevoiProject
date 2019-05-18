@@ -83,5 +83,9 @@ public class PlayingNowFragment extends Fragment {
         ft.commit();
     }
 
+    public void notifyPlayNextListAdapter()
+    {
+        adapter.notifyDataSetChanged();
+    }
 
 }

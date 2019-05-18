@@ -49,7 +49,7 @@ import retrofit2.Response;
 public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewHolder>
 {
     private List<TrackObject> tracks;
-    private Context context;
+    private SideMenu activity;
     private boolean HasPlayNextBtn;
     private boolean HasRemoveBtn;
     private boolean HasAddToListBtn = true;
@@ -58,9 +58,9 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
 
     private String fragmentName = "";
 
-    public TracksAdapter(List<TrackObject> tracks, Context context, String fragmentName) {
+    public TracksAdapter(List<TrackObject> tracks, SideMenu activity, String fragmentName) {
         this.tracks = tracks;
-        this.context = context;
+        this.activity = activity;
         this.fragmentName = fragmentName;
     }
 
@@ -174,7 +174,6 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
                 {
                     int i = getAdapterPosition();
                     TrackObject selectedTrack =  tracks.get(i);
-                    SideMenu activity = (SideMenu) context;
                     // if we are playing new track
                     if(activity.player != null && i != activity.trackIdPlayedNow)
                     {
@@ -200,7 +199,6 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
                 @Override
                 public void onClick(View v) {
                     final Context context = v.getContext();
-
                     if(hoverLayout.getVisibility()==View.VISIBLE)
                     {
                         hoverLayout.setVisibility(View.INVISIBLE);
@@ -222,7 +220,6 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
                     //Show text fragment.
                     int i = getPosition();
                     TrackObject selectedTrack = tracks.get(i);
-                    SideMenu activity = (SideMenu) context;
                     if(selectedTrack.isHasText()) {
                         FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
                         TrackText textFargment = TrackText.newInstance(selectedTrack.getId(), Global.ListTracksFragmentName);
@@ -233,7 +230,7 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
                     }
                     else
                     {
-                        Toast.makeText(context, R.string.track_has_no_text, Toast.LENGTH_LONG).show();
+                        Toast.makeText(activity, R.string.track_has_no_text, Toast.LENGTH_LONG).show();
                     }
                 }
             });
@@ -243,11 +240,11 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
                     @Override
                     public void onClick(View v) {
                         int i = getPosition();
-                        TrackObject selectedTrack = tracks.get(i);
+                        final TrackObject selectedTrack = tracks.get(i);
                         switch (fragmentName) {
                             case Global.HistoryFragmentName:
                                 {
-                                Toast.makeText(context, "HistoryFragmentName", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(activity, "HistoryFragmentName", Toast.LENGTH_SHORT).show();
                                 Call<IResponse> call = Global.client.RemoveFromHistory(selectedTrack.getActivityId());
                                 call.enqueue(new Callback<IResponse>() {
                                     @Override
@@ -255,12 +252,15 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
                                         IResponse res = response.body();
                                         if(res.getNumber()==0)
                                         {
-                                            Toast.makeText(context,"Remove From History successfully",Toast.LENGTH_SHORT);
+                                            tracks.remove(selectedTrack);
+                                            activity.notifyHistoryListAdapter();
+                                            Toast.makeText(activity,"Remove From History successfully",Toast.LENGTH_LONG).show();
                                         }
                                         else
                                         {
-                                            Toast.makeText(context,"Error Remove From History",Toast.LENGTH_SHORT);
+                                            Toast.makeText(activity,"Error Remove From History",Toast.LENGTH_LONG).show();
                                         }
+
                                     }
                                     @Override
                                     public void onFailure(Call<IResponse> call, Throwable t) {
@@ -278,11 +278,13 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
                                         IResponse res = response.body();
                                         if(res.getNumber()==0)
                                         {
-                                            Toast.makeText(context,"Remove From Favourite successfully",Toast.LENGTH_SHORT);
+                                            tracks.remove(selectedTrack);
+                                            activity.notifyFavouriteListAdapter();
+                                            Toast.makeText(activity,"Remove From Favourite successfully",Toast.LENGTH_SHORT).show();
                                         }
                                         else
                                         {
-                                            Toast.makeText(context,"Error Remove From Favourite",Toast.LENGTH_SHORT);
+                                            Toast.makeText(activity,"Error Remove From Favourite",Toast.LENGTH_SHORT).show();
                                         }
                                     }
                                     @Override
@@ -294,12 +296,12 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
                             }
                             case Global.PlayNowFragmentName:
                                 {
-                                Toast.makeText(context, "PlayNowFragmentName", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(activity, "PlayNowFragmentName", Toast.LENGTH_SHORT).show();
                                 break;
                             }
                         }
                         //Show text fragment.
-                        Toast.makeText(context, "btnRemove ddddd", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(activity, "btnRemove ddddd", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -308,20 +310,22 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
                 public void onClick(View v) {
                     //Like or dislike this track.
                     int i = getPosition();
-                    TrackObject t = tracks.get(i);
-                    if(t.isFaourite())
+                   final TrackObject t = tracks.get(i);
+                    if(!t.isFaourite())
                     {
                         Call<IResponse> call = Global.client.AddTrackToFavourite(t.getId());
                         call.enqueue(new Callback<IResponse>() {
                             @Override
                             public void onResponse(Call<IResponse> call, Response<IResponse> response) {
                                 IResponse res = response.body();
-                                if (res.getNumber() == 0) {
+                                if (res.getNumber() == 0)
+                                {
+                                    t.setFaourite(true);
                                     Log.d("Favourite :", "onResponse: track liked ");
-                                    Toast.makeText(context, "Like", Toast.LENGTH_SHORT);
+                                    Toast.makeText(activity, "Like", Toast.LENGTH_LONG).show();
                                 } else {
                                     Log.d("Favourite Error", "onResponse: " + res.getMessage());
-                                    Toast.makeText(context, "Error Like", Toast.LENGTH_SHORT);
+                                    Toast.makeText(activity, "Error Like", Toast.LENGTH_LONG).show();
                                 }
                             }
                             @Override
@@ -329,6 +333,42 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
 
                             }
                         });
+                    }
+                    else
+                    {
+                        // unfavourite
+                        Call<IResponse> call = Global.client.RemoveTrackFromFavourite(t.getActivityId());
+                        call.enqueue(new Callback<IResponse>() {
+                            @Override
+                            public void onResponse(Call<IResponse> call, Response<IResponse> response) {
+                                IResponse res = response.body();
+                                if (res.getNumber() == 0)
+                                {
+                                    t.setFaourite(false);
+                                    Log.d("Favourite :", "onResponse: track liked ");
+                                    Toast.makeText(activity, "Remove Like", Toast.LENGTH_LONG).show();
+                                } else {
+                                    Log.d("Favourite Error", "onResponse: " + res.getMessage());
+                                    Toast.makeText(activity, "Error Remove Like", Toast.LENGTH_LONG).show();
+                                }
+                            }
+                            @Override
+                            public void onFailure(Call<IResponse> call, Throwable t) {
+
+                            }
+                        });
+                    }
+                    if(fragmentName.equals(Global.FavouriteFragmentName))
+                    {
+                        activity.notifyFavouriteListAdapter();
+                    }
+                    else if(fragmentName.equals(Global.HistoryFragmentName))
+                    {
+                        activity.notifyHistoryListAdapter();
+                    }
+                    else if(fragmentName.equals(Global.ListTracksFragmentName))
+                    {
+                        activity.notifyTarcksListAdapter();
                     }
                 }
             });
@@ -344,20 +384,20 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
                         public void onResponse(Call<UserListResponse> call, Response<UserListResponse> response)
                         {
                             UserListResponse listsNames = response.body();
-                            LayoutInflater li = LayoutInflater.from(context);
+                            LayoutInflater li = LayoutInflater.from(activity);
                             final View promptsView = li.inflate(R.layout.layout_user_lists_spinner, null);
 
                             Spinner spinner = (Spinner) promptsView.findViewById(R.id.user_lists_spinner);
                             // TODO:  get user lists
                             // Create an ArrayAdapter using the string array and a default spinner layout
-                            ArrayAdapter adapter = new ArrayAdapter(context, R.layout.spinner, listsNames.getLstUserList());
+                            ArrayAdapter adapter = new ArrayAdapter(activity, R.layout.spinner, listsNames.getLstUserList());
 
                             // Specify the layout to use when the list of choices appears
                             //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                             // Apply the adapter to the spinner
                             spinner.setAdapter(adapter);
 
-                            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+                            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
 
                             // set prompts.xml to alertdialog builder
                             alertDialogBuilder.setView(promptsView);
@@ -378,12 +418,12 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
                                                             IResponse result = response.body();
                                                             if(result.Number != 0)
                                                             {
-                                                                Toast.makeText(context, result.getMessage(), Toast.LENGTH_SHORT).show();
+                                                                Toast.makeText(activity, result.getMessage(), Toast.LENGTH_SHORT).show();
                                                             }
                                                         }
                                                         public void onFailure(Call<IResponse> call, Throwable t)
                                                         {
-                                                            Toast.makeText(context, "You have to lists", Toast.LENGTH_LONG).show();
+                                                            Toast.makeText(activity, "You have to lists", Toast.LENGTH_LONG).show();
                                                         }
                                                     });
 
@@ -393,7 +433,7 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
                                     .setNegativeButton("Cancel",
                                             new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface dialog,int id) {
-                                                    Toast.makeText(context, "No Select", Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(activity, "No Select", Toast.LENGTH_SHORT).show();
                                                     dialog.cancel();
                                                 }
                                             });
@@ -405,11 +445,10 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
                         }
                         public void onFailure(Call<UserListResponse> call, Throwable t)
                         {
-                            Toast.makeText(context, "You have to lists", Toast.LENGTH_LONG).show();
+                            Toast.makeText(activity, "You have to lists", Toast.LENGTH_LONG).show();
                         }
                     });
                     // here we need to add track to play next list
-                    SideMenu activity = (SideMenu) context;
                     int Id = activity.mediaPlayerFragment.currentTrack.getId();
                     String Name = activity.mediaPlayerFragment.currentTrack.getName();
                     TrackSerializableObject track = new TrackSerializableObject();
@@ -430,7 +469,6 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
                     public void onClick(View v) {
                         int i = getAdapterPosition();
                         TrackObject selectedTrack = tracks.get(i);
-                        SideMenu activity = (SideMenu) context;
                         TrackSerializableObject track = new TrackSerializableObject();
                         track.setId(selectedTrack.getId());
                         track.setName(selectedTrack.getName());
@@ -438,9 +476,9 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
                         track.setAuthor(selectedTrack.getAuthors());
                         track.setCategories(selectedTrack.getCategories());
                         track.setRate((int) selectedTrack.getRate());
-                        String result = activity.storageManager.addTrack(context, track);
-                        activity.playNowListTracks = activity.storageManager.loadPlayNowTracks(context);
-                        Toast.makeText(context, result, Toast.LENGTH_LONG).show();
+                        String result = activity.storageManager.addTrack(activity, track);
+                        activity.playNowListTracks = activity.storageManager.loadPlayNowTracks(activity);
+                        Toast.makeText(activity, result, Toast.LENGTH_LONG).show();
                     }
                 });
             }

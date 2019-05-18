@@ -182,4 +182,8 @@ public class TracksList extends Fragment implements AdapterView.OnItemSelectedLi
         // Another interface callback
     }
 
+    public void notifyTarcksListAdapter()
+    {
+        adapter.notifyDataSetChanged();
+    }
 }

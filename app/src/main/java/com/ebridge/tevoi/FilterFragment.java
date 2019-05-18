@@ -12,9 +12,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ebridge.tevoi.Utils.Global;
 import com.ebridge.tevoi.adapter.CategoriesAdapter;
+import com.ebridge.tevoi.adapter.SubscripedPartnersAdapter;
 import com.ebridge.tevoi.model.CategoryObject;
 import com.ebridge.tevoi.model.CategoryResponseList;
+import com.ebridge.tevoi.model.GetSubscripedPartnersResponse;
+import com.ebridge.tevoi.model.SubscipedPartnersObject;
 import com.ebridge.tevoi.rest.ApiClient;
 import com.ebridge.tevoi.rest.ApiInterface;
 
@@ -31,10 +35,14 @@ public class FilterFragment extends Fragment {
 
     View rootView;
     List<CategoryObject> categoryObjectList;
-    ApiInterface client;
-    RecyclerView categoriesRecyclerView;
+    List<SubscipedPartnersObject> subscipedPartners;
+
     RecyclerView trackTypeRecyclerView;
-    CategoriesAdapter adapter;
+    RecyclerView categoriesRecyclerView;
+    RecyclerView subscripedPartnersRecyclerView;
+
+    CategoriesAdapter adapterCategories;
+    SubscripedPartnersAdapter adapterPartners;
 
 
     @Override
@@ -43,6 +51,8 @@ public class FilterFragment extends Fragment {
         // Inflate the layout for this fragment
         rootView=inflater.inflate(R.layout.fragment_filter, container, false);
         categoriesRecyclerView= rootView.findViewById(R.id.categories_recycler_view);
+        subscripedPartnersRecyclerView = rootView.findViewById(R.id.subscriped_partners);
+
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
@@ -50,17 +60,21 @@ public class FilterFragment extends Fragment {
         layoutManager2.setOrientation(LinearLayoutManager.VERTICAL);
         categoriesRecyclerView.setLayoutManager(layoutManager2);
 
+        final LinearLayoutManager layoutManagerPartners = new LinearLayoutManager(getContext());
+        layoutManagerPartners.setOrientation(LinearLayoutManager.VERTICAL);
+        subscripedPartnersRecyclerView.setLayoutManager(layoutManagerPartners);
+
         trackTypeRecyclerView = rootView.findViewById(R.id.track_type_recycler_view);
         trackTypeRecyclerView.setLayoutManager(layoutManager);
 
-        client = ApiClient.getClient().create(ApiInterface.class);
-        Call<CategoryResponseList> call = client.GetCategoriesFilters();
+        Call<CategoryResponseList> call = Global.client.GetCategoriesFilters();
         call.enqueue(new Callback<CategoryResponseList>() {
             @Override
             public void onResponse(Call<CategoryResponseList> call, Response<CategoryResponseList> response) {
                 CategoryResponseList categories = response.body();
-                adapter = new CategoriesAdapter(categories.getCategoriesList(),getContext());
-                categoriesRecyclerView.setAdapter(adapter);
+                SideMenu activity = (SideMenu) getActivity();
+                adapterCategories = new CategoriesAdapter(categories.getCategoriesList(), activity);
+                categoriesRecyclerView.setAdapter(adapterCategories);
                 DividerItemDecoration itemDecor = new DividerItemDecoration(getContext(), VERTICAL);
                 categoriesRecyclerView.addItemDecoration(itemDecor);
             }
@@ -71,7 +85,23 @@ public class FilterFragment extends Fragment {
             }
         });
 
+        Call<GetSubscripedPartnersResponse> callPartners = Global.client.GetSubscripedPartners();
+        callPartners.enqueue(new Callback<GetSubscripedPartnersResponse>() {
+            @Override
+            public void onResponse(Call<GetSubscripedPartnersResponse> call, Response<GetSubscripedPartnersResponse> response) {
+                GetSubscripedPartnersResponse partners = response.body();
+                SideMenu activity = (SideMenu) getActivity();
+                adapterPartners = new SubscripedPartnersAdapter(partners.getSubscripedPartners(),activity);
+                subscripedPartnersRecyclerView.setAdapter(adapterPartners);
+                DividerItemDecoration itemDecor = new DividerItemDecoration(getContext(), VERTICAL);
+                subscripedPartnersRecyclerView.addItemDecoration(itemDecor);
+            }
 
+            @Override
+            public void onFailure(Call<GetSubscripedPartnersResponse> call, Throwable t) {
+
+            }
+        });
         return rootView;
     }
 }

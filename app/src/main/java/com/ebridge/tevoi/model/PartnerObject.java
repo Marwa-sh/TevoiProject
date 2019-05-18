@@ -2,11 +2,10 @@ package com.ebridge.tevoi.model;
 
 public class PartnerObject
 {
-    private int id;
+    private int Id;
     private String Name;
     private String Descripton;
     private int NumberOfTracks;
-
     private String Logo;
 
     public int getNumberOfTracks() {
@@ -26,7 +25,7 @@ public class PartnerObject
     }
 
     public int getId() {
-        return id;
+        return Id;
     }
 
     public String getName() {
@@ -38,7 +37,7 @@ public class PartnerObject
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.Id = id;
     }
 
     public void setName(String name) {
