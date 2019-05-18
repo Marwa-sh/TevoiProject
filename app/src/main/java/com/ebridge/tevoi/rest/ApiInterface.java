@@ -98,6 +98,9 @@ public interface ApiInterface {
     Call<IResponse> DeleteUserList(@Query("ListId") int ListId);
 
 
+    @POST"api/Services/"
+
+
 
 
 }
