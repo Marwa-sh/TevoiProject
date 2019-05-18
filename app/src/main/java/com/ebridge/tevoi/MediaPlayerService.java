@@ -1,5 +1,6 @@
 package com.ebridge.tevoi;
 
+import android.app.ProgressDialog;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -43,7 +44,6 @@ public class MediaPlayerService extends Service implements
     //Used to pause/resume MediaPlayer
     private int resumePosition;
     MediaPlayer mMediaPlayer = new MediaPlayer();
-
     //Uri myUri = Uri.parse("http://192.168.1.3/TevoiAPIEmulator/api/Services/GetStreamAudio?id=1");
 
     //String url="http://192.168.1.111/TevoiAPI/api/Files/SoundFile?fileName=1.mp3";
@@ -206,9 +206,10 @@ public class MediaPlayerService extends Service implements
     }
 
     @Override
-    public void onPrepared(MediaPlayer mp) {
-        playMedia();
+    public void onPrepared(MediaPlayer mp)
+    {
 
+        playMedia();
     }
 
     @Override
@@ -233,8 +234,8 @@ public class MediaPlayerService extends Service implements
 
         if (currentAudioUrl != null && currentAudioUrl != "")
             initMediaPlayer();
-
         return super.onStartCommand(intent, flags, startId);
+
     }
 
 

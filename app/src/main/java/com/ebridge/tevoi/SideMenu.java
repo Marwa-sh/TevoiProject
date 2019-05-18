@@ -2,6 +2,7 @@ package com.ebridge.tevoi;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -39,6 +40,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SideMenu extends FragmentActivity {
+
+    ProgressDialog mProgressDialog;
 
     // region user usage from quota
     int numberOfTotalSeconds;
