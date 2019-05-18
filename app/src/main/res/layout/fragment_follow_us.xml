@@ -15,10 +15,11 @@
         android:layout_marginLeft="30dp"
         />
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginTop="28dp"
+        android:layout_gravity="center_horizontal"
         >
 
 
@@ -27,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:layout_marginLeft="30dp"
+
             android:background="@drawable/crcile_53_"
             android:src="@drawable/facebook" />
 
@@ -67,17 +68,17 @@
 
     </LinearLayout>
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginTop="22dp"
+        android:layout_gravity="center_horizontal"
         >
 
 
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
             android:background="@drawable/crcile_53_"
             android:src="@drawable/whatsapp" />
 
@@ -111,17 +112,18 @@
 
     </LinearLayout>
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginTop="22dp"
+        android:layout_gravity="center_horizontal"
         >
 
 
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
+
             android:background="@drawable/crcile_53_"
             android:src="@drawable/vimeo" />
 
@@ -155,17 +157,18 @@
 
     </LinearLayout>
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginTop="22dp"
+        android:layout_gravity="center_horizontal"
         >
 
 
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
+
             android:background="@drawable/crcile_53_"
             android:src="@drawable/stumbleupon" />
 
@@ -199,19 +202,22 @@
 
     </LinearLayout>
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginTop="22dp"
+        android:layout_gravity="center_horizontal"
+
         >
 
 
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
             android:background="@drawable/crcile_53_"
-            android:src="@drawable/dribbble" />
+            android:src="@drawable/dribbble"
+
+            />
 
 
 
@@ -222,6 +228,7 @@
             android:background="@drawable/crcile_53_"
             android:src="@drawable/behance"
             android:onClick="shareClick"
+
             />
         <ImageButton
             android:layout_width="wrap_content"
@@ -230,6 +237,7 @@
             android:background="@drawable/crcile_53_"
             android:src="@drawable/dropbox"
             android:onClick="shareClick"
+
             />
 
         <ImageButton
@@ -239,6 +247,7 @@
             android:background="@drawable/crcile_53_"
             android:src="@drawable/github"
             android:onClick="shareClick"
+
             />
 
     </LinearLayout>

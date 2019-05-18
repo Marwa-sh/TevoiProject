@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="10dp"
         android:clickable="true"
+        android:layout_marginLeft="1dp"
         android:src="@mipmap/blue_circle" />
 
     <TextView

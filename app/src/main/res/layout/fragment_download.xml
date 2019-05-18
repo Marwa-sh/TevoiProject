@@ -47,17 +47,18 @@
             android:id="@+id/statusRow"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_column="0"
+                android:layout_weight="1"
+                android:text="   0"
                 android:textColor="@android:color/white"
-                android:textSize="20dp"
-                android:text="   0"/>
+                android:textSize="20dp" />
             <TextView
                 android:layout_height="wrap_content"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_weight="1"
                 android:layout_column="1"
                 android:textSize="18dp"
@@ -65,7 +66,7 @@
                 android:text="30 M"/>
             <TextView
                 android:layout_height="wrap_content"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_weight="1"
                 android:layout_column="2"
                 android:textSize="18dp"
@@ -73,7 +74,7 @@
                 android:text="  1 H"/>
             <TextView
                 android:layout_height="wrap_content"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_weight="1"
                 android:layout_column="3"
                 android:textSize="18dp"
@@ -81,7 +82,7 @@
                 android:text="  2 H"/>
             <TextView
                 android:layout_height="wrap_content"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_weight="1"
                 android:layout_column="4"
                 android:textSize="18dp"
@@ -89,7 +90,7 @@
                 android:text="   5 H"/>
             <TextView
                 android:layout_height="wrap_content"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_weight="1"
                 android:layout_column="4"
                 android:textSize="18dp"
@@ -97,7 +98,7 @@
                 android:text="     8 H"/>
             <TextView
                 android:layout_height="wrap_content"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_weight="1"
                 android:layout_column="4"
                 android:textSize="18dp"
@@ -117,11 +118,11 @@
             android:layout_width="22dp"
             android:layout_height="22dp"
             android:layout_marginLeft="24dp"
-            android:background="@drawable/rounded_button"
+            android:background="@null"
             android:scaleType="fitXY"
             android:src="@drawable/tick"
             android:layout_gravity="center_vertical"
-            android:rotation="180"
+
             />
 
         <TextView
@@ -136,7 +137,7 @@
         <ImageButton
             android:layout_width="22dp"
             android:layout_height="22dp"
-            android:background="@drawable/rounded_button"
+            android:background="@null"
             android:scaleType="fitXY"
             android:src="@drawable/cross"
             android:layout_gravity="center_vertical"

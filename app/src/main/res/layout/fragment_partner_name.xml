@@ -1,19 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".PartnerNameFragment">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/tevoiBluePrimary"
+        android:background="@color/White"
         android:orientation="vertical">
         <TextView
-            android:id="@+id/textMessage"
+            android:id="@+id/txt_parter_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="List Name"
+            android:textColor="@color/tevoiBluePrimary"
+            android:textSize="25dp"
+            />
+        <TextView
+            android:id="@+id/txt_partner_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/under_construction"
             />
     </LinearLayout>
-</FrameLayout>
+
+    <android.support.v7.widget.LinearLayoutCompat
+        android:id="@+id/tabsPartnerTracksLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="3">
+
+        <Button
+            android:id="@+id/btnNewListPartnerTracks"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/tevoiBluePrimary"
+            android:text="New"
+            android:textColor="@color/fontColor"
+            android:onClick="changeTabToNewPartnerTracks"/>
+
+        <Button
+            android:id="@+id/btnTopRatedListPartnerTracks"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/tevoiBlueSecondary"
+            android:text="Top Rated"
+            android:textColor="@color/fontColor"
+            android:onClick="changeTabToTopRatedPartnerTracks"/>
+
+        <Button
+            android:id="@+id/btnPopularListPartnerTracks"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/tevoiBlueSecondary"
+            android:text="Popular"
+            android:textColor="@color/fontColor"
+            android:onClick="changeToPopularPartnerTracks"/>
+    </android.support.v7.widget.LinearLayoutCompat>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/partner_tracks_recycler_View"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+    </android.support.v7.widget.RecyclerView>
+</LinearLayout>

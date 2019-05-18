@@ -6,11 +6,15 @@ import com.ebridge.tevoi.adapter.Track;
 import com.ebridge.tevoi.model.AddCommentResponse;
 import com.ebridge.tevoi.model.AddCommetRequest;
 import com.ebridge.tevoi.model.AddTrackToFavouriteResponse;
+import com.ebridge.tevoi.model.CategoryResponseList;
 import com.ebridge.tevoi.model.GeneralResponse;
+import com.ebridge.tevoi.model.GetPartnerTracksResponse;
+import com.ebridge.tevoi.model.GetSubscripedPartnersResponse;
 import com.ebridge.tevoi.model.GetTrackFavouriteResponse;
 import com.ebridge.tevoi.model.IResponse;
 import com.ebridge.tevoi.model.LoginRequest;
 import com.ebridge.tevoi.model.LoginResponse;
+import com.ebridge.tevoi.model.PartnerListResponse;
 import com.ebridge.tevoi.model.TokenRequest;
 import com.ebridge.tevoi.model.TokenResponse;
 import com.ebridge.tevoi.model.TrackCommentRequest;
@@ -76,14 +80,24 @@ public interface ApiInterface {
     @POST("api/Services/AddComment")
     Call<AddCommentResponse> AddComment(@Field("TrackId") int TrackId, @Field("CommentText") String CommentText);
 
+    @GET("api/Services/RemoveFromHistory")
+    Call<IResponse> RemoveFromHistory(@Query("ActivityId") int ActivityId);
+
+    @GET("api/Services/RemoveTrackFromFavourite")
+    Call<IResponse> RemoveTrackFromFavourite(@Query("ActivityId") int ActivityId);
+
+    @GET("api/Services/AddListenTrackActivity")
+    Call<IResponse> AddListenTrackActivity(@Query("TrackId") int TrackId);
+
+
     @GET("api/Services/AddTrackToFavourite")
-    Call<AddTrackToFavouriteResponse> AddTrackToFavourite(@Query("TrackId") int TrackId);
+    Call<IResponse> AddTrackToFavourite(@Query("TrackId") int TrackId);
 
     @POST("api/Services/GetTrackFavouritionState")
     Call<GetTrackFavouriteResponse> GetTrackFavouritionState(@Query("TrackId") int TrackId, @Query("UserId") int UserId);
 
-    @POST("api/Services/AddTrackToUserList")
-    Call<IResponse> AddTrackToUserList(@Query("TrackId") int TrackId);
+    @GET("api/Services/AddTrackToUserList")
+    Call<IResponse> AddTrackToUserList(@Query("TrackId") int TrackId, @Query("ListId") int ListId);
 
 
     @GET("api/Services/AddUserList")
@@ -98,6 +112,32 @@ public interface ApiInterface {
     Call<IResponse> DeleteUserList(@Query("ListId") int ListId);
 
 
+    @Headers({"Content-Type:application/json","Authorization:TevoiTokenSample"})
+    @GET("api/Services/GetPartnersList")
+    Call<PartnerListResponse> GetPartnersList(@Query("TypeOfOrder") int TypeOfOrder, @Query("index") int index, @Query("size") int size);
+
+    @GET("api/Services/AddFollowshipToPartner")
+    Call<IResponse> AddFollowshipToPartner(@Query("PartnerId") int PartnerId);
+
+    @GET("api/Services/UpdateFollowshipToPartner")
+    Call<IResponse> UpdateFollowshipToPartner(@Query("FollowshipId") int FollowshipId, @Query("IsFollow") boolean IsFollow);
+
+    @GET("api/Services/UpdateCategoryPreference")
+    Call<IResponse> UpdateCategoryPreference(@Query("CategoryId") int CategoryId, @Query("IsPrefered") boolean IsPrefered);
+
+
+    @GET("api/Services/GetCategoriesFilters")
+    Call<CategoryResponseList> GetCategoriesFilters();
+
+    @GET("api/Services/GetSubscripedPartners")
+    Call<GetSubscripedPartnersResponse> GetSubscripedPartners();
+
+
+    @GET("api/Services/AddUnitUsageForUser")
+    Call<IResponse> AddUnitUsageForUser(@Query("TrackId") int TrackId);
+
+    @GET("api/Services/GetPartnerTracks")
+    Call<GetPartnerTracksResponse> GetPartnerTracks(@Query("PartnerId") int PartnerId, @Query("index") int index, @Query("size") int size);
 
 
 

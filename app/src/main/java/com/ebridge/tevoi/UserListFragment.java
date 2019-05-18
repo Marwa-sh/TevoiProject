@@ -91,19 +91,20 @@ public class UserListFragment extends Fragment {
                                             call.enqueue(new Callback<IResponse>(){
                                                 public void onResponse(Call<IResponse> call, Response<IResponse> response) {
                                                     IResponse result = response.body();
-                                                    if(result.Number == 0)
+                                                    Toast.makeText(getContext(),result.getMessage(), Toast.LENGTH_LONG).show();
+                                                    /*if(result.Number == 0)
                                                     {
-                                                        Toast.makeText(getContext(),"List Added Successfully", Toast.LENGTH_LONG);
+
                                                     }
                                                     else
                                                     {
-                                                        Toast.makeText(getContext(),result.Message, Toast.LENGTH_LONG);
-                                                    }
+                                                        Toast.makeText(getContext(),result.Message, Toast.LENGTH_LONG).show();
+                                                    }*/
                                                     mProgressDialog.dismiss();
                                                 }
                                                 public void onFailure(Call<IResponse> call, Throwable t)
                                                 {
-                                                    Toast.makeText(getContext(),"something went wrong", Toast.LENGTH_LONG);
+                                                    Toast.makeText(getContext(),"something went wrong", Toast.LENGTH_LONG).show();
                                                     mProgressDialog.dismiss();
                                                 }
                                             });
@@ -136,9 +137,10 @@ public class UserListFragment extends Fragment {
         call.enqueue(new Callback<UserListResponse>(){
             public void onResponse(Call<UserListResponse> call, Response<UserListResponse> response) {
                 //generateDataList(response.body());
+                SideMenu activity = (SideMenu) getActivity();
                 UserListResponse userLists =response.body();
                 int x=userLists.getLstUserList().size();
-                adapter = new UserListAdapter(userLists.getLstUserList(), rootView.getContext());
+                adapter = new UserListAdapter(userLists.getLstUserList(), activity);
                 recyclerView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
 
@@ -151,5 +153,10 @@ public class UserListFragment extends Fragment {
         });
 
         return rootView;
+    }
+
+    public void notifyUserListAdapter()
+    {
+        adapter.notifyDataSetChanged();
     }
 }

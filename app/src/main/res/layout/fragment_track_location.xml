@@ -41,11 +41,10 @@
                 android:id="@+id/imgBtnOpenMapsApp"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:background="@drawable/rounded_button"
+                android:background="@null"
                 android:src="@drawable/tick"
                 android:scaleType="fitXY"
                 android:onClick="locationClick"
-                android:rotation="180"
                 android:layout_marginLeft="32.25dp"
 
                 />
@@ -61,7 +60,7 @@
                 android:id="@+id/imgBtnCloseLocationFragment"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:background="@drawable/rounded_button"
+                android:background="@null"
                 android:scaleType="fitXY"
                 android:src="@drawable/cross"
                 android:onClick="locationClick"

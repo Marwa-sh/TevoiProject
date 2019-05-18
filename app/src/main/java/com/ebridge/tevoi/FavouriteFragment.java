@@ -1,8 +1,6 @@
 
 package com.ebridge.tevoi;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,19 +8,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.ebridge.tevoi.Utils.Global;
-import com.ebridge.tevoi.adapter.Track;
 import com.ebridge.tevoi.adapter.TracksAdapter;
-import com.ebridge.tevoi.adapter.TracksSerializableAdapter;
 import com.ebridge.tevoi.model.TrackResponseList;
-import com.ebridge.tevoi.model.TrackSerializableObject;
 import com.ebridge.tevoi.rest.ApiClient;
 import com.ebridge.tevoi.rest.ApiInterface;
-
-import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -53,9 +45,10 @@ public class FavouriteFragment extends Fragment {
         call.enqueue(new Callback <TrackResponseList>(){
             public void onResponse(Call<TrackResponseList> call, Response<TrackResponseList> response) {
                 //generateDataList(response.body());
+                SideMenu activity = (SideMenu) getActivity();
                 TrackResponseList tracks=response.body();
                 int x=tracks.getTrack().size();
-                adapter = new TracksAdapter(tracks.getTrack(), rootView.getContext(), Global.FavouriteFragmentName);
+                adapter = new TracksAdapter(tracks.getTrack(), activity, Global.FavouriteFragmentName);
                 //recyclerView.setAdapter(adapter);
                 recyclerView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
@@ -74,13 +67,13 @@ public class FavouriteFragment extends Fragment {
     public void changeTabToNewFavourite(View view)
     {
         SideMenu activity = (SideMenu) getActivity();
-        activity.lisTracks.defaultTab = 0;
+        activity.lisTracksFragment.defaultTab = 0;
         String[] menuItems = getResources().getStringArray(R.array.rivers);
         // Updating the action bar title
         getActivity().getActionBar().setTitle(menuItems[0]);
 
         android.support.v4.app.FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.content_frame, activity.lisTracks);
+        ft.replace(R.id.content_frame, activity.lisTracksFragment);
         ft.commit();
 
     }
@@ -92,9 +85,9 @@ public class FavouriteFragment extends Fragment {
         // Updating the action bar title
         getActivity().getActionBar().setTitle(menuItems[0]);
 
-        activity.lisTracks.defaultTab = 1;
+        activity.lisTracksFragment.defaultTab = 1;
         android.support.v4.app.FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.content_frame, activity.lisTracks);
+        ft.replace(R.id.content_frame, activity.lisTracksFragment);
         ft.commit();
     }
 
@@ -105,9 +98,14 @@ public class FavouriteFragment extends Fragment {
         // Updating the action bar title
         getActivity().getActionBar().setTitle(menuItems[0]);
 
-        activity.lisTracks.defaultTab = 2;
+        activity.lisTracksFragment.defaultTab = 2;
         android.support.v4.app.FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.content_frame, activity.lisTracks);
+        ft.replace(R.id.content_frame, activity.lisTracksFragment);
         ft.commit();
+    }
+
+    public void notifyFavouriteListAdapter()
+    {
+        adapter.notifyDataSetChanged();
     }
 }

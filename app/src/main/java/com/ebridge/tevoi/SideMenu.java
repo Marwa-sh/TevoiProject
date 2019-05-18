@@ -1,6 +1,5 @@
 package com.ebridge.tevoi;
 
-import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.ComponentName;
@@ -13,27 +12,23 @@ import android.os.IBinder;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.DownloadListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.ebridge.tevoi.Utils.CommentFragment;
-import com.ebridge.tevoi.Utils.Global;
 import com.ebridge.tevoi.Utils.MyStorage;
-import com.ebridge.tevoi.adapter.CommentsAdapter;
-import com.ebridge.tevoi.adapter.SideMenuAdapter;
-import com.ebridge.tevoi.adapter.Track;
+import com.ebridge.tevoi.adapter.DrawerListAdapter;
+import com.ebridge.tevoi.adapter.DrawerListItemObject;
 import com.ebridge.tevoi.model.IResponse;
 import com.ebridge.tevoi.model.TrackSerializableObject;
 import com.ebridge.tevoi.rest.ApiClient;
 import com.ebridge.tevoi.rest.ApiInterface;
 
-import android.support.v4.app.Fragment;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -103,7 +98,8 @@ public class SideMenu extends FragmentActivity {
     // endregion
 
     // region side menu fragments objects
-    TracksList listTracksFargment = new TracksList();
+    TracksList lisTracksFragment = new TracksList();
+   // TracksList listTracksFargment = new TracksList();
     InterfaceLanguageFragment interfaceLanguageFragment = new InterfaceLanguageFragment();
     LoginFragment loginFragment = new LoginFragment();
     PartnersFragment partnersFragment = new PartnersFragment();
@@ -118,13 +114,13 @@ public class SideMenu extends FragmentActivity {
     FavouriteFragment favouriteFragment = new FavouriteFragment();
     MyListFragment myListFragment = new MyListFragment();
     UserListFragment userListsFragment = new UserListFragment();
-
+    FilterFragment filterFragment = new FilterFragment();
 
     public MediaPlayerFragment mediaPlayerFragment;
 
     // endregion
 
-    TracksList lisTracks = new TracksList();
+    //
     MenuItem searchBtn ;
 
     @Override
@@ -167,6 +163,16 @@ public class SideMenu extends FragmentActivity {
         };
         // Setting DrawerToggle on DrawerLayout
         mDrawerLayout.addDrawerListener(mDrawerToggle);
+
+        /*ArrayList<DrawerListItemObject> objs = new ArrayList<>();
+        for (int i =0 ; i< getResources().getStringArray(R.array.rivers).length; i++)
+        {
+            DrawerListItemObject temp = new DrawerListItemObject();
+            temp.setName(getResources().getStringArray(R.array.rivers)[i]);
+            objs.add(temp);
+        }
+        mDrawerList.setAdapter(new DrawerListAdapter(this, R.layout.drawer_list_item, objs));*/
+
         // Creating an ArrayAdapter to add items to the listview mDrawerList
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 getBaseContext(),
@@ -179,6 +185,9 @@ public class SideMenu extends FragmentActivity {
 
         // Enabling Home button
         getActionBar().setHomeButtonEnabled(true);
+        getActionBar().setTitle("Tevoi");
+        getActionBar().setSubtitle("subtitle");
+        //getActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.launcher_background));
 
         // Enabling Up navigation
         getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -268,7 +277,13 @@ public class SideMenu extends FragmentActivity {
                     }
                     case "List Tracks" :
                     {
-                        fragmentTransaction.replace(R.id.content_frame, listTracksFargment);
+                        fragmentTransaction.replace(R.id.content_frame, lisTracksFragment);
+                        fragmentTransaction.commit();
+                        break;
+                    }
+                    case "Filters" :
+                    {
+                        fragmentTransaction.replace(R.id.content_frame, filterFragment);
                         fragmentTransaction.commit();
                         break;
                     }
@@ -305,7 +320,7 @@ public class SideMenu extends FragmentActivity {
         android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         // Replace the contents of the container with the new fragment
         //TrackShare frag = new TrackShare();
-        ft.replace(R.id.content_frame, lisTracks);
+        ft.replace(R.id.content_frame, lisTracksFragment);
 
         // Committing the transaction
         ft.commit();
@@ -328,8 +343,8 @@ public class SideMenu extends FragmentActivity {
 
         if (id == R.id.action_search)
         {
-            SideMenu activity = (SideMenu)getBaseContext();
-            RelativeLayout layout = activity.findViewById(R.id.relativeLayoutSearch);
+            //SideMenu activity = (SideMenu)getBaseContext();
+            RelativeLayout layout = findViewById(R.id.relativeLayoutSearch);
             if(layout.getVisibility() == View.INVISIBLE)
                 layout.setVisibility(View.VISIBLE);
             else
@@ -360,13 +375,13 @@ public class SideMenu extends FragmentActivity {
 
     public void changeTabToNew(View view)
     {
-        lisTracks.changeTabToNew(view);
+        lisTracksFragment.changeTabToNew(view);
     }
     public void changeTabToTopRated(View view) {
-        lisTracks.changeTabToTopRated(view);
+        lisTracksFragment.changeTabToTopRated(view);
     }
     public void changeToPopular(View view) {
-        lisTracks.changeToPopular(view);
+        lisTracksFragment.changeToPopular(view);
     }
     // endregion
 
@@ -492,7 +507,7 @@ public class SideMenu extends FragmentActivity {
     public void AddTrackToList(int TrackId, SideMenu activity )
     {
         ApiInterface client = ApiClient.getClient().create(ApiInterface.class);
-        Call<IResponse> call = client.AddTrackToUserList(TrackId);
+        Call<IResponse> call = client.AddTrackToUserList(TrackId, 1);
         call.enqueue(new Callback<IResponse>(){
             public void onResponse(Call<IResponse> call, Response<IResponse> response) {
                 //generateDataList(response.body());
@@ -512,7 +527,23 @@ public class SideMenu extends FragmentActivity {
     
     //endregion
 
+    // region Parter fragment actions
+    public  void changeToAlphabetOrder(View view)
+    {
+        partnersFragment.activateTab(0);
+    }
+    public void changeTabToNewListPartners(View view) {
+        partnersFragment.activateTab(1);
+    }
 
+    public void changeTabToTopRatedPartners(View view) {
+        partnersFragment.activateTab(2);
+    }
+
+    public void changeToPopularPartners(View view) {
+        partnersFragment.activateTab(3);
+    }
+    // endregion
 
     public void playAudio(String media)
     {
@@ -535,4 +566,29 @@ public class SideMenu extends FragmentActivity {
             sendBroadcast(broadcastIntent);
         }
     }
+
+    // region add notify functins for adapters
+    public void notifyUserListAdapter()
+    {
+        userListsFragment.notifyUserListAdapter();
+    }
+    public void notifyHistoryListAdapter()
+    {
+        historyListFragment.notifyHistoryListAdapter();
+    }
+    public void notifyFavouriteListAdapter()
+    {
+        favouriteFragment.notifyFavouriteListAdapter();
+    }
+    public void notifyPlayNextListAdapter()
+    {
+        playingNowFragment.notifyPlayNextListAdapter();
+    }
+    public void notifyTarcksListAdapter()
+    {
+        lisTracksFragment.notifyTarcksListAdapter();
+    }
+    // endregion
+
+
 }

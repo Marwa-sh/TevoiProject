@@ -75,68 +75,74 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/hoverButtonsLayout"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:weightSum="4"
                 android:clickable="true"
                 android:focusable="true"
-                android:visibility="invisible">
+                android:visibility="invisible"
+                android:background="@color/tevoiBlueSecondary"
+                >
                 <Button
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@color/tevoiBlueSecondary"
-                    android:drawableTop="@drawable/outline_playlist_next_play_24"
+                    android:drawableTop="@mipmap/playnext"
                     android:text="Play next"
                     android:clickable="true"
                     android:id="@+id/btn_add_play_next"
                     android:textSize="@dimen/text_size"
                     android:textColor="@color/fontColor"
-                    android:gravity="center_horizontal"
-                    android:paddingTop="20dp"
+                    android:layout_gravity="center_vertical"
+                    android:textStyle="bold"
                     />
                 <Button
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:clickable="true"
                     android:textColor="@color/fontColor"
                     android:background="@color/tevoiBlueSecondary"
-                    android:drawableTop="@drawable/outline_playlist_add_white_64"
+                    android:drawableTop="@mipmap/add"
                     android:id="@+id/btn_add_to_list"
                     android:text="Add to List"
                     android:textSize="@dimen/text_size"
-                    android:gravity="center_horizontal"
-                    android:paddingTop="20dp"
-
+                    android:textStyle="bold"
+                    android:drawableTint="@color/fontColor"
+                    android:layout_gravity="center_vertical"
                     />
                 <Button
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:clickable="true"
                     android:id="@+id/btn_read_text"
-                    android:drawableTop="@drawable/outline_readtext_white_24"
+                    android:drawableTop="@mipmap/readtext"
                     android:background="@color/tevoiBlueSecondary"
                     android:textSize="@dimen/text_size"
                     android:textColor="@color/fontColor"
                     android:text="Read Text"
-                    android:gravity="center_horizontal"
-                    android:paddingTop="20dp"
+                    android:layout_gravity="center_vertical"
+                    android:textStyle="bold"
+                    android:drawableTint="@color/White"
+                    android:foregroundTint="@color/White"
+
                     />
                 <Button
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:id="@+id/imgBtnLike"
                     android:clickable="true"
                     android:background="@color/tevoiBlueSecondary"
-                    android:drawableTop="@drawable/outlined_heart_64"
+                    android:drawableTop="@mipmap/hart"
                     android:text="Like"
                     android:textColor="@color/fontColor"
                     android:textSize="@dimen/text_size"
-                    android:gravity="center_horizontal"
-                    android:paddingTop="20dp"
+                    android:textStyle="bold"
+                    android:layout_gravity="center_vertical"
+
                     />
             </LinearLayout>
 
@@ -151,7 +157,7 @@
         <ImageButton
             android:layout_width="30dp"
             android:layout_height="match_parent"
-            android:background="@color/fontColor"
+            android:background="@null"
             android:scaleType="fitCenter"
             android:src="@drawable/outline_reorder_rotated_24"
             android:clickable="true"

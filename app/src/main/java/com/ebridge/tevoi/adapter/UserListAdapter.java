@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.ebridge.tevoi.R;
 import com.ebridge.tevoi.SideMenu;
 import com.ebridge.tevoi.UserListFragment;
+import com.ebridge.tevoi.Utils.Global;
 import com.ebridge.tevoi.model.IResponse;
 import com.ebridge.tevoi.model.TrackObject;
 import com.ebridge.tevoi.model.TrackResponse;
@@ -36,14 +37,11 @@ import retrofit2.Response;
 public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserListViewHolder>
 {
     private List<UserListObject> userLists;
-    private Context context;
-    private ApiInterface client;
+    private SideMenu activity;
 
-    public UserListAdapter(List<UserListObject> userLists, Context context) {
+    public UserListAdapter(List<UserListObject> userLists, SideMenu activity) {
         this.userLists = userLists;
-        this.context = context;
-        client = ApiClient.getClient().create(ApiInterface.class);
-
+        this.activity = activity;
     }
     public UserListAdapter.UserListViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View row= LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.fragment_user_list_instance,viewGroup,false);
@@ -101,7 +99,6 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
                 {
                     int i = getAdapterPosition();
                     UserListObject selectedList =  userLists.get(i);
-                    SideMenu activity = (SideMenu) context;
                     // TODO: we need to add tracks related to this list to the current list played
 
                    /* FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
@@ -133,13 +130,25 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
                 }
             });
 
-            btnRemove.setOnClickListener(new View.OnClickListener() {
+            btnRemove.
+            setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int i = getAdapterPosition();
+                    userLists.remove(i);
+                    activity.notifyUserListAdapter();
+                    Toast.makeText(activity, "Remove list", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            tvUserListName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-                    Toast.makeText(context, "Remove list", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, "Remove list", Toast.LENGTH_SHORT).show();
                 }
             });
+
             btnRename.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -147,11 +156,11 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
                     final UserListObject objUserList = userLists.get(i);
 
                     // get prompts.xml view
-                    LayoutInflater li = LayoutInflater.from(context);
+                    LayoutInflater li = LayoutInflater.from(activity);
                     View promptsView = li.inflate(R.layout.layout_user_list_edittext, null);
 
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                            context);
+                            activity);
 
                     // set prompts.xml to alertdialog builder
                     alertDialogBuilder.setView(promptsView);
@@ -170,14 +179,14 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
                                             final String newListName = userInput.getText().toString();
                                             if (newListName.equals(""))
                                             {
-                                                Toast.makeText(context, "Name can;t be empty", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(activity, "Name can;t be empty", Toast.LENGTH_SHORT).show();
                                             }
                                             else
                                             {
                                                 //mProgressDialog.setMessage("Loading");
                                                 //mProgressDialog.show();
                                                 // edit user list
-                                                Call<IResponse> call = client.EditUserList(objUserList.getId(), newListName);
+                                                Call<IResponse> call = Global.client.EditUserList(objUserList.getId(), newListName);
                                                 call.enqueue(new Callback<IResponse>(){
                                                     public void onResponse(Call<IResponse> call, Response<IResponse> response) {
                                                         IResponse result = response.body();
@@ -185,17 +194,19 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
 
                                                         if(result.Number == 0)
                                                         {
-                                                            Toast.makeText(context,"List Edit Successfully", Toast.LENGTH_LONG);
+                                                            Toast.makeText(activity,"List Edit Successfully", Toast.LENGTH_LONG).show();
                                                         }
                                                         else
                                                         {
-                                                            Toast.makeText(context,result.Message, Toast.LENGTH_LONG);
+                                                            Toast.makeText(activity,result.Message, Toast.LENGTH_LONG).show();;
                                                         }
+                                                        hoverLayout.setVisibility(View.INVISIBLE);
+                                                        activity.notifyUserListAdapter();
                                                         //mProgressDialog.dismiss();
                                                     }
                                                     public void onFailure(Call<IResponse> call, Throwable t)
                                                     {
-                                                        Toast.makeText(context,"something went wrong", Toast.LENGTH_LONG);
+                                                        Toast.makeText(activity,"something went wrong", Toast.LENGTH_LONG).show();;
                                                         //mProgressDialog.dismiss();
                                                     }
                                                 });

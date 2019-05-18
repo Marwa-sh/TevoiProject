@@ -24,7 +24,7 @@
             android:title="Payments Summary" />
         <item
             android:id="@+id/charge_ewallet"
-            android:icon="@drawable/liancher_background"
+            android:icon="@drawable/launcher_background"
             android:title="Charge EWallet" />
     </group>
 

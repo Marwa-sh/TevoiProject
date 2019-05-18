@@ -19,10 +19,12 @@ import android.widget.Toast;
 import com.ebridge.tevoi.MediaPlayerActivity;
 import com.ebridge.tevoi.R;
 import com.ebridge.tevoi.SideMenu;
+import com.ebridge.tevoi.Utils.Global;
 import com.ebridge.tevoi.Utils.HelperFunctions;
 import com.ebridge.tevoi.model.AddCommentResponse;
 import com.ebridge.tevoi.model.AddCommetRequest;
 import com.ebridge.tevoi.model.AddTrackToFavouriteResponse;
+import com.ebridge.tevoi.model.IResponse;
 import com.ebridge.tevoi.model.TrackObject;
 import com.ebridge.tevoi.model.TrackResponse;
 import com.ebridge.tevoi.model.TrackSerializableObject;
@@ -155,31 +157,27 @@ public class TracksSerializableAdapter extends RecyclerView.Adapter<TracksSerial
                     //Like or dislike this track.
                     int i = getPosition();
                     TrackSerializableObject t = tracks.get(i);
-                    ApiInterface client = ApiClient.getClient().create(ApiInterface.class);
-                    Call<AddTrackToFavouriteResponse> call = client.AddTrackToFavourite(t.getId());
-                    call.enqueue(new Callback<AddTrackToFavouriteResponse>() {
-                        @Override
-                        public void onResponse(Call<AddTrackToFavouriteResponse> call, Response<AddTrackToFavouriteResponse> response) {
-                            AddTrackToFavouriteResponse res = response.body();
-                            if(res.getNumber()==0)
-                            {
-                                Log.d("Favourite :", "onResponse: track liked ");
-                                Toast.makeText(context,"Like",Toast.LENGTH_SHORT);
+                    if(!t.isFavourite()) {
+                        Call<IResponse> call = Global.client.AddTrackToFavourite(t.getId());
+                        call.enqueue(new Callback<IResponse>() {
+                            @Override
+                            public void onResponse(Call<IResponse> call, Response<IResponse> response) {
+                                IResponse res = response.body();
+                                if (res.getNumber() == 0) {
+                                    Log.d("Favourite :", "onResponse: track liked ");
+                                    Toast.makeText(context, "Like", Toast.LENGTH_SHORT);
+                                } else {
+                                    Log.d("Favourite Error", "onResponse: " + res.getMessage());
+                                    Toast.makeText(context, "Like", Toast.LENGTH_SHORT);
+                                }
                             }
-                            else
-                            {
-                                Log.d("Favourite Error", "onResponse: "+res.getMessage());
-                                Toast.makeText(context,"Like",Toast.LENGTH_SHORT);
+                            @Override
+                            public void onFailure(Call<IResponse> call, Throwable t) {
+
                             }
-                        }
+                        });
 
-                        @Override
-                        public void onFailure(Call<AddTrackToFavouriteResponse> call, Throwable t) {
-
-                        }
-                    });
-
-
+                    }
                 }
             });
 

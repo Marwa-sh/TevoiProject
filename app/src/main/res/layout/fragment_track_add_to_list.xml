@@ -33,10 +33,10 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_marginLeft="32dp"
-                android:background="@drawable/rounded_button"
+                android:background="@null"
                 android:src="@drawable/tick"
                 android:scaleType="fitXY"
-                android:rotation="180"
+
                 android:clickable="true"
                 android:onClick="addTrackToListClick"
 
@@ -55,7 +55,7 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_marginLeft="42dp"
-                android:background="@drawable/rounded_button"
+                android:background="@null"
                 android:scaleType="fitXY"
                 android:src="@drawable/cross"
 
