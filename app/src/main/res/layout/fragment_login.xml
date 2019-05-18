@@ -41,7 +41,9 @@
             android:layout_height="42dp"
             android:layout_marginLeft="31dp"
             android:layout_marginTop="7dp"
-            android:background="@drawable/rounded_edittext" />
+            android:background="@drawable/rounded_edittext"
+            android:id="@+id/et_User_Name"/>
+
 
         <TextView
             android:id="@+id/textView3"
@@ -58,7 +60,9 @@
             android:layout_marginLeft="31dp"
             android:layout_marginTop="7dp"
 
-            android:background="@drawable/rounded_edittext" />
+            android:background="@drawable/rounded_edittext"
+            android:id="@+id/et_Password"
+            />
 
 
 
@@ -87,6 +91,7 @@
                 android:textColor="@color/fontColor"
                 android:layout_marginLeft="7dp"
                 android:layout_gravity="center_vertical"
+                android:id="@+id/btn_Login"
                 />
 
             <ImageButton
@@ -97,6 +102,7 @@
                 android:src="@drawable/cross"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="83dp"
+                android:id="@+id/btn_Calcel_Login"
 
 
                 />
@@ -158,6 +164,7 @@
             android:layout_height="42dp"
             android:layout_marginTop="6dp"
             android:layout_marginLeft="31dp"
+            android:id="@+id/et_enter_email"
 
             android:background="@drawable/rounded_edittext" />
         <LinearLayout
@@ -184,6 +191,7 @@
                 android:textColor="@color/fontColor"
                 android:layout_marginLeft="7dp"
                 android:layout_gravity="center_vertical"
+                android:id="@+id/btn_Request_new_password"
                 />
 
         </LinearLayout>
