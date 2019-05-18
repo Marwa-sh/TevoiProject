@@ -95,7 +95,6 @@ public class HelperFunctions
             Toast.makeText(activity, R.string.play_now_list_isempty, Toast.LENGTH_SHORT).show();
         }
         else {
-
                 activity.isPlayingFromPlayNowList = true;
                 activity.indexCurrentTrackInPlayList ++;
                 if(activity.indexCurrentTrackInPlayList >= listSize)
@@ -103,14 +102,6 @@ public class HelperFunctions
 
                 if(activity.indexCurrentTrackInPlayList < listSize )
                 {
-                    //resetMediaPlayer(activity);
-                    // reset the media player
-                    //if(activity.serviceBound)
-                    //{ activity.player.resetMediaPlayer(); }
-                   // activity.serviceBound = false;
-                    //activity.isPaused =false; activity.isPlaying = false;
-                    //activity.serviceBound = false;
-
                     TrackSerializableObject t = activity.playNowListTracks.get(activity.indexCurrentTrackInPlayList);
                     activity.mediaPlayerFragment.currentTrack = CastTrackSerialize(t);
                     activity.mediaPlayerFragment.url = Global.BASE_AUDIO_URL + activity.playNowListTracks.get(activity.indexCurrentTrackInPlayList).getId();
@@ -122,8 +113,6 @@ public class HelperFunctions
                 {
                     Toast.makeText(activity, R.string.no_track_to_play, Toast.LENGTH_SHORT).show();
                 }
-
-
         }
     }
 
