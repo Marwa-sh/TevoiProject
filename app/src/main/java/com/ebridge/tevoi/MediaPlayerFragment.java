@@ -264,48 +264,7 @@ public class MediaPlayerFragment extends Fragment {
         {
             hasLocation = false;
         }
-/*
-        Call<ResponseBody> callUrlAudio = client.GetStreamAudio(currentTrackId);
-        callUrlAudio.enqueue(new Callback<ResponseBody>(){
-            @TargetApi(23)
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                //generateDataList(response.body());
-                ResponseBody reponse = response.body();
-                // access response code with response.code()
-                // access string of the response with response.body().string()
-                if (response != null && response.body() != null) {
-                    //response.body() will contains the downloaded file details
-                    try
-                    {
-                        BufferedSource source = response.body().source();
-                        source.request(Long.MAX_VALUE); // request the entire body.
-                        Buffer buffer = source.buffer();
-                        InputStream inputStream = new ByteArrayInputStream(buffer.readByteArray());
-                        MediaPlayer.createPlayer(inputStream,"");
 
-                        AudioDataSource ds = new AudioDataSource(inputStream);
-                        MediaPlayer mp = new MediaPlayer();
-
-                        mp.setDataSource(ds);
-                        mp.start();
-                       // activity.player.mMediaPlayer=mp;
-
-                    }
-                    catch (IOException exc)
-                    {
-
-                    }
-
-                    //String Body = response.body().string();
-                }
-
-            }
-            public void onFailure(Call<ResponseBody> call, Throwable t)
-            {
-
-            }
-        });
-*/
         /*
         // Begin the transaction
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
