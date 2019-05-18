@@ -200,6 +200,11 @@ public class SideMenu extends FragmentActivity {
                                     int position,
                                     long id) {
 
+                if(isPlaying)
+                {
+                    isPlaying = false; isPaused = true;
+                    player.mMediaPlayer.pause();
+                }
                 // Getting an array of rivers
                 String[] rivers = getResources().getStringArray(R.array.rivers);
 
