@@ -317,7 +317,7 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
                                         if(res.getNumber()==0)
                                         {
                                             tracks.remove(selectedTrack);
-                                            activity.notifyUserListAdapter();
+                                            activity.notifyUserListTracksAdapter();
                                             activity.mProgressDialog.dismiss();
                                             Toast.makeText(activity,res.getMessage(),Toast.LENGTH_LONG).show();
                                         }

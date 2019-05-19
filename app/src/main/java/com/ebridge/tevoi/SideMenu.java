@@ -643,6 +643,10 @@ public class SideMenu extends FragmentActivity {
     {
         lisTracksFragment.notifyTarcksListAdapter();
     }
+    public  void notifyUserListTracksAdapter()
+    {
+        userListTracksFragment.notifyUserListTracksAdapter();
+    }
     // endregion
 
 
