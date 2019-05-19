@@ -22,7 +22,12 @@ import android.widget.Toast;
 import com.ebridge.tevoi.Utils.Global;
 import com.ebridge.tevoi.Utils.HelperFunctions;
 import com.ebridge.tevoi.Utils.HelperFunctions;
+import com.ebridge.tevoi.model.IResponse;
 import com.ebridge.tevoi.model.TrackObject;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CarPlayFragment extends Fragment {
 
@@ -60,6 +65,8 @@ public class CarPlayFragment extends Fragment {
                 FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
                 // Replace the contents of the container with the new fragment
                 //TrackAddToList frag = new TrackAddToList();
+                activity.mediaPlayerFragment.PreviousFragment= Global.CarPlayFragment;
+
                 ft.replace(R.id.content_frame, activity.mediaPlayerFragment);
                 // or ft.add(R.id.your_placeholder, new FooFragment());
                 // Complete the changes added above
@@ -225,8 +232,67 @@ public class CarPlayFragment extends Fragment {
         getActivity().runOnUiThread(new Runnable()
         {
             @Override
-            public void run() {
-                SideMenu activity = (SideMenu)getActivity();
+            public void run()
+            {
+                final SideMenu activity = (SideMenu)getActivity();
+                if(activity != null)
+                {
+                    if(activity.serviceBound)
+                    {
+                        //Toast.makeText(activity, "maroosh", Toast.LENGTH_SHORT).show();
+                        if(!activity.player.mMediaPlayer.isPlaying())
+                        {
+                            activity.mProgressDialog.dismiss();
+                        }
+                        if(activity.isPlaying)
+                        {
+                            activity.numberOfListenedSeconds += 1;
+                            activity.numberOfCurrentSecondsInTrack +=1;
+                            //activity.numberOfTotalSeconds += activity.numberOfCurrentSeconds;
+                        }
+                        int n = activity.numberOfUnitsSendToServer * Global.ListenUnitInSeconds + Global.ListenUnitInSeconds;
+                        if(activity.numberOfListenedSeconds >= n)
+                        {
+                            int numberOfUnRegisteredSeconds = activity.numberOfListenedSeconds -activity.numberOfUnitsSendToServer * Global.ListenUnitInSeconds;
+                            final int numberOfConsumedUnits = numberOfUnRegisteredSeconds / Global.ListenUnitInSeconds;
+                            //Toast.makeText(activity, "numberOfUnRegisteredSeconds=" + numberOfUnRegisteredSeconds, Toast.LENGTH_SHORT).show();
+                            // send to server that we used 1 unit
+                            Call<IResponse> call = Global.client.AddUnitUsageForUser(activity.mediaPlayerFragment.currentTrack.getId(), numberOfConsumedUnits);
+                            call.enqueue(new Callback<IResponse>(){
+                                public void onResponse(Call<IResponse> call, Response<IResponse> response) {
+                                    //generateDataList(response.body());
+                                    IResponse partners=response.body();
+                                    activity.numberOfUnitsSendToServer +=numberOfConsumedUnits;
+
+                                    Toast.makeText(activity, ""+ numberOfConsumedUnits +" Unit consumed from your quota", Toast.LENGTH_SHORT).show();
+                                }
+                                public void onFailure(Call<IResponse> call, Throwable t)
+                                {
+
+                                }
+                            });
+                        }
+                       /* if(seekBar == null)
+                            seekBar = (SeekBar) rootView.findViewById(R.id.seekBar);
+*/
+                        seekBar.setMax(activity.player.mMediaPlayer.getDuration()/ 1000);
+                        String timeFormat2 = HelperFunctions.GetTimeFormat(activity.player.mMediaPlayer.getDuration()/ 1000);
+                        txtFullTime.setText(timeFormat2);
+                        //Toast.makeText(activity, timeFormat2, Toast.LENGTH_SHORT).show();
+                        //player = activity.player;
+                        int mCurrentPosition = activity.player.mMediaPlayer.getCurrentPosition() / 1000;
+
+                        seekBar.setProgress(mCurrentPosition);
+                        String timeFormat = HelperFunctions.GetTimeFormat(mCurrentPosition);
+                        txtCurentTime.setText(timeFormat);
+                    }
+                    else
+                    {
+
+                    }
+                    mHandler.postDelayed(this, 1000);
+                }
+                /*SideMenu activity = (SideMenu)getActivity();
                 if(activity != null)
                 {
                     if(activity.serviceBound)
@@ -239,7 +305,7 @@ public class CarPlayFragment extends Fragment {
                         txtCurentTime.setText(timeFormat);
                     }
                     mHandler.postDelayed(this, 1000);
-                }
+                }*/
             }
         });
 

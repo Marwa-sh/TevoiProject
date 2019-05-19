@@ -109,6 +109,8 @@ public class MediaPlayerFragment extends Fragment {
     boolean hasText;
     int numberOfListenedSeconds;
 
+    public String PreviousFragment = "";
+
     View rootView;
     private Handler mHandler = new Handler();
     //Make sure you update Seekbar on UI thread
@@ -131,6 +133,7 @@ public class MediaPlayerFragment extends Fragment {
         currentTime = (TextView) rootView.findViewById(R.id.currentTime);
         fullTime = (TextView) rootView.findViewById(R.id.fullTime);
         currentTime.setText(GetTimeFormat(0));
+
         getActivity().runOnUiThread(new Runnable()
         {
             @Override
@@ -141,7 +144,7 @@ public class MediaPlayerFragment extends Fragment {
                 {
                     if(activity.serviceBound)
                     {
-                        Toast.makeText(activity, "maroosh", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(activity, "maroosh", Toast.LENGTH_SHORT).show();
                         if(!activity.player.mMediaPlayer.isPlaying())
                         {
                             activity.mProgressDialog.dismiss();
@@ -180,7 +183,7 @@ public class MediaPlayerFragment extends Fragment {
                         seekBar.setMax(activity.player.mMediaPlayer.getDuration()/ 1000);
                         String timeFormat2 = GetTimeFormat(activity.player.mMediaPlayer.getDuration()/ 1000);
                         fullTime.setText(timeFormat2);
-                        Toast.makeText(activity, timeFormat2, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(activity, timeFormat2, Toast.LENGTH_SHORT).show();
                         //player = activity.player;
                         int mCurrentPosition = activity.player.mMediaPlayer.getCurrentPosition() / 1000;
 
@@ -198,6 +201,9 @@ public class MediaPlayerFragment extends Fragment {
         });
         if(activity.serviceBound)
         {
+            if(seekBar == null)
+                seekBar = (SeekBar) rootView.findViewById(R.id.seekBar);
+
             int duration = activity.player.mMediaPlayer.getDuration()/ 1000;
             seekBar.setMax(duration);
             String timeFormat = GetTimeFormat(activity.player.mMediaPlayer.getDuration());
@@ -235,7 +241,6 @@ public class MediaPlayerFragment extends Fragment {
 
         if(currentTrack != null)
         {
-
             hasLocation = currentTrack.isHasLocation();
             hasText = currentTrack.isHasText();
             trackName = (TextView) rootView.findViewById(R.id.textViewTrackName);
@@ -262,9 +267,12 @@ public class MediaPlayerFragment extends Fragment {
             //String ulrLogo = Uri.parse(currentTrack.getPartnerLogo());
             //partnerLogo.setImageURI(ulrLogo);
             url = Global.BASE_AUDIO_URL + currentTrack.getId();
-            activity.playAudio(url);
-            activity.isPlaying = true;
-            playButton.setImageResource(R.drawable.baseline_pause_24);
+            if(!PreviousFragment.equals(Global.CarPlayFragment))
+            {
+                activity.playAudio(url);
+                activity.isPlaying = true;
+                playButton.setImageResource(R.drawable.baseline_pause_24);
+            }
         }
         else
         {

@@ -13,7 +13,7 @@
         <item >Partners</item>
         <!--<item >Quick Tour</item>-->
         <item >Notifications</item>
-        <item >Download lismits</item>
+        <item >Download limits</item>
         <item >About Us</item>
         <item >Feedback and Contact</item>
         <item >Follow Us</item>
@@ -33,7 +33,7 @@
     <string name="add_To_list"> Add this track to list</string>
     <string name="quick_tour">Quick tour</string>
     <string name="under_construction">This page is under construction</string>
-    <string name="play_now_list_isempty">Play Now List Is Empty</string>
+    <string name="play_now_list_isempty">Play Next List Is Empty</string>
     <string name="track_in_media_player_now">Track already in media player now</string>
     <string name="no_track_to_play">No track to play</string>
     <string name="track_has_no_text">Track has no text</string>

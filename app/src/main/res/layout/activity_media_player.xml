@@ -74,7 +74,9 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
             tools:layout_editor_absoluteX="63dp"
-            tools:layout_editor_absoluteY="149dp" />
+            tools:layout_editor_absoluteY="149dp"
+
+            />
 
     <ImageButton
         android:id="@+id/imgBtnCar"
