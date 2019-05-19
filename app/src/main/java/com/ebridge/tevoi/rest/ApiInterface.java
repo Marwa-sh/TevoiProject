@@ -15,6 +15,8 @@ import com.ebridge.tevoi.model.IResponse;
 import com.ebridge.tevoi.model.LoginRequest;
 import com.ebridge.tevoi.model.LoginResponse;
 import com.ebridge.tevoi.model.PartnerListResponse;
+import com.ebridge.tevoi.model.RatingRequest;
+import com.ebridge.tevoi.model.RatingResponse;
 import com.ebridge.tevoi.model.TokenRequest;
 import com.ebridge.tevoi.model.TokenResponse;
 import com.ebridge.tevoi.model.TrackCommentRequest;
@@ -142,6 +144,12 @@ public interface ApiInterface {
 
     @POST("api/User/Login")
     Call<LoginResponse> Login(@Query("model") LoginRequest model);
+
+    @GET("api/User/GetTrackRating")
+    Call<RatingResponse> GetTrackRating(@Query("TrackId") int TrackId);
+
+    @POST("api/User/SetTrackRating")
+    Call<IResponse> SetTrackRating(@Query("ratingRequest") RatingRequest ratingRequest);
 
 
 }

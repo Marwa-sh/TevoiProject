@@ -28,7 +28,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ebridge.tevoi.Utils.CommentFragment;
+import com.ebridge.tevoi.Utils.Global;
 import com.ebridge.tevoi.adapter.TracksAdapter;
+import com.ebridge.tevoi.model.IResponse;
+import com.ebridge.tevoi.model.RatingRequest;
+import com.ebridge.tevoi.model.RatingResponse;
 import com.ebridge.tevoi.model.TrackObject;
 import com.ebridge.tevoi.model.TrackResponseList;
 import com.ebridge.tevoi.model.XmlFragementClickable;
@@ -52,6 +56,7 @@ public class MediaPlayerActivity extends FragmentActivity {
     String url= "http://h2817272.stratoserver.net/tevoi/Portals/0/Tevoi_Files/Audio/Track/3.mp3";//"http://192.168.1.105/TevoiAPI/api/Files/SoundFile?fileName=1.mp3";
     ImageButton playButton;
     private SeekBar seekBar;
+    RatingBar ratingBar;
 
     XmlFragementClickable someFragment;
     FragmentManager fm = getSupportFragmentManager();
@@ -74,6 +79,8 @@ public class MediaPlayerActivity extends FragmentActivity {
     boolean hasLocation;
     boolean hasText;
     int numberOfListenedSeconds;
+
+    boolean ratingEnabled=false;
 
     private Handler mHandler = new Handler();
     //Make sure you update Seekbar on UI thread
@@ -103,6 +110,44 @@ public class MediaPlayerActivity extends FragmentActivity {
         seekBar = (SeekBar) findViewById(R.id.seekBar);
         currentTime = (TextView) findViewById(R.id.currentTime);
         fullTime = (TextView) findViewById(R.id.fullTime);
+        ratingBar = findViewById(R.id.ratingBar);
+        Call<RatingResponse> callRating=Global.client.GetTrackRating(currentTrack.getId());
+        callRating.enqueue(new Callback<RatingResponse>() {
+            @Override
+            public void onResponse(Call<RatingResponse> call, Response<RatingResponse> response) {
+                RatingResponse res = response.body();
+                ratingBar.setRating((float)res.getRating());
+                ratingEnabled = true;
+            }
+
+            @Override
+            public void onFailure(Call<RatingResponse> call, Throwable t) {
+                ratingBar.setRating(0);
+                ratingEnabled = true;
+
+            }
+        });
+
+        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                if(!ratingEnabled)
+                    return;
+                Call<IResponse> call=Global.client.SetTrackRating(new RatingRequest(currentTrack.getId(),ratingBar.getNumStars()));
+                call.enqueue(new Callback<IResponse>() {
+                    @Override
+                    public void onResponse(Call<IResponse> call, Response<IResponse> response) {
+                        IResponse rating = response.body();
+
+                    }
+                    @Override
+                    public void onFailure(Call<IResponse> call, Throwable t) {
+                    }
+                });
+
+
+            }
+        });
 
         MediaPlayerActivity.this.runOnUiThread(new Runnable()
         {
