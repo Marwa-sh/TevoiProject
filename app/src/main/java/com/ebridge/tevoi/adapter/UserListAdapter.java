@@ -17,11 +17,14 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ebridge.tevoi.PartnerNameFragment;
 import com.ebridge.tevoi.R;
 import com.ebridge.tevoi.SideMenu;
 import com.ebridge.tevoi.UserListFragment;
+import com.ebridge.tevoi.UserListTracksFragment;
 import com.ebridge.tevoi.Utils.Global;
 import com.ebridge.tevoi.model.IResponse;
+import com.ebridge.tevoi.model.PartnerObject;
 import com.ebridge.tevoi.model.TrackObject;
 import com.ebridge.tevoi.model.TrackResponse;
 import com.ebridge.tevoi.model.UserListObject;
@@ -143,11 +146,11 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
                             activity.notifyUserListAdapter();
                             if(result.Number == 0)
                             {
-                                Toast.makeText(activity, "Remove list successfully", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(activity, result.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                             else
                             {
-                                Toast.makeText(activity,result.Message, Toast.LENGTH_LONG).show();;
+                                Toast.makeText(activity,result.getMessage(), Toast.LENGTH_LONG).show();;
                             }
                             hoverLayout.setVisibility(View.INVISIBLE);
                             //mProgressDialog.dismiss();
@@ -164,8 +167,14 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
             tvUserListName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-                    Toast.makeText(activity, "Remove list", Toast.LENGTH_SHORT).show();
+                    int i  = getPosition();
+                    UserListObject p = userLists.get(i);
+                    activity.userListTracksFragment = UserListTracksFragment.newInstance(0, p.getId());
+                    //UserListTracksFragment fragment = UserListTracksFragment.newInstance(0, p.getId());
+                    android.support.v4.app.FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.content_frame, activity.userListTracksFragment);
+                    fragmentTransaction.commit();
+                    //Toast.makeText(activity, "tvUserListName", Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -199,7 +208,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
                                             final String newListName = userInput.getText().toString();
                                             if (newListName.equals(""))
                                             {
-                                                Toast.makeText(activity, "Name can;t be empty", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(activity, "Name cann't be empty", Toast.LENGTH_SHORT).show();
                                             }
                                             else
                                             {
@@ -246,8 +255,6 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
                     alertDialog.show();
                 }
             });
-
-            //imgBtnPlay.setOnClickListener();
         }
     }
 

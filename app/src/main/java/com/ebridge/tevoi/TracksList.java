@@ -36,7 +36,6 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class TracksList extends Fragment implements AdapterView.OnItemSelectedListener {
-    ProgressDialog mProgressDialog;
     ArrayList<Track> mTracks = new ArrayList<>();
     TracksAdapter adapter ;
     RecyclerView[] recyclerViews= new RecyclerView[3];
@@ -52,7 +51,6 @@ public class TracksList extends Fragment implements AdapterView.OnItemSelectedLi
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_tracks_list, container, false);
-        mProgressDialog = new ProgressDialog(getActivity());
         activity  = (SideMenu)getActivity();
 
         Spinner spinner = (Spinner) rootView.findViewById(R.id.user_lists_spinner);
@@ -127,8 +125,8 @@ public class TracksList extends Fragment implements AdapterView.OnItemSelectedLi
 
     public void activateTab(int k)
     {
-        mProgressDialog.setMessage("Loading");
-        mProgressDialog.show();
+        activity.mProgressDialog.setMessage("Loading");
+        activity.mProgressDialog.show();
 
         final int kk= k;
 
@@ -154,12 +152,12 @@ public class TracksList extends Fragment implements AdapterView.OnItemSelectedLi
                 recyclerViews[kk].setAdapter(adapter);
                 adapter = new TracksAdapter(tracks.getTrack(),activity, Global.ListTracksFragmentName);
                 recyclerViews[kk].setAdapter(adapter);
-                mProgressDialog.dismiss();
+                activity.mProgressDialog.dismiss();
                 Toast.makeText(activity,"tracks:"+x, Toast.LENGTH_SHORT);
             }
             public void onFailure(Call<TrackResponseList> call, Throwable t)
             {
-                mProgressDialog.dismiss();
+                activity.mProgressDialog.dismiss();
                 Toast.makeText(activity,"something went wrong", Toast.LENGTH_SHORT);
             }
         });

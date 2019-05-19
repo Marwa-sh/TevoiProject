@@ -67,6 +67,8 @@ public class TrackText extends DialogFragment {
                 //TrackAddToList frag = new TrackAddToList();
                 if(PreviousFragmentName.equals(Global.ListTracksFragmentName))
                     ft.replace(R.id.content_frame, activity.lisTracksFragment);
+                else if(PreviousFragmentName.equals(Global.UserListTracksFragment))
+                    ft.replace(R.id.content_frame, activity.userListsFragment);
                 else
                     ft.replace(R.id.content_frame, activity.mediaPlayerFragment);
                 // or ft.add(R.id.your_placeholder, new FooFragment());

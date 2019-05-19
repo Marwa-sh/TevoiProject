@@ -20,12 +20,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.ebridge.tevoi.Utils.MyStorage;
 import com.ebridge.tevoi.adapter.DrawerListAdapter;
 import com.ebridge.tevoi.adapter.DrawerListItemObject;
 import com.ebridge.tevoi.model.IResponse;
+import com.ebridge.tevoi.model.TrackObject;
 import com.ebridge.tevoi.model.TrackSerializableObject;
 import com.ebridge.tevoi.rest.ApiClient;
 import com.ebridge.tevoi.rest.ApiInterface;
@@ -41,7 +43,7 @@ import retrofit2.Response;
 
 public class SideMenu extends FragmentActivity {
 
-    ProgressDialog mProgressDialog;
+    public ProgressDialog mProgressDialog;
 
     // region user usage from quota
     int numberOfTotalSeconds;
@@ -52,6 +54,14 @@ public class SideMenu extends FragmentActivity {
 
 
     //endregion
+
+    // region Play From User List
+    public ArrayList<TrackObject> tracksFromUserList = new ArrayList<TrackObject>();
+    public boolean isPlayingFromUserList = false;
+    public int indexCurrentTrackInUserList;
+
+    // endregion
+
 
     // region Play Now List Tracks
     public ArrayList<TrackSerializableObject> playNowListTracks = new ArrayList<TrackSerializableObject>();
@@ -67,6 +77,7 @@ public class SideMenu extends FragmentActivity {
     public boolean isPlaying = false;
     public boolean isPaused = false;
     public int numberOfListenedSeconds;
+    public int numberOfCurrentSecondsInTrack;
     public int trackIdPlayedNow;
 
     private Handler mHandler = new Handler();
@@ -119,6 +130,7 @@ public class SideMenu extends FragmentActivity {
     UserListFragment userListsFragment = new UserListFragment();
     FilterFragment filterFragment = new FilterFragment();
 
+    public UserListTracksFragment userListTracksFragment = new UserListTracksFragment();
     public MediaPlayerFragment mediaPlayerFragment;
 
     // endregion
@@ -132,6 +144,9 @@ public class SideMenu extends FragmentActivity {
         setContentView(R.layout.activity_side_menu);
         trackIdPlayedNow = -1;
         searchBtn = (MenuItem)findViewById(R.id.action_search);
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setCancelable(false);
+
 
         // region load shared prefereces
         playNowListTracks  = storageManager.loadPlayNowTracks(SideMenu.this);
@@ -202,7 +217,6 @@ public class SideMenu extends FragmentActivity {
                                     View view,
                                     int position,
                                     long id) {
-
                 if(isPlaying)
                 {
                     isPlaying = false; isPaused = true;
@@ -352,11 +366,20 @@ public class SideMenu extends FragmentActivity {
         if (id == R.id.action_search)
         {
             //SideMenu activity = (SideMenu)getBaseContext();
-            RelativeLayout layout = findViewById(R.id.relativeLayoutSearch);
-            if(layout.getVisibility() == View.INVISIBLE)
-                layout.setVisibility(View.VISIBLE);
-            else
-                layout.setVisibility(View.INVISIBLE);
+            LinearLayout layout = findViewById(R.id.linearLayoutSearch);
+            if(layout!=null)
+            {
+                if(layout.getVisibility() == View.INVISIBLE)
+                    layout.setVisibility(View.VISIBLE);
+                else
+                    layout.setVisibility(View.INVISIBLE);
+            }else
+            {
+                android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.content_frame, lisTracksFragment);
+                fragmentTransaction.commit();
+            }
+
             return true;
         }
         return super.onOptionsItemSelected(item);

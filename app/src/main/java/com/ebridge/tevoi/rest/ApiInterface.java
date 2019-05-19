@@ -7,10 +7,12 @@ import com.ebridge.tevoi.model.AddCommentResponse;
 import com.ebridge.tevoi.model.AddCommetRequest;
 import com.ebridge.tevoi.model.AddTrackToFavouriteResponse;
 import com.ebridge.tevoi.model.CategoryResponseList;
+import com.ebridge.tevoi.model.FeedbackRequest;
 import com.ebridge.tevoi.model.GeneralResponse;
 import com.ebridge.tevoi.model.GetPartnerTracksResponse;
 import com.ebridge.tevoi.model.GetSubscripedPartnersResponse;
 import com.ebridge.tevoi.model.GetTrackFavouriteResponse;
+import com.ebridge.tevoi.model.GetUserListTracksResponse;
 import com.ebridge.tevoi.model.IResponse;
 import com.ebridge.tevoi.model.LoginRequest;
 import com.ebridge.tevoi.model.LoginResponse;
@@ -134,10 +136,21 @@ public interface ApiInterface {
 
 
     @GET("api/Services/AddUnitUsageForUser")
-    Call<IResponse> AddUnitUsageForUser(@Query("TrackId") int TrackId);
+    Call<IResponse> AddUnitUsageForUser(@Query("TrackId") int TrackId,@Query("NumberOfUnits") int numberOfUnits);
 
     @GET("api/Services/GetPartnerTracks")
     Call<GetPartnerTracksResponse> GetPartnerTracks(@Query("PartnerId") int PartnerId, @Query("index") int index, @Query("size") int size);
 
+    @GET("api/Services/GetTracksForUserList")
+    Call<GetUserListTracksResponse> GetTracksForUserList(@Query("ListId") int ListId, @Query("index") int index, @Query("size") int size);
+
+
+    @GET("api/Services/DeleteTrackFromUserList")
+    Call<IResponse> DeleteTrackFromUserList(@Query("ListId") int ListId, @Query("TrackId") int TrackId);
+
+
+    @POST("api/Services/SendFeedback")
+    @FormUrlEncoded
+    Call<IResponse> SendFeedback(@Body FeedbackRequest request);
 
 }

@@ -224,7 +224,7 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
                     TrackObject selectedTrack = tracks.get(i);
                     if(selectedTrack.isHasText()) {
                         FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
-                        TrackText textFargment = TrackText.newInstance(selectedTrack.getId(), Global.ListTracksFragmentName);
+                        TrackText textFargment = TrackText.newInstance(selectedTrack.getId(), fragmentName);
                         ft.replace(R.id.content_frame, textFargment);
                         // or ft.add(R.id.your_placeholder, new FooFragment());
                         // Complete the changes added above
@@ -237,7 +237,8 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
                 }
             });
 
-            if(btnRemove != null) {
+            if(btnRemove != null)
+            {
                 btnRemove.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -303,12 +304,35 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
                             }
                             case Global.UserListTracksFragment:
                             {
-                                Toast.makeText(activity, "remove from user list", Toast.LENGTH_SHORT).show();
+                                activity.mProgressDialog.setMessage("Loading");
+                                activity.mProgressDialog.show();
+
+                                Call<IResponse> call = Global.client.DeleteTrackFromUserList(activity.userListTracksFragment.currenUsertListId, selectedTrack.getId());
+                                call.enqueue(new Callback<IResponse>() {
+                                    @Override
+                                    public void onResponse(Call<IResponse> call, Response<IResponse> response) {
+                                        IResponse res = response.body();
+                                        if(res.getNumber()==0)
+                                        {
+                                            tracks.remove(selectedTrack);
+                                            activity.notifyUserListAdapter();
+                                            activity.mProgressDialog.dismiss();
+                                            Toast.makeText(activity,res.getMessage(),Toast.LENGTH_LONG).show();
+                                        }
+                                        else
+                                        {
+                                            activity.mProgressDialog.dismiss();
+                                            Toast.makeText(activity,res.getMessage(),Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                    @Override
+                                    public void onFailure(Call<IResponse> call, Throwable t) {
+
+                                    }
+                                });
                                 break;
                             }
                         }
-                        //Show text fragment.
-                        //Toast.makeText(activity, "btnRemove ddddd", Toast.LENGTH_SHORT).show();
                     }
                 });
             }

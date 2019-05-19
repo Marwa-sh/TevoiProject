@@ -35,6 +35,7 @@ public class Global {
     public static final String MediaPlayerFragmentName = "MediaPlayer";
     public  static  final String PartnerNameFragment = "PartnerNameFragment";
     public static  final  String UserListTracksFragment = "UserListTracksFragment";
+    public  static  final  String UserListsFragment = "UserListsFragment";
 
     public final static ApiInterface client = ApiClient.getClient().create(ApiInterface.class);
 

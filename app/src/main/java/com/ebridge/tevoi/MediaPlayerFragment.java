@@ -120,23 +120,7 @@ public class MediaPlayerFragment extends Fragment {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.activity_media_player, container, false);
         final SideMenu activity = (SideMenu)getActivity();
-
-        /*Call<IResponse> callUrlAudio = Global.client.AddListenTrackActivity(currentTrackId);
-        callUrlAudio.enqueue(new Callback<IResponse>(){
-            public void onResponse(Call<IResponse> call, Response<IResponse> response) {
-                IResponse reponse = response.body();
-                // access response code with response.code()
-                // access string of the response with response.body().string()
-                if (response != null && response.body() != null) {
-                }
-            }
-            public void onFailure(Call<IResponse> call, Throwable t)
-            {
-            }
-        });*/
-
-        //serviceBound = activity.serviceBound;
-        //player = activity.player;
+        activity.numberOfCurrentSecondsInTrack =0;
 
         fm = getActivity().getSupportFragmentManager();
         scrollViewMediaPlayer = (ScrollView) rootView.findViewById(R.id.scrollViewMediaPlayer);
@@ -151,11 +135,13 @@ public class MediaPlayerFragment extends Fragment {
         {
             @Override
             public void run() {
+               // Toast.makeText(activity, "hi there", Toast.LENGTH_SHORT).show();
                 final SideMenu activity = (SideMenu)getActivity();
                 if(activity != null)
                 {
                     if(activity.serviceBound)
                     {
+                        Toast.makeText(activity, "maroosh", Toast.LENGTH_SHORT).show();
                         if(!activity.player.mMediaPlayer.isPlaying())
                         {
                             activity.mProgressDialog.dismiss();
@@ -163,20 +149,24 @@ public class MediaPlayerFragment extends Fragment {
                         if(activity.isPlaying)
                         {
                             activity.numberOfListenedSeconds += 1;
+                            activity.numberOfCurrentSecondsInTrack +=1;
                             //activity.numberOfTotalSeconds += activity.numberOfCurrentSeconds;
                         }
                         int n = activity.numberOfUnitsSendToServer * Global.ListenUnitInSeconds + Global.ListenUnitInSeconds;
                         if(activity.numberOfListenedSeconds >= n)
                         {
+                            int numberOfUnRegisteredSeconds = activity.numberOfListenedSeconds -activity.numberOfUnitsSendToServer * Global.ListenUnitInSeconds;
+                            final int numberOfConsumedUnits = numberOfUnRegisteredSeconds / Global.ListenUnitInSeconds;
+                            //Toast.makeText(activity, "numberOfUnRegisteredSeconds=" + numberOfUnRegisteredSeconds, Toast.LENGTH_SHORT).show();
                             // send to server that we used 1 unit
-                            Call<IResponse> call = Global.client.AddUnitUsageForUser(currentTrack.getId());
+                            Call<IResponse> call = Global.client.AddUnitUsageForUser(currentTrack.getId(), numberOfConsumedUnits);
                             call.enqueue(new Callback<IResponse>(){
                                 public void onResponse(Call<IResponse> call, Response<IResponse> response) {
                                     //generateDataList(response.body());
                                     IResponse partners=response.body();
-                                    activity.numberOfUnitsSendToServer +=1;
+                                    activity.numberOfUnitsSendToServer +=numberOfConsumedUnits;
 
-                                    Toast.makeText(activity, "One Unit consumed from your quota", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(activity, ""+ numberOfConsumedUnits +" Unit consumed from your quota", Toast.LENGTH_SHORT).show();
                                 }
                                 public void onFailure(Call<IResponse> call, Throwable t)
                                 {
@@ -184,16 +174,23 @@ public class MediaPlayerFragment extends Fragment {
                                 }
                             });
                         }
+                        if(seekBar == null)
+                            seekBar = (SeekBar) rootView.findViewById(R.id.seekBar);
+
                         seekBar.setMax(activity.player.mMediaPlayer.getDuration()/ 1000);
                         String timeFormat2 = GetTimeFormat(activity.player.mMediaPlayer.getDuration()/ 1000);
                         fullTime.setText(timeFormat2);
-
+                        Toast.makeText(activity, timeFormat2, Toast.LENGTH_SHORT).show();
                         //player = activity.player;
                         int mCurrentPosition = activity.player.mMediaPlayer.getCurrentPosition() / 1000;
 
                         seekBar.setProgress(mCurrentPosition);
                         String timeFormat = GetTimeFormat(mCurrentPosition);
                         currentTime.setText(timeFormat);
+                    }
+                    else
+                    {
+
                     }
                     mHandler.postDelayed(this, 1000);
                 }
@@ -223,19 +220,21 @@ public class MediaPlayerFragment extends Fragment {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 SideMenu activity = (SideMenu)getActivity();
                 if(activity.serviceBound && fromUser){
+                    // TODO  : check user quota
+
                     activity.player.mMediaPlayer.seekTo(progress * 1000);
                     String timeFormat = GetTimeFormat(progress);
                     currentTime.setText(timeFormat);
+                    int numberofMovedSeconds = progress - activity.numberOfCurrentSecondsInTrack;
+                    activity.numberOfCurrentSecondsInTrack = progress;
+                    activity.numberOfListenedSeconds += numberofMovedSeconds;
+                    //Toast.makeText(activity, "numberofMovedSeconds=" + numberofMovedSeconds, Toast.LENGTH_SHORT).show();
                 }
             }
         });
-        if(currentTrackId == 0)
-        {
 
-        }
         if(currentTrack != null)
         {
-            url = Global.BASE_AUDIO_URL + currentTrack.getId();
 
             hasLocation = currentTrack.isHasLocation();
             hasText = currentTrack.isHasText();
@@ -262,23 +261,16 @@ public class MediaPlayerFragment extends Fragment {
             partnerName.setText(currentTrack.getPartnerName());
             //String ulrLogo = Uri.parse(currentTrack.getPartnerLogo());
             //partnerLogo.setImageURI(ulrLogo);
-
+            url = Global.BASE_AUDIO_URL + currentTrack.getId();
+            activity.playAudio(url);
+            activity.isPlaying = true;
+            playButton.setImageResource(R.drawable.baseline_pause_24);
         }
         else
         {
-            hasLocation = false;
+            Toast.makeText(activity, "Track Info are invalid", Toast.LENGTH_SHORT).show();
+            hasLocation = false; hasText = false;
         }
-
-        /*
-        // Begin the transaction
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        // Replace the contents of the container with the new fragment
-
-        ft.replace(R.id.ActionsFragment, new com.ebridge.tevoi.TrackLocation());
-        // or ft.add(R.id.your_placeholder, new FooFragment());
-        // Complete the changes added above
-        ft.commit();
-        */
 
         return  rootView;
     }
