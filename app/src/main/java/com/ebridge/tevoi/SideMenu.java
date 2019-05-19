@@ -309,6 +309,12 @@ public class SideMenu extends FragmentActivity {
                         fragmentTransaction.commit();
                         break;
                     }
+                    case "Login/Register":
+                    {
+                        fragmentTransaction.replace(R.id.content_frame, loginFragment);
+                        fragmentTransaction.commit();
+                        break;
+                    }
                 };
                 // Creating a fragment object
                 SideMenuFragment rFragment = new SideMenuFragment();

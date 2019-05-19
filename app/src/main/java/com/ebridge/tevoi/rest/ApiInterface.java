@@ -153,4 +153,8 @@ public interface ApiInterface {
     @FormUrlEncoded
     Call<IResponse> SendFeedback(@Body FeedbackRequest request);
 
+    @POST("api/User/Login")
+    Call<LoginResponse> Login(@Query("model") LoginRequest model);
+
+
 }

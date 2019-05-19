@@ -59,6 +59,7 @@
             android:layout_height="42dp"
             android:layout_marginLeft="31dp"
             android:layout_marginTop="7dp"
+            android:inputType="textPassword"
 
             android:background="@drawable/rounded_edittext"
             android:id="@+id/et_Password"
@@ -81,7 +82,7 @@
                 android:scaleType="fitXY"
                 android:src="@drawable/tick"
                 android:layout_gravity="center_vertical"
-
+                android:id="@+id/btn_Login"
                 />
 
             <TextView
@@ -91,7 +92,7 @@
                 android:textColor="@color/fontColor"
                 android:layout_marginLeft="7dp"
                 android:layout_gravity="center_vertical"
-                android:id="@+id/btn_Login"
+
                 />
 
             <ImageButton
@@ -128,6 +129,7 @@
                 android:checked="true"
                 android:buttonTint="@color/fontColor"
                 android:layout_gravity="center_vertical"
+                android:id="@+id/checkBox_remember_me"
 
                 />
             <TextView
@@ -181,7 +183,7 @@
                 android:scaleType="fitXY"
                 android:src="@drawable/tick"
                 android:layout_gravity="center_vertical"
-                
+                android:id="@+id/btn_Request_new_password"
                 />
 
             <TextView
@@ -191,7 +193,7 @@
                 android:textColor="@color/fontColor"
                 android:layout_marginLeft="7dp"
                 android:layout_gravity="center_vertical"
-                android:id="@+id/btn_Request_new_password"
+
                 />
 
         </LinearLayout>
