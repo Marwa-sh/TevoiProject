@@ -109,6 +109,8 @@ public class MediaPlayerFragment extends Fragment {
     boolean hasText;
     int numberOfListenedSeconds;
 
+    boolean ratingEnabled=false;
+
     public String PreviousFragment = "";
 
     View rootView;
@@ -133,6 +135,7 @@ public class MediaPlayerFragment extends Fragment {
         currentTime = (TextView) rootView.findViewById(R.id.currentTime);
         fullTime = (TextView) rootView.findViewById(R.id.fullTime);
         currentTime.setText(GetTimeFormat(0));
+        ratingBar = rootView.findViewById(R.id.ratingBar);
 
         getActivity().runOnUiThread(new Runnable()
         {
@@ -210,6 +213,25 @@ public class MediaPlayerFragment extends Fragment {
             fullTime.setText(timeFormat);
         }
 
+        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                if(!ratingEnabled)
+                    return;
+                Call<IResponse> call=Global.client.SetTrackRating(currentTrack.getId(),ratingBar.getNumStars());
+                call.enqueue(new Callback<IResponse>() {
+                    @Override
+                    public void onResponse(Call<IResponse> call, Response<IResponse> response) {
+                        IResponse rating = response.body();
+
+                    }
+                    @Override
+                    public void onFailure(Call<IResponse> call, Throwable t) {
+                    }
+                });
+            }
+        });
+
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
@@ -257,8 +279,8 @@ public class MediaPlayerFragment extends Fragment {
             commentFragment = CommentFragment.newInstance(currentTrack.getId());
             textFargment = TrackText.newInstance(currentTrack.getId(), Global.MediaPlayerFragmentName);
 
-            ratingBar = (RatingBar) rootView.findViewById(R.id.ratingBar);
             ratingBar.setRating(currentTrack.getRate());
+            ratingEnabled = true;
 
             partnerName = (TextView) rootView.findViewById(R.id.tv_partner_name);
             partnerLogo = (ImageView) rootView.findViewById(R.id.img_partner_logo);

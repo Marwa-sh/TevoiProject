@@ -128,26 +128,6 @@ public class MediaPlayerActivity extends FragmentActivity {
             }
         });
 
-        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                if(!ratingEnabled)
-                    return;
-                Call<IResponse> call=Global.client.SetTrackRating(new RatingRequest(currentTrack.getId(),ratingBar.getNumStars()));
-                call.enqueue(new Callback<IResponse>() {
-                    @Override
-                    public void onResponse(Call<IResponse> call, Response<IResponse> response) {
-                        IResponse rating = response.body();
-
-                    }
-                    @Override
-                    public void onFailure(Call<IResponse> call, Throwable t) {
-                    }
-                });
-
-
-            }
-        });
 
         MediaPlayerActivity.this.runOnUiThread(new Runnable()
         {
