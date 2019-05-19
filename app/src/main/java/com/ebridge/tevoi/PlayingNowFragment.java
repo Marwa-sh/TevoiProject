@@ -35,7 +35,7 @@ public class PlayingNowFragment extends Fragment {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
 
-        adapter = new TracksSerializableAdapter(lstTracks, rootView.getContext());
+        adapter = new TracksSerializableAdapter(lstTracks, activity);
         //recyclerView.setAdapter(adapter);
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();

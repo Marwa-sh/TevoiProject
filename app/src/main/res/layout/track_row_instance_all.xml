@@ -136,7 +136,22 @@
                     android:textStyle="bold"
 
                     />
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:id="@+id/btn_remove"
+                    android:drawableTop="@mipmap/removefromlist"
+                    android:background="@color/tevoiBlueSecondary"
+                    android:textSize="11dp"
+                    android:textColor="@color/fontColor"
+                    android:text="Remove"
+                    android:layout_gravity="center"
+                    android:textStyle="bold"
 
+
+                    />
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -153,22 +168,7 @@
                     android:textStyle="bold"
 
                     />
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:clickable="true"
-                    android:id="@+id/btn_remove"
-                    android:drawableTop="@mipmap/remove"
-                    android:background="@color/tevoiBlueSecondary"
-                    android:textSize="11dp"
-                    android:textColor="@color/fontColor"
-                    android:text="Remove"
-                    android:layout_gravity="center"
-                    android:textStyle="bold"
 
-
-                    />
             </LinearLayout>
 
         </FrameLayout>

@@ -25,6 +25,7 @@ import com.ebridge.tevoi.R;
 import com.ebridge.tevoi.SideMenu;
 import com.ebridge.tevoi.TrackText;
 import com.ebridge.tevoi.Utils.Global;
+import com.ebridge.tevoi.Utils.MyStorage;
 import com.ebridge.tevoi.model.AddCommentResponse;
 import com.ebridge.tevoi.model.AddCommetRequest;
 import com.ebridge.tevoi.model.AddTrackToFavouriteResponse;
@@ -177,13 +178,13 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
                     int i = getAdapterPosition();
                     TrackObject selectedTrack =  tracks.get(i);
                     // if we are playing new track
-                    if(activity.player != null && i != activity.trackIdPlayedNow)
+                    /*if(activity.player != null && i != activity.trackIdPlayedNow)
                     {
                         // reset the media player
                         activity.player.resetMediaPlayer();
                         activity.isPaused =false; activity.isPlaying = false;
                         activity.serviceBound = false;
-                    }
+                    }*/
                     FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
                     // Replace the contents of the container with the new fragment
                     //TrackAddToList frag = new TrackAddToList();
@@ -224,7 +225,7 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
                     TrackObject selectedTrack = tracks.get(i);
                     if(selectedTrack.isHasText()) {
                         FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
-                        TrackText textFargment = TrackText.newInstance(selectedTrack.getId(), Global.ListTracksFragmentName);
+                        TrackText textFargment = TrackText.newInstance(selectedTrack.getId(), fragmentName);
                         ft.replace(R.id.content_frame, textFargment);
                         // or ft.add(R.id.your_placeholder, new FooFragment());
                         // Complete the changes added above
@@ -237,13 +238,15 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
                 }
             });
 
-            if(btnRemove != null) {
+            if(btnRemove != null)
+            {
                 btnRemove.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        int i = getPosition();
+                        int i = getAdapterPosition();
                         final TrackObject selectedTrack = tracks.get(i);
-                        switch (fragmentName) {
+                        switch (fragmentName)
+                        {
                             case Global.HistoryFragmentName:
                                 {
                                 Toast.makeText(activity, "HistoryFragmentName", Toast.LENGTH_SHORT).show();
@@ -298,17 +301,40 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
                             }
                             case Global.PlayNowFragmentName:
                                 {
-                                Toast.makeText(activity, "PlayNowFragmentName", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(activity, "PlayNowFragmentName remove", Toast.LENGTH_SHORT).show();
                                 break;
                             }
                             case Global.UserListTracksFragment:
                             {
-                                Toast.makeText(activity, "remove from user list", Toast.LENGTH_SHORT).show();
+                                activity.mProgressDialog.setMessage("Loading");
+                                activity.mProgressDialog.show();
+
+                                Call<IResponse> call = Global.client.DeleteTrackFromUserList(activity.userListTracksFragment.currenUsertListId, selectedTrack.getId());
+                                call.enqueue(new Callback<IResponse>() {
+                                    @Override
+                                    public void onResponse(Call<IResponse> call, Response<IResponse> response) {
+                                        IResponse res = response.body();
+                                        if(res.getNumber()==0)
+                                        {
+                                            tracks.remove(selectedTrack);
+                                            activity.notifyUserListAdapter();
+                                            activity.mProgressDialog.dismiss();
+                                            Toast.makeText(activity,res.getMessage(),Toast.LENGTH_LONG).show();
+                                        }
+                                        else
+                                        {
+                                            activity.mProgressDialog.dismiss();
+                                            Toast.makeText(activity,res.getMessage(),Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                    @Override
+                                    public void onFailure(Call<IResponse> call, Throwable t) {
+
+                                    }
+                                });
                                 break;
                             }
                         }
-                        //Show text fragment.
-                        //Toast.makeText(activity, "btnRemove ddddd", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -382,9 +408,8 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
             btnAddToList.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                     int i = getPosition();
-                   final TrackObject trackSelected =  tracks.get(i);
+                    final TrackObject trackSelected =  tracks.get(i);
 
                     Call<UserListResponse> call = Global.client.getUserLists(0,0);
                     call.enqueue(new Callback<UserListResponse>(){
@@ -424,18 +449,13 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
                                                         {
                                                             IResponse result = response.body();
                                                             Toast.makeText(activity, result.getMessage(), Toast.LENGTH_SHORT).show();
-                                                            /*if(result.Number != 0)
-                                                            {
 
-                                                            }*/
                                                         }
                                                         public void onFailure(Call<IResponse> call, Throwable t)
                                                         {
                                                             Toast.makeText(activity, "You have to lists", Toast.LENGTH_LONG).show();
                                                         }
                                                     });
-
-
                                                 }
                                             })
                                     .setNegativeButton("Cancel",
@@ -456,7 +476,7 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
                             Toast.makeText(activity, "You have to lists", Toast.LENGTH_LONG).show();
                         }
                     });
-                    // here we need to add track to play next list
+                  /*  // here we need to add track to play next list
                     int Id = activity.mediaPlayerFragment.currentTrack.getId();
                     String Name = activity.mediaPlayerFragment.currentTrack.getName();
                     TrackSerializableObject track = new TrackSerializableObject();
@@ -467,7 +487,7 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
                     track.setCategories("Categories");
                     track.setRate(2);
 
-                    Toast.makeText(activity, "Hi add to list", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, "Hi add to list", Toast.LENGTH_SHORT).show();*/
 
                 }
             });

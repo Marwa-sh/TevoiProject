@@ -36,19 +36,17 @@ import retrofit2.Response;
 public class UserListFragment extends Fragment {
     UserListAdapter adapter ;
     RecyclerView recyclerView;
+    SideMenu activity;
 
     ImageButton imgBtnAddUserList;
-    ProgressDialog mProgressDialog;
 
-
-    ApiInterface client;
     View rootView;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_user_list, container, false);
-        mProgressDialog = new ProgressDialog(getActivity());
+        activity = (SideMenu)getActivity();
 
         imgBtnAddUserList = rootView.findViewById(R.id.imgBtnAddUserList);
         imgBtnAddUserList.setOnClickListener(new View.OnClickListener()
@@ -84,30 +82,26 @@ public class UserListFragment extends Fragment {
                                         }
                                         else
                                         {
-                                            mProgressDialog.setMessage("Loading");
-                                            mProgressDialog.show();
+                                            activity.mProgressDialog.setMessage("Loading");
+                                            activity.mProgressDialog.show();
                                             // add user list
-                                            Call<IResponse> call = client.AddUserList(listName);
+                                            Call<IResponse> call = Global.client.AddUserList(listName);
                                             call.enqueue(new Callback<IResponse>(){
                                                 public void onResponse(Call<IResponse> call, Response<IResponse> response) {
                                                     IResponse result = response.body();
                                                     Toast.makeText(getContext(),result.getMessage(), Toast.LENGTH_LONG).show();
-                                                    /*if(result.Number == 0)
-                                                    {
-
-                                                    }
-                                                    else
-                                                    {
-                                                        Toast.makeText(getContext(),result.Message, Toast.LENGTH_LONG).show();
-                                                    }*/
-                                                    mProgressDialog.dismiss();
+                                                    activity.mProgressDialog.dismiss();
+                                                    GetUserLists();
                                                 }
                                                 public void onFailure(Call<IResponse> call, Throwable t)
                                                 {
                                                     Toast.makeText(getContext(),"something went wrong", Toast.LENGTH_LONG).show();
-                                                    mProgressDialog.dismiss();
+                                                    activity.mProgressDialog.dismiss();
                                                 }
                                             });
+
+
+
                                         }
                                     }
                                 })
@@ -125,17 +119,15 @@ public class UserListFragment extends Fragment {
             }
         });
 
-        client = ApiClient.getClient().create(ApiInterface.class);
-
         recyclerView = (RecyclerView) rootView.findViewById(R.id.user_list_recycler_View);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
 
-        mProgressDialog.setMessage("Loading");
-        mProgressDialog.show();
+        activity.mProgressDialog.setMessage("Loading");
+        activity.mProgressDialog.show();
 
-        Call<UserListResponse> call = client.getUserLists(0, 10);
+        Call<UserListResponse> call = Global.client.getUserLists(0, 10);
         call.enqueue(new Callback<UserListResponse>(){
             public void onResponse(Call<UserListResponse> call, Response<UserListResponse> response) {
                 //generateDataList(response.body());
@@ -145,17 +137,42 @@ public class UserListFragment extends Fragment {
                 adapter = new UserListAdapter(userLists.getLstUserList(), activity);
                 recyclerView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
-                mProgressDialog.dismiss();
+                activity.mProgressDialog.dismiss();
                 Toast.makeText(getContext(),"tracks:"+x, Toast.LENGTH_SHORT);
             }
             public void onFailure(Call<UserListResponse> call, Throwable t)
             {
-                mProgressDialog.dismiss();
+                activity.mProgressDialog.dismiss();
                 Toast.makeText(getContext(),"something went wrong", Toast.LENGTH_SHORT);
             }
         });
 
         return rootView;
+    }
+
+    public  void GetUserLists()
+    {
+        activity.mProgressDialog.setMessage("Loading");
+        activity.mProgressDialog.show();
+
+        Call<UserListResponse> call = Global.client.getUserLists(0, 10);
+        call.enqueue(new Callback<UserListResponse>(){
+            public void onResponse(Call<UserListResponse> call, Response<UserListResponse> response) {
+                //generateDataList(response.body());
+                UserListResponse userLists =response.body();
+                int x=userLists.getLstUserList().size();
+                adapter = new UserListAdapter(userLists.getLstUserList(), activity);
+                recyclerView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+                activity.mProgressDialog.dismiss();
+            }
+            public void onFailure(Call<UserListResponse> call, Throwable t)
+            {
+                activity.mProgressDialog.dismiss();
+                Toast.makeText(getContext(),"something went wrong", Toast.LENGTH_SHORT);
+            }
+        });
+
     }
 
     public void notifyUserListAdapter()

@@ -45,6 +45,10 @@ public class TrackSerializableObject implements Serializable {
     @SerializedName("IsFavourite")
     private boolean IsFavourite;
 
+    @Expose
+    @SerializedName("ActivityId")
+    private int ActivityId;
+
 
     public void setFavourite(boolean favourite) {
         IsFavourite = favourite;
@@ -148,5 +152,13 @@ public class TrackSerializableObject implements Serializable {
 
     public String getPartnerLogo() {
         return PartnerLogo;
+    }
+
+    public int getActivityId() {
+        return ActivityId;
+    }
+
+    public void setActivityId(int activityId) {
+        ActivityId = activityId;
     }
 }

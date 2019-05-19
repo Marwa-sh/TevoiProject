@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.ebridge.tevoi.Utils.Global;
 import com.ebridge.tevoi.adapter.Track;
 import com.ebridge.tevoi.adapter.TracksAdapter;
+import com.ebridge.tevoi.model.GetUserListTracksResponse;
 import com.ebridge.tevoi.model.TrackResponseList;
 
 import java.util.ArrayList;
@@ -27,22 +28,42 @@ import retrofit2.Response;
 
 public class UserListTracksFragment extends Fragment
 {
-    ProgressDialog mProgressDialog;
     ArrayList<Track> mTracks = new ArrayList<>();
     TracksAdapter adapter ;
     RecyclerView[] recyclerViews= new RecyclerView[3];
     int active_tab=0;
     Button[] tabs =  new Button[3];
     public int defaultTab;
+    public  int currenUsertListId;
+
     SideMenu activity;
 
     View rootView;
+
+    public static UserListTracksFragment newInstance(int defaultTab, int listId) {
+        UserListTracksFragment f = new UserListTracksFragment();
+        // Supply num input as an argument.
+        Bundle args = new Bundle();
+        args.putInt("DefaultTab", defaultTab);
+        args.putInt("CurrenUsertListId", listId);
+        f.setArguments(args);
+
+        return f;
+    }
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if(getArguments() != null) {
+            defaultTab = getArguments().getInt("DefaultTab");
+            currenUsertListId = getArguments().getInt("CurrenUsertListId");
+        }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_user_list_track, container, false);
-        mProgressDialog = new ProgressDialog(getActivity());
         activity  = (SideMenu)getActivity();
 
         tabs[0] = rootView.findViewById(R.id.btnNewUserListTracks);
@@ -71,13 +92,6 @@ public class UserListTracksFragment extends Fragment
         return  rootView;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if(getArguments() != null)
-            defaultTab = getArguments().getInt("DefaultTab");
-    }
-
     public void changeTabToNewUserListTracks(View view) {
         activateTab(0);
     }
@@ -92,8 +106,8 @@ public class UserListTracksFragment extends Fragment
 
     public void activateTab(int k)
     {
-        mProgressDialog.setMessage("Loading");
-        mProgressDialog.show();
+        activity.mProgressDialog.setMessage("Loading");
+        activity.mProgressDialog.show();
 
         final int kk= k;
 
@@ -110,22 +124,22 @@ public class UserListTracksFragment extends Fragment
 
         tabs[k].setBackgroundColor(ContextCompat.getColor(activity,R.color.tevoiBluePrimary));
         //tabs[k].refreshDrawableState();
-        Call<TrackResponseList> call = Global.client.getListMainTrack(k, 0, 10);
-        call.enqueue(new Callback<TrackResponseList>(){
-            public void onResponse(Call<TrackResponseList> call, Response<TrackResponseList> response) {
+        Call<GetUserListTracksResponse> call = Global.client.GetTracksForUserList(currenUsertListId, 0, 10);
+        call.enqueue(new Callback<GetUserListTracksResponse>(){
+            public void onResponse(Call<GetUserListTracksResponse> call, Response<GetUserListTracksResponse> response) {
                 //generateDataList(response.body());
-                TrackResponseList tracks=response.body();
-                int x=tracks.getTrack().size();
+                GetUserListTracksResponse tracks=response.body();
+                int x=tracks.getLstTrack().size();
                 recyclerViews[kk].setAdapter(adapter);
-                adapter = new TracksAdapter(tracks.getTrack(),activity, Global.ListTracksFragmentName);
+                adapter = new TracksAdapter(tracks.getLstTrack(),activity, Global.UserListTracksFragment);
                 recyclerViews[kk].setAdapter(adapter);
-                mProgressDialog.dismiss();
+                activity.mProgressDialog.dismiss();
                 //Toast.makeText(activity,"tracks:"+x, Toast.LENGTH_SHORT);
             }
-            public void onFailure(Call<TrackResponseList> call, Throwable t)
+            public void onFailure(Call<GetUserListTracksResponse> call, Throwable t)
             {
-                mProgressDialog.dismiss();
-                Toast.makeText(activity,"something went wrong", Toast.LENGTH_SHORT);
+                activity.mProgressDialog.dismiss();
+                Toast.makeText(activity,"something went wrong", Toast.LENGTH_SHORT).show();
             }
         });
 

@@ -105,9 +105,18 @@ public class MyStorage {
     }
 
     public void removeTrack(Context context, TrackSerializableObject myModel) {
-        ArrayList playNowTracks = loadPlayNowTracks(context);
-        if (playNowTracks != null) {
-            playNowTracks.remove(myModel);
+        ArrayList<TrackSerializableObject> playNowTracks = loadPlayNowTracks(context);
+        if (playNowTracks != null)
+        {
+            for ( int i =0; i< playNowTracks.size(); i++)
+            {
+                if(playNowTracks.get(i).getId() == myModel.getId())
+                {
+                    playNowTracks.remove(i);
+                    break;
+                }
+            }
+            //playNowTracks.remove(myModel);
             storePlayNowTracks(context, playNowTracks);
         }
     }

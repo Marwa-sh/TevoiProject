@@ -119,7 +119,7 @@
                     android:layout_weight="1"
                     android:clickable="true"
                     android:id="@+id/btn_remove"
-                    android:drawableTop="@mipmap/rename"
+                    android:drawableTop="@mipmap/removefromlist"
                     android:background="@color/tevoiBlueSecondary"
                     android:textSize="@dimen/text_size"
                     android:textColor="@color/fontColor"
