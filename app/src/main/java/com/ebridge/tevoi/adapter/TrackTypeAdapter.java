@@ -14,7 +14,7 @@ import com.ebridge.tevoi.model.TrackTypeObject;
 
 public class TrackTypeAdapter extends RecyclerView.Adapter<TrackTypeAdapter.TrackTypeViewHolder>
 {
-    public TrackTypeObject[] trackTypeObjects = new TrackTypeObject[3];
+    public TrackTypeObject[] trackTypeObjects;
     private Context context;
 
     public TrackTypeAdapter(TrackTypeObject[] trackTypeObjects, Context context) {
@@ -29,6 +29,10 @@ public class TrackTypeAdapter extends RecyclerView.Adapter<TrackTypeAdapter.Trac
     public TrackTypeAdapter(Context context){
         this.context=context;
         this.trackTypeObjects= new TrackTypeObject[3];
+        trackTypeObjects[0]=new TrackTypeObject();
+        trackTypeObjects[1]=new TrackTypeObject();
+        trackTypeObjects[2]=new TrackTypeObject();
+
         trackTypeObjects[0].setName("Don't Show Heard Tracks");
         trackTypeObjects[0].setTrackTypeFilter(false);
 
@@ -50,6 +54,10 @@ public class TrackTypeAdapter extends RecyclerView.Adapter<TrackTypeAdapter.Trac
 
     @Override
     public void onBindViewHolder(@NonNull TrackTypeViewHolder trackTypeViewHolder, int i) {
+
+        trackTypeViewHolder.tvTrackType.setText(trackTypeObjects[i].getName());
+        trackTypeViewHolder.checkBoxFilterState.setChecked(trackTypeObjects[i].isTrackTypeFilter());
+
         
 
 
@@ -70,6 +78,8 @@ public class TrackTypeAdapter extends RecyclerView.Adapter<TrackTypeAdapter.Trac
 
         public TrackTypeViewHolder(@NonNull View itemView) {
             super(itemView);
+            tvTrackType=itemView.findViewById(R.id.tv_filter_name);
+            checkBoxFilterState=itemView.findViewById(R.id.checkbox_filter_state);
         }
     }
 
