@@ -20,7 +20,7 @@
             android:textColor="@color/fontColor" />
         <EditText
             android:id="@+id/txt_username"
-            android:layout_width="308dp"
+            android:layout_width="270dp"
             android:layout_height="42dp"
             android:layout_marginLeft="25dp"
             android:layout_marginTop="5dp"
@@ -36,7 +36,7 @@
             android:textColor="@color/fontColor" />
         <EditText
             android:id="@+id/txt_email"
-            android:layout_width="308dp"
+            android:layout_width="270dp"
             android:layout_height="42dp"
             android:layout_marginLeft="25dp"
             android:layout_marginTop="5.5dp"
@@ -52,7 +52,7 @@
             android:textColor="@color/fontColor" />
         <EditText
             android:id="@+id/txt_message"
-            android:layout_width="308dp"
+            android:layout_width="270dp"
             android:layout_height="200dp"
             android:layout_marginTop="4dp"
             android:layout_marginLeft="25dp"
