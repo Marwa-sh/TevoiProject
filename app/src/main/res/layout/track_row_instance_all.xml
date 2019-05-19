@@ -85,7 +85,7 @@
                 android:weightSum="5"
                 android:clickable="true"
                 android:focusable="true"
-                android:visibility="invisible"
+                android:visibility="visible"
                 android:orientation="horizontal"
                 android:background="@color/tevoiBlueSecondary"
                 >
