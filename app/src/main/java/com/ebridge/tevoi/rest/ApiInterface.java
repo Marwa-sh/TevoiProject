@@ -14,6 +14,7 @@ import com.ebridge.tevoi.model.GetSubscripedPartnersResponse;
 import com.ebridge.tevoi.model.GetTrackFavouriteResponse;
 import com.ebridge.tevoi.model.GetUserListTracksResponse;
 import com.ebridge.tevoi.model.IResponse;
+import com.ebridge.tevoi.model.ListNotificationTypesResponse;
 import com.ebridge.tevoi.model.LoginRequest;
 import com.ebridge.tevoi.model.LoginResponse;
 import com.ebridge.tevoi.model.PartnerListResponse;
@@ -49,6 +50,10 @@ public interface ApiInterface {
     @Headers({"Content-Type:application/json","Authorization:TevoiTokenSample"})
     @GET("api/Services/ListMainTrack")
     Call<TrackResponseList> getListMainTrack(@Query("ListTypeEnum") int ListTypeEnum,@Query("index") int index,@Query("size") int size);
+
+    @GET("api/Services/ListMainTrackWithFilter")
+    Call<TrackResponseList> ListMainTrackWithFilter(@Query("searchWord") String searchWord, @Query("isLocationEnabled") boolean isLocationEnabled,@Query("ListTypeEnum") int ListTypeEnum,@Query("index") int index,@Query("size") int size);
+
 
     @Headers({"Content-Type:application/json","Authorization:TevoiTokenSample"})
     @GET("api/Services/GetHistoryList")
@@ -156,5 +161,8 @@ public interface ApiInterface {
     @POST("api/User/Login")
     Call<LoginResponse> Login(@Query("model") LoginRequest model);
 
+
+    @GET("api/Services/GetNotificationTypesList")
+    Call<ListNotificationTypesResponse> GetNotificationTypesList();
 
 }
