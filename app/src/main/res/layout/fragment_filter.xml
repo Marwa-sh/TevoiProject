@@ -17,7 +17,7 @@
         >
     </android.support.v7.widget.RecyclerView>
 
-    <TextView
+ <!--   <TextView
         android:id="@+id/textView6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,7 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/categories_recycler_view"
-        />
+        />-->
     <TextView
         android:id="@+id/txtSubscripedPartners"
         android:layout_width="match_parent"
@@ -51,7 +51,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:weightSum="5">
+        android:weightSum="5"
+
+        >
         <TextView
             android:id="@+id/txtClearFilter"
             android:layout_width="match_parent"
@@ -66,9 +68,12 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@mipmap/cross_blue"
+            android:src="@mipmap/cross_blue"
+            android:background="@null"
             android:id="@+id/btn_clear_filter"
             android:layout_weight="1"
+            android:scaleX="0.5"
+            android:scaleY="0.5"
             />
     </LinearLayout>
 </LinearLayout>
