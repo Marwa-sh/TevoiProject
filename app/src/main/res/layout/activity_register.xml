@@ -29,7 +29,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:layout_marginLeft="31dp"
+        android:layout_marginLeft="30dp"
         android:text="Mandatory fileds*"
         android:textColor="@color/fontColor" />
     <TextView
@@ -37,32 +37,38 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="9dp"
-        android:layout_marginLeft="31dp"
+        android:layout_marginLeft="30dp"
         android:text="User Name*"
         android:textColor="@color/fontColor" />
 
     <EditText
-        android:layout_width="270dp"
+        android:layout_width="match_parent"
         android:layout_height="42dp"
-        android:layout_marginLeft="31dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginLeft="30dp"
         android:layout_marginTop="7dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginEnd="30dp"
+
         android:background="@drawable/rounded_edittext" />
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="15dp"
-        android:layout_marginLeft="31dp"
+        android:layout_marginLeft="30dp"
         android:layout_marginTop="10dp"
         android:text="Email*"
         android:textColor="@color/fontColor" />
 
     <EditText
-        android:layout_width="270dp"
+        android:layout_width="match_parent"
         android:layout_height="42dp"
-        android:layout_marginLeft="31dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginLeft="30dp"
         android:layout_marginTop="7dp"
-
+        android:layout_marginRight="30dp"
+        android:layout_marginEnd="30dp"
         android:background="@drawable/rounded_edittext" />
 
     <TextView
@@ -70,15 +76,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Password*"
-        android:layout_marginLeft="31dp"
+        android:layout_marginLeft="30dp"
         android:layout_marginTop="13.75dp"
         android:textColor="@color/fontColor" />
 
     <EditText
-        android:layout_width="270dp"
+        android:layout_width="match_parent"
         android:layout_height="42dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginLeft="30dp"
         android:layout_marginTop="7dp"
-        android:layout_marginLeft="31dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginEnd="30dp"
         android:background="@drawable/rounded_edittext" />
 
     <TextView
@@ -86,22 +95,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Confirm Password*"
-        android:layout_marginLeft="31dp"
+        android:layout_marginLeft="30dp"
         android:layout_marginTop="13.75dp"
         android:textColor="@color/fontColor" />
 
     <EditText
-        android:layout_width="270dp"
+        android:layout_width="match_parent"
         android:layout_height="42dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginLeft="31dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginEnd="30dp"
 
         android:background="@drawable/rounded_edittext" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="We need the following information to better guess your preferences"
-        android:layout_marginLeft="31dp"
+        android:layout_marginLeft="30dp"
         android:layout_marginTop="9dp"
         android:textColor="@color/fontColor"
         android:textSize="10dp"
@@ -119,7 +131,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Age"
-        android:layout_marginLeft="31dp"
+        android:layout_marginLeft="30dp"
         android:layout_marginTop="13.75dp"
         android:textColor="@color/fontColor" />
 
@@ -127,7 +139,7 @@
         android:layout_width="85dp"
         android:layout_height="41dp"
         android:layout_marginTop="3dp"
-        android:layout_marginLeft="31dp"
+        android:layout_marginLeft="30dp"
 
         android:background="@drawable/rounded_edittext" />
     </LinearLayout>
@@ -159,32 +171,36 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Occupation"
-        android:layout_marginLeft="31dp"
+        android:layout_marginLeft="30dp"
         android:layout_marginTop="13.75dp"
         android:textColor="@color/fontColor" />
 
     <EditText
-        android:layout_width="270dp"
+        android:layout_width="match_parent"
         android:layout_height="42dp"
-        android:layout_marginTop="6dp"
-        android:layout_marginLeft="31dp"
-
+        android:layout_marginStart="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginEnd="30dp"
         android:background="@drawable/rounded_edittext" />
     <TextView
         android:id="@+id/textView8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Country"
-        android:layout_marginLeft="31dp"
+        android:layout_marginLeft="30dp"
         android:layout_marginTop="9dp"
         android:textColor="@color/fontColor" />
 
     <EditText
-        android:layout_width="270dp"
+        android:layout_width="match_parent"
         android:layout_height="42dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginLeft="30dp"
         android:layout_marginTop="7dp"
-        android:layout_marginLeft="31dp"
-
+        android:layout_marginRight="30dp"
+        android:layout_marginEnd="30dp"
         android:background="@drawable/rounded_edittext" />
 <LinearLayout
     android:layout_width="wrap_content"
