@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/txtListItemName"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textAppearance="?android:attr/textAppearanceListItemSmall"
+    android:gravity="left"
+    android:layout_weight="1"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:textColor="#000000"
+    android:background="#FFFFFF"
+    android:minHeight="?android:attr/listPreferredItemHeightSmall"/>
+<!--
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -32,3 +44,4 @@
         />
 
 </LinearLayout>
+-->

@@ -163,12 +163,11 @@ public interface ApiInterface {
     @POST("api/User/Login")
     Call<LoginResponse> Login(@Query("model") LoginRequest model);
 
-    @GET("api/User/GetTrackRating")
+    @GET("api/Services/GetTrackRating")
     Call<RatingResponse> GetTrackRating(@Query("TrackId") int TrackId);
 
-    @POST("api/User/SetTrackRating")
-    Call<IResponse> SetTrackRating(@Query("ratingRequest") RatingRequest ratingRequest);
-
+    @GET("api/Services/SetTrackRating")
+    Call<IResponse> SetTrackRating(@Query("TrackId") int TrackId, @Query("Rating") int Rating);
 
     @GET("api/Services/GetNotificationTypesList")
     Call<ListNotificationTypesResponse> GetNotificationTypesList();
