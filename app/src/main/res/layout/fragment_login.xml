@@ -41,12 +41,17 @@
             android:textColor="@color/fontColor" />
 
         <EditText
-            android:layout_width="308dp"
+            android:layout_width="match_parent"
             android:layout_height="42dp"
+            android:layout_marginStart="30dp"
             android:layout_marginLeft="31dp"
             android:layout_marginTop="7dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginEnd="30dp"
             android:background="@drawable/rounded_edittext"
-            android:id="@+id/et_User_Name"/>
+            android:id="@+id/et_User_Name"
+
+            />
 
 
         <TextView
@@ -59,16 +64,18 @@
             android:textColor="@color/fontColor" />
 
         <EditText
-            android:layout_width="308dp"
+            android:layout_width="match_parent"
             android:layout_height="42dp"
+            android:layout_marginStart="30dp"
             android:layout_marginLeft="31dp"
             android:layout_marginTop="7dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginEnd="30dp"
             android:inputType="textPassword"
 
             android:background="@drawable/rounded_edittext"
             android:id="@+id/et_Password"
             />
-
 
 
 
@@ -124,7 +131,8 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp">
             <CheckBox
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="25dp"
@@ -154,7 +162,7 @@
             android:layout_height="wrap_content"
             android:text="Forgot Password?"
             android:layout_marginLeft="31dp"
-            android:layout_marginTop="35dp"
+            android:layout_marginTop="25dp"
             android:textColor="@color/fontColor" />
         <TextView
             android:id="@+id/textView7"
@@ -166,10 +174,13 @@
             android:textColor="@color/fontColor" />
 
         <EditText
-            android:layout_width="308dp"
+            android:layout_width="match_parent"
             android:layout_height="42dp"
-            android:layout_marginTop="6dp"
+            android:layout_marginStart="30dp"
             android:layout_marginLeft="31dp"
+            android:layout_marginTop="7dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginEnd="30dp"
             android:id="@+id/et_enter_email"
 
             android:background="@drawable/rounded_edittext" />
@@ -182,7 +193,9 @@
             <ImageButton
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                android:layout_marginBottom="30dp"
                 android:layout_marginLeft="32dp"
+                android:layout_marginBottom="15dp"
                 android:background="@null"
                 android:scaleType="fitXY"
                 android:src="@drawable/tick"
@@ -191,13 +204,17 @@
                 />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:text="Request new password"
                 android:textColor="@color/fontColor"
-                android:layout_marginLeft="7dp"
                 android:layout_gravity="center_vertical"
-
+                android:layout_marginBottom="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginLeft="31dp"
+                android:layout_marginTop="7dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginEnd="30dp"
                 />
 
         </LinearLayout>

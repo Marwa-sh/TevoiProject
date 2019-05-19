@@ -144,6 +144,8 @@ public class UserListTracksFragment extends Fragment
         });
 
     }
-
-
+    public  void notifyUserListTracksAdapter()
+    {
+        adapter.notifyDataSetChanged();
+    }
 }

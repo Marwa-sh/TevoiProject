@@ -289,7 +289,7 @@ public class SideMenu extends FragmentActivity {
                         fragmentTransaction.commit();
                         break;
                     }
-                    case "Download lismits" :
+                    case "Download limits" :
                     {
                         fragmentTransaction.replace(R.id.content_frame, downloadFragment);
                         fragmentTransaction.commit();
@@ -642,6 +642,10 @@ public class SideMenu extends FragmentActivity {
     public void notifyTarcksListAdapter()
     {
         lisTracksFragment.notifyTarcksListAdapter();
+    }
+    public  void notifyUserListTracksAdapter()
+    {
+        userListTracksFragment.notifyUserListTracksAdapter();
     }
     // endregion
 

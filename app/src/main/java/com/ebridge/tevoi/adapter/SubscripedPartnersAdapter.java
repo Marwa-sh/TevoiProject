@@ -91,7 +91,6 @@ public class SubscripedPartnersAdapter extends RecyclerView.Adapter<SubscripedPa
 
                         }
                     });
-                    Toast.makeText(itemView.getContext(),"filter changed", Toast.LENGTH_SHORT).show();
                 }
             });
 

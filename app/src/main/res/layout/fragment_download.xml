@@ -29,7 +29,7 @@
         android:layout_marginTop="30dp"
         android:progress="5"
         android:progressBackgroundTint="@color/tevoiBrown"
-        android:progressTint="@color/White"
+        android:progressTint="@color/fontColor"
         android:thumbTint="@color/fontColor"
         android:scaleX="0.87"
         android:scaleY="0.87"
