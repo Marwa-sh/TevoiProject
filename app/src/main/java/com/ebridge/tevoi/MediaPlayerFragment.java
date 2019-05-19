@@ -44,6 +44,7 @@ import com.ebridge.tevoi.adapter.TracksAdapter;
 import com.ebridge.tevoi.model.AudioDataSource;
 import com.ebridge.tevoi.model.IResponse;
 import com.ebridge.tevoi.model.PartnerListResponse;
+import com.ebridge.tevoi.model.RatingResponse;
 import com.ebridge.tevoi.model.TrackObject;
 import com.ebridge.tevoi.model.TrackResponseList;
 import com.ebridge.tevoi.model.TrackSerializableObject;
@@ -218,7 +219,9 @@ public class MediaPlayerFragment extends Fragment {
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
                 if(!ratingEnabled)
                     return;
-                Call<IResponse> call=Global.client.SetTrackRating(currentTrack.getId(),ratingBar.getNumStars());
+                int Rating  = (int)ratingBar.getRating();
+                //Toast.makeText(activity, ""+Rating, Toast.LENGTH_SHORT).show();
+                Call<IResponse> call=Global.client.SetTrackRating(currentTrack.getId(),Rating);
                 call.enqueue(new Callback<IResponse>() {
                     @Override
                     public void onResponse(Call<IResponse> call, Response<IResponse> response) {
@@ -279,9 +282,23 @@ public class MediaPlayerFragment extends Fragment {
             commentFragment = CommentFragment.newInstance(currentTrack.getId());
             textFargment = TrackText.newInstance(currentTrack.getId(), Global.MediaPlayerFragmentName);
 
-            ratingBar.setRating(currentTrack.getRate());
-            ratingEnabled = true;
+            Call<RatingResponse> callRating=Global.client.GetTrackRating(currentTrack.getId());
+            callRating.enqueue(new Callback<RatingResponse>() {
+                @Override
+                public void onResponse(Call<RatingResponse> call, Response<RatingResponse> response) {
+                    RatingResponse res = response.body();
+                    ratingBar.setRating((float)res.getRating());
+                    ratingEnabled = true;
+                    //Toast.makeText(activity, res.getMessage(), Toast.LENGTH_SHORT).show();
+                }
 
+                @Override
+                public void onFailure(Call<RatingResponse> call, Throwable t) {
+                    ratingBar.setRating(0);
+                    ratingEnabled = true;
+
+                }
+            });
             partnerName = (TextView) rootView.findViewById(R.id.tv_partner_name);
             partnerLogo = (ImageView) rootView.findViewById(R.id.img_partner_logo);
 

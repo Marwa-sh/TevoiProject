@@ -34,7 +34,7 @@ public class SideMenuFragment extends Fragment {
 
             // Updating the action bar title
             getActivity().getActionBar().setTitle(rivers[position]);
-
+            //getActivity().getActionBar().setSubtitle("subtitle");
             return v;
         }
     }

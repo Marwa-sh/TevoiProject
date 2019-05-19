@@ -191,7 +191,7 @@ public class SideMenu extends FragmentActivity {
 
             /** Called when a drawer is opened */
             public void onDrawerOpened(View drawerView) {
-                getActionBar().setTitle("Select a river");
+                getActionBar().setTitle("Select");
                 invalidateOptionsMenu();
             }
         };
@@ -220,8 +220,8 @@ public class SideMenu extends FragmentActivity {
         // Enabling Home button
         getActionBar().setHomeButtonEnabled(true);
         getActionBar().setTitle("Tevoi");
-        getActionBar().setSubtitle("subtitle");
-        //getActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.launcher_background));
+        //getActionBar().setSubtitle("subtitle");
+        getActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.launcher_background));
 
         // Enabling Up navigation
         getActionBar().setDisplayHomeAsUpEnabled(true);

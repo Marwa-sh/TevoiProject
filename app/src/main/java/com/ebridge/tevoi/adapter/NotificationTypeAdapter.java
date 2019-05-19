@@ -73,7 +73,7 @@ public class NotificationTypeAdapter extends RecyclerView.Adapter<NotificationTy
             switchCompatIsActive.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-                    Toast.makeText(context, "switch changes to " + isChecked, Toast.LENGTH_LONG).show();
+                    //Toast.makeText(context, "switch changes to " + isChecked, Toast.LENGTH_LONG).show();
                 }
             });
 

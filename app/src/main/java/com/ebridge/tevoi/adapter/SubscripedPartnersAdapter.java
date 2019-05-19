@@ -66,7 +66,8 @@ public class SubscripedPartnersAdapter extends RecyclerView.Adapter<SubscripedPa
 
             this.checkBoxFilterState.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
-                public void onCheckedChanged(CompoundButton buttonView, final boolean isChecked) {
+                public void onCheckedChanged(CompoundButton buttonView, final boolean isChecked)
+                {
                     //change filtering state
                     int i = getPosition();
                     final SubscipedPartnersObject partner = partners.get(i);
@@ -79,7 +80,7 @@ public class SubscripedPartnersAdapter extends RecyclerView.Adapter<SubscripedPa
                             if(res.getNumber()==0)
                             {
                                 partner.setFilterValue(isChecked);
-                                Toast.makeText(activity,res.getMessage(),Toast.LENGTH_LONG).show();
+                                Toast.makeText(activity, res.getMessage(),Toast.LENGTH_LONG).show();
                             }
                             else
                             {

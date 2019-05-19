@@ -202,6 +202,18 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
                 @Override
                 public void onClick(View v) {
                     final Context context = v.getContext();
+                    int i = getAdapterPosition();
+
+                    if(tracks.get(i).isFaourite())
+                    {
+                        btnLike.setText("Dislike");
+                        btnLike.refreshDrawableState();
+                    }
+                    else
+                    {
+                        btnLike.setText("Like");
+                        btnLike.refreshDrawableState();
+                    }
                     if(hoverLayout.getVisibility()==View.VISIBLE)
                     {
                         hoverLayout.setVisibility(View.INVISIBLE);
@@ -335,6 +347,7 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
                                 break;
                             }
                         }
+                        //hoverLayout.setVisibility(View.INVISIBLE);
                     }
                 });
             }
@@ -354,6 +367,9 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
                                 if (res.getNumber() == 0)
                                 {
                                     t.setFaourite(true);
+                                    btnLike.setText("Dislike");
+                                    btnLike.refreshDrawableState();
+
                                     Log.d("Favourite :", "onResponse: track liked ");
                                     Toast.makeText(activity, "Like", Toast.LENGTH_LONG).show();
                                 } else {
@@ -378,11 +394,14 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
                                 if (res.getNumber() == 0)
                                 {
                                     t.setFaourite(false);
+                                    btnLike.setText("Like");
+                                    btnLike.refreshDrawableState();
+
                                     Log.d("Favourite :", "onResponse: track liked ");
-                                    Toast.makeText(activity, "Remove Like", Toast.LENGTH_LONG).show();
+                                    //Toast.makeText(activity, "Remove Like", Toast.LENGTH_LONG).show();
                                 } else {
                                     Log.d("Favourite Error", "onResponse: " + res.getMessage());
-                                    Toast.makeText(activity, "Error Remove Like", Toast.LENGTH_LONG).show();
+                                    //Toast.makeText(activity, "Error Remove Like", Toast.LENGTH_LONG).show();
                                 }
                             }
                             @Override
@@ -403,6 +422,7 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
                     {
                         activity.notifyTarcksListAdapter();
                     }
+                    //hoverLayout.setVisibility(View.INVISIBLE);
                 }
             });
             btnAddToList.setOnClickListener(new View.OnClickListener() {
