@@ -79,7 +79,7 @@ public class MediaPlayerFragment extends Fragment {
     private SeekBar seekBar;
 
     XmlFragementClickable someFragment;
-    FragmentManager fm ;
+    public FragmentManager fm ;
 
     TextView trackName;
     TextView trackDuration;
@@ -88,11 +88,10 @@ public class MediaPlayerFragment extends Fragment {
     TextView currentTime;
     TextView fullTime;
     RatingBar ratingBar;
-    ScrollView scrollViewMediaPlayer;
-    LinearLayout linearLayoutMediaPlayer;
+    public ScrollView scrollViewMediaPlayer;
+    public LinearLayout linearLayoutMediaPlayer;
     TextView partnerName;
     ImageView partnerLogo;
-
 
     boolean initailizeFullTime = false;
 
@@ -141,54 +140,21 @@ public class MediaPlayerFragment extends Fragment {
         getActivity().runOnUiThread(new Runnable()
         {
             @Override
-            public void run() {
+            public void run()
+            {
                // Toast.makeText(activity, "hi there", Toast.LENGTH_SHORT).show();
                 final SideMenu activity = (SideMenu)getActivity();
                 if(activity != null)
                 {
                     if(activity.serviceBound)
                     {
-                        //Toast.makeText(activity, "maroosh", Toast.LENGTH_SHORT).show();
-                        if(!activity.player.mMediaPlayer.isPlaying())
-                        {
-                            activity.mProgressDialog.dismiss();
-                        }
-                        if(activity.isPlaying)
-                        {
-                            activity.numberOfListenedSeconds += 1;
-                            activity.numberOfCurrentSecondsInTrack +=1;
-                            //activity.numberOfTotalSeconds += activity.numberOfCurrentSeconds;
-                        }
-                        int n = activity.numberOfUnitsSendToServer * Global.ListenUnitInSeconds + Global.ListenUnitInSeconds;
-                        if(activity.numberOfListenedSeconds >= n)
-                        {
-                            int numberOfUnRegisteredSeconds = activity.numberOfListenedSeconds -activity.numberOfUnitsSendToServer * Global.ListenUnitInSeconds;
-                            final int numberOfConsumedUnits = numberOfUnRegisteredSeconds / Global.ListenUnitInSeconds;
-                            //Toast.makeText(activity, "numberOfUnRegisteredSeconds=" + numberOfUnRegisteredSeconds, Toast.LENGTH_SHORT).show();
-                            // send to server that we used 1 unit
-                            Call<IResponse> call = Global.client.AddUnitUsageForUser(currentTrack.getId(), numberOfConsumedUnits);
-                            call.enqueue(new Callback<IResponse>(){
-                                public void onResponse(Call<IResponse> call, Response<IResponse> response) {
-                                    //generateDataList(response.body());
-                                    IResponse partners=response.body();
-                                    activity.numberOfUnitsSendToServer +=numberOfConsumedUnits;
-
-                                    Toast.makeText(activity, ""+ numberOfConsumedUnits +" Unit consumed from your quota", Toast.LENGTH_SHORT).show();
-                                }
-                                public void onFailure(Call<IResponse> call, Throwable t)
-                                {
-
-                                }
-                            });
-                        }
                         if(seekBar == null)
                             seekBar = (SeekBar) rootView.findViewById(R.id.seekBar);
 
                         seekBar.setMax(activity.player.mMediaPlayer.getDuration()/ 1000);
                         String timeFormat2 = GetTimeFormat(activity.player.mMediaPlayer.getDuration()/ 1000);
                         fullTime.setText(timeFormat2);
-                        //Toast.makeText(activity, timeFormat2, Toast.LENGTH_SHORT).show();
-                        //player = activity.player;
+
                         int mCurrentPosition = activity.player.mMediaPlayer.getCurrentPosition() / 1000;
 
                         seekBar.setProgress(mCurrentPosition);
@@ -308,6 +274,20 @@ public class MediaPlayerFragment extends Fragment {
             url = Global.BASE_AUDIO_URL + currentTrack.getId();
             if(!PreviousFragment.equals(Global.CarPlayFragment))
             {
+
+            }
+            if(activity.serviceBound)
+            {
+                if(activity.player.mMediaPlayer.isPlaying())
+                {
+                    playButton.setImageResource(R.drawable.baseline_pause_24);
+                }
+                else
+                {
+                    playButton.setImageResource(R.drawable.baseline_play_arrow_24);
+                }
+            }else
+            {
                 activity.playAudio(url);
                 activity.isPlaying = true;
                 playButton.setImageResource(R.drawable.baseline_pause_24);
@@ -349,7 +329,25 @@ public class MediaPlayerFragment extends Fragment {
     public void playTrack(View view)
     {
         SideMenu activity = (SideMenu)getActivity();
-        if(!activity.isPlaying && !activity.isPaused)
+        if(activity.serviceBound)
+        {
+            if(activity.player.mMediaPlayer.isPlaying())
+            {
+                activity.player.mMediaPlayer.pause();
+                playButton.setImageResource(R.drawable.baseline_play_arrow_24);
+            }
+            else
+            {
+                activity.player.mMediaPlayer.start();
+                playButton.setImageResource(R.drawable.baseline_pause_24);
+            }
+        }
+        else
+        {
+            activity.playAudio(url);
+            playButton.setImageResource(R.drawable.baseline_pause_24);
+        }
+       /* if(!activity.isPlaying && !activity.isPaused)
         {
             playButton.setImageResource(R.drawable.baseline_pause_24);
             activity.isPlaying = true;
@@ -369,7 +367,7 @@ public class MediaPlayerFragment extends Fragment {
                 playButton.setImageResource(R.drawable.baseline_pause_24);
                 activity.isPlaying = true; activity.isPaused = false;
             }
-        }
+        }*/
     }
 
     /*
@@ -383,7 +381,7 @@ public class MediaPlayerFragment extends Fragment {
     }
     */
 
-    private  void refreshMediaPlayStatus()
+   /* private  void refreshMediaPlayStatus()
     {
         SideMenu activity = (SideMenu)getActivity();
 
@@ -407,13 +405,14 @@ public class MediaPlayerFragment extends Fragment {
                 activity.isPlaying = true; activity.isPaused = false;
             }
         }
-    }
+    }*/
 
     // region media player actions
     public void imgBtnForwardClick(View view)
     {
         SideMenu activity = (SideMenu)getActivity();
-        if(activity.serviceBound){
+        if(activity.serviceBound)
+        {
             int max = activity.player.mMediaPlayer.getDuration();
             int mCurrentPosition = activity.player.mMediaPlayer.getCurrentPosition() / 1000;
             if(mCurrentPosition + 10 > max)
@@ -421,6 +420,10 @@ public class MediaPlayerFragment extends Fragment {
             else
                 mCurrentPosition +=10;
             numberOfListenedSeconds += 10;
+
+            activity.numberOfCurrentSecondsInTrack = mCurrentPosition;
+            activity.numberOfListenedSeconds += 10;
+
             seekBar.setProgress(mCurrentPosition);
             String timeFormat = GetTimeFormat(mCurrentPosition);
             currentTime.setText(timeFormat);
@@ -490,6 +493,7 @@ public class MediaPlayerFragment extends Fragment {
         // or ft.add(R.id.your_placeholder, new FooFragment());
         // Complete the changes added above
         ft.commit();
+
         fm.executePendingTransactions();
         getActivity().runOnUiThread(new Runnable() {
             @Override
@@ -497,9 +501,10 @@ public class MediaPlayerFragment extends Fragment {
             //Linearlayout is the layout the fragments are being added to.
                 View view = linearLayoutMediaPlayer.getChildAt(linearLayoutMediaPlayer.getChildCount()-1);
 
-                scrollViewMediaPlayer.scrollTo(0,(int)(view.getY() + view.getHeight()));
+                scrollViewMediaPlayer.smoothScrollBy(0,(int)(view.getY() + view.getHeight()));
             }
         });
+
 
     }
 
@@ -516,6 +521,16 @@ public class MediaPlayerFragment extends Fragment {
             // or ft.add(R.id.your_placeholder, new FooFragment());
             // Complete the changes added above
             ft.commit();
+            fm.executePendingTransactions();
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    //Linearlayout is the layout the fragments are being added to.
+                    View view = linearLayoutMediaPlayer.getChildAt(linearLayoutMediaPlayer.getChildCount()-1);
+
+                    scrollViewMediaPlayer.smoothScrollBy(0,(int)(view.getY() + view.getHeight()));
+                }
+            });
         }
         else
         {
@@ -574,6 +589,16 @@ public class MediaPlayerFragment extends Fragment {
         // or ft.add(R.id.your_placeholder, new FooFragment());
         // Complete the changes added above
         ft.commit();
+        fm.executePendingTransactions();
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                //Linearlayout is the layout the fragments are being added to.
+                View view = linearLayoutMediaPlayer.getChildAt(linearLayoutMediaPlayer.getChildCount()-1);
+
+                scrollViewMediaPlayer.smoothScrollBy(0,(int)(view.getY() + view.getHeight()));
+            }
+        });
     }
 
     public  void imgBtnCarClick(View view)

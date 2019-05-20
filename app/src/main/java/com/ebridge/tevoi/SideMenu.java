@@ -20,16 +20,19 @@ import android.support.v4.widget.DrawerLayout;
 /*import android.support.v7.app.ActionBar;*/
 import android.util.DisplayMetrics;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.ebridge.tevoi.Utils.Global;
+import com.ebridge.tevoi.Utils.HelperFunctions;
 import com.ebridge.tevoi.Utils.MyStorage;
 import com.ebridge.tevoi.adapter.DrawerListAdapter;
 import com.ebridge.tevoi.adapter.DrawerListItemObject;
@@ -40,6 +43,7 @@ import com.ebridge.tevoi.rest.ApiClient;
 import com.ebridge.tevoi.rest.ApiInterface;
 
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
@@ -110,6 +114,22 @@ public class SideMenu extends FragmentActivity {
 
     // endregion
 
+    // region
+    // main player
+    public LinearLayout mainPlayerLayout;
+    public TrackObject CurrentTrackInPlayer;
+
+    SeekBar seekBarMainPlayer;
+    TextView txtCurrentTime;
+    TextView txtFinishTime;
+    public TextView txtTrackName;
+    ImageButton btnPausePlayMainMediaPlayer;
+
+    boolean  isActivityPause  = false;
+
+
+    // endregion
+
     // region properties for drawer
     // Within which the entire activity is enclosed
     DrawerLayout mDrawerLayout;
@@ -122,7 +142,7 @@ public class SideMenu extends FragmentActivity {
     // endregion
 
     // region side menu fragments objects
-    TracksList lisTracksFragment = new TracksList();
+    public TracksList lisTracksFragment = new TracksList();
    // TracksList listTracksFargment = new TracksList();
     InterfaceLanguageFragment interfaceLanguageFragment = new InterfaceLanguageFragment();
     LoginFragment loginFragment = new LoginFragment();
@@ -167,9 +187,9 @@ public class SideMenu extends FragmentActivity {
         abar.setDisplayHomeAsUpEnabled(true);
         abar.setIcon(R.color.fontColor);
         abar.setHomeButtonEnabled(true);
-
-        //abar.setBackgroundDrawable(getResources().getDrawable(R.drawable.launcher_background));
-
+        abar.setBackgroundDrawable(getResources().getDrawable(R.drawable.launcher_background));
+        abar.setElevation(0);
+        //abar.setElevation(0);
     }
 
     @Override
@@ -179,8 +199,70 @@ public class SideMenu extends FragmentActivity {
 
         //setContentView(R.layout.activity_main);
 
-        initActionBar("Start");
+        // region media player runnable action
+        this.runOnUiThread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                if (!isActivityPause) {
+                    if (serviceBound)
+                    {
+                        mainPlayerLayout.setVisibility(View.VISIBLE);
+                        if (!player.mMediaPlayer.isPlaying()) {
+                            mProgressDialog.dismiss();
+                        }
+                        if (player.mMediaPlayer.isPlaying())
+                        {
+                            numberOfListenedSeconds += 1;
+                            numberOfCurrentSecondsInTrack += 1;
+                            //activity.numberOfTotalSeconds += activity.numberOfCurrentSeconds;
+                        }
+                        int n = numberOfUnitsSendToServer * Global.ListenUnitInSeconds + Global.ListenUnitInSeconds;
+                        if (numberOfListenedSeconds >= n) {
+                            int numberOfUnRegisteredSeconds = numberOfListenedSeconds - numberOfUnitsSendToServer * Global.ListenUnitInSeconds;
+                            final int numberOfConsumedUnits = numberOfUnRegisteredSeconds / Global.ListenUnitInSeconds;
+                            // send to server that we used 1 unit
+                            Call<IResponse> call = Global.client.AddUnitUsageForUser(CurrentTrackInPlayer.getId(), numberOfConsumedUnits);
+                            call.enqueue(new Callback<IResponse>() {
+                                public void onResponse(Call<IResponse> call, Response<IResponse> response) {
+                                    //generateDataList(response.body());
+                                    IResponse partners = response.body();
+                                    numberOfUnitsSendToServer += numberOfConsumedUnits;
+                                    Toast.makeText(getBaseContext(), "" + numberOfConsumedUnits + " Unit consumed from your quota", Toast.LENGTH_SHORT).show();
+                                }
 
+                                public void onFailure(Call<IResponse> call, Throwable t) {
+
+                                }
+                            });
+                        }
+                        if (seekBarMainPlayer == null)
+                            seekBarMainPlayer = findViewById(R.id.seekBar_main_player);
+
+                        seekBarMainPlayer.setMax(player.mMediaPlayer.getDuration() / 1000);
+                        String timeFormat2 = HelperFunctions.GetTimeFormat(player.mMediaPlayer.getDuration() / 1000);
+                        txtFinishTime.setText(timeFormat2);
+                        //Toast.makeText(activity, timeFormat2, Toast.LENGTH_SHORT).show();
+                        //player = activity.player;
+                        int mCurrentPosition = player.mMediaPlayer.getCurrentPosition() / 1000;
+
+                        seekBarMainPlayer.setProgress(mCurrentPosition);
+                        String timeFormat = HelperFunctions.GetTimeFormat(mCurrentPosition);
+                        txtCurrentTime.setText(timeFormat);
+                    } else {
+
+                    }
+                    mHandler.postDelayed(this, 1000);
+                }
+            }
+        });
+
+
+        // endregion
+
+
+        initActionBar("Start");
 
         //region detect language
         Resources res = getBaseContext().getResources();
@@ -191,7 +273,6 @@ public class SideMenu extends FragmentActivity {
         // Use conf.locale = new Locale(...) if targeting lower versions
         res.updateConfiguration(conf, dm);
         // endregion
-
 
         trackIdPlayedNow = -1;
         searchBtn = (MenuItem)findViewById(R.id.action_search);
@@ -268,11 +349,15 @@ public class SideMenu extends FragmentActivity {
                                     View view,
                                     int position,
                                     long id) {
-                if(isPlaying)
+                if(serviceBound)
                 {
-                    isPlaying = false; isPaused = true;
-                    player.mMediaPlayer.pause();
+                    if (!player.mMediaPlayer.isPlaying()) {
+                        isPlaying = false;
+                        isPaused = true;
+                        player.mMediaPlayer.pause();
+                    }
                 }
+
                 // Getting an array of rivers
                 String[] rivers = getResources().getStringArray(R.array.rivers);
 
@@ -285,84 +370,98 @@ public class SideMenu extends FragmentActivity {
                     case "History" :
                     {
                         fragmentTransaction.replace(R.id.content_frame, historyListFragment);
+                        fragmentTransaction.addToBackStack( "historyListFragment" );
                         fragmentTransaction.commit();
                         break;
                     }
                     case "Play Next" :
                     {
                         fragmentTransaction.replace(R.id.content_frame, playingNowFragment);
+                        fragmentTransaction.addToBackStack( "playingNowFragment" );
                         fragmentTransaction.commit();
                         break;
                     }
                     case "Favourite" :
                     {
                         fragmentTransaction.replace(R.id.content_frame, favouriteFragment);
+                        fragmentTransaction.addToBackStack( "favouriteFragment" );
                         fragmentTransaction.commit();
                         break;
                     }
                     case "My Lists" :
                     {
                         fragmentTransaction.replace(R.id.content_frame, userListsFragment);
+                        fragmentTransaction.addToBackStack( "userListsFragment" );
                         fragmentTransaction.commit();
                         break;
                     }
                     case "Interface Language" :
                     {
                         fragmentTransaction.replace(R.id.content_frame, interfaceLanguageFragment);
+                        fragmentTransaction.addToBackStack( "interfaceLanguageFragment" );
                         fragmentTransaction.commit();
                         break;
                     }
                     case "Partners" :
                     {
                         fragmentTransaction.replace(R.id.content_frame, partnersFragment);
+                        fragmentTransaction.addToBackStack( "partnersFragment" );
                         fragmentTransaction.commit();
                         break;
                     }
                     case "Notifications" :
                     {
                         fragmentTransaction.replace(R.id.content_frame, notificationFragment);
+                        fragmentTransaction.addToBackStack( "notificationFragment" );
                         fragmentTransaction.commit();
                         break;
                     }
                     case "Download limits" :
                     {
                         fragmentTransaction.replace(R.id.content_frame, downloadFragment);
+                        fragmentTransaction.addToBackStack( "downloadFragment" );
                         fragmentTransaction.commit();
                         break;
                     }
                     case "About Us" :
                     {
                         fragmentTransaction.replace(R.id.content_frame, aboutUsFragment);
+                        fragmentTransaction.addToBackStack( "aboutUsFragment" );
                         fragmentTransaction.commit();
                         break;
                     }
                     case "Feedback and Contact" :
                     {
                         fragmentTransaction.replace(R.id.content_frame, feedbackFragment);
+                        fragmentTransaction.addToBackStack( "feedbackFragment" );
                         fragmentTransaction.commit();
                         break;
                     }
                     case "Follow Us" :
                     {
                         fragmentTransaction.replace(R.id.content_frame, followUsFragment);
+                        fragmentTransaction.addToBackStack( "followUsFragment" );
                         fragmentTransaction.commit();
                         break;
                     }
                     case "List Tracks" :
                     {
                         fragmentTransaction.replace(R.id.content_frame, lisTracksFragment);
+                        fragmentTransaction.addToBackStack( "lisTracksFragment" );
                         fragmentTransaction.commit();
                         break;
                     }
                     case "Filters" :
                     {
                         fragmentTransaction.replace(R.id.content_frame, filterFragment);
+                        fragmentTransaction.addToBackStack( "filterFragment" );
                         fragmentTransaction.commit();
                         break;
                     }
                     case "Login/Register":
                     {
                         fragmentTransaction.replace(R.id.content_frame, loginFragment);
+                        fragmentTransaction.addToBackStack( "loginFragment" );
                         fragmentTransaction.commit();
                         break;
                     }
@@ -387,6 +486,7 @@ public class SideMenu extends FragmentActivity {
 
                 // Adding a fragment to the fragment transaction
                 ft.replace(R.id.content_frame, rFragment);
+                ft.addToBackStack( "rFragment" );
 
                 // Committing the transaction
                 ft.commit();
@@ -403,6 +503,8 @@ public class SideMenu extends FragmentActivity {
 
         // Committing the transaction
         ft.commit();
+        // init media player in main page elements
+
     }
 
     @Override
@@ -460,6 +562,8 @@ public class SideMenu extends FragmentActivity {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
+
+
 
     // region List Tracks actions
 
@@ -685,4 +789,16 @@ public class SideMenu extends FragmentActivity {
     // endregion
 
 
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+       isActivityPause = true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        isActivityPause = false;
+    }
 }

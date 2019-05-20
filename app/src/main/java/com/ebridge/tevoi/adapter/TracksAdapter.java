@@ -170,6 +170,7 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
 
             //--------//
 
+
             imgBtnPlay.setOnClickListener(new View.OnClickListener()
             {
                 @Override
@@ -177,6 +178,38 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
                 {
                     int i = getAdapterPosition();
                     TrackObject selectedTrack =  tracks.get(i);
+                    activity.CurrentTrackInPlayer = tracks.get(i);
+                    if(fragmentName.equals(Global.ListTracksFragmentName))
+                    {
+                        activity.playAudio(Global.GetStreamURL +activity.CurrentTrackInPlayer.getId());
+                        activity.txtTrackName.setText(selectedTrack.getName().toString());
+
+                        if(activity.mainPlayerLayout.getVisibility()==View.INVISIBLE)
+                        {
+                            activity.mainPlayerLayout.setVisibility(View.VISIBLE);
+                        }
+                        activity.lisTracksFragment.fm.executePendingTransactions();
+                        activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                //Linearlayout is the layout the fragments are being added to.
+                                View view = activity.lisTracksFragment.linearLayoutListTracks.getChildAt(activity.lisTracksFragment.linearLayoutListTracks.getChildCount()-1);
+
+                                activity.lisTracksFragment.scrollViewListTracks.smoothScrollBy(0,(int)(view.getY() + view.getHeight()));
+                            }
+                        });
+                    }
+                    else
+                    {
+                        FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
+                        activity.mediaPlayerFragment.currentTrackId = selectedTrack.getId();
+                        activity.mediaPlayerFragment.currentTrack = selectedTrack;
+                        activity.CurrentTrackInPlayer = selectedTrack;
+                        ft.replace(R.id.content_frame, activity.mediaPlayerFragment);
+                        ft.addToBackStack( "mediaPlayerFragment" );
+                        ft.commit();
+                        activity.playAudio(Global.GetStreamURL +activity.CurrentTrackInPlayer.getId());
+                    }
                     // if we are playing new track
                     /*if(activity.player != null && i != activity.trackIdPlayedNow)
                     {
@@ -185,16 +218,17 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
                         activity.isPaused =false; activity.isPlaying = false;
                         activity.serviceBound = false;
                     }*/
-                    FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
+                    /*FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
                     // Replace the contents of the container with the new fragment
                     //TrackAddToList frag = new TrackAddToList();
                     activity.mediaPlayerFragment.currentTrackId = selectedTrack.getId();
                     activity.mediaPlayerFragment.currentTrack = selectedTrack;
+                    activity.CurrentTrackInPlayer = selectedTrack;
 
                     ft.replace(R.id.content_frame, activity.mediaPlayerFragment);
                     // or ft.add(R.id.your_placeholder, new FooFragment());
                     // Complete the changes added above
-                    ft.commit();
+                    ft.commit();*/
                 }
             });
 
@@ -524,6 +558,13 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
                         track.setAuthor(selectedTrack.getAuthors());
                         track.setCategories(selectedTrack.getCategories());
                         track.setRate((int) selectedTrack.getRate());
+                        track.setFavourite(selectedTrack.isFaourite());
+                        track.setActivityId(selectedTrack.getActivityId());
+                        track.setHasLocation(selectedTrack.isHasLocation());
+                        track.setHasText(selectedTrack.isHasText());
+                        track.setPartnerId(selectedTrack.getPartnerId());
+                        track.setPartnerName(selectedTrack.getPartnerName());
+                        track.setPartnerLogo(selectedTrack.getPartnerLogo());
                         String result = activity.storageManager.addTrack(activity, track);
                         activity.playNowListTracks = activity.storageManager.loadPlayNowTracks(activity);
                         Toast.makeText(activity, result, Toast.LENGTH_LONG).show();

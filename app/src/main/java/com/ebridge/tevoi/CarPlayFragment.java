@@ -66,7 +66,6 @@ public class CarPlayFragment extends Fragment {
                 // Replace the contents of the container with the new fragment
                 //TrackAddToList frag = new TrackAddToList();
                 activity.mediaPlayerFragment.PreviousFragment= Global.CarPlayFragment;
-
                 ft.replace(R.id.content_frame, activity.mediaPlayerFragment);
                 // or ft.add(R.id.your_placeholder, new FooFragment());
                 // Complete the changes added above
@@ -110,18 +109,21 @@ public class CarPlayFragment extends Fragment {
                 seekBar.setMax(duration);
                 String timeFormatFull = HelperFunctions.GetTimeFormat(duration);
                 txtFullTime.setText(timeFormatFull);
-                if(!activity.isPlaying && !activity.isPaused) {
-                    imgBtnPlay.setImageResource(R.drawable.baseline_play_arrow_24);
-                }
-                else
+                if(activity.serviceBound)
                 {
-                    if(activity.isPlaying && !activity.isPaused) {
+                    if(activity.player.mMediaPlayer.isPlaying())
+                    {
                         imgBtnPlay.setImageResource(R.drawable.baseline_pause_24);
                     }
-                    else if(activity.isPaused)
+                    else
                     {
                         imgBtnPlay.setImageResource(R.drawable.baseline_play_arrow_24);
                     }
+                }else
+                {
+                    activity.playAudio(url);
+                    activity.isPlaying = true;
+                    imgBtnPlay.setImageResource(R.drawable.baseline_pause_24);
                 }
             }
             else
@@ -162,39 +164,27 @@ public class CarPlayFragment extends Fragment {
             public void onClick(View v)
             {
                 SideMenu activity = (SideMenu)getActivity();
-                if(!activity.isPlaying && !activity.isPaused)
+                if(activity.serviceBound)
                 {
-                    imgBtnPlay.setImageResource(R.drawable.baseline_pause_24);
-                    activity.isPlaying = true;
-                    playAudio(url);
-                    if(activity.player!= null)
+                    seekBar.setMax(activity.player.mMediaPlayer.getDuration()/ 1000);
+                    String timeFormat = HelperFunctions.GetTimeFormat(activity.player.mMediaPlayer.getDuration()/ 1000);
+                    txtFullTime.setText(timeFormat);
+
+                    if(activity.player.mMediaPlayer.isPlaying())
                     {
-                        seekBar.setMax(activity.player.mMediaPlayer.getDuration()/ 1000);
-                        String timeFormat = HelperFunctions.GetTimeFormat(activity.player.mMediaPlayer.getDuration()/ 1000);
-                        txtFullTime.setText(timeFormat);
+                        activity.player.mMediaPlayer.pause();
+                        imgBtnPlay.setImageResource(R.drawable.baseline_play_arrow_24);
                     }
-                    else {
-                        activity.player = activity.player;
+                    else
+                    {
+                        activity.player.mMediaPlayer.start();
+                        imgBtnPlay.setImageResource(R.drawable.baseline_pause_24);
                     }
                 }
                 else
                 {
-                    if(activity.player!= null) {
-                        seekBar.setMax(activity.player.mMediaPlayer.getDuration()/ 1000);
-                        String timeFormat = HelperFunctions.GetTimeFormat(activity.player.mMediaPlayer.getDuration()/ 1000);
-                        txtFullTime.setText(timeFormat);
-                    }
-                    if(activity.isPlaying && !activity.isPaused) {
-                        activity.player.mMediaPlayer.pause();
-                        imgBtnPlay.setImageResource(R.drawable.baseline_play_arrow_24);
-                        activity.isPlaying = false; activity.isPaused = true;
-                    }
-                    else if(activity.isPaused)
-                    {
-                        activity.player.mMediaPlayer.start();
-                        imgBtnPlay.setImageResource(R.drawable.baseline_pause_24);
-                        activity.isPlaying = true; activity.isPaused = false;
-                    }
+                    activity.playAudio(url);
+                    imgBtnPlay.setImageResource(R.drawable.baseline_pause_24);
                 }
             }
         });
@@ -205,7 +195,16 @@ public class CarPlayFragment extends Fragment {
             {
                 SideMenu activity =  (SideMenu) getContext();
                 HelperFunctions.getPreviousTrack(activity, activity.mediaPlayerFragment.currentTrack.getId());
-                activity.mediaPlayerFragment.refreshCurrentTrackInfo();
+                if(activity.player!= null)
+                {
+                    seekBar.setMax(activity.player.mMediaPlayer.getDuration()/ 1000);
+                    String timeFormat = HelperFunctions.GetTimeFormat(activity.player.mMediaPlayer.getDuration()/ 1000);
+                    txtFullTime.setText(timeFormat);
+                    activity.isPlaying = true; activity.isPaused = false;
+                    imgBtnPlay.setImageResource(R.drawable.baseline_pause_24);
+                }
+                refreshCurrentTrackInfo(activity);
+                //activity.mediaPlayerFragment.refreshCurrentTrackInfo();
             }
         });
         imgBtnNext.setOnClickListener(new View.OnClickListener()
@@ -215,7 +214,16 @@ public class CarPlayFragment extends Fragment {
             {
                 SideMenu activity =  (SideMenu) getContext();
                 HelperFunctions.getNextTrack(activity, activity.mediaPlayerFragment.currentTrack.getId());
-                activity.mediaPlayerFragment.refreshCurrentTrackInfo();
+                if(activity.player!= null)
+                {
+                    seekBar.setMax(activity.player.mMediaPlayer.getDuration()/ 1000);
+                    String timeFormat = HelperFunctions.GetTimeFormat(activity.player.mMediaPlayer.getDuration()/ 1000);
+                    txtFullTime.setText(timeFormat);
+                    activity.isPlaying = true; activity.isPaused = false;
+                    imgBtnPlay.setImageResource(R.drawable.baseline_pause_24);
+                }
+                refreshCurrentTrackInfo(activity);
+                //activity.mediaPlayerFragment.refreshCurrentTrackInfo();
             }
         });
         imgBtnShuffle.setOnClickListener(new View.OnClickListener()
@@ -240,38 +248,7 @@ public class CarPlayFragment extends Fragment {
                     if(activity.serviceBound)
                     {
                         //Toast.makeText(activity, "maroosh", Toast.LENGTH_SHORT).show();
-                        if(!activity.player.mMediaPlayer.isPlaying())
-                        {
-                            activity.mProgressDialog.dismiss();
-                        }
-                        if(activity.isPlaying)
-                        {
-                            activity.numberOfListenedSeconds += 1;
-                            activity.numberOfCurrentSecondsInTrack +=1;
-                            //activity.numberOfTotalSeconds += activity.numberOfCurrentSeconds;
-                        }
-                        int n = activity.numberOfUnitsSendToServer * Global.ListenUnitInSeconds + Global.ListenUnitInSeconds;
-                        if(activity.numberOfListenedSeconds >= n)
-                        {
-                            int numberOfUnRegisteredSeconds = activity.numberOfListenedSeconds -activity.numberOfUnitsSendToServer * Global.ListenUnitInSeconds;
-                            final int numberOfConsumedUnits = numberOfUnRegisteredSeconds / Global.ListenUnitInSeconds;
-                            //Toast.makeText(activity, "numberOfUnRegisteredSeconds=" + numberOfUnRegisteredSeconds, Toast.LENGTH_SHORT).show();
-                            // send to server that we used 1 unit
-                            Call<IResponse> call = Global.client.AddUnitUsageForUser(activity.mediaPlayerFragment.currentTrack.getId(), numberOfConsumedUnits);
-                            call.enqueue(new Callback<IResponse>(){
-                                public void onResponse(Call<IResponse> call, Response<IResponse> response) {
-                                    //generateDataList(response.body());
-                                    IResponse partners=response.body();
-                                    activity.numberOfUnitsSendToServer +=numberOfConsumedUnits;
 
-                                    Toast.makeText(activity, ""+ numberOfConsumedUnits +" Unit consumed from your quota", Toast.LENGTH_SHORT).show();
-                                }
-                                public void onFailure(Call<IResponse> call, Throwable t)
-                                {
-
-                                }
-                            });
-                        }
                        /* if(seekBar == null)
                             seekBar = (SeekBar) rootView.findViewById(R.id.seekBar);
 */
@@ -328,5 +305,15 @@ public class CarPlayFragment extends Fragment {
             //Service is active
             //Send media with BroadcastReceiver
         }
+    }
+
+    public void refreshCurrentTrackInfo(SideMenu activity)
+    {
+        activity.mediaPlayerFragment.hasLocation = activity.mediaPlayerFragment.currentTrack.isHasLocation();
+        activity.mediaPlayerFragment.hasText = activity.mediaPlayerFragment.currentTrack.isHasText();
+        txtTrackName.setText(activity.mediaPlayerFragment.currentTrack.getName());
+        txtPartnerName.setText(activity.mediaPlayerFragment.currentTrack.getPartnerName());
+        //String ulrLogo = Uri.parse(currentTrack.getPartnerLogo());
+        //partnerLogo.setImageURI(ulrLogo);
     }
 }

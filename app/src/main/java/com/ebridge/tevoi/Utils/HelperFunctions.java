@@ -94,7 +94,8 @@ public class HelperFunctions
         {
             Toast.makeText(activity, R.string.play_now_list_isempty, Toast.LENGTH_SHORT).show();
         }
-        else {
+        else
+        {
                 activity.isPlayingFromPlayNowList = true;
                 activity.indexCurrentTrackInPlayList ++;
                 if(activity.indexCurrentTrackInPlayList >= listSize)
@@ -116,14 +117,14 @@ public class HelperFunctions
         }
     }
 
-    public static void resetMediaPlayer(SideMenu activity)
+   /* public static void resetMediaPlayer(SideMenu activity)
     {
         // reset the media player
         if(activity.serviceBound)
             activity.player.resetMediaPlayer();
         activity.isPaused =false; activity.isPlaying = false;
         activity.serviceBound = false;
-    }
+    }*/
     public static TrackObject CastTrackSerialize(TrackSerializableObject obj)
     {
         TrackObject result = new TrackObject();
