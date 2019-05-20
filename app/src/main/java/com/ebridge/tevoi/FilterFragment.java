@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import com.ebridge.tevoi.Utils.Global;
 import com.ebridge.tevoi.adapter.CategoriesAdapter;
 import com.ebridge.tevoi.adapter.SubscripedPartnersAdapter;
+import com.ebridge.tevoi.adapter.TrackTypeAdapter;
 import com.ebridge.tevoi.model.CategoryObject;
 import com.ebridge.tevoi.model.CategoryResponseList;
 import com.ebridge.tevoi.model.GetSubscripedPartnersResponse;
@@ -44,6 +45,7 @@ public class FilterFragment extends Fragment {
 
     CategoriesAdapter adapterCategories;
     SubscripedPartnersAdapter adapterPartners;
+    TrackTypeAdapter trackTypeAdapter;
 
 
     @Override
@@ -69,6 +71,10 @@ public class FilterFragment extends Fragment {
 
         trackTypeRecyclerView = rootView.findViewById(R.id.track_type_recycler_view);
         trackTypeRecyclerView.setLayoutManager(layoutManager);
+        trackTypeAdapter = new TrackTypeAdapter(getContext());
+        trackTypeRecyclerView.setAdapter(trackTypeAdapter);
+        DividerItemDecoration itemDecorTrackType = new DividerItemDecoration(getContext(), VERTICAL);
+        trackTypeRecyclerView.addItemDecoration(itemDecorTrackType);
 
         mProgressDialog.setMessage("Loading");
         mProgressDialog.show();

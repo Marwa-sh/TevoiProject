@@ -14,6 +14,10 @@ public class TrackTypeObject {
         TrackTypeFilter = trackTypeFilter;
     }
 
+    public TrackTypeObject() {
+
+    }
+
     public void setId(int id) {
         Id = id;
     }
