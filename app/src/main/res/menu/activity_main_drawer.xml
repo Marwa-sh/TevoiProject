@@ -3,40 +3,41 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/balance_inquiry"
-            android:icon="@drawable/rounded_button"
-            android:title="Balance Inquiry" />
+            android:id="@+id/home"
+            android:icon="@android:drawable/ic_menu_call"
+            android:title="Home" />
         <item
-            android:id="@+id/transfer"
-            android:icon="@drawable/cross"
-            android:title="Transfer" />
+            android:id="@+id/timeTable"
+            android:title="Time Table" />
         <item
-            android:id="@+id/summary"
-            android:icon="@android:drawable/ic_menu_my_calendar"
-            android:title="Summary" />
+            android:id="@+id/examSchedule"
+            android:title="Exam Schedule" />
         <item
-            android:id="@+id/payment_requests"
-            android:icon="@drawable/baseline_pause_24"
-            android:title="Payment Requests" />
+            android:id="@+id/attendence"
+            android:title="Attendence" />
         <item
-            android:id="@+id/payments_summary"
-            android:icon="@drawable/baseline_fast_forward_24"
-            android:title="Payments Summary" />
-        <item
-            android:id="@+id/charge_ewallet"
-            android:icon="@drawable/launcher_background"
-            android:title="Charge EWallet" />
+            android:id="@+id/result"
+            android:title="Results" />
     </group>
 
-</menu>
+    <item android:title="Social">
+        <menu>
+            <item
+                android:id="@+id/fb"
+                android:title="Faacebook" />
+            <item
+                android:id="@+id/gplus"
+                android:title="Google +" />
+            <item
+                android:id="@+id/twitter"
+                android:title="Twitter" />
+            <item
+                android:id="@+id/youtube"
+                android:title="Youtube" />
+            <item
+                android:id="@+id/github"
+                android:title="Github" />
+        </menu>
+    </item>
 
-    <!--
-        <item android:title="Agent">
-            <menu>
-                <item
-                    android:id="@+id/feed_ewallet"
-                    android:icon="@drawable/ic_menu_share"
-                    android:title="Feed EWallet Balance" />
-            </menu>
-        </item>
-    -->
+</menu>
