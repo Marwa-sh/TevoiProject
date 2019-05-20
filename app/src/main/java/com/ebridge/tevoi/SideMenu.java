@@ -1,5 +1,6 @@
 package com.ebridge.tevoi;
 
+import android.app.ActionBar;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
@@ -14,8 +15,9 @@ import android.os.IBinder;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
+/*import android.support.v7.app.ActionBar;*/
 import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,6 +38,7 @@ import com.ebridge.tevoi.rest.ApiClient;
 import com.ebridge.tevoi.rest.ApiInterface;
 
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -142,10 +145,37 @@ public class SideMenu extends FragmentActivity {
     //
     MenuItem searchBtn ;
 
+    public void initActionBar(String subTitle)
+    {
+        final ActionBar abar =  getActionBar();
+        //abar.setBackgroundDrawable(getResources().getDrawable(R.drawable.actionbar_background));//line under the action bar
+        View viewActionBar = getLayoutInflater().inflate(R.layout.nav_header_main, null);
+        ActionBar.LayoutParams params = new ActionBar.LayoutParams(//Center the textview in the ActionBar !
+                ActionBar.LayoutParams.MATCH_PARENT,
+                ActionBar.LayoutParams.MATCH_PARENT,
+                Gravity.CENTER);
+        TextView textviewTitle = (TextView) viewActionBar.findViewById(R.id.tvTitle);
+        textviewTitle.setText("Tevoi");
+        TextView textviewSubTitle = (TextView) viewActionBar.findViewById(R.id.tvSubTitle);
+        textviewSubTitle.setText(subTitle);
+        abar.setCustomView(viewActionBar, params);
+        abar.setDisplayShowCustomEnabled(true);
+        abar.setDisplayShowTitleEnabled(false);
+        abar.setDisplayHomeAsUpEnabled(true);
+        abar.setIcon(R.color.fontColor);
+        abar.setHomeButtonEnabled(true);
+
+        //abar.setBackgroundDrawable(getResources().getDrawable(R.drawable.launcher_background));
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_side_menu);
+
+        initActionBar("Start");
+
 
         //region detect language
         Resources res = getBaseContext().getResources();
@@ -217,14 +247,14 @@ public class SideMenu extends FragmentActivity {
         mDrawerList.setAdapter(adapter);
         // endregion
 
-        // Enabling Home button
-        getActionBar().setHomeButtonEnabled(true);
-        getActionBar().setTitle("Tevoi");
-        //getActionBar().setSubtitle("subtitle");
-        getActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.launcher_background));
 
+        // Enabling Home button
+        //getActionBar().setHomeButtonEnabled(true);
+        //getActionBar().setTitle("Tevoi");
+        //getActionBar().setSubtitle("subtitle");
+        //
         // Enabling Up navigation
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        //getActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Setting item click listener for the listview mDrawerList
         mDrawerList.setOnItemClickListener(new OnItemClickListener() {
@@ -244,7 +274,7 @@ public class SideMenu extends FragmentActivity {
                 android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
                 //Currently selected river
-                mTitle = rivers[position];
+                mTitle = rivers[position]; initActionBar(mTitle);
                 switch(mTitle)
                 {
                     case "History" :
