@@ -24,10 +24,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
 
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="0dp"
         android:text="TrackName"
 
-        android:textColor="@color/tevoiBlueSecondary"
+        android:textColor="@color/fontColor"
         android:textSize="35dp" />
 
     <ImageButton
@@ -94,6 +94,7 @@
             android:progressBackgroundTint="@color/design_default_color_primary"
             android:progressTint="@color/tevoiStar"
             android:thumbTint="@color/tevoiStar"
+            android:maxHeight="1000dp"
             />
         <TextView
             android:layout_width="wrap_content"
@@ -128,8 +129,9 @@
             android:layout_height="match_parent"
             android:text="partnername"
             android:textColor="@color/fontColor"
-            android:textSize="30dp"
+            android:textSize="20dp"
             android:layout_weight="1"
+            android:gravity="center_horizontal|center_vertical"
 
             />
         <ImageView

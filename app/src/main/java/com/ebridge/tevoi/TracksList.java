@@ -5,10 +5,13 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -16,14 +19,19 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.ebridge.tevoi.Utils.Global;
+import com.ebridge.tevoi.Utils.HelperFunctions;
 import com.ebridge.tevoi.adapter.Category;
 import com.ebridge.tevoi.adapter.Track;
 import com.ebridge.tevoi.adapter.TracksAdapter;
 import com.ebridge.tevoi.model.IResponse;
+import com.ebridge.tevoi.model.TrackObject;
 import com.ebridge.tevoi.model.TrackResponse;
 import com.ebridge.tevoi.model.TrackResponseList;
 import com.ebridge.tevoi.model.UserListObject;
@@ -49,9 +57,24 @@ public class TracksList extends Fragment implements AdapterView.OnItemSelectedLi
     public int defaultTab;
     SideMenu activity;
     ImageButton btnSearch;
+    public FragmentManager fm;
+    public ScrollView scrollViewListTracks;
+    public LinearLayout linearLayoutListTracks;
+
 
     View rootView;
+    public void initMediaPlayerLayout(View rootView)
+    {
+        activity.mainPlayerLayout = rootView.findViewById(R.id.layout_main_player_include);
 
+        //activity.mainPlayerLayout = rootView.findViewById(R.id.linearLayout_media_player_main);
+        activity.seekBarMainPlayer = rootView.findViewById(R.id.seekBar_main_player);
+        activity.txtCurrentTime= rootView.findViewById(R.id.currentTime_main_player);
+        activity.txtFinishTime= rootView.findViewById(R.id.fullTime_main_player);
+        activity.txtTrackName= rootView.findViewById(R.id.txt_track_name_main_player);
+        activity.btnPausePlayMainMediaPlayer = rootView.findViewById(R.id.img_btn_pause_main_player);
+
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -60,6 +83,103 @@ public class TracksList extends Fragment implements AdapterView.OnItemSelectedLi
         activity  = (SideMenu)getActivity();
         active_tab = defaultTab;
         btnSearch = rootView.findViewById(R.id.btn_search);
+        fm = getActivity().getSupportFragmentManager();
+        scrollViewListTracks = (ScrollView) rootView.findViewById(R.id.scrollViewListTracks);
+        linearLayoutListTracks  = rootView.findViewById(R.id.linearLayoutListTracks);
+
+        initMediaPlayerLayout(rootView);
+
+        activity.mainPlayerLayout.setOnTouchListener(new View.OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) {
+
+                if(event.getAction() == MotionEvent.ACTION_MOVE){
+                    //do something
+                    if(activity.CurrentTrackInPlayer != null)
+                    {
+                        FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
+                        // Replace the contents of the container with the new fragment
+                        //TrackAddToList frag = new TrackAddToList();
+
+                        activity.mediaPlayerFragment.currentTrackId = activity.CurrentTrackInPlayer.getId();
+
+                        activity.mediaPlayerFragment.currentTrack = activity.CurrentTrackInPlayer;
+
+                        ft.replace(R.id.content_frame, activity.mediaPlayerFragment);
+                        // or ft.add(R.id.your_placeholder, new FooFragment());
+                        // Complete the changes added above
+                        ft.commit();
+
+                    }
+                    else
+                    {
+                        Toast.makeText(activity, "You didn't choose a track", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                return true;
+            }
+        });
+        activity.seekBarMainPlayer.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                SideMenu activity = (SideMenu)getActivity();
+                if(activity != null) {
+                    if (activity.serviceBound && fromUser) {
+                        // TODO  : check user quota
+
+                        activity.player.mMediaPlayer.seekTo(progress * 1000);
+                        String timeFormat = HelperFunctions.GetTimeFormat(progress);
+                        activity.txtCurrentTime.setText(timeFormat);
+                        int numberofMovedSeconds = progress - activity.numberOfCurrentSecondsInTrack;
+                        activity.numberOfCurrentSecondsInTrack = progress;
+                        activity.numberOfListenedSeconds += numberofMovedSeconds;
+                        //Toast.makeText(activity, "numberofMovedSeconds=" + numberofMovedSeconds, Toast.LENGTH_SHORT).show();
+                    }
+                }
+                else
+                {
+                    // this case when the seek bar for main media player is playing and we moved to media playe fragment
+
+                }
+            }
+        });
+
+
+        activity.btnPausePlayMainMediaPlayer.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if(activity.serviceBound)
+                {
+                    if(activity.player.mMediaPlayer.isPlaying())
+                    {
+                        activity.player.mMediaPlayer.pause();
+                        activity.btnPausePlayMainMediaPlayer.setImageResource(R.drawable.baseline_play_arrow_24);
+                    }
+                    else
+                    {
+                        activity.player.mMediaPlayer.start();
+                        activity.btnPausePlayMainMediaPlayer.setImageResource(R.drawable.baseline_pause_24);
+                    }
+                }
+                else
+                {
+                    //activity.playAudio(url);
+                    //activity.btnPausePlayMainMediaPlayer.setImageResource(R.drawable.baseline_pause_24);
+                }
+            }
+        });
         if(btnSearch != null)
         {
             btnSearch.setOnClickListener(new View.OnClickListener() {

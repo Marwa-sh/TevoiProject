@@ -39,6 +39,8 @@ public class Global {
     public  static  final  String PlayNextListFragment = "PlayNextListFragment";
     public  static  final  String CarPlayFragment = "CarPlayFragment";
 
+    public  static  final String GetStreamURL= "http://h2817272.stratoserver.net/TevoiAPI/api/Services/GetStreamAudio?id=";
+
     public final static ApiInterface client = ApiClient.getClient().create(ApiInterface.class);
 
     public static  final int ListenUnitInSeconds = 60;

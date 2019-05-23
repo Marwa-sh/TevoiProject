@@ -87,10 +87,8 @@ public interface ApiInterface {
     @GET("api/Services/GetTrackText")
     Call<TrackTextResponse> GetTrackText(@Query("TrackId") int TrackId);
 
-
-    @FormUrlEncoded()
-    @POST("api/Services/AddComment")
-    Call<AddCommentResponse> AddComment(@Field("TrackId") int TrackId, @Field("CommentText") String CommentText);
+    @GET("api/Services/AddComment")
+    Call<AddCommentResponse> AddComment(@Query("TrackId") int TrackId, @Query("CommentText") String CommentText);
 
     @GET("api/Services/RemoveFromHistory")
     Call<IResponse> RemoveFromHistory(@Query("ActivityId") int ActivityId);
@@ -100,7 +98,6 @@ public interface ApiInterface {
 
     @GET("api/Services/AddListenTrackActivity")
     Call<IResponse> AddListenTrackActivity(@Query("TrackId") int TrackId);
-
 
     @GET("api/Services/AddTrackToFavourite")
     Call<IResponse> AddTrackToFavourite(@Query("TrackId") int TrackId);
@@ -160,7 +157,6 @@ public interface ApiInterface {
 
 
     @POST("api/Services/SendFeedback")
-    @FormUrlEncoded
     Call<IResponse> SendFeedback(@Body FeedbackRequest request);
 
     @POST("api/User/Login")
