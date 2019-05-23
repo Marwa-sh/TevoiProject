@@ -120,6 +120,7 @@ public class SideMenu extends FragmentActivity {
    // TracksList listTracksFargment = new TracksList();
     InterfaceLanguageFragment interfaceLanguageFragment = new InterfaceLanguageFragment();
     LoginFragment loginFragment = new LoginFragment();
+    RegisterFragment registerFragment = new RegisterFragment();
     PartnersFragment partnersFragment = new PartnersFragment();
     NotificationFragment notificationFragment = new NotificationFragment();
     DownloadFragment downloadFragment = new DownloadFragment();
@@ -327,7 +328,7 @@ public class SideMenu extends FragmentActivity {
                     }
                     case "Login/Register":
                     {
-                        fragmentTransaction.replace(R.id.content_frame, loginFragment);
+                        fragmentTransaction.replace(R.id.content_frame, registerFragment);
                         fragmentTransaction.commit();
                         break;
                     }

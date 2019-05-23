@@ -49,7 +49,7 @@
         android:layout_marginTop="7dp"
         android:layout_marginRight="30dp"
         android:layout_marginEnd="30dp"
-
+        android:id="@+id/et_register_user_name"
         android:background="@drawable/rounded_edittext" />
 
     <TextView
@@ -62,14 +62,16 @@
         android:textColor="@color/fontColor" />
 
     <EditText
+        android:id="@+id/et_register_email"
         android:layout_width="match_parent"
         android:layout_height="42dp"
         android:layout_marginStart="30dp"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="7dp"
-        android:layout_marginRight="30dp"
         android:layout_marginEnd="30dp"
-        android:background="@drawable/rounded_edittext" />
+        android:layout_marginRight="30dp"
+        android:background="@drawable/rounded_edittext"
+        android:inputType="textWebEmailAddress" />
 
     <TextView
         android:id="@+id/textView4"
@@ -81,14 +83,16 @@
         android:textColor="@color/fontColor" />
 
     <EditText
+        android:id="@+id/et_register_password"
         android:layout_width="match_parent"
         android:layout_height="42dp"
         android:layout_marginStart="30dp"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="7dp"
-        android:layout_marginRight="30dp"
         android:layout_marginEnd="30dp"
-        android:background="@drawable/rounded_edittext" />
+        android:layout_marginRight="30dp"
+        android:background="@drawable/rounded_edittext"
+        android:inputType="textPassword" />
 
     <TextView
         android:id="@+id/textView5"
@@ -100,15 +104,16 @@
         android:textColor="@color/fontColor" />
 
     <EditText
+        android:id="@+id/et_register_confirm_password"
         android:layout_width="match_parent"
         android:layout_height="42dp"
         android:layout_marginStart="30dp"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="7dp"
-        android:layout_marginRight="30dp"
         android:layout_marginEnd="30dp"
-
-        android:background="@drawable/rounded_edittext" />
+        android:layout_marginRight="30dp"
+        android:background="@drawable/rounded_edittext"
+        android:inputType="textPassword" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -135,13 +140,15 @@
         android:layout_marginTop="13.75dp"
         android:textColor="@color/fontColor" />
 
-    <EditText
-        android:layout_width="85dp"
-        android:layout_height="41dp"
-        android:layout_marginTop="3dp"
-        android:layout_marginLeft="30dp"
+        <EditText
+            android:id="@+id/et_register_age"
+            android:layout_width="85dp"
+            android:layout_height="41dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="3dp"
 
-        android:background="@drawable/rounded_edittext" />
+            android:background="@drawable/rounded_edittext"
+            android:inputType="number" />
     </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
@@ -157,11 +164,12 @@
                 android:layout_marginTop="13.75dp"
                 android:textColor="@color/fontColor" />
 
-            <EditText
+            <Spinner
                 android:layout_width="97dp"
                 android:layout_height="41dp"
                 android:layout_marginTop="3dp"
                 android:layout_marginLeft="13dp"
+                android:id="@+id/spnrGender"
 
                 android:background="@drawable/rounded_edittext" />
     </LinearLayout>
@@ -183,6 +191,7 @@
         android:layout_marginTop="7dp"
         android:layout_marginRight="30dp"
         android:layout_marginEnd="30dp"
+        android:id="@+id/et_register_occupation"
         android:background="@drawable/rounded_edittext" />
     <TextView
         android:id="@+id/textView8"
@@ -193,7 +202,7 @@
         android:layout_marginTop="9dp"
         android:textColor="@color/fontColor" />
 
-    <EditText
+    <Spinner
         android:layout_width="match_parent"
         android:layout_height="42dp"
         android:layout_marginStart="30dp"
@@ -201,6 +210,7 @@
         android:layout_marginTop="7dp"
         android:layout_marginRight="30dp"
         android:layout_marginEnd="30dp"
+        android:id="@+id/spnrCountries"
         android:background="@drawable/rounded_edittext" />
 <LinearLayout
     android:layout_width="wrap_content"
@@ -216,6 +226,7 @@
         android:scaleType="fitXY"
         android:src="@drawable/tick"
         android:layout_gravity="center_vertical"
+        android:id="@+id/imgbtn_register"
 
         />
 
@@ -236,6 +247,7 @@
         android:src="@drawable/cross"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="83dp"
+        android:id="@+id/imgbtn_register_cancel"
 
 
         />
