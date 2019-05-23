@@ -73,6 +73,8 @@ public class LoginFragment extends Fragment {
                             if(login.getNumber() == 0)
                             {
                                 activity.storageManager.storeTokenPreference(activity, login.getToken());
+                                Global.UserToken = activity.storageManager.getTokenPreference(activity);
+
                                 android.support.v4.app.FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
                                 fragmentTransaction.replace(R.id.content_frame, activity.lisTracksFragment);
                                 fragmentTransaction.addToBackStack( "lisTracksFragment" );

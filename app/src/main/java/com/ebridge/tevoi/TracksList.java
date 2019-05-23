@@ -105,6 +105,7 @@ public class TracksList extends Fragment implements AdapterView.OnItemSelectedLi
                         activity.mediaPlayerFragment.currentTrack = activity.CurrentTrackInPlayer;
 
                         ft.replace(R.id.content_frame, activity.mediaPlayerFragment);
+                        ft.addToBackStack( "mediaPlayerFragment" );
                         // or ft.add(R.id.your_placeholder, new FooFragment());
                         // Complete the changes added above
                         ft.commit();

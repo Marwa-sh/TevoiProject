@@ -22,22 +22,24 @@ import retrofit2.Response;
 public class HistoryListFragment extends Fragment {
     TracksAdapter adapter ;
     RecyclerView recyclerView;
-    ApiInterface client;
     View rootView;
+    SideMenu activity;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_history_list, container, false);
-        client = ApiClient.getClient().create(ApiInterface.class);
+        activity = (SideMenu) getActivity();
+
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.history_tracks_recycler_View);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
 
+        activity.mProgressDialog.setMessage("Loading"); activity.mProgressDialog.show();
 
-        Call<TrackResponseList> call = client.getHistoryList(0, 10);
+        Call<TrackResponseList> call = Global.client.getHistoryList(0, 10);
         call.enqueue(new Callback <TrackResponseList>(){
             public void onResponse(Call<TrackResponseList> call, Response<TrackResponseList> response) {
                 //generateDataList(response.body());
@@ -48,11 +50,12 @@ public class HistoryListFragment extends Fragment {
                 //recyclerView.setAdapter(adapter);
                 recyclerView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
-
+                activity.mProgressDialog.dismiss();
                 Toast.makeText(getContext(),"tracks:"+x, Toast.LENGTH_SHORT);
             }
             public void onFailure(Call<TrackResponseList> call, Throwable t)
             {
+                activity.mProgressDialog.dismiss();
                 Toast.makeText(getContext(),"something went wrong", Toast.LENGTH_SHORT);
             }
         });
@@ -76,6 +79,7 @@ public class HistoryListFragment extends Fragment {
 
         android.support.v4.app.FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.content_frame, activity.lisTracksFragment);
+        ft.addToBackStack( "List Tracks" );
         ft.commit();
 
     }
@@ -90,6 +94,7 @@ public class HistoryListFragment extends Fragment {
         activity.lisTracksFragment.defaultTab = 1;
         android.support.v4.app.FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.content_frame, activity.lisTracksFragment);
+        ft.addToBackStack( "List Tracks" );
         ft.commit();
     }
 
@@ -102,6 +107,7 @@ public class HistoryListFragment extends Fragment {
         activity.lisTracksFragment.defaultTab = 2;
         android.support.v4.app.FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.content_frame, activity.lisTracksFragment);
+        ft.addToBackStack( "List Tracks" );
         ft.commit();
     }
 

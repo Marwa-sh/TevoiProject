@@ -33,7 +33,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class PartnersFragment extends Fragment {
-    ProgressDialog mProgressDialog;
     ArrayList<PartnerObject> lstPartners = new ArrayList<>();
     PartnerAdapter adapter ;
     RecyclerView[] recyclerViews= new RecyclerView[4];
@@ -41,14 +40,13 @@ public class PartnersFragment extends Fragment {
     Button[] tabs =  new Button[4];
     public int defaultTab;
     View rootView;
-
+    SideMenu activity;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_partners, container, false);
-
-        mProgressDialog = new ProgressDialog(getActivity());
+        activity = (SideMenu) getActivity();
 
         tabs[0] = rootView.findViewById(R.id.btnAlphabetOrder);
         tabs[1]= rootView.findViewById(R.id.btnNewListPartners);
@@ -96,8 +94,7 @@ public class PartnersFragment extends Fragment {
 
     public void activateTab(int k)
     {
-        mProgressDialog.setMessage("Loading");
-        mProgressDialog.show();
+        activity.mProgressDialog.setMessage("Loading"); activity.mProgressDialog.show();
 
         final int kk= k;
 
@@ -124,12 +121,12 @@ public class PartnersFragment extends Fragment {
                 SideMenu activity = (SideMenu)getActivity();
                 adapter = new PartnerAdapter(partners.getPartners(),activity);
                 recyclerViews[kk].setAdapter(adapter);
-                mProgressDialog.dismiss();
+                activity.mProgressDialog.dismiss();
                 Toast.makeText(getContext(),"partners:"+x, Toast.LENGTH_SHORT);
             }
             public void onFailure(Call<PartnerListResponse> call, Throwable t)
             {
-                mProgressDialog.dismiss();
+                activity.mProgressDialog.dismiss();
                 Toast.makeText(getContext(),"something went wrong", Toast.LENGTH_SHORT);
             }
         });

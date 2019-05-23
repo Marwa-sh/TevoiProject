@@ -50,7 +50,7 @@ public class Global {
 
     public static  final int ListenUnitInSeconds = 60;
 
-    public static final String UserToken = "";
+    public static String UserToken = "";
     public static final String DefaultLanguage = "en";
     public static final String Licence = "";
 

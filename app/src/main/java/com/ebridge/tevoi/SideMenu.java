@@ -211,6 +211,7 @@ public class SideMenu extends FragmentActivity {
                 if (!isActivityPause) {
                     if (serviceBound)
                     {
+                        txtTrackName.setText(CurrentTrackInPlayer.getName().toString());
                         mainPlayerLayout.setVisibility(View.VISIBLE);
                         if (!player.mMediaPlayer.isPlaying()) {
                             mProgressDialog.dismiss();
@@ -253,7 +254,8 @@ public class SideMenu extends FragmentActivity {
                         seekBarMainPlayer.setProgress(mCurrentPosition);
                         String timeFormat = HelperFunctions.GetTimeFormat(mCurrentPosition);
                         txtCurrentTime.setText(timeFormat);
-                    } else {
+                    } else
+                        {
 
                     }
                     mHandler.postDelayed(this, 1000);
@@ -509,7 +511,7 @@ public class SideMenu extends FragmentActivity {
         // Replace the contents of the container with the new fragment
         //TrackShare frag = new TrackShare();
         ft.replace(R.id.content_frame, lisTracksFragment);
-
+        ft.addToBackStack( "List Tracks" );
         // Committing the transaction
         ft.commit();
         // init media player in main page elements
@@ -757,6 +759,7 @@ public class SideMenu extends FragmentActivity {
             //ServiceConnection serviceConnection = serviceConnection;
             Intent playerIntent = new Intent(SideMenu.this, MediaPlayerService.class);
             playerIntent.putExtra("media", media);
+            playerIntent.putExtra("activityStatus", isActivityPause);
             getBaseContext().startService(playerIntent);
             getBaseContext().bindService(playerIntent, serviceConnection, Context.BIND_AUTO_CREATE);
 
@@ -797,8 +800,6 @@ public class SideMenu extends FragmentActivity {
     }
     // endregion
 
-
-
     @Override
     protected void onPause() {
         super.onPause();
@@ -814,7 +815,6 @@ public class SideMenu extends FragmentActivity {
     @Override
     public void onBackPressed()
     {
-        // your code.
         int T= getSupportFragmentManager().getBackStackEntryCount();
         if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
             finish();
