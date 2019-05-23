@@ -26,9 +26,10 @@ public class LoginFragment extends Fragment {
 
 
     View rootView;
-    ImageButton btnLogin, btnCancel,btnRequestNewPassword;
+    ImageButton btnLogin, btnRegister, btnRequestNewPassword;
     EditText etUserName,etPassword,etEmail;
     CheckBox checkBoxRememberMe;
+    SideMenu activity;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -36,8 +37,10 @@ public class LoginFragment extends Fragment {
         // Inflate the layout for this fragment
 
         rootView = inflater.inflate(R.layout.fragment_login, container, false);
+        activity = (SideMenu) getActivity();
+
         btnLogin=rootView.findViewById(R.id.btn_Login);
-        btnCancel=rootView.findViewById(R.id.btn_Calcel_Login);
+        btnRegister=rootView.findViewById(R.id.btn_register);
         btnRequestNewPassword=rootView.findViewById(R.id.btn_Request_new_password);
 
         etUserName=rootView.findViewById(R.id.et_User_Name);
@@ -45,10 +48,6 @@ public class LoginFragment extends Fragment {
         etEmail=rootView.findViewById(R.id.et_enter_email);
 
         checkBoxRememberMe=rootView.findViewById(R.id.checkBox_remember_me);
-
-
-
-
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,13 +64,24 @@ public class LoginFragment extends Fragment {
                 }
                 else {
                     //Login and get token then save it in shared preference
-
-                    Call<LoginResponse> call =Global.client.Login(new LoginRequest(etUserName.getText().toString(),etPassword.getText().toString(),checkBoxRememberMe.isChecked()));
+                    boolean isRememberMe =checkBoxRememberMe.isChecked();
+                    Call<LoginResponse> call =Global.clientDnn.Login(etUserName.getText().toString(),etPassword.getText().toString());
                     call.enqueue(new Callback<LoginResponse>() {
                         @Override
                         public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                             LoginResponse login = response.body();
-                            Toast.makeText(rootView.getContext(),login.Message,Toast.LENGTH_SHORT).show();
+                            if(login.getNumber() == 0)
+                            {
+                                activity.storageManager.storeTokenPreference(activity, login.getToken());
+                                android.support.v4.app.FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
+                                fragmentTransaction.replace(R.id.content_frame, activity.lisTracksFragment);
+                                fragmentTransaction.addToBackStack( "lisTracksFragment" );
+                                fragmentTransaction.commit();
+                            }
+                            else
+                            {
+                                Toast.makeText(rootView.getContext(),login.Message,Toast.LENGTH_SHORT).show();
+                            }
 
                         }
 
@@ -80,14 +90,19 @@ public class LoginFragment extends Fragment {
 
                         }
                     });
-
-
                 }
-
-
             }
         });
+        btnRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                android.support.v4.app.FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
 
+                fragmentTransaction.replace(R.id.content_frame, activity.registerFragment);
+                fragmentTransaction.addToBackStack( "registerFragment" );
+                fragmentTransaction.commit();
+            }
+        });
 
         return rootView;
 

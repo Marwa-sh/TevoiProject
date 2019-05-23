@@ -6,12 +6,12 @@ import java.util.List;
 public class LoginResponse  extends IResponse{
 
     @SerializedName("Token")
-    private String message;
+    private String Token;
 
-    public String getMessage(){
-        return message;
+    public String getToken(){
+        return Token;
     }
-    public void setMessage(String message){
-        this.message = message;
+    public void setToken(String token){
+        this.Token = token;
     }
 }

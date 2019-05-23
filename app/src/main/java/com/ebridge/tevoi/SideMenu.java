@@ -19,6 +19,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
 /*import android.support.v7.app.ActionBar;*/
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -125,7 +126,7 @@ public class SideMenu extends FragmentActivity {
     public TextView txtTrackName;
     ImageButton btnPausePlayMainMediaPlayer;
 
-    boolean  isActivityPause  = false;
+    public boolean  isActivityPause  = false;
 
 
     // endregion
@@ -146,7 +147,9 @@ public class SideMenu extends FragmentActivity {
    // TracksList listTracksFargment = new TracksList();
     InterfaceLanguageFragment interfaceLanguageFragment = new InterfaceLanguageFragment();
     LoginFragment loginFragment = new LoginFragment();
+    RegisterFragment registerFragment = new RegisterFragment();
     PartnersFragment partnersFragment = new PartnersFragment();
+    public PartnerNameFragment partnerNameFragment = new PartnerNameFragment();
     NotificationFragment notificationFragment = new NotificationFragment();
     DownloadFragment downloadFragment = new DownloadFragment();
     AboutUsFragment aboutUsFragment = new AboutUsFragment();
@@ -188,7 +191,7 @@ public class SideMenu extends FragmentActivity {
         abar.setIcon(R.color.fontColor);
         abar.setHomeButtonEnabled(true);
         abar.setBackgroundDrawable(getResources().getDrawable(R.drawable.launcher_background));
-        abar.setElevation(0);
+        //abar.setElevation(0);
         //abar.setElevation(0);
     }
 
@@ -265,11 +268,15 @@ public class SideMenu extends FragmentActivity {
         initActionBar("Start");
 
         //region detect language
+
+       /* String language = storageManager.getLanguagePreference(this);
+        if(language == null)
+            language = "en";*/
         Resources res = getBaseContext().getResources();
         // Change locale settings in the app.
         DisplayMetrics dm = res.getDisplayMetrics();
         android.content.res.Configuration conf = res.getConfiguration();
-        conf.setLocale(new Locale(Global.Language)); // API 17+ only.
+        conf.setLocale(new Locale("en")); // API 17+ only.
         // Use conf.locale = new Locale(...) if targeting lower versions
         res.updateConfiguration(conf, dm);
         // endregion
@@ -370,126 +377,128 @@ public class SideMenu extends FragmentActivity {
                     case "History" :
                     {
                         fragmentTransaction.replace(R.id.content_frame, historyListFragment);
-                        fragmentTransaction.addToBackStack( "historyListFragment" );
+                        fragmentTransaction.addToBackStack( "History" );
                         fragmentTransaction.commit();
                         break;
                     }
                     case "Play Next" :
                     {
                         fragmentTransaction.replace(R.id.content_frame, playingNowFragment);
-                        fragmentTransaction.addToBackStack( "playingNowFragment" );
+                        fragmentTransaction.addToBackStack( "Play Next" );
                         fragmentTransaction.commit();
                         break;
                     }
                     case "Favourite" :
                     {
                         fragmentTransaction.replace(R.id.content_frame, favouriteFragment);
-                        fragmentTransaction.addToBackStack( "favouriteFragment" );
+                        fragmentTransaction.addToBackStack( "Favourite" );
                         fragmentTransaction.commit();
                         break;
                     }
                     case "My Lists" :
                     {
                         fragmentTransaction.replace(R.id.content_frame, userListsFragment);
-                        fragmentTransaction.addToBackStack( "userListsFragment" );
+                        fragmentTransaction.addToBackStack( "My Lists" );
                         fragmentTransaction.commit();
                         break;
                     }
                     case "Interface Language" :
                     {
                         fragmentTransaction.replace(R.id.content_frame, interfaceLanguageFragment);
-                        fragmentTransaction.addToBackStack( "interfaceLanguageFragment" );
+                        fragmentTransaction.addToBackStack( "Interface Language" );
                         fragmentTransaction.commit();
                         break;
                     }
                     case "Partners" :
                     {
                         fragmentTransaction.replace(R.id.content_frame, partnersFragment);
-                        fragmentTransaction.addToBackStack( "partnersFragment" );
+                        fragmentTransaction.addToBackStack( "Partners" );
                         fragmentTransaction.commit();
                         break;
                     }
                     case "Notifications" :
                     {
                         fragmentTransaction.replace(R.id.content_frame, notificationFragment);
-                        fragmentTransaction.addToBackStack( "notificationFragment" );
+                        fragmentTransaction.addToBackStack( "Notifications" );
                         fragmentTransaction.commit();
                         break;
                     }
                     case "Download limits" :
                     {
                         fragmentTransaction.replace(R.id.content_frame, downloadFragment);
-                        fragmentTransaction.addToBackStack( "downloadFragment" );
+                        fragmentTransaction.addToBackStack( "Download limits" );
                         fragmentTransaction.commit();
                         break;
                     }
                     case "About Us" :
                     {
                         fragmentTransaction.replace(R.id.content_frame, aboutUsFragment);
-                        fragmentTransaction.addToBackStack( "aboutUsFragment" );
+                        fragmentTransaction.addToBackStack( "About Us" );
                         fragmentTransaction.commit();
                         break;
                     }
                     case "Feedback and Contact" :
                     {
                         fragmentTransaction.replace(R.id.content_frame, feedbackFragment);
-                        fragmentTransaction.addToBackStack( "feedbackFragment" );
+                        fragmentTransaction.addToBackStack( "Feedback and Contact" );
                         fragmentTransaction.commit();
                         break;
                     }
                     case "Follow Us" :
                     {
                         fragmentTransaction.replace(R.id.content_frame, followUsFragment);
-                        fragmentTransaction.addToBackStack( "followUsFragment" );
+                        fragmentTransaction.addToBackStack( "Follow Us" );
                         fragmentTransaction.commit();
                         break;
                     }
                     case "List Tracks" :
                     {
                         fragmentTransaction.replace(R.id.content_frame, lisTracksFragment);
-                        fragmentTransaction.addToBackStack( "lisTracksFragment" );
+                        fragmentTransaction.addToBackStack( "List Tracks" );
                         fragmentTransaction.commit();
                         break;
                     }
                     case "Filters" :
                     {
                         fragmentTransaction.replace(R.id.content_frame, filterFragment);
-                        fragmentTransaction.addToBackStack( "filterFragment" );
+                        fragmentTransaction.addToBackStack( "Filters" );
                         fragmentTransaction.commit();
                         break;
                     }
                     case "Login/Register":
                     {
                         fragmentTransaction.replace(R.id.content_frame, loginFragment);
-                        fragmentTransaction.addToBackStack( "loginFragment" );
+                        fragmentTransaction.addToBackStack( "Login/Register" );
+                        fragmentTransaction.commit();
+                        break;
+                    }
+                    default:
+                    {
+                        // Creating a fragment object
+                        SideMenuFragment rFragment = new SideMenuFragment();
+
+                        // Creating a Bundle object
+                        Bundle data = new Bundle();
+
+                        // Setting the index of the currently selected item of mDrawerList
+                        data.putInt("position", position);
+
+                        // Setting the position to the fragment
+                        rFragment.setArguments(data);
+
+                        //FragmentManager fragmentManager = getFragmentManager();
+                        //FragmentTransaction ft = fragmentManager.beginTransaction();
+
+                        // Adding a fragment to the fragment transaction
+                        fragmentTransaction.replace(R.id.content_frame, rFragment);
+                        fragmentTransaction.addToBackStack( "rFragment" );
+
+                        // Committing the transaction
                         fragmentTransaction.commit();
                         break;
                     }
                 };
-                // Creating a fragment object
-                SideMenuFragment rFragment = new SideMenuFragment();
 
-                // Creating a Bundle object
-                Bundle data = new Bundle();
-
-                // Setting the index of the currently selected item of mDrawerList
-                data.putInt("position", position);
-
-                // Setting the position to the fragment
-                rFragment.setArguments(data);
-
-                // Getting reference to the FragmentManager
-                FragmentManager fragmentManager = getFragmentManager();
-
-                // Creating a fragment transaction
-                FragmentTransaction ft = fragmentManager.beginTransaction();
-
-                // Adding a fragment to the fragment transaction
-                ft.replace(R.id.content_frame, rFragment);
-                ft.addToBackStack( "rFragment" );
-
-                // Committing the transaction
-                ft.commit();
 
                 // Closing the drawer
                 mDrawerLayout.closeDrawer(mDrawerList);
@@ -801,4 +810,40 @@ public class SideMenu extends FragmentActivity {
         super.onResume();
         isActivityPause = false;
     }
+
+    @Override
+    public void onBackPressed()
+    {
+        // your code.
+        int T= getSupportFragmentManager().getBackStackEntryCount();
+        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            finish();
+        }
+        else if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
+            finish();
+        }
+        else
+        {
+            String tr = getSupportFragmentManager().getBackStackEntryAt(T-2).getName();
+            initActionBar(tr);
+            //setTitle(tr);
+            getSupportFragmentManager().popBackStackImmediate();
+            //super.onBackPressed();
+        }
+    }
+
+    // region partner tracks list actions
+    public void changeTabToNewPartnerTracks(View view) {
+        partnerNameFragment.changeTabToNewPartnerTracks(view);
+    }
+
+    public void changeTabToTopRatedPartnerTracks(View view) {
+        partnerNameFragment.changeTabToTopRatedPartnerTracks(view);
+    }
+
+    public void changeToPopularPartnerTracks(View view) {
+        partnerNameFragment.changeToPopularPartnerTracks(view);
+    }
+
+    // endregion
 }

@@ -168,4 +168,5 @@ public interface ApiInterface {
     @GET("api/Services/GetNotificationTypesList")
     Call<ListNotificationTypesResponse> GetNotificationTypesList();
 
+
 }

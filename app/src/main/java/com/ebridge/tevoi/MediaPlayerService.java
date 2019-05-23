@@ -88,7 +88,8 @@ public class MediaPlayerService extends Service implements
             case AudioManager.AUDIOFOCUS_GAIN:
                 // resume playback
                 if (mMediaPlayer == null) initMediaPlayer();
-                else if (!mMediaPlayer.isPlaying()) mMediaPlayer.start();
+                else if (!mMediaPlayer.isPlaying())
+                    mMediaPlayer.start();
                 mMediaPlayer.setVolume(1.0f, 1.0f);
                 break;
             case AudioManager.AUDIOFOCUS_LOSS:
@@ -101,7 +102,8 @@ public class MediaPlayerService extends Service implements
                 // Lost focus for a short time, but we have to stop
                 // playback. We don't release the media player because playback
                 // is likely to resume
-                if (mMediaPlayer.isPlaying()) mMediaPlayer.pause();
+                if (mMediaPlayer.isPlaying())
+                    mMediaPlayer.pause();
                 break;
             case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
                 // Lost focus for a short time, but it's ok to keep playing
@@ -349,9 +351,11 @@ public class MediaPlayerService extends Service implements
                     case TelephonyManager.CALL_STATE_IDLE:
                         // Phone idle. Start playing.
                         if (mMediaPlayer != null) {
-                            if (ongoingCall) {
+                            if (ongoingCall)
+                            {
                                 ongoingCall = false;
-                                resumeMedia();
+                                // TODO : check if app is in background so don't resume
+                                //resumeMedia();
                             }
                         }
                         break;

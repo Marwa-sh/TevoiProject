@@ -8,9 +8,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_gravity="center_horizontal"
-
         >
-
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -53,7 +51,6 @@
 
             />
 
-
         <TextView
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
@@ -77,8 +74,6 @@
             android:id="@+id/et_Password"
             />
 
-
-
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -95,7 +90,6 @@
                 android:layout_gravity="center_vertical"
                 android:id="@+id/btn_Login"
                 />
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -114,20 +108,17 @@
                 android:src="@drawable/cross"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="83dp"
-                android:id="@+id/btn_Calcel_Login"
-
+                android:id="@+id/btn_register"
 
                 />
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Cancel"
+                android:text="Register"
                 android:layout_gravity="center_vertical"
                 android:textColor="@color/fontColor"
                 android:layout_marginLeft="7dp"/>
         </LinearLayout>
-
 
         <LinearLayout
             android:layout_width="match_parent"

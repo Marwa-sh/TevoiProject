@@ -25,6 +25,7 @@
             android:checked="true"
             android:buttonTint="@color/fontColor"
             android:layout_gravity="center_vertical"
+            android:id="@+id/chk_arabic"
 
             />
         <TextView
@@ -49,6 +50,7 @@
             android:checked="false"
             android:buttonTint="@color/fontColor"
             android:layout_gravity="center_vertical"
+            android:id="@+id/chk_english"
 
             />
         <TextView
