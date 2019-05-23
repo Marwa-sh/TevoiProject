@@ -269,7 +269,8 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
                     //Show text fragment.
                     int i = getPosition();
                     TrackObject selectedTrack = tracks.get(i);
-                    if(selectedTrack.isHasText()) {
+                    if(selectedTrack.isHasText())
+                    {
                         FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
                         TrackText textFargment = TrackText.newInstance(selectedTrack.getId(), fragmentName);
                         ft.replace(R.id.content_frame, textFargment);

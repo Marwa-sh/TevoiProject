@@ -376,7 +376,7 @@ public class MediaPlayerActivity extends FragmentActivity {
 
             //TrackText dFragment = new TrackText();
             // Show DialogFragment
-            textFargment.show(fm, "Text");
+            //textFargment.show(fm, "Text");
         }
     }
 

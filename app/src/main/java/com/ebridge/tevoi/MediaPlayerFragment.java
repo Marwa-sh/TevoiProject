@@ -146,8 +146,10 @@ public class MediaPlayerFragment extends Fragment {
                 final SideMenu activity = (SideMenu)getActivity();
                 if(activity != null)
                 {
-                    if (!activity.isActivityPause) {
-                        if (activity.serviceBound) {
+                    if (!activity.isActivityPause)
+                    {
+                        if (activity.serviceBound)
+                        {
                             if (seekBar == null)
                                 seekBar = (SeekBar) rootView.findViewById(R.id.seekBar);
 
@@ -160,8 +162,18 @@ public class MediaPlayerFragment extends Fragment {
                             seekBar.setProgress(mCurrentPosition);
                             String timeFormat = GetTimeFormat(mCurrentPosition);
                             currentTime.setText(timeFormat);
-                        } else {
 
+                            if(activity.player.mMediaPlayer.isPlaying())
+                            {
+                                playButton.setImageResource(R.drawable.baseline_pause_24);
+                            }
+                            else
+                            {
+                                playButton.setImageResource(R.drawable.baseline_play_arrow_24);
+                            }
+
+                        } else {
+                            playButton.setImageResource(R.drawable.baseline_play_arrow_24);
                         }
                         mHandler.postDelayed(this, 1000);
                     }
@@ -540,18 +552,21 @@ public class MediaPlayerFragment extends Fragment {
     public void imgBtnGetTrackTextClick(View view)
     {
         if(hasText) {
+            SideMenu activity = (SideMenu) getActivity();
 
-            //TrackText dFragment = new TrackText();
-            // Show DialogFragment
-            //textFargment.show(fm, "Text");
-            // Begin the transaction
-            FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-            // Replace the contents of the container with the new fragment
-            //TrackLocation frag = new TrackLocation();
+            FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
+            TrackText textFargment = TrackText.newInstance(activity.CurrentTrackInPlayer.getId(), Global.MediaPlayerFragmentName);
             ft.replace(R.id.content_frame, textFargment);
+            ft.addToBackStack( "TrackText" );
             // or ft.add(R.id.your_placeholder, new FooFragment());
             // Complete the changes added above
             ft.commit();
+
+            /*FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+
+            ft.replace(R.id.content_frame, textFargment);
+
+            ft.commit();*/
         }
         else
         {

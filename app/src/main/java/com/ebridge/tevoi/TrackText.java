@@ -25,7 +25,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class TrackText extends DialogFragment {
+public class TrackText extends Fragment {
 
     int TrackId;
     String PreviousFragmentName;
@@ -82,8 +82,7 @@ public class TrackText extends DialogFragment {
 
         SideMenu a = ((SideMenu) getActivity());
         // here we need to open maps app
-        ApiInterface client = ApiClient.getClient().create(ApiInterface.class);
-        Call<TrackTextResponse> call = client.GetTrackText(TrackId);
+        Call<TrackTextResponse> call = Global.client.GetTrackText(TrackId);
         call.enqueue(new Callback<TrackTextResponse>(){
             public void onResponse(Call<TrackTextResponse> call, Response<TrackTextResponse> response)
             {
