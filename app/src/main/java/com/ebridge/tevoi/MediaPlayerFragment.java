@@ -146,26 +146,25 @@ public class MediaPlayerFragment extends Fragment {
                 final SideMenu activity = (SideMenu)getActivity();
                 if(activity != null)
                 {
-                    if(activity.serviceBound)
-                    {
-                        if(seekBar == null)
-                            seekBar = (SeekBar) rootView.findViewById(R.id.seekBar);
+                    if (!activity.isActivityPause) {
+                        if (activity.serviceBound) {
+                            if (seekBar == null)
+                                seekBar = (SeekBar) rootView.findViewById(R.id.seekBar);
 
-                        seekBar.setMax(activity.player.mMediaPlayer.getDuration()/ 1000);
-                        String timeFormat2 = GetTimeFormat(activity.player.mMediaPlayer.getDuration()/ 1000);
-                        fullTime.setText(timeFormat2);
+                            seekBar.setMax(activity.player.mMediaPlayer.getDuration() / 1000);
+                            String timeFormat2 = GetTimeFormat(activity.player.mMediaPlayer.getDuration() / 1000);
+                            fullTime.setText(timeFormat2);
 
-                        int mCurrentPosition = activity.player.mMediaPlayer.getCurrentPosition() / 1000;
+                            int mCurrentPosition = activity.player.mMediaPlayer.getCurrentPosition() / 1000;
 
-                        seekBar.setProgress(mCurrentPosition);
-                        String timeFormat = GetTimeFormat(mCurrentPosition);
-                        currentTime.setText(timeFormat);
+                            seekBar.setProgress(mCurrentPosition);
+                            String timeFormat = GetTimeFormat(mCurrentPosition);
+                            currentTime.setText(timeFormat);
+                        } else {
+
+                        }
+                        mHandler.postDelayed(this, 1000);
                     }
-                    else
-                    {
-
-                    }
-                    mHandler.postDelayed(this, 1000);
                 }
             }
         });
@@ -469,7 +468,7 @@ public class MediaPlayerFragment extends Fragment {
     {
         SideMenu activity =  (SideMenu) getContext();
         HelperFunctions.getNextTrack(activity, currentTrack.getId());
-        if(activity.player!= null)
+        if(activity.player != null)
         {
             seekBar.setMax(activity.player.mMediaPlayer.getDuration()/ 1000);
             String timeFormat = GetTimeFormat(activity.player.mMediaPlayer.getDuration()/ 1000);

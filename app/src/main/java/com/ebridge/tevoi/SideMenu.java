@@ -208,16 +208,22 @@ public class SideMenu extends FragmentActivity {
             @Override
             public void run()
             {
-                if (!isActivityPause) {
+                if (!isActivityPause)
+                {
                     if (serviceBound)
                     {
                         txtTrackName.setText(CurrentTrackInPlayer.getName().toString());
                         mainPlayerLayout.setVisibility(View.VISIBLE);
-                        if (!player.mMediaPlayer.isPlaying()) {
+                        if (!player.mMediaPlayer.isPlaying())
+                        {
+                            if(btnPausePlayMainMediaPlayer != null)
+                                btnPausePlayMainMediaPlayer.setImageResource(R.drawable.baseline_play_arrow_24);
                             mProgressDialog.dismiss();
                         }
                         if (player.mMediaPlayer.isPlaying())
                         {
+                            if(btnPausePlayMainMediaPlayer != null)
+                                btnPausePlayMainMediaPlayer.setImageResource(R.drawable.baseline_pause_24);
                             numberOfListenedSeconds += 1;
                             numberOfCurrentSecondsInTrack += 1;
                             //activity.numberOfTotalSeconds += activity.numberOfCurrentSeconds;
@@ -254,9 +260,11 @@ public class SideMenu extends FragmentActivity {
                         seekBarMainPlayer.setProgress(mCurrentPosition);
                         String timeFormat = HelperFunctions.GetTimeFormat(mCurrentPosition);
                         txtCurrentTime.setText(timeFormat);
-                    } else
-                        {
-
+                    }
+                    else
+                    {
+                        if(btnPausePlayMainMediaPlayer != null)
+                            btnPausePlayMainMediaPlayer.setImageResource(R.drawable.baseline_play_arrow_24);
                     }
                     mHandler.postDelayed(this, 1000);
                 }

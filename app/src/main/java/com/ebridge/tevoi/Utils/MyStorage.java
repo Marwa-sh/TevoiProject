@@ -154,16 +154,17 @@ public class MyStorage {
     // endregion
 
 
-    public void storeTrackTypeFilter(Context context, String language)
+    public void storeTrackTypeFilter(Context context, String trackType)
     {
         SharedPreferences settings;
         Editor editor;
         settings = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         editor = settings.edit();
 
-        editor.putString(TrackTypeFilter, language);
+        editor.putString(TrackTypeFilter, trackType);
         editor.commit();
     }
+
 
 
     // region user token storage

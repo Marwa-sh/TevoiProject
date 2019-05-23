@@ -75,6 +75,7 @@ public class TrackText extends DialogFragment {
                     ft.replace(R.id.content_frame, activity.mediaPlayerFragment);
                 // or ft.add(R.id.your_placeholder, new FooFragment());
                 // Complete the changes added above
+                //activity.getSupportFragmentManager().popBackStackImmediate();
                 ft.commit();
             }
         });

@@ -67,6 +67,7 @@ public class CarPlayFragment extends Fragment {
                 //TrackAddToList frag = new TrackAddToList();
                 activity.mediaPlayerFragment.PreviousFragment= Global.CarPlayFragment;
                 ft.replace(R.id.content_frame, activity.mediaPlayerFragment);
+                activity.getSupportFragmentManager().popBackStackImmediate();
                 // or ft.add(R.id.your_placeholder, new FooFragment());
                 // Complete the changes added above
                 ft.commit();
@@ -245,29 +246,28 @@ public class CarPlayFragment extends Fragment {
                 final SideMenu activity = (SideMenu)getActivity();
                 if(activity != null)
                 {
-                    if(activity.serviceBound)
-                    {
-                        //Toast.makeText(activity, "maroosh", Toast.LENGTH_SHORT).show();
+                    if (!activity.isActivityPause) {
+                        if (activity.serviceBound) {
+                            //Toast.makeText(activity, "maroosh", Toast.LENGTH_SHORT).show();
 
                        /* if(seekBar == null)
                             seekBar = (SeekBar) rootView.findViewById(R.id.seekBar);
 */
-                        seekBar.setMax(activity.player.mMediaPlayer.getDuration()/ 1000);
-                        String timeFormat2 = HelperFunctions.GetTimeFormat(activity.player.mMediaPlayer.getDuration()/ 1000);
-                        txtFullTime.setText(timeFormat2);
-                        //Toast.makeText(activity, timeFormat2, Toast.LENGTH_SHORT).show();
-                        //player = activity.player;
-                        int mCurrentPosition = activity.player.mMediaPlayer.getCurrentPosition() / 1000;
+                            seekBar.setMax(activity.player.mMediaPlayer.getDuration() / 1000);
+                            String timeFormat2 = HelperFunctions.GetTimeFormat(activity.player.mMediaPlayer.getDuration() / 1000);
+                            txtFullTime.setText(timeFormat2);
+                            //Toast.makeText(activity, timeFormat2, Toast.LENGTH_SHORT).show();
+                            //player = activity.player;
+                            int mCurrentPosition = activity.player.mMediaPlayer.getCurrentPosition() / 1000;
 
-                        seekBar.setProgress(mCurrentPosition);
-                        String timeFormat = HelperFunctions.GetTimeFormat(mCurrentPosition);
-                        txtCurentTime.setText(timeFormat);
-                    }
-                    else
-                    {
+                            seekBar.setProgress(mCurrentPosition);
+                            String timeFormat = HelperFunctions.GetTimeFormat(mCurrentPosition);
+                            txtCurentTime.setText(timeFormat);
+                        } else {
 
+                        }
+                        mHandler.postDelayed(this, 1000);
                     }
-                    mHandler.postDelayed(this, 1000);
                 }
                 /*SideMenu activity = (SideMenu)getActivity();
                 if(activity != null)
