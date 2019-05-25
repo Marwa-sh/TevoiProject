@@ -118,7 +118,8 @@
             android:layout_width="22dp"
             android:layout_height="22dp"
             android:layout_marginLeft="24dp"
-            android:background="@null"
+            android:rotation="180"
+            android:background="@drawable/rounded_button"
             android:scaleType="fitXY"
             android:src="@drawable/tick"
             android:layout_gravity="center_vertical"
@@ -137,7 +138,7 @@
         <ImageButton
             android:layout_width="22dp"
             android:layout_height="22dp"
-            android:background="@null"
+            android:background="@drawable/rounded_button"
             android:scaleType="fitXY"
             android:src="@drawable/cross"
             android:layout_gravity="center_vertical"
