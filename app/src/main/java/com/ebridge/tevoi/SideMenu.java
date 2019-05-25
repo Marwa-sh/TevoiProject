@@ -842,13 +842,16 @@ public class SideMenu extends FragmentActivity {
 
     public  void BackBtnAction()
     {
+
         int T= getSupportFragmentManager().getBackStackEntryCount();
         if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
-            finish();
+            moveTaskToBack(true);
+            //finish();
         }
         else if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
-            Toast.makeText(this, "hi count 1", Toast.LENGTH_SHORT).show();
-            finish();
+            //Toast.makeText(this, "hi count 1", Toast.LENGTH_SHORT).show();
+            moveTaskToBack(true);
+            //finish();
         }
         else
         {
