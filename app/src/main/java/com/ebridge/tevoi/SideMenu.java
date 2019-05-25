@@ -1,6 +1,7 @@
 package com.ebridge.tevoi;
 
 import android.app.ActionBar;
+import android.app.ActivityManager;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
@@ -50,6 +51,7 @@ import android.widget.Toast;
 import android.widget.Toolbar;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import retrofit2.Call;
@@ -208,9 +210,19 @@ public class SideMenu extends FragmentActivity {
             @Override
             public void run()
             {
+                /*boolean isForground = isAppInForeground(SideMenu.this, "ComponentInfo{com.ebridge.tevoi/com.ebridge.tevoi.SideMenu}");
+                if(isForground==true){
+                   // Toast.makeText(getBaseContext(),"Activity is in foreground, active",1000).show();
+                    isActivityPause = false;
+                }
+                else
+                {
+                    isActivityPause = true;
+                }*/
+
                 if (!isActivityPause)
                 {
-                    if (serviceBound)
+                    if (serviceBound && player != null && player.mMediaPlayer != null)
                     {
                         txtTrackName.setText(CurrentTrackInPlayer.getName().toString());
                         mainPlayerLayout.setVisibility(View.VISIBLE);
@@ -253,8 +265,6 @@ public class SideMenu extends FragmentActivity {
                         seekBarMainPlayer.setMax(player.mMediaPlayer.getDuration() / 1000);
                         String timeFormat2 = HelperFunctions.GetTimeFormat(player.mMediaPlayer.getDuration() / 1000);
                         txtFinishTime.setText(timeFormat2);
-                        //Toast.makeText(activity, timeFormat2, Toast.LENGTH_SHORT).show();
-                        //player = activity.player;
                         int mCurrentPosition = player.mMediaPlayer.getCurrentPosition() / 1000;
 
                         seekBarMainPlayer.setProgress(mCurrentPosition);
@@ -263,6 +273,8 @@ public class SideMenu extends FragmentActivity {
                     }
                     else
                     {
+                        if (serviceBound && player != null && player.mMediaPlayer != null)
+                            player.mMediaPlayer.pause();
                         if(btnPausePlayMainMediaPlayer != null)
                             btnPausePlayMainMediaPlayer.setImageResource(R.drawable.baseline_play_arrow_24);
                     }
@@ -767,7 +779,7 @@ public class SideMenu extends FragmentActivity {
             //ServiceConnection serviceConnection = serviceConnection;
             Intent playerIntent = new Intent(SideMenu.this, MediaPlayerService.class);
             playerIntent.putExtra("media", media);
-            playerIntent.putExtra("activityStatus", isActivityPause);
+            //playerIntent.putExtra("activityStatus", isActivityPause);
             getBaseContext().startService(playerIntent);
             getBaseContext().bindService(playerIntent, serviceConnection, Context.BIND_AUTO_CREATE);
 
@@ -808,7 +820,7 @@ public class SideMenu extends FragmentActivity {
     }
     // endregion
 
-    @Override
+   /* @Override
     protected void onPause() {
         super.onPause();
        isActivityPause = true;
@@ -819,9 +831,16 @@ public class SideMenu extends FragmentActivity {
         super.onResume();
         isActivityPause = false;
     }
+*/
 
+   // region Back button action handling
     @Override
     public void onBackPressed()
+    {
+        BackBtnAction();
+    }
+
+    public  void BackBtnAction()
     {
         int T= getSupportFragmentManager().getBackStackEntryCount();
         if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
@@ -839,6 +858,7 @@ public class SideMenu extends FragmentActivity {
             //super.onBackPressed();
         }
     }
+    // endregion
 
     // region partner tracks list actions
     public void changeTabToNewPartnerTracks(View view) {
@@ -854,4 +874,29 @@ public class SideMenu extends FragmentActivity {
     }
 
     // endregion
+
+
+    public static boolean isAppInForeground(SideMenu ctx, String activityName) {
+        ActivityManager activityManager = (ActivityManager) ctx
+                .getApplicationContext().getSystemService(
+                        Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> services = activityManager
+                .getRunningTasks(Integer.MAX_VALUE);
+
+        if (services == null) {
+            return false;
+        }
+
+        if (services.size() > 0
+                && services.get(0).topActivity
+                .getPackageName()
+                .toString()
+                .equalsIgnoreCase(
+                        activityName)) {
+            return true;
+        }
+
+        return false;
+    }
+
 }

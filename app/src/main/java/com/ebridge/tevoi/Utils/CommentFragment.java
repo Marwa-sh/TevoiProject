@@ -83,6 +83,7 @@ public class CommentFragment extends Fragment
                 ft.replace(R.id.content_frame, activity.mediaPlayerFragment);
                 // or ft.add(R.id.your_placeholder, new FooFragment());
                 // Complete the changes added above
+                activity.BackBtnAction();
                 ft.commit();
             }
         });

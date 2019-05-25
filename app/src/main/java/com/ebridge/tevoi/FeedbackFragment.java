@@ -74,6 +74,7 @@ public class FeedbackFragment extends Fragment {
                 {
                     FeedbackRequest request = new FeedbackRequest();
                     request.setEmail(email); request.setMessage(message); request.setName(username);
+                    activity.mProgressDialog.setMessage("Loading"); activity.mProgressDialog.show();
 
                     Call<IResponse> call = Global.client.SendFeedback(request);
                     call.enqueue(new Callback<IResponse>(){
@@ -82,17 +83,19 @@ public class FeedbackFragment extends Fragment {
 
                             if(result.Number == 0)
                             {
+                                activity.mProgressDialog.dismiss();
                                 Toast.makeText(activity, result.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                             else
                             {
+                                activity.mProgressDialog.dismiss();
                                 Toast.makeText(activity,result.getMessage(), Toast.LENGTH_LONG).show();;
                             }
                         }
                         public void onFailure(Call<IResponse> call, Throwable t)
                         {
                             Toast.makeText(activity,"something went wrong", Toast.LENGTH_LONG).show();;
-                            //mProgressDialog.dismiss();
+                            activity.mProgressDialog.dismiss();
                         }
                     });
                 }

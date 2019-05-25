@@ -1,5 +1,6 @@
 package com.ebridge.tevoi;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
@@ -24,6 +25,9 @@ import com.ebridge.tevoi.Utils.HelperFunctions;
 import com.ebridge.tevoi.Utils.HelperFunctions;
 import com.ebridge.tevoi.model.IResponse;
 import com.ebridge.tevoi.model.TrackObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -246,13 +250,25 @@ public class CarPlayFragment extends Fragment {
                 final SideMenu activity = (SideMenu)getActivity();
                 if(activity != null)
                 {
+                    /*boolean isForground = activity.isAppInForeground(activity, "ComponentInfo{com.ebridge.tevoi/com.ebridge.tevoi.SideMenu}");
+                    if(isForground==true){
+                        // Toast.makeText(getBaseContext(),"Activity is in foreground, active",1000).show();
+                        activity.isActivityPause = false;
+                    }
+                    else
+                    {
+                        activity.isActivityPause = true;
+                    }*/
+
                     if (!activity.isActivityPause) {
-                        if (activity.serviceBound) {
+                        if (activity.serviceBound)
+                        {
                             //Toast.makeText(activity, "maroosh", Toast.LENGTH_SHORT).show();
 
                        /* if(seekBar == null)
                             seekBar = (SeekBar) rootView.findViewById(R.id.seekBar);
 */
+                            imgBtnPlay.setImageResource(R.drawable.baseline_pause_24);
                             seekBar.setMax(activity.player.mMediaPlayer.getDuration() / 1000);
                             String timeFormat2 = HelperFunctions.GetTimeFormat(activity.player.mMediaPlayer.getDuration() / 1000);
                             txtFullTime.setText(timeFormat2);
@@ -264,7 +280,7 @@ public class CarPlayFragment extends Fragment {
                             String timeFormat = HelperFunctions.GetTimeFormat(mCurrentPosition);
                             txtCurentTime.setText(timeFormat);
                         } else {
-
+                            imgBtnPlay.setImageResource(R.drawable.baseline_play_arrow_24);
                         }
                         mHandler.postDelayed(this, 1000);
                     }
@@ -290,7 +306,7 @@ public class CarPlayFragment extends Fragment {
         return rootView;
     }
 
-    private void playAudio(String media) {
+    /*private void playAudio(String media) {
         //Check is service is active
         SideMenu activity = (SideMenu)getActivity();
         if (!activity.serviceBound)
@@ -305,7 +321,7 @@ public class CarPlayFragment extends Fragment {
             //Service is active
             //Send media with BroadcastReceiver
         }
-    }
+    }*/
 
     public void refreshCurrentTrackInfo(SideMenu activity)
     {
