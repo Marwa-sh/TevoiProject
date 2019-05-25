@@ -21,6 +21,7 @@ import com.ebridge.tevoi.model.CategoryObject;
 import com.ebridge.tevoi.model.CategoryResponseList;
 import com.ebridge.tevoi.model.GetSubscripedPartnersResponse;
 import com.ebridge.tevoi.model.SubscipedPartnersObject;
+import com.ebridge.tevoi.model.TrackTypeObject;
 import com.ebridge.tevoi.rest.ApiClient;
 import com.ebridge.tevoi.rest.ApiInterface;
 
@@ -75,6 +76,11 @@ public class FilterFragment extends Fragment {
         trackTypeRecyclerView.setAdapter(trackTypeAdapter);
         DividerItemDecoration itemDecorTrackType = new DividerItemDecoration(getContext(), VERTICAL);
         trackTypeRecyclerView.addItemDecoration(itemDecorTrackType);
+
+        TrackTypeObject[] trackTypeObjects = trackTypeAdapter.getTrackTypeObjects();
+
+
+
 
         activity.mProgressDialog.setMessage("Loading"); activity.mProgressDialog.show();
 
