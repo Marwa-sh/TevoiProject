@@ -83,7 +83,7 @@ public class UserListTracksFragment extends Fragment
         }
         //defaultTab = 0;
 
-        recyclerViews[defaultTab] = (RecyclerView) rootView.findViewById(R.id.user_list_tracks_recycler_View);
+        recyclerViews[defaultTab] = rootView.findViewById(R.id.user_list_tracks_recycler_View);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerViews[defaultTab].setLayoutManager(layoutManager);

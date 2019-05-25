@@ -50,9 +50,9 @@ public class MainActivity extends FragmentActivity {
         mTitle = (String) getTitle();
 
         // Getting reference to the DrawerLayout
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerLayout = findViewById(R.id.drawer_layout);
 
-        mDrawerList = (ListView) findViewById(R.id.drawer_list);
+        mDrawerList = findViewById(R.id.drawer_list);
 
         // Getting reference to the ActionBarDrawerToggle
         mDrawerToggle = new ActionBarDrawerToggle( this,

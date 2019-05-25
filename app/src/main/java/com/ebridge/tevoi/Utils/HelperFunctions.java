@@ -72,6 +72,7 @@ public class HelperFunctions
 
                     TrackSerializableObject t = activity.playNowListTracks.get(activity.indexCurrentTrackInPlayList);
                     activity.mediaPlayerFragment.currentTrack = CastTrackSerialize(t);
+                    activity.CurrentTrackInPlayer = activity.mediaPlayerFragment.currentTrack;
                     activity.mediaPlayerFragment.url = Global.BASE_AUDIO_URL + activity.playNowListTracks.get(activity.indexCurrentTrackInPlayList).getId();
                     activity.playAudio(activity.mediaPlayerFragment.url);
 
@@ -105,6 +106,7 @@ public class HelperFunctions
                 {
                     TrackSerializableObject t = activity.playNowListTracks.get(activity.indexCurrentTrackInPlayList);
                     activity.mediaPlayerFragment.currentTrack = CastTrackSerialize(t);
+                    activity.CurrentTrackInPlayer = activity.mediaPlayerFragment.currentTrack;
                     activity.mediaPlayerFragment.url = Global.BASE_AUDIO_URL + activity.playNowListTracks.get(activity.indexCurrentTrackInPlayList).getId();
                     activity.playAudio(activity.mediaPlayerFragment.url);
                     //if(activity.isPlaying && !activity.isPaused)

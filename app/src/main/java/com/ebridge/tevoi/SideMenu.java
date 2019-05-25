@@ -1,6 +1,7 @@
 package com.ebridge.tevoi;
 
 import android.app.ActionBar;
+import android.app.ActivityManager;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
@@ -50,6 +51,7 @@ import android.widget.Toast;
 import android.widget.Toolbar;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import retrofit2.Call;
@@ -180,9 +182,9 @@ public class SideMenu extends FragmentActivity {
                 ActionBar.LayoutParams.MATCH_PARENT,
                 ActionBar.LayoutParams.MATCH_PARENT,
                 Gravity.CENTER);
-        TextView textviewTitle = (TextView) viewActionBar.findViewById(R.id.tvTitle);
+        TextView textviewTitle = viewActionBar.findViewById(R.id.tvTitle);
         textviewTitle.setText("Tevoi");
-        TextView textviewSubTitle = (TextView) viewActionBar.findViewById(R.id.tvSubTitle);
+        TextView textviewSubTitle = viewActionBar.findViewById(R.id.tvSubTitle);
         textviewSubTitle.setText(subTitle);
         abar.setCustomView(viewActionBar, params);
         abar.setDisplayShowCustomEnabled(true);
@@ -208,16 +210,32 @@ public class SideMenu extends FragmentActivity {
             @Override
             public void run()
             {
-                if (!isActivityPause) {
-                    if (serviceBound)
+                /*boolean isForground = isAppInForeground(SideMenu.this, "ComponentInfo{com.ebridge.tevoi/com.ebridge.tevoi.SideMenu}");
+                if(isForground==true){
+                   // Toast.makeText(getBaseContext(),"Activity is in foreground, active",1000).show();
+                    isActivityPause = false;
+                }
+                else
+                {
+                    isActivityPause = true;
+                }*/
+
+                if (!isActivityPause)
+                {
+                    if (serviceBound && player != null && player.mMediaPlayer != null)
                     {
                         txtTrackName.setText(CurrentTrackInPlayer.getName().toString());
                         mainPlayerLayout.setVisibility(View.VISIBLE);
-                        if (!player.mMediaPlayer.isPlaying()) {
+                        if (!player.mMediaPlayer.isPlaying())
+                        {
+                            if(btnPausePlayMainMediaPlayer != null)
+                                btnPausePlayMainMediaPlayer.setImageResource(R.drawable.baseline_play_arrow_24);
                             mProgressDialog.dismiss();
                         }
                         if (player.mMediaPlayer.isPlaying())
                         {
+                            if(btnPausePlayMainMediaPlayer != null)
+                                btnPausePlayMainMediaPlayer.setImageResource(R.drawable.baseline_pause_24);
                             numberOfListenedSeconds += 1;
                             numberOfCurrentSecondsInTrack += 1;
                             //activity.numberOfTotalSeconds += activity.numberOfCurrentSeconds;
@@ -247,16 +265,18 @@ public class SideMenu extends FragmentActivity {
                         seekBarMainPlayer.setMax(player.mMediaPlayer.getDuration() / 1000);
                         String timeFormat2 = HelperFunctions.GetTimeFormat(player.mMediaPlayer.getDuration() / 1000);
                         txtFinishTime.setText(timeFormat2);
-                        //Toast.makeText(activity, timeFormat2, Toast.LENGTH_SHORT).show();
-                        //player = activity.player;
                         int mCurrentPosition = player.mMediaPlayer.getCurrentPosition() / 1000;
 
                         seekBarMainPlayer.setProgress(mCurrentPosition);
                         String timeFormat = HelperFunctions.GetTimeFormat(mCurrentPosition);
                         txtCurrentTime.setText(timeFormat);
-                    } else
-                        {
-
+                    }
+                    else
+                    {
+                        if (serviceBound && player != null && player.mMediaPlayer != null)
+                            player.mMediaPlayer.pause();
+                        if(btnPausePlayMainMediaPlayer != null)
+                            btnPausePlayMainMediaPlayer.setImageResource(R.drawable.baseline_play_arrow_24);
                     }
                     mHandler.postDelayed(this, 1000);
                 }
@@ -284,7 +304,7 @@ public class SideMenu extends FragmentActivity {
         // endregion
 
         trackIdPlayedNow = -1;
-        searchBtn = (MenuItem)findViewById(R.id.action_search);
+        searchBtn = findViewById(R.id.action_search);
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setCancelable(false);
 
@@ -299,8 +319,8 @@ public class SideMenu extends FragmentActivity {
         // region initialize drawer
         mTitle = (String) getTitle();
         // Getting reference to the DrawerLayout
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerList = (ListView) findViewById(R.id.drawer_list);
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+        mDrawerList = findViewById(R.id.drawer_list);
         // Getting reference to the ActionBarDrawerToggle
         mDrawerToggle = new ActionBarDrawerToggle( this,
                 mDrawerLayout,
@@ -499,7 +519,7 @@ public class SideMenu extends FragmentActivity {
                         fragmentTransaction.commit();
                         break;
                     }
-                };
+                }
 
 
                 // Closing the drawer
@@ -759,7 +779,7 @@ public class SideMenu extends FragmentActivity {
             //ServiceConnection serviceConnection = serviceConnection;
             Intent playerIntent = new Intent(SideMenu.this, MediaPlayerService.class);
             playerIntent.putExtra("media", media);
-            playerIntent.putExtra("activityStatus", isActivityPause);
+            //playerIntent.putExtra("activityStatus", isActivityPause);
             getBaseContext().startService(playerIntent);
             getBaseContext().bindService(playerIntent, serviceConnection, Context.BIND_AUTO_CREATE);
 
@@ -800,7 +820,7 @@ public class SideMenu extends FragmentActivity {
     }
     // endregion
 
-    @Override
+   /* @Override
     protected void onPause() {
         super.onPause();
        isActivityPause = true;
@@ -811,9 +831,16 @@ public class SideMenu extends FragmentActivity {
         super.onResume();
         isActivityPause = false;
     }
+*/
 
+   // region Back button action handling
     @Override
     public void onBackPressed()
+    {
+        BackBtnAction();
+    }
+
+    public  void BackBtnAction()
     {
         int T= getSupportFragmentManager().getBackStackEntryCount();
         if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
@@ -831,6 +858,7 @@ public class SideMenu extends FragmentActivity {
             //super.onBackPressed();
         }
     }
+    // endregion
 
     // region partner tracks list actions
     public void changeTabToNewPartnerTracks(View view) {
@@ -846,4 +874,26 @@ public class SideMenu extends FragmentActivity {
     }
 
     // endregion
+
+
+    public static boolean isAppInForeground(SideMenu ctx, String activityName) {
+        ActivityManager activityManager = (ActivityManager) ctx
+                .getApplicationContext().getSystemService(
+                        Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> services = activityManager
+                .getRunningTasks(Integer.MAX_VALUE);
+
+        if (services == null) {
+            return false;
+        }
+
+        return services.size() > 0
+                && services.get(0).topActivity
+                .getPackageName()
+                .toString()
+                .equalsIgnoreCase(
+                        activityName);
+
+    }
+
 }

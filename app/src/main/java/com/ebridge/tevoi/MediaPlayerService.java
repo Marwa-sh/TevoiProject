@@ -14,10 +14,12 @@ import android.media.MediaPlayer;
 import android.media.browse.MediaBrowser;
 import android.net.Uri;
 import android.os.Binder;
+import android.os.Handler;
 import android.os.IBinder;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.widget.SeekBar;
 
 import com.ebridge.tevoi.Utils.Global;
 import com.ebridge.tevoi.model.AudioDataSource;
@@ -37,7 +39,8 @@ public class MediaPlayerService extends Service implements
         MediaPlayer.OnSeekCompleteListener,
         MediaPlayer.OnInfoListener,
         MediaPlayer.OnBufferingUpdateListener,
-        AudioManager.OnAudioFocusChangeListener
+        AudioManager.OnAudioFocusChangeListener,
+        Runnable
 
 {
     private MediaBrowser mediaBrowser;
@@ -47,6 +50,7 @@ public class MediaPlayerService extends Service implements
     //Uri myUri = Uri.parse("http://192.168.1.3/TevoiAPIEmulator/api/Services/GetStreamAudio?id=1");
 
     //String url="http://192.168.1.111/TevoiAPI/api/Files/SoundFile?fileName=1.mp3";
+    private Handler mHandler = new Handler();
 
     String currentAudioUrl = Global.BASE_AUDIO_URL;
     boolean activityIsPaused = false;
@@ -92,17 +96,19 @@ public class MediaPlayerService extends Service implements
                 else if (!mMediaPlayer.isPlaying())
                 {
                     // TODO : check if activity is active
-                    if(!activityIsPaused)
-                        mMediaPlayer.start();
+
+                    /*if(!activityIsPaused)
+                        mMediaPlayer.start();*/
+
                     // mMediaPlayer.start();
                 }
                 mMediaPlayer.setVolume(1.0f, 1.0f);
                 break;
             case AudioManager.AUDIOFOCUS_LOSS:
                 // Lost focus for an unbounded amount of time: stop playback and release media player
-                if (mMediaPlayer.isPlaying()) mMediaPlayer.stop();
-                mMediaPlayer.release();
-                mMediaPlayer = null;
+                if (mMediaPlayer.isPlaying()) mMediaPlayer.pause();
+                //mMediaPlayer.release();
+                //mMediaPlayer = null;
                 break;
             case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
                 // Lost focus for a short time, but we have to stop
@@ -122,12 +128,8 @@ public class MediaPlayerService extends Service implements
     private boolean requestAudioFocus() {
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         int result = audioManager.requestAudioFocus(this, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
-        if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
-            //Focus gained
-            return true;
-        }
+        return result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED;
         //Could not gain focus
-        return false;
     }
 
     private boolean removeAudioFocus() {
@@ -148,7 +150,30 @@ public class MediaPlayerService extends Service implements
         registerBecomingNoisyReceiver();
         //Listen for new Audio to play -- BroadcastReceiver
         register_playNewAudio();
+
     }
+
+    @Override
+    public void run()
+    {
+
+        if (mMediaPlayer != null)
+        {
+
+
+
+
+
+        } else
+        {
+
+        }
+        mHandler.postDelayed(this, 1000);
+
+    }
+
+
+
 
     @Override
     public void onBufferingUpdate(MediaPlayer mp, int percent) {
@@ -231,7 +256,7 @@ public class MediaPlayerService extends Service implements
         {
             //An audio file is passed to the service through putExtra();
             currentAudioUrl = intent.getExtras().getString("media");
-            activityIsPaused = intent.getExtras().getBoolean("activityStatus");
+            //activityIsPaused = intent.getExtras().getBoolean("activityStatus");
 
         } catch (NullPointerException e) {
             stopSelf();
@@ -364,8 +389,8 @@ public class MediaPlayerService extends Service implements
                             {
                                 ongoingCall = false;
                                 // TODO : check if app is in background so don't resume
-                                if(!activityIsPaused)
-                                    resumeMedia();
+                                /*if(!activityIsPaused)
+                                    resumeMedia();*/
                             }
                         }
                         break;

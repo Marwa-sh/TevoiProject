@@ -1,6 +1,7 @@
 package com.ebridge.tevoi;
 
 import android.annotation.TargetApi;
+import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -56,6 +57,8 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.ResponseBody;
 import okio.Buffer;
@@ -127,13 +130,13 @@ public class MediaPlayerFragment extends Fragment {
         activity.numberOfCurrentSecondsInTrack =0;
 
         fm = getActivity().getSupportFragmentManager();
-        scrollViewMediaPlayer = (ScrollView) rootView.findViewById(R.id.scrollViewMediaPlayer);
-        linearLayoutMediaPlayer = (LinearLayout) rootView.findViewById(R.id.linearLayoutMediaPlayer);
+        scrollViewMediaPlayer = rootView.findViewById(R.id.scrollViewMediaPlayer);
+        linearLayoutMediaPlayer = rootView.findViewById(R.id.linearLayoutMediaPlayer);
 
-        playButton = (ImageButton) rootView.findViewById(R.id.imageButtonPlay);
-        seekBar = (SeekBar) rootView.findViewById(R.id.seekBar);
-        currentTime = (TextView) rootView.findViewById(R.id.currentTime);
-        fullTime = (TextView) rootView.findViewById(R.id.fullTime);
+        playButton = rootView.findViewById(R.id.imageButtonPlay);
+        seekBar = rootView.findViewById(R.id.seekBar);
+        currentTime = rootView.findViewById(R.id.currentTime);
+        fullTime = rootView.findViewById(R.id.fullTime);
         currentTime.setText(GetTimeFormat(0));
         ratingBar = rootView.findViewById(R.id.ratingBar);
 
@@ -142,37 +145,59 @@ public class MediaPlayerFragment extends Fragment {
             @Override
             public void run()
             {
-               // Toast.makeText(activity, "hi there", Toast.LENGTH_SHORT).show();
-                final SideMenu activity = (SideMenu)getActivity();
+                // Toast.makeText(activity, "hi there", Toast.LENGTH_SHORT).show();
+                /*final SideMenu activity = (SideMenu)getActivity();
+
+                boolean isForground = activity.isAppInForeground(activity, "ComponentInfo{com.ebridge.tevoi/com.ebridge.tevoi.SideMenu}");
+                if(isForground==true){
+                    // Toast.makeText(getBaseContext(),"Activity is in foreground, active",1000).show();
+                    activity.isActivityPause = false;
+                }
+                else
+                {
+                    activity.isActivityPause = true;
+                }
+*/
                 if(activity != null)
                 {
-                    if(activity.serviceBound)
+                    if (!activity.isActivityPause)
                     {
-                        if(seekBar == null)
-                            seekBar = (SeekBar) rootView.findViewById(R.id.seekBar);
+                        if (activity.serviceBound && activity.player != null && activity.player.mMediaPlayer != null)
+                        {
+                            if (seekBar == null)
+                                seekBar = rootView.findViewById(R.id.seekBar);
 
-                        seekBar.setMax(activity.player.mMediaPlayer.getDuration()/ 1000);
-                        String timeFormat2 = GetTimeFormat(activity.player.mMediaPlayer.getDuration()/ 1000);
-                        fullTime.setText(timeFormat2);
+                            seekBar.setMax(activity.player.mMediaPlayer.getDuration() / 1000);
+                            String timeFormat2 = GetTimeFormat(activity.player.mMediaPlayer.getDuration() / 1000);
+                            fullTime.setText(timeFormat2);
 
-                        int mCurrentPosition = activity.player.mMediaPlayer.getCurrentPosition() / 1000;
+                            int mCurrentPosition = activity.player.mMediaPlayer.getCurrentPosition() / 1000;
 
-                        seekBar.setProgress(mCurrentPosition);
-                        String timeFormat = GetTimeFormat(mCurrentPosition);
-                        currentTime.setText(timeFormat);
+                            seekBar.setProgress(mCurrentPosition);
+                            String timeFormat = GetTimeFormat(mCurrentPosition);
+                            currentTime.setText(timeFormat);
+
+                            if(activity.player.mMediaPlayer.isPlaying())
+                            {
+                                playButton.setImageResource(R.drawable.baseline_pause_24);
+                            }
+                            else
+                            {
+                                playButton.setImageResource(R.drawable.baseline_play_arrow_24);
+                            }
+
+                        } else {
+                            playButton.setImageResource(R.drawable.baseline_play_arrow_24);
+                        }
+                        mHandler.postDelayed(this, 1000);
                     }
-                    else
-                    {
-
-                    }
-                    mHandler.postDelayed(this, 1000);
                 }
             }
         });
         if(activity.serviceBound)
         {
             if(seekBar == null)
-                seekBar = (SeekBar) rootView.findViewById(R.id.seekBar);
+                seekBar = rootView.findViewById(R.id.seekBar);
 
             int duration = activity.player.mMediaPlayer.getDuration()/ 1000;
             seekBar.setMax(duration);
@@ -234,16 +259,16 @@ public class MediaPlayerFragment extends Fragment {
         {
             hasLocation = currentTrack.isHasLocation();
             hasText = currentTrack.isHasText();
-            trackName = (TextView) rootView.findViewById(R.id.textViewTrackName);
+            trackName = rootView.findViewById(R.id.textViewTrackName);
             trackName.setText(currentTrack.getName());
 
-            trackDuration = (TextView) rootView.findViewById(R.id.textViewDuration);
+            trackDuration = rootView.findViewById(R.id.textViewDuration);
             trackDuration.setText(currentTrack.getDuration());
 
-            trackCategories = (TextView) rootView.findViewById(R.id.textViewCategories);
+            trackCategories = rootView.findViewById(R.id.textViewCategories);
             trackCategories.setText(currentTrack.getCategories());
 
-            trackAuthors = (TextView) rootView.findViewById(R.id.textViewAuthors);
+            trackAuthors = rootView.findViewById(R.id.textViewAuthors);
             trackAuthors.setText(currentTrack.getAuthors());
             commentFragment = CommentFragment.newInstance(currentTrack.getId());
             textFargment = TrackText.newInstance(currentTrack.getId(), Global.MediaPlayerFragmentName);
@@ -265,8 +290,8 @@ public class MediaPlayerFragment extends Fragment {
 
                 }
             });
-            partnerName = (TextView) rootView.findViewById(R.id.tv_partner_name);
-            partnerLogo = (ImageView) rootView.findViewById(R.id.img_partner_logo);
+            partnerName = rootView.findViewById(R.id.tv_partner_name);
+            partnerLogo = rootView.findViewById(R.id.img_partner_logo);
 
             partnerName.setText(currentTrack.getPartnerName());
             //String ulrLogo = Uri.parse(currentTrack.getPartnerLogo());
@@ -469,7 +494,7 @@ public class MediaPlayerFragment extends Fragment {
     {
         SideMenu activity =  (SideMenu) getContext();
         HelperFunctions.getNextTrack(activity, currentTrack.getId());
-        if(activity.player!= null)
+        if(activity.player != null)
         {
             seekBar.setMax(activity.player.mMediaPlayer.getDuration()/ 1000);
             String timeFormat = GetTimeFormat(activity.player.mMediaPlayer.getDuration()/ 1000);
@@ -541,18 +566,21 @@ public class MediaPlayerFragment extends Fragment {
     public void imgBtnGetTrackTextClick(View view)
     {
         if(hasText) {
+            SideMenu activity = (SideMenu) getActivity();
 
-            //TrackText dFragment = new TrackText();
-            // Show DialogFragment
-            //textFargment.show(fm, "Text");
-            // Begin the transaction
-            FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-            // Replace the contents of the container with the new fragment
-            //TrackLocation frag = new TrackLocation();
+            FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
+            TrackText textFargment = TrackText.newInstance(activity.CurrentTrackInPlayer.getId(), Global.MediaPlayerFragmentName);
             ft.replace(R.id.content_frame, textFargment);
+            ft.addToBackStack( "TrackText" );
             // or ft.add(R.id.your_placeholder, new FooFragment());
             // Complete the changes added above
             ft.commit();
+
+            /*FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+
+            ft.replace(R.id.content_frame, textFargment);
+
+            ft.commit();*/
         }
         else
         {

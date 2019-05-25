@@ -150,14 +150,14 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
                             }
                             else
                             {
-                                Toast.makeText(activity,result.getMessage(), Toast.LENGTH_LONG).show();;
+                                Toast.makeText(activity,result.getMessage(), Toast.LENGTH_LONG).show();
                             }
                             hoverLayout.setVisibility(View.INVISIBLE);
                             //mProgressDialog.dismiss();
                         }
                         public void onFailure(Call<IResponse> call, Throwable t)
                         {
-                            Toast.makeText(activity,"something went wrong", Toast.LENGTH_LONG).show();;
+                            Toast.makeText(activity,"something went wrong", Toast.LENGTH_LONG).show();
                             //mProgressDialog.dismiss();
                         }
                     });
@@ -194,7 +194,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
                     // set prompts.xml to alertdialog builder
                     alertDialogBuilder.setView(promptsView);
 
-                    final EditText userInput = (EditText) promptsView
+                    final EditText userInput = promptsView
                             .findViewById(R.id.edittxtUserListName);
                     userInput.setText(objUserList.getName());
                     // set dialog message
@@ -227,7 +227,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
                                                         }
                                                         else
                                                         {
-                                                            Toast.makeText(activity,result.Message, Toast.LENGTH_LONG).show();;
+                                                            Toast.makeText(activity,result.Message, Toast.LENGTH_LONG).show();
                                                         }
                                                         hoverLayout.setVisibility(View.INVISIBLE);
                                                         activity.notifyUserListAdapter();
@@ -235,7 +235,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
                                                     }
                                                     public void onFailure(Call<IResponse> call, Throwable t)
                                                     {
-                                                        Toast.makeText(activity,"something went wrong", Toast.LENGTH_LONG).show();;
+                                                        Toast.makeText(activity,"something went wrong", Toast.LENGTH_LONG).show();
                                                         //mProgressDialog.dismiss();
                                                     }
                                                 });

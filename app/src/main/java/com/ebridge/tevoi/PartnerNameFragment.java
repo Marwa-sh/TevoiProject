@@ -89,7 +89,7 @@ public class PartnerNameFragment extends Fragment {
         {
             defaultTab =0;
         }
-        recyclerViews[defaultTab] = (RecyclerView) rootView.findViewById(R.id.partner_tracks_recycler_View);
+        recyclerViews[defaultTab] = rootView.findViewById(R.id.partner_tracks_recycler_View);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerViews[defaultTab].setLayoutManager(layoutManager);

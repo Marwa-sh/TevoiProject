@@ -69,7 +69,7 @@ public class CommentFragment extends Fragment
     {
         rootView = inflater.inflate(R.layout.fragment_comment, container,
                 false);
-        ImageView iv = (ImageView) rootView.findViewById(R.id.imageView_close);
+        ImageView iv =  rootView.findViewById(R.id.imageView_close);
         iv.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -83,11 +83,13 @@ public class CommentFragment extends Fragment
                 ft.replace(R.id.content_frame, activity.mediaPlayerFragment);
                 // or ft.add(R.id.your_placeholder, new FooFragment());
                 // Complete the changes added above
+                activity.BackBtnAction();
                 ft.commit();
+
             }
         });
 
-        ImageButton ib = (ImageButton) rootView.findViewById(R.id.addCommentBtn);
+        ImageButton ib =  rootView.findViewById(R.id.addCommentBtn);
         ib.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -112,7 +114,7 @@ public class CommentFragment extends Fragment
                             AddCommentResponse result = response.body();
                            //getDialog().dismiss();
                             Toast.makeText( getContext(), "Comment Added", Toast.LENGTH_SHORT).show();
-                            ImageView iv = (ImageView) rootView.findViewById(R.id.imageView_close);
+                            ImageView iv = rootView.findViewById(R.id.imageView_close);
                             iv.callOnClick();
                         }
                         public void onFailure(Call<AddCommentResponse> call, Throwable t)
@@ -123,7 +125,7 @@ public class CommentFragment extends Fragment
                 }
             }
         });
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.comments_recycler_View);
+        recyclerView = rootView.findViewById(R.id.comments_recycler_View);
         TextView tv = rootView.findViewById(R.id.textComment);
         //tv.setText("TrackId = " + TrackId);
 
@@ -149,7 +151,7 @@ public class CommentFragment extends Fragment
                     TrackComments = comments.Comments;
                     adapter = new CommentsAdapter(TrackComments, rootView.getContext());
                     //recyclerView.setAdapter(adapter);
-                    recyclerView = (RecyclerView) rootView.findViewById(R.id.comments_recycler_View);
+                    recyclerView = rootView.findViewById(R.id.comments_recycler_View);
                     recyclerView.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
                 }

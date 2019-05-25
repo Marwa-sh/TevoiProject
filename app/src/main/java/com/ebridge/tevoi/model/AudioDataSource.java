@@ -55,7 +55,7 @@ public class AudioDataSource extends MediaDataSource
     }
 
     @Override
-    public synchronized int readAt(long position, byte[] buffer, int offset, int size) throws IOException {
+    public synchronized int readAt(long position, byte[] buffer, int offset, int size) {
         synchronized (videoBuffer){
             int length = videoBuffer.length;
             if (position >= length) {
@@ -70,14 +70,14 @@ public class AudioDataSource extends MediaDataSource
     }
 
     @Override
-    public synchronized long getSize() throws IOException {
+    public synchronized long getSize() {
         synchronized (videoBuffer) {
             return videoBuffer.length;
         }
     }
 
     @Override
-    public synchronized void close() throws IOException {
+    public synchronized void close() {
 
     }
 }

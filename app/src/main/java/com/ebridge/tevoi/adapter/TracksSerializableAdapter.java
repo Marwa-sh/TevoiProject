@@ -104,10 +104,10 @@ public class TracksSerializableAdapter extends RecyclerView.Adapter<TracksSerial
             imgBtnPlay = itemView.findViewById(R.id.btn_play_pause);
             imgBtnDrawer= itemView.findViewById(R.id.btn_track_drawer);
 
-            btnAddToList = (Button)itemView.findViewById(R.id.btn_add_to_list);
-            btnLike = (Button) itemView.findViewById(R.id.imgBtnLike);
-            btnReadText = (Button)itemView.findViewById(R.id.btn_read_text);
-            btnRemove = (Button)itemView.findViewById(R.id.btn_remove);
+            btnAddToList = itemView.findViewById(R.id.btn_add_to_list);
+            btnLike = itemView.findViewById(R.id.imgBtnLike);
+            btnReadText = itemView.findViewById(R.id.btn_read_text);
+            btnRemove = itemView.findViewById(R.id.btn_remove);
 
             btnRemove.setVisibility(View.VISIBLE);
 
@@ -259,7 +259,7 @@ public class TracksSerializableAdapter extends RecyclerView.Adapter<TracksSerial
                             LayoutInflater li = LayoutInflater.from(activity);
                             final View promptsView = li.inflate(R.layout.layout_user_lists_spinner, null);
 
-                            Spinner spinner = (Spinner) promptsView.findViewById(R.id.user_lists_spinner);
+                            Spinner spinner = promptsView.findViewById(R.id.user_lists_spinner);
                             // TODO:  get user lists
                             // Create an ArrayAdapter using the string array and a default spinner layout
                             ArrayAdapter adapter = new ArrayAdapter(activity, R.layout.spinner, listsNames.getLstUserList());

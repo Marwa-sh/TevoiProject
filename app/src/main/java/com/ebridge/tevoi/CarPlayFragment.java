@@ -1,5 +1,6 @@
 package com.ebridge.tevoi;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
@@ -24,6 +25,9 @@ import com.ebridge.tevoi.Utils.HelperFunctions;
 import com.ebridge.tevoi.Utils.HelperFunctions;
 import com.ebridge.tevoi.model.IResponse;
 import com.ebridge.tevoi.model.TrackObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -54,7 +58,7 @@ public class CarPlayFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_car_play, container, false);
 
 
-        imgBtnClose = (ImageButton) rootView.findViewById(R.id.imgBtnCloseCarPlayer);
+        imgBtnClose = rootView.findViewById(R.id.imgBtnCloseCarPlayer);
         imgBtnClose.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -67,21 +71,22 @@ public class CarPlayFragment extends Fragment {
                 //TrackAddToList frag = new TrackAddToList();
                 activity.mediaPlayerFragment.PreviousFragment= Global.CarPlayFragment;
                 ft.replace(R.id.content_frame, activity.mediaPlayerFragment);
+                activity.getSupportFragmentManager().popBackStackImmediate();
                 // or ft.add(R.id.your_placeholder, new FooFragment());
                 // Complete the changes added above
                 ft.commit();
             }
         });
-        seekBar = (SeekBar) rootView.findViewById(R.id.seekBarCar);
-        txtCurentTime = (TextView) rootView.findViewById(R.id.txtcurrentTimeCar);
-        txtFullTime = (TextView) rootView.findViewById(R.id.txtfullTimeCar);
-        txtPartnerName = (TextView) rootView.findViewById(R.id.txtPartnerNameCar);
-        imgPartnerLogo = (ImageView) rootView.findViewById(R.id.imgPartnerLogoCar);
+        seekBar = rootView.findViewById(R.id.seekBarCar);
+        txtCurentTime = rootView.findViewById(R.id.txtcurrentTimeCar);
+        txtFullTime = rootView.findViewById(R.id.txtfullTimeCar);
+        txtPartnerName = rootView.findViewById(R.id.txtPartnerNameCar);
+        imgPartnerLogo = rootView.findViewById(R.id.imgPartnerLogoCar);
 
-        imgBtnPlay = (ImageButton) rootView.findViewById((R.id.imgBtnPlayCar));
-        imgBtnPrevious = (ImageButton) rootView.findViewById((R.id.imgBtnCarPrevious));
-        imgBtnNext = (ImageButton) rootView.findViewById((R.id.imgBtnCarNext));
-        imgBtnShuffle = (ImageButton) rootView.findViewById((R.id.imgBtnCarShuffle));
+        imgBtnPlay = rootView.findViewById((R.id.imgBtnPlayCar));
+        imgBtnPrevious = rootView.findViewById((R.id.imgBtnCarPrevious));
+        imgBtnNext = rootView.findViewById((R.id.imgBtnCarNext));
+        imgBtnShuffle = rootView.findViewById((R.id.imgBtnCarShuffle));
 
 
         final SideMenu activity = (SideMenu) getActivity();
@@ -90,7 +95,7 @@ public class CarPlayFragment extends Fragment {
         TrackObject currentTrack = activity.mediaPlayerFragment.currentTrack;
         if(currentTrack!= null)
         {
-            txtTrackName = (TextView) rootView.findViewById(R.id.txtTrackNameCar);
+            txtTrackName = rootView.findViewById(R.id.txtTrackNameCar);
             txtTrackName.setText(currentTrack.getName());
             txtPartnerName.setText(currentTrack.getPartnerName());
             //imgPartnerLogo.setImageURI(Uri.parse(currentTrack.getPartnerLogo()));
@@ -245,29 +250,40 @@ public class CarPlayFragment extends Fragment {
                 final SideMenu activity = (SideMenu)getActivity();
                 if(activity != null)
                 {
-                    if(activity.serviceBound)
+                    /*boolean isForground = activity.isAppInForeground(activity, "ComponentInfo{com.ebridge.tevoi/com.ebridge.tevoi.SideMenu}");
+                    if(isForground==true){
+                        // Toast.makeText(getBaseContext(),"Activity is in foreground, active",1000).show();
+                        activity.isActivityPause = false;
+                    }
+                    else
                     {
-                        //Toast.makeText(activity, "maroosh", Toast.LENGTH_SHORT).show();
+                        activity.isActivityPause = true;
+                    }*/
+
+                    if (!activity.isActivityPause) {
+                        if (activity.serviceBound)
+                        {
+                            //Toast.makeText(activity, "maroosh", Toast.LENGTH_SHORT).show();
 
                        /* if(seekBar == null)
                             seekBar = (SeekBar) rootView.findViewById(R.id.seekBar);
 */
-                        seekBar.setMax(activity.player.mMediaPlayer.getDuration()/ 1000);
-                        String timeFormat2 = HelperFunctions.GetTimeFormat(activity.player.mMediaPlayer.getDuration()/ 1000);
-                        txtFullTime.setText(timeFormat2);
-                        //Toast.makeText(activity, timeFormat2, Toast.LENGTH_SHORT).show();
-                        //player = activity.player;
-                        int mCurrentPosition = activity.player.mMediaPlayer.getCurrentPosition() / 1000;
+                            imgBtnPlay.setImageResource(R.drawable.baseline_pause_24);
+                            seekBar.setMax(activity.player.mMediaPlayer.getDuration() / 1000);
+                            String timeFormat2 = HelperFunctions.GetTimeFormat(activity.player.mMediaPlayer.getDuration() / 1000);
+                            txtFullTime.setText(timeFormat2);
+                            //Toast.makeText(activity, timeFormat2, Toast.LENGTH_SHORT).show();
+                            //player = activity.player;
+                            int mCurrentPosition = activity.player.mMediaPlayer.getCurrentPosition() / 1000;
 
-                        seekBar.setProgress(mCurrentPosition);
-                        String timeFormat = HelperFunctions.GetTimeFormat(mCurrentPosition);
-                        txtCurentTime.setText(timeFormat);
+                            seekBar.setProgress(mCurrentPosition);
+                            String timeFormat = HelperFunctions.GetTimeFormat(mCurrentPosition);
+                            txtCurentTime.setText(timeFormat);
+                        } else {
+                            imgBtnPlay.setImageResource(R.drawable.baseline_play_arrow_24);
+                        }
+                        mHandler.postDelayed(this, 1000);
                     }
-                    else
-                    {
-
-                    }
-                    mHandler.postDelayed(this, 1000);
                 }
                 /*SideMenu activity = (SideMenu)getActivity();
                 if(activity != null)
@@ -290,7 +306,7 @@ public class CarPlayFragment extends Fragment {
         return rootView;
     }
 
-    private void playAudio(String media) {
+    /*private void playAudio(String media) {
         //Check is service is active
         SideMenu activity = (SideMenu)getActivity();
         if (!activity.serviceBound)
@@ -305,7 +321,7 @@ public class CarPlayFragment extends Fragment {
             //Service is active
             //Send media with BroadcastReceiver
         }
-    }
+    }*/
 
     public void refreshCurrentTrackInfo(SideMenu activity)
     {

@@ -64,7 +64,7 @@ public class UserListFragment extends Fragment {
                 // set prompts.xml to alertdialog builder
                 alertDialogBuilder.setView(promptsView);
 
-                final EditText userInput = (EditText) promptsView
+                final EditText userInput = promptsView
                         .findViewById(R.id.edittxtUserListName);
 
                 // set dialog message
@@ -119,7 +119,7 @@ public class UserListFragment extends Fragment {
             }
         });
 
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.user_list_recycler_View);
+        recyclerView = rootView.findViewById(R.id.user_list_recycler_View);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
