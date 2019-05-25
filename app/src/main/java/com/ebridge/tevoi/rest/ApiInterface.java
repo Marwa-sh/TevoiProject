@@ -49,7 +49,7 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface ApiInterface {
-    @Headers({"Content-Type:application/json","Authorization:TevoiTokenSample"})
+    /*@Headers({"Content-Type:application/json","Authorization:TevoiTokenSample"})*/
     @GET("api/Services/ListMainTrack")
     Call<TrackResponseList> getListMainTrack(@Query("ListTypeEnum") int ListTypeEnum,@Query("index") int index,@Query("size") int size);
 
