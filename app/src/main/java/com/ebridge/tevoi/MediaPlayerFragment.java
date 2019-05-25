@@ -241,16 +241,18 @@ public class MediaPlayerFragment extends Fragment {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 SideMenu activity = (SideMenu)getActivity();
-                if(activity.serviceBound && fromUser){
-                    // TODO  : check user quota
+                if(activity!= null) {
+                    if (activity.serviceBound && fromUser) {
+                        // TODO  : check user quota
 
-                    activity.player.mMediaPlayer.seekTo(progress * 1000);
-                    String timeFormat = GetTimeFormat(progress);
-                    currentTime.setText(timeFormat);
-                    int numberofMovedSeconds = progress - activity.numberOfCurrentSecondsInTrack;
-                    activity.numberOfCurrentSecondsInTrack = progress;
-                    activity.numberOfListenedSeconds += numberofMovedSeconds;
-                    //Toast.makeText(activity, "numberofMovedSeconds=" + numberofMovedSeconds, Toast.LENGTH_SHORT).show();
+                        activity.player.mMediaPlayer.seekTo(progress * 1000);
+                        String timeFormat = GetTimeFormat(progress);
+                        currentTime.setText(timeFormat);
+                        int numberofMovedSeconds = progress - activity.numberOfCurrentSecondsInTrack;
+                        activity.numberOfCurrentSecondsInTrack = progress;
+                        activity.numberOfListenedSeconds += numberofMovedSeconds;
+                        //Toast.makeText(activity, "numberofMovedSeconds=" + numberofMovedSeconds, Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
@@ -594,6 +596,7 @@ public class MediaPlayerFragment extends Fragment {
         // Replace the contents of the container with the new fragment
         //TrackShare frag = new TrackShare();
         ft.replace(R.id.content_frame, commentFragment);
+        ft.addToBackStack( "TrackComment" );
         // or ft.add(R.id.your_placeholder, new FooFragment());
         // Complete the changes added above
         ft.commit();

@@ -847,6 +847,7 @@ public class SideMenu extends FragmentActivity {
             finish();
         }
         else if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
+            Toast.makeText(this, "hi count 1", Toast.LENGTH_SHORT).show();
             finish();
         }
         else

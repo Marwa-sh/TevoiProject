@@ -71,7 +71,7 @@ public class CarPlayFragment extends Fragment {
                 //TrackAddToList frag = new TrackAddToList();
                 activity.mediaPlayerFragment.PreviousFragment= Global.CarPlayFragment;
                 ft.replace(R.id.content_frame, activity.mediaPlayerFragment);
-                activity.getSupportFragmentManager().popBackStackImmediate();
+                activity.BackBtnAction();
                 // or ft.add(R.id.your_placeholder, new FooFragment());
                 // Complete the changes added above
                 ft.commit();
