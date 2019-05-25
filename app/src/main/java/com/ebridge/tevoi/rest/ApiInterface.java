@@ -20,6 +20,9 @@ import com.ebridge.tevoi.model.LoginResponse;
 import com.ebridge.tevoi.model.PartnerListResponse;
 import com.ebridge.tevoi.model.RatingRequest;
 import com.ebridge.tevoi.model.RatingResponse;
+import com.ebridge.tevoi.model.RegisterDataResponse;
+import com.ebridge.tevoi.model.RegisterRequest;
+import com.ebridge.tevoi.model.RegisterResponse;
 import com.ebridge.tevoi.model.TokenRequest;
 import com.ebridge.tevoi.model.TokenResponse;
 import com.ebridge.tevoi.model.TrackCommentRequest;
@@ -143,7 +146,7 @@ public interface ApiInterface {
     Call<IResponse> AddUnitUsageForUser(@Query("TrackId") int TrackId,@Query("NumberOfUnits") int numberOfUnits);
 
     @GET("api/Services/GetPartnerTracks")
-    Call<GetPartnerTracksResponse> GetPartnerTracks(@Query("PartnerId") int PartnerId, @Query("index") int index, @Query("size") int size);
+    Call<GetPartnerTracksResponse> GetPartnerTracks(@Query("PartnerId") int PartnerId,@Query("ListTypeEnum") int ListTypeEnum, @Query("index") int index, @Query("size") int size);
 
     @GET("api/Services/GetTracksForUserList")
     Call<GetUserListTracksResponse> GetTracksForUserList(@Query("ListId") int ListId, @Query("index") int index, @Query("size") int size);
@@ -168,5 +171,9 @@ public interface ApiInterface {
     @GET("api/Services/GetNotificationTypesList")
     Call<ListNotificationTypesResponse> GetNotificationTypesList();
 
+    @GET("api/User/GetRegisterInformation")
+    Call<RegisterDataResponse> GetRegisterInformation();
+    @POST("api/User/Register")
+    Call<RegisterResponse> Register(@Query("RegisterRequest") RegisterRequest model);
 
 }

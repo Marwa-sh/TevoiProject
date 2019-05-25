@@ -130,7 +130,7 @@ public class PartnerNameFragment extends Fragment {
         }
         tabs[k].setBackgroundColor(ContextCompat.getColor(getContext(),R.color.tevoiBluePrimary));
         //tabs[k].refreshDrawableState();
-        Call<GetPartnerTracksResponse> call = Global.client.GetPartnerTracks(PartnerId, 0, 10);
+        Call<GetPartnerTracksResponse> call = Global.client.GetPartnerTracks(PartnerId,defaultTab, 0, 10);
         call.enqueue(new Callback<GetPartnerTracksResponse>(){
             public void onResponse(Call<GetPartnerTracksResponse> call, Response<GetPartnerTracksResponse> response) {
                 //generateDataList(response.body());

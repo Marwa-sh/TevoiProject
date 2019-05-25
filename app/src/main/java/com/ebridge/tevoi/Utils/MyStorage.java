@@ -20,6 +20,9 @@ public class MyStorage {
     public static final String PreferenceLanguage = "PreferenceLanguage";
     public static final String TrackTypeFilter = "TrackTypeFilter";
     public static final String UserToken = "UserToken";
+    public static final String ShowHeardTracks="ShowHeardTracks";
+    public static final String ShowNewsTracks="ShowNewsTracks";
+    public static final String ShowArticlesTracks="ShowArticlesTracks";
 
     public void storePlayNowTracks(Context context, List playNowTracks)
     {
@@ -194,7 +197,81 @@ public class MyStorage {
 
         return token;
     }
-
     // endregion
+
+    // Region filters
+    public String getShowHeardTracksState(Context context)
+    {
+        SharedPreferences settings;
+        String state="";
+        settings = context.getSharedPreferences(ShowHeardTracks,context.MODE_PRIVATE);
+        if(settings.contains(ShowHeardTracks))
+        {
+            state=settings.getString(ShowHeardTracks,"true");
+        }
+        state="true";
+        return state;
+
+    }
+    public String getShowNewsTracksState(Context context)
+    {
+        SharedPreferences settings;
+        String state="";
+        settings = context.getSharedPreferences(ShowNewsTracks,context.MODE_PRIVATE);
+        if(settings.contains(ShowNewsTracks))
+        {
+            state=settings.getString(ShowNewsTracks,"true");
+        }
+        state="true";
+        return state;
+
+    }
+    public String getShowArticlesTracksState(Context context)
+    {
+        SharedPreferences settings;
+        String state="";
+        settings = context.getSharedPreferences(ShowArticlesTracks,context.MODE_PRIVATE);
+        if(settings.contains(ShowArticlesTracks))
+        {
+            state=settings.getString(ShowArticlesTracks,"true");
+        }
+        state="true";
+        return state;
+
+    }
+
+    public void storeSHowHeardTracksState(Context context, String state)
+    {
+        SharedPreferences settings;
+        Editor editor;
+        settings = context.getSharedPreferences(ShowHeardTracks, Context.MODE_PRIVATE);
+        editor = settings.edit();
+
+        editor.putString(UserToken, state);
+        editor.commit();
+    }
+    public void storeShowNewsTracksState(Context context, String state)
+    {
+        SharedPreferences settings;
+        Editor editor;
+        settings = context.getSharedPreferences(ShowNewsTracks, Context.MODE_PRIVATE);
+        editor = settings.edit();
+
+        editor.putString(ShowNewsTracks, state);
+        editor.commit();
+    }
+
+    public void storeShowArticlesTracksState(Context context, String state)
+    {
+        SharedPreferences settings;
+        Editor editor;
+        settings = context.getSharedPreferences(ShowArticlesTracks, Context.MODE_PRIVATE);
+        editor = settings.edit();
+
+        editor.putString(ShowArticlesTracks, state);
+        editor.commit();
+    }
+
+    // endRegion
 
 }

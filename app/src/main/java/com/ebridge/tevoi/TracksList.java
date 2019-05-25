@@ -309,7 +309,8 @@ public class TracksList extends Fragment implements AdapterView.OnItemSelectedLi
         //tabs[k].refreshDrawableState();
         Call<TrackResponseList> call = Global.client.getListMainTrack(k, 0, 10);
         call.enqueue(new Callback <TrackResponseList>(){
-            public void onResponse(Call<TrackResponseList> call, Response<TrackResponseList> response) {
+            public void onResponse(Call<TrackResponseList> call, Response<TrackResponseList> response)
+            {
                 //generateDataList(response.body());
                 TrackResponseList tracks=response.body();
                 int x=tracks.getTrack().size();

@@ -17,6 +17,22 @@ public class TrackTypeAdapter extends RecyclerView.Adapter<TrackTypeAdapter.Trac
     public TrackTypeObject[] trackTypeObjects;
     private Context context;
 
+    public TrackTypeObject[] getTrackTypeObjects() {
+        return trackTypeObjects;
+    }
+
+    public void setTrackTypeObjects(TrackTypeObject[] trackTypeObjects) {
+        this.trackTypeObjects = trackTypeObjects;
+    }
+
+    public Context getContext() {
+        return context;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
     public TrackTypeAdapter(TrackTypeObject[] trackTypeObjects, Context context) {
         this.trackTypeObjects = trackTypeObjects;
         this.context = context;
@@ -41,6 +57,8 @@ public class TrackTypeAdapter extends RecyclerView.Adapter<TrackTypeAdapter.Trac
 
         trackTypeObjects[2].setName("Articles");
         trackTypeObjects[2].setTrackTypeFilter(false);
+
+
     }
 
     @NonNull
