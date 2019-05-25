@@ -17,6 +17,7 @@
         >
     </android.support.v7.widget.RecyclerView>
 
+
     <TextView
         android:id="@+id/textView6"
         android:layout_width="match_parent"
@@ -42,6 +43,7 @@
         android:paddingVertical="10dp"
         />
 
+
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -64,6 +66,7 @@
             android:textColor="@color/fontColor"
             android:paddingVertical="10dp"
             android:layout_weight="4"
+            android:layout_marginLeft="5dp"
             android:gravity="center_vertical"
             />
 

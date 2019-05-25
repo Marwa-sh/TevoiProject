@@ -18,12 +18,14 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.X509TrustManager;
 
 public class Global {
-    //public static final String BASE_URL = "http://192.168.1.5/TevoiAPIEmulator/";
+    //public static final String BASE_URL = "http://192.168.1.100/TevoiAPI/";
 
-    //public static  final  String BASE_AUDIO_URL = "http://192.168.1.5/TevoiAPIEmulator/api/Services/GetStreamAudio?id=";
+    //public static  final  String BASE_AUDIO_URL = "http://192.168.1.100/TevoiAPI/api/Services/GetStreamAudio?id=";
+
     public static final String BASE_URL = "http://h2817272.stratoserver.net/TevoiAPI/";
 
     public static  final  String BASE_AUDIO_URL = "http://h2817272.stratoserver.net/TevoiAPI/api/Services/GetStreamAudio?id=";
+
     //public static final String BASE_URL = "http://192.168.1.109/TevoiAPIEmulator/";
 
     //public static  final  String BASE_AUDIO_URL = "http://192.168.1.109/TevoiAPIEmulator/api/Services/GetStreamAudio?id=";
@@ -53,23 +55,5 @@ public class Global {
     public static final String Licence = "";
 
 
-    // region media player constants
 
-    public interface ACTION
-    {
-        public static String MAIN_ACTION = "com.marothiatechs.customnotification.action.main";
-        public static String INIT_ACTION = "com.marothiatechs.customnotification.action.init";
-        public static String PREV_ACTION = "com.marothiatechs.customnotification.action.prev";
-        public static String PLAY_ACTION = "com.marothiatechs.customnotification.action.play";
-        public static String NEXT_ACTION = "com.marothiatechs.customnotification.action.next";
-        public static String STARTFOREGROUND_ACTION = "com.marothiatechs.customnotification.action.startforeground";
-        public static String STOPFOREGROUND_ACTION = "com.marothiatechs.customnotification.action.stopforeground";
-
-    }
-    public interface NOTIFICATION_ID
-    {
-        public static int FOREGROUND_SERVICE = 101;
-    }
-
-    // endregion
 }
