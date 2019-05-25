@@ -32,7 +32,7 @@ public class HistoryListFragment extends Fragment {
         activity = (SideMenu) getActivity();
 
 
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.history_tracks_recycler_View);
+        recyclerView = rootView.findViewById(R.id.history_tracks_recycler_View);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);

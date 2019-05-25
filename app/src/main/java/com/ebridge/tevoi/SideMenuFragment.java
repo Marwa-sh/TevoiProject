@@ -26,7 +26,7 @@ public class SideMenuFragment extends Fragment {
             View v = inflater.inflate(R.layout.fragment_side_menu, container, false);
 
             // Getting reference to the TextView of the Fragment
-            TextView tv = (TextView) v.findViewById(R.id.tv_content);
+            TextView tv = v.findViewById(R.id.tv_content);
 
             // Setting currently selected river name in the TextView
             //if(tv!= null)

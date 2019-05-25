@@ -31,7 +31,7 @@ public class PlayingNowFragment extends Fragment {
 
         lstTracks = activity.playNowListTracks;
 
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.tracks_play_now_recycler_View);
+        recyclerView = rootView.findViewById(R.id.tracks_play_now_recycler_View);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);

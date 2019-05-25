@@ -80,7 +80,7 @@ public class MyStorage {
             playNowTracks = new ArrayList( Arrays.asList(trackItems));
         } else
             return new ArrayList<>();
-        return (ArrayList) playNowTracks;
+        return playNowTracks;
     }
 
     public String addTrack(Context context, TrackSerializableObject myModel)

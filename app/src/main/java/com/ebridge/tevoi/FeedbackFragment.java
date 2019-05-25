@@ -89,12 +89,12 @@ public class FeedbackFragment extends Fragment {
                             else
                             {
                                 activity.mProgressDialog.dismiss();
-                                Toast.makeText(activity,result.getMessage(), Toast.LENGTH_LONG).show();;
+                                Toast.makeText(activity,result.getMessage(), Toast.LENGTH_LONG).show();
                             }
                         }
                         public void onFailure(Call<IResponse> call, Throwable t)
                         {
-                            Toast.makeText(activity,"something went wrong", Toast.LENGTH_LONG).show();;
+                            Toast.makeText(activity,"something went wrong", Toast.LENGTH_LONG).show();
                             activity.mProgressDialog.dismiss();
                         }
                     });

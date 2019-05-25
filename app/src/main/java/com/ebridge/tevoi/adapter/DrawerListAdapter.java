@@ -43,7 +43,7 @@ public class DrawerListAdapter extends ArrayAdapter<DrawerListItemObject>
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.drawer_list_item,parent,false);
 
         //ImageView imageView = (ImageView) v.findViewById(R.id.btnGoTo);
-        TextView textView = (TextView) v.findViewById(R.id.txtListItemName);
+        TextView textView = v.findViewById(R.id.txtListItemName);
 
         DrawerListItemObject choice = data.get(position);
 

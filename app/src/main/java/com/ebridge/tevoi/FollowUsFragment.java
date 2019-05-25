@@ -17,4 +17,4 @@ public class FollowUsFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_follow_us, container, false);
     }
-};
+}

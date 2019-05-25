@@ -58,7 +58,7 @@ public class CarPlayFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_car_play, container, false);
 
 
-        imgBtnClose = (ImageButton) rootView.findViewById(R.id.imgBtnCloseCarPlayer);
+        imgBtnClose = rootView.findViewById(R.id.imgBtnCloseCarPlayer);
         imgBtnClose.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -77,16 +77,16 @@ public class CarPlayFragment extends Fragment {
                 ft.commit();
             }
         });
-        seekBar = (SeekBar) rootView.findViewById(R.id.seekBarCar);
-        txtCurentTime = (TextView) rootView.findViewById(R.id.txtcurrentTimeCar);
-        txtFullTime = (TextView) rootView.findViewById(R.id.txtfullTimeCar);
-        txtPartnerName = (TextView) rootView.findViewById(R.id.txtPartnerNameCar);
-        imgPartnerLogo = (ImageView) rootView.findViewById(R.id.imgPartnerLogoCar);
+        seekBar = rootView.findViewById(R.id.seekBarCar);
+        txtCurentTime = rootView.findViewById(R.id.txtcurrentTimeCar);
+        txtFullTime = rootView.findViewById(R.id.txtfullTimeCar);
+        txtPartnerName = rootView.findViewById(R.id.txtPartnerNameCar);
+        imgPartnerLogo = rootView.findViewById(R.id.imgPartnerLogoCar);
 
-        imgBtnPlay = (ImageButton) rootView.findViewById((R.id.imgBtnPlayCar));
-        imgBtnPrevious = (ImageButton) rootView.findViewById((R.id.imgBtnCarPrevious));
-        imgBtnNext = (ImageButton) rootView.findViewById((R.id.imgBtnCarNext));
-        imgBtnShuffle = (ImageButton) rootView.findViewById((R.id.imgBtnCarShuffle));
+        imgBtnPlay = rootView.findViewById((R.id.imgBtnPlayCar));
+        imgBtnPrevious = rootView.findViewById((R.id.imgBtnCarPrevious));
+        imgBtnNext = rootView.findViewById((R.id.imgBtnCarNext));
+        imgBtnShuffle = rootView.findViewById((R.id.imgBtnCarShuffle));
 
 
         final SideMenu activity = (SideMenu) getActivity();
@@ -95,7 +95,7 @@ public class CarPlayFragment extends Fragment {
         TrackObject currentTrack = activity.mediaPlayerFragment.currentTrack;
         if(currentTrack!= null)
         {
-            txtTrackName = (TextView) rootView.findViewById(R.id.txtTrackNameCar);
+            txtTrackName = rootView.findViewById(R.id.txtTrackNameCar);
             txtTrackName.setText(currentTrack.getName());
             txtPartnerName.setText(currentTrack.getPartnerName());
             //imgPartnerLogo.setImageURI(Uri.parse(currentTrack.getPartnerLogo()));

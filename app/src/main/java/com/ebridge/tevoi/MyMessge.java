@@ -34,7 +34,7 @@ public class MyMessge extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_my_messge, container, false);
-        TextView tv = (TextView) rootView.findViewById(R.id.textMessage);
+        TextView tv = rootView.findViewById(R.id.textMessage);
         tv.setText(Message);
         return  rootView;
     }

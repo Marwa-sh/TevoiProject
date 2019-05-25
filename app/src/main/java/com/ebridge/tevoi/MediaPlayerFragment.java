@@ -130,13 +130,13 @@ public class MediaPlayerFragment extends Fragment {
         activity.numberOfCurrentSecondsInTrack =0;
 
         fm = getActivity().getSupportFragmentManager();
-        scrollViewMediaPlayer = (ScrollView) rootView.findViewById(R.id.scrollViewMediaPlayer);
-        linearLayoutMediaPlayer = (LinearLayout) rootView.findViewById(R.id.linearLayoutMediaPlayer);
+        scrollViewMediaPlayer = rootView.findViewById(R.id.scrollViewMediaPlayer);
+        linearLayoutMediaPlayer = rootView.findViewById(R.id.linearLayoutMediaPlayer);
 
-        playButton = (ImageButton) rootView.findViewById(R.id.imageButtonPlay);
-        seekBar = (SeekBar) rootView.findViewById(R.id.seekBar);
-        currentTime = (TextView) rootView.findViewById(R.id.currentTime);
-        fullTime = (TextView) rootView.findViewById(R.id.fullTime);
+        playButton = rootView.findViewById(R.id.imageButtonPlay);
+        seekBar = rootView.findViewById(R.id.seekBar);
+        currentTime = rootView.findViewById(R.id.currentTime);
+        fullTime = rootView.findViewById(R.id.fullTime);
         currentTime.setText(GetTimeFormat(0));
         ratingBar = rootView.findViewById(R.id.ratingBar);
 
@@ -165,7 +165,7 @@ public class MediaPlayerFragment extends Fragment {
                         if (activity.serviceBound && activity.player != null && activity.player.mMediaPlayer != null)
                         {
                             if (seekBar == null)
-                                seekBar = (SeekBar) rootView.findViewById(R.id.seekBar);
+                                seekBar = rootView.findViewById(R.id.seekBar);
 
                             seekBar.setMax(activity.player.mMediaPlayer.getDuration() / 1000);
                             String timeFormat2 = GetTimeFormat(activity.player.mMediaPlayer.getDuration() / 1000);
@@ -197,7 +197,7 @@ public class MediaPlayerFragment extends Fragment {
         if(activity.serviceBound)
         {
             if(seekBar == null)
-                seekBar = (SeekBar) rootView.findViewById(R.id.seekBar);
+                seekBar = rootView.findViewById(R.id.seekBar);
 
             int duration = activity.player.mMediaPlayer.getDuration()/ 1000;
             seekBar.setMax(duration);
@@ -259,16 +259,16 @@ public class MediaPlayerFragment extends Fragment {
         {
             hasLocation = currentTrack.isHasLocation();
             hasText = currentTrack.isHasText();
-            trackName = (TextView) rootView.findViewById(R.id.textViewTrackName);
+            trackName = rootView.findViewById(R.id.textViewTrackName);
             trackName.setText(currentTrack.getName());
 
-            trackDuration = (TextView) rootView.findViewById(R.id.textViewDuration);
+            trackDuration = rootView.findViewById(R.id.textViewDuration);
             trackDuration.setText(currentTrack.getDuration());
 
-            trackCategories = (TextView) rootView.findViewById(R.id.textViewCategories);
+            trackCategories = rootView.findViewById(R.id.textViewCategories);
             trackCategories.setText(currentTrack.getCategories());
 
-            trackAuthors = (TextView) rootView.findViewById(R.id.textViewAuthors);
+            trackAuthors = rootView.findViewById(R.id.textViewAuthors);
             trackAuthors.setText(currentTrack.getAuthors());
             commentFragment = CommentFragment.newInstance(currentTrack.getId());
             textFargment = TrackText.newInstance(currentTrack.getId(), Global.MediaPlayerFragmentName);
@@ -290,8 +290,8 @@ public class MediaPlayerFragment extends Fragment {
 
                 }
             });
-            partnerName = (TextView) rootView.findViewById(R.id.tv_partner_name);
-            partnerLogo = (ImageView) rootView.findViewById(R.id.img_partner_logo);
+            partnerName = rootView.findViewById(R.id.tv_partner_name);
+            partnerLogo = rootView.findViewById(R.id.img_partner_logo);
 
             partnerName.setText(currentTrack.getPartnerName());
             //String ulrLogo = Uri.parse(currentTrack.getPartnerLogo());

@@ -54,7 +54,7 @@ public class TrackText extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
       final View rootView = inflater.inflate(R.layout.fragment_track_text, container, false);
-        ImageView iv = (ImageView) rootView.findViewById(R.id.imgBtnCloseText);
+        ImageView iv = rootView.findViewById(R.id.imgBtnCloseText);
         iv.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -90,13 +90,13 @@ public class TrackText extends Fragment {
                 if(text.TrackText != null)
                 {
                     //
-                    TextView tv = (TextView) rootView.findViewById(R.id.text_track);
+                    TextView tv = rootView.findViewById(R.id.text_track);
                     tv.setText(text.TrackText);
                 }
             }
             public void onFailure(Call<TrackTextResponse> call, Throwable t)
             {
-                TextView tv = (TextView) rootView.findViewById(R.id.text_track);
+                TextView tv = rootView.findViewById(R.id.text_track);
                 tv.setText("No Text");
             }
         });

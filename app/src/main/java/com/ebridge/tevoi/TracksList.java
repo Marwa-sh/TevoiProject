@@ -84,7 +84,7 @@ public class TracksList extends Fragment implements AdapterView.OnItemSelectedLi
         active_tab = defaultTab;
         btnSearch = rootView.findViewById(R.id.btn_search);
         fm = getActivity().getSupportFragmentManager();
-        scrollViewListTracks = (ScrollView) rootView.findViewById(R.id.scrollViewListTracks);
+        scrollViewListTracks = rootView.findViewById(R.id.scrollViewListTracks);
         linearLayoutListTracks  = rootView.findViewById(R.id.linearLayoutListTracks);
 
         initMediaPlayerLayout(rootView);
@@ -205,7 +205,7 @@ public class TracksList extends Fragment implements AdapterView.OnItemSelectedLi
                         }
                         public void onFailure(Call<TrackResponseList> call, Throwable t)
                         {
-                            Toast.makeText(activity,"something went wrong", Toast.LENGTH_LONG).show();;
+                            Toast.makeText(activity,"something went wrong", Toast.LENGTH_LONG).show();
                             activity.mProgressDialog.dismiss();
                         }
                     });
@@ -214,7 +214,7 @@ public class TracksList extends Fragment implements AdapterView.OnItemSelectedLi
             }
         });
         }
-        Spinner spinner = (Spinner) rootView.findViewById(R.id.user_lists_spinner);
+        Spinner spinner = rootView.findViewById(R.id.user_lists_spinner);
         if(spinner != null)
             spinner.setOnItemSelectedListener(this);
 
@@ -235,7 +235,7 @@ public class TracksList extends Fragment implements AdapterView.OnItemSelectedLi
         }
         //defaultTab = 0;
 
-        recyclerViews[defaultTab] = (RecyclerView) rootView.findViewById(R.id.tracks_recycler_View);
+        recyclerViews[defaultTab] = rootView.findViewById(R.id.tracks_recycler_View);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerViews[defaultTab].setLayoutManager(layoutManager);

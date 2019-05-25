@@ -182,9 +182,9 @@ public class SideMenu extends FragmentActivity {
                 ActionBar.LayoutParams.MATCH_PARENT,
                 ActionBar.LayoutParams.MATCH_PARENT,
                 Gravity.CENTER);
-        TextView textviewTitle = (TextView) viewActionBar.findViewById(R.id.tvTitle);
+        TextView textviewTitle = viewActionBar.findViewById(R.id.tvTitle);
         textviewTitle.setText("Tevoi");
-        TextView textviewSubTitle = (TextView) viewActionBar.findViewById(R.id.tvSubTitle);
+        TextView textviewSubTitle = viewActionBar.findViewById(R.id.tvSubTitle);
         textviewSubTitle.setText(subTitle);
         abar.setCustomView(viewActionBar, params);
         abar.setDisplayShowCustomEnabled(true);
@@ -304,7 +304,7 @@ public class SideMenu extends FragmentActivity {
         // endregion
 
         trackIdPlayedNow = -1;
-        searchBtn = (MenuItem)findViewById(R.id.action_search);
+        searchBtn = findViewById(R.id.action_search);
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setCancelable(false);
 
@@ -319,8 +319,8 @@ public class SideMenu extends FragmentActivity {
         // region initialize drawer
         mTitle = (String) getTitle();
         // Getting reference to the DrawerLayout
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerList = (ListView) findViewById(R.id.drawer_list);
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+        mDrawerList = findViewById(R.id.drawer_list);
         // Getting reference to the ActionBarDrawerToggle
         mDrawerToggle = new ActionBarDrawerToggle( this,
                 mDrawerLayout,
@@ -519,7 +519,7 @@ public class SideMenu extends FragmentActivity {
                         fragmentTransaction.commit();
                         break;
                     }
-                };
+                }
 
 
                 // Closing the drawer
@@ -887,16 +887,13 @@ public class SideMenu extends FragmentActivity {
             return false;
         }
 
-        if (services.size() > 0
+        return services.size() > 0
                 && services.get(0).topActivity
                 .getPackageName()
                 .toString()
                 .equalsIgnoreCase(
-                        activityName)) {
-            return true;
-        }
+                        activityName);
 
-        return false;
     }
 
 }

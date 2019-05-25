@@ -106,10 +106,10 @@ public class MediaPlayerActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_media_player);
-        playButton = (ImageButton) findViewById(R.id.imageButtonPlay);
-        seekBar = (SeekBar) findViewById(R.id.seekBar);
-        currentTime = (TextView) findViewById(R.id.currentTime);
-        fullTime = (TextView) findViewById(R.id.fullTime);
+        playButton = findViewById(R.id.imageButtonPlay);
+        seekBar = findViewById(R.id.seekBar);
+        currentTime = findViewById(R.id.currentTime);
+        fullTime = findViewById(R.id.fullTime);
         ratingBar = findViewById(R.id.ratingBar);
         Call<RatingResponse> callRating=Global.client.GetTrackRating(currentTrack.getId());
         callRating.enqueue(new Callback<RatingResponse>() {
