@@ -779,11 +779,13 @@ public class SideMenu extends FragmentActivity {
             //ServiceConnection serviceConnection = serviceConnection;
             Intent playerIntent = new Intent(SideMenu.this, MediaPlayerService.class);
             playerIntent.putExtra("media", media);
+            playerIntent.setAction(Global.ACTION.STARTFOREGROUND_ACTION);
             //playerIntent.putExtra("activityStatus", isActivityPause);
             getBaseContext().startService(playerIntent);
             getBaseContext().bindService(playerIntent, serviceConnection, Context.BIND_AUTO_CREATE);
 
-        } else
+        }
+        else
         {
             //Service is active
             //Send a broadcast to the service -> PLAY_NEW_AUDIO

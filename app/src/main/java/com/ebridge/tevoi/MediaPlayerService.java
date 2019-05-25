@@ -258,30 +258,6 @@ public class MediaPlayerService extends Service implements
             //An audio file is passed to the service through putExtra();
             currentAudioUrl = intent.getExtras().getString("media");
             //activityIsPaused = intent.getExtras().getBoolean("activityStatus");
-
-           /* if (intent.getAction().equals(Global.ACTION.STARTFOREGROUND_ACTION)) {
-                showNotification();
-                Toast.makeText(this, "Service Started", Toast.LENGTH_SHORT).show();
-
-            } else if (intent.getAction().equals(Global.ACTION.PREV_ACTION)) {
-                Toast.makeText(this, "Clicked Previous", Toast.LENGTH_SHORT).show();
-                Log.i(LOG_TAG, "Clicked Previous");
-            } else if (intent.getAction().equals(Global.ACTION.PLAY_ACTION)) {
-                Toast.makeText(this, "Clicked Play", Toast.LENGTH_SHORT).show();
-                Log.i(LOG_TAG, "Clicked Play");
-            } else if (intent.getAction().equals(Global.ACTION.NEXT_ACTION)) {
-                Toast.makeText(this, "Clicked Next", Toast.LENGTH_SHORT).show();
-                Log.i(LOG_TAG, "Clicked Next");
-            } else if (intent.getAction().equals(
-                    Global.ACTION.STOPFOREGROUND_ACTION)) {
-                Log.i(LOG_TAG, "Received Stop Foreground Intent");
-                Toast.makeText(this, "Service Stoped", Toast.LENGTH_SHORT).show();
-                stopForeground(true);
-                stopSelf();
-            }
-            return START_STICKY;
-*/
-
         } catch (NullPointerException e) {
             stopSelf();
         }
@@ -294,7 +270,42 @@ public class MediaPlayerService extends Service implements
 
         if (currentAudioUrl != null && currentAudioUrl != "")
             initMediaPlayer();
-        return super.onStartCommand(intent, flags, startId);
+
+        if (intent.getAction().equals(Global.ACTION.STARTFOREGROUND_ACTION))
+        {
+            showNotification();
+            //Toast.makeText(this, "Service Started", Toast.LENGTH_SHORT).show();
+
+        }
+        else if (intent.getAction().equals(Global.ACTION.PREV_ACTION))
+        {
+            Toast.makeText(this, "Clicked Previous", Toast.LENGTH_SHORT).show();
+            Log.i(LOG_TAG, "Clicked Previous");
+        }
+        else if (intent.getAction().equals(Global.ACTION.PLAY_ACTION))
+        {
+            if(!mMediaPlayer.isPlaying())
+            {  mMediaPlayer.start(); Toast.makeText(this, "Clicked Play", Toast.LENGTH_SHORT).show();}
+            else
+            {   mMediaPlayer.pause();Toast.makeText(this, "Clicked Pause", Toast.LENGTH_SHORT).show(); }
+
+            Log.i(LOG_TAG, "Clicked Play");
+        }
+        else if (intent.getAction().equals(Global.ACTION.NEXT_ACTION))
+        {
+            Toast.makeText(this, "Clicked Next", Toast.LENGTH_SHORT).show();
+            Log.i(LOG_TAG, "Clicked Next");
+        }
+        else if (intent.getAction().equals( Global.ACTION.STOPFOREGROUND_ACTION))
+        {
+            Log.i(LOG_TAG, "Received Stop Foreground Intent");
+            Toast.makeText(this, "Service Stoped", Toast.LENGTH_SHORT).show();
+            stopForeground(true);
+            stopSelf();
+        }
+        return START_STICKY;
+
+        //return super.onStartCommand(intent, flags, startId);
 
     }
 
@@ -435,7 +446,7 @@ public class MediaPlayerService extends Service implements
 
 
 
-    /*Notification status;
+    Notification status;
     private final String LOG_TAG = "NotificationService";
 
     private void showNotification()
@@ -512,8 +523,6 @@ public class MediaPlayerService extends Service implements
         status.contentIntent = pendingIntent;
         startForeground(Global.NOTIFICATION_ID.FOREGROUND_SERVICE, status);
     }
-*/
-
 
 }
 

@@ -53,7 +53,7 @@ public class RegisterFragment  extends Fragment implements SpinnerAdapter, Adapt
         etPasswordConfirmation=rootView.findViewById(R.id.et_register_confirm_password);
         etEmail=rootView.findViewById(R.id.et_register_email);
         etAge=rootView.findViewById(R.id.et_register_age);
-        etOccupation=rootView.findViewById(R.id.et_register_occupation);
+        etOccupation =rootView.findViewById(R.id.et_register_occupation);
 
         imgbtnRegister=rootView.findViewById(R.id.imgbtn_register);
         imgbtnRegister.setOnClickListener(new View.OnClickListener() {
@@ -98,11 +98,11 @@ public class RegisterFragment  extends Fragment implements SpinnerAdapter, Adapt
 
             }
         });
-        imgbtnRegisterCancel=rootView.findViewById(R.id.imgbtn_register_cancel);
+        imgbtnRegisterCancel = rootView.findViewById(R.id.imgbtn_register_cancel);
 
 
 
-        spnrCountries=rootView.findViewById(R.id.spnrCountries);
+        spnrCountries = rootView.findViewById(R.id.spnrCountries);
 
 
         //spnrCountries.setAdapter(this);
@@ -126,6 +126,7 @@ public class RegisterFragment  extends Fragment implements SpinnerAdapter, Adapt
                 spnrGendersAdapter = new ArrayAdapter(activity, R.layout.spinner,genders);
                 spnrCountries.setAdapter(spnrCountriesAdapter);
                 spnrGender.setAdapter(spnrGendersAdapter);
+
                 spnrGender.setSelection(0);
                 spnrCountries.setSelection(0);
             }

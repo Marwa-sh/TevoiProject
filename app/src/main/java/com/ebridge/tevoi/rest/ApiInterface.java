@@ -146,7 +146,7 @@ public interface ApiInterface {
     Call<IResponse> AddUnitUsageForUser(@Query("TrackId") int TrackId,@Query("NumberOfUnits") int numberOfUnits);
 
     @GET("api/Services/GetPartnerTracks")
-    Call<GetPartnerTracksResponse> GetPartnerTracks(@Query("PartnerId") int PartnerId, @Query("index") int index, @Query("size") int size);
+    Call<GetPartnerTracksResponse> GetPartnerTracks(@Query("PartnerId") int PartnerId,@Query("ListTypeEnum") int ListTypeEnum, @Query("index") int index, @Query("size") int size);
 
     @GET("api/Services/GetTracksForUserList")
     Call<GetUserListTracksResponse> GetTracksForUserList(@Query("ListId") int ListId, @Query("index") int index, @Query("size") int size);
