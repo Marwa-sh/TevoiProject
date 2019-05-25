@@ -126,19 +126,13 @@ public class TracksSerializableAdapter extends RecyclerView.Adapter<TracksSerial
                     TrackSerializableObject t = activity.playNowListTracks.get(i);
                     TrackObject track = HelperFunctions.CastTrackSerialize(t);
 
-                    // if we are playing new track
-                    if(activity.player != null && i != activity.trackIdPlayedNow)
-                    {
-                        // reset the media player
-                        activity.player.resetMediaPlayer();
-                        activity.isPaused =false; activity.isPlaying = false;
-                        activity.serviceBound = false;
-                    }
                     activity.mediaPlayerFragment.currentTrackId = track.getId();
                     activity.mediaPlayerFragment.currentTrack = track;
-
+                    activity.CurrentTrackInPlayer = track;
                     ft.replace(R.id.content_frame, activity.mediaPlayerFragment);
+                    ft.addToBackStack( "mediaPlayerFragment" );
                     ft.commit();
+                    activity.playAudio(Global.GetStreamURL +activity.CurrentTrackInPlayer.getId());
                 }
             });
 

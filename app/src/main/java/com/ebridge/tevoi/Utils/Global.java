@@ -2,7 +2,9 @@ package com.ebridge.tevoi.Utils;
 
 
 import com.ebridge.tevoi.rest.ApiClient;
+import com.ebridge.tevoi.rest.ApiClientDnn;
 import com.ebridge.tevoi.rest.ApiInterface;
+import com.ebridge.tevoi.rest.ApiInterfaceDnn;
 
 import java.net.CookieManager;
 import java.security.SecureRandom;
@@ -40,13 +42,16 @@ public class Global {
     public  static  final  String CarPlayFragment = "CarPlayFragment";
 
     public  static  final String GetStreamURL= "http://h2817272.stratoserver.net/TevoiAPI/api/Services/GetStreamAudio?id=";
+    public  static  final  String LOGINURL ="http://h2817272.stratoserver.net/Tevoi/DesktopModules/TevoiAPIModuleFolder/";
+
 
     public final static ApiInterface client = ApiClient.getClient().create(ApiInterface.class);
+    public final static ApiInterfaceDnn clientDnn = ApiClientDnn.getClientDnn().create(ApiInterfaceDnn.class);
 
     public static  final int ListenUnitInSeconds = 60;
 
-    public static final String UserToken = "";
-    public static final String Language = "en";
+    public static String UserToken = "";
+    public static final String DefaultLanguage = "en";
     public static final String Licence = "";
 
 

@@ -17,17 +17,18 @@ import java.util.ArrayList;
 public class PlayingNowFragment extends Fragment {
     TracksSerializableAdapter adapter ;
     RecyclerView recyclerView;
+    SideMenu activity;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_playing_now_list, container, false);
+        activity = (SideMenu) getActivity();
 
         // get list of play now tracks
         ArrayList<TrackSerializableObject> lstTracks = new ArrayList<>();
 
-        SideMenu activity = (SideMenu)getActivity();
         lstTracks = activity.playNowListTracks;
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.tracks_play_now_recycler_View);
@@ -39,7 +40,6 @@ public class PlayingNowFragment extends Fragment {
         //recyclerView.setAdapter(adapter);
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
-
 
         return rootView;
     }
@@ -54,6 +54,7 @@ public class PlayingNowFragment extends Fragment {
 
         android.support.v4.app.FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.content_frame, activity.lisTracksFragment);
+        ft.addToBackStack( "List Tracks" );
         ft.commit();
 
     }
@@ -68,6 +69,7 @@ public class PlayingNowFragment extends Fragment {
         activity.lisTracksFragment.defaultTab = 1;
         android.support.v4.app.FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.content_frame, activity.lisTracksFragment);
+        ft.addToBackStack( "List Tracks" );
         ft.commit();
     }
 
@@ -80,6 +82,7 @@ public class PlayingNowFragment extends Fragment {
         activity.lisTracksFragment.defaultTab = 2;
         android.support.v4.app.FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.content_frame, activity.lisTracksFragment);
+        ft.addToBackStack( "List Tracks" );
         ft.commit();
     }
 

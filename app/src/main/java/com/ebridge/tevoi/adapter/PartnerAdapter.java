@@ -130,9 +130,9 @@ class PartnerViewHolder extends RecyclerView.ViewHolder {
                 int i  = getPosition();
                 PartnerObject p = partners.get(i);
 
-                PartnerNameFragment fragment = PartnerNameFragment.newInstance(p.getId(), p.getName(), p.getDescripton());
+                activity.partnerNameFragment = PartnerNameFragment.newInstance(p.getId(), p.getName(), p.getDescripton());
                 android.support.v4.app.FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.content_frame, fragment);
+                fragmentTransaction.replace(R.id.content_frame, activity.partnerNameFragment);
                 fragmentTransaction.commit();
 
             }

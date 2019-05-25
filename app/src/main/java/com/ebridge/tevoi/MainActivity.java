@@ -126,7 +126,7 @@ public class MainActivity extends FragmentActivity {
                 FragmentTransaction ft = fragmentManager.beginTransaction();
 
                 // Adding a fragment to the fragment transaction
-                ft.replace(R.id.content_frame, rFragment);
+                //ft.replace(R.id.content_frame, rFragment);
 
                 // Committing the transaction
                 ft.commit();

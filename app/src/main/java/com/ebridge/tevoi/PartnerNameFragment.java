@@ -33,7 +33,6 @@ import retrofit2.Response;
 
 public class PartnerNameFragment extends Fragment {
 
-    ProgressDialog mProgressDialog;
     int PartnerId;
     String PartnerName;
     String PartnerDesciption;
@@ -46,7 +45,7 @@ public class PartnerNameFragment extends Fragment {
     Button[] tabs =  new Button[3];
     public int defaultTab;
     View rootView;
-
+    SideMenu activity;
     TextView partnerName;
     TextView partnerDescription;
 
@@ -77,11 +76,10 @@ public class PartnerNameFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_partner_name, container, false);
         partnerName = rootView.findViewById(R.id.txt_parter_name);
         partnerDescription = rootView.findViewById(R.id.txt_partner_description);
+        activity = (SideMenu)getActivity();
 
         partnerName.setText(PartnerName);
         partnerDescription.setText(PartnerDesciption);
-
-        mProgressDialog = new ProgressDialog(getActivity());
 
         tabs[0] = rootView.findViewById(R.id.btnNewListPartnerTracks);
         tabs[1]= rootView.findViewById(R.id.btnTopRatedListPartnerTracks);
@@ -114,8 +112,9 @@ public class PartnerNameFragment extends Fragment {
 
     public void activateTab(int k)
     {
-        mProgressDialog.setMessage("Loading");
-        mProgressDialog.show();
+
+        activity.mProgressDialog.setMessage("Loading");
+        activity.mProgressDialog.show();
 
         final int kk= k;
 
@@ -135,17 +134,16 @@ public class PartnerNameFragment extends Fragment {
         call.enqueue(new Callback<GetPartnerTracksResponse>(){
             public void onResponse(Call<GetPartnerTracksResponse> call, Response<GetPartnerTracksResponse> response) {
                 //generateDataList(response.body());
-                SideMenu activity = (SideMenu)getActivity();
                 GetPartnerTracksResponse tracks=response.body();
                 int x=tracks.getPartnerTracks().size();
                 recyclerViews[kk].setAdapter(adapter);
                 adapter = new TracksAdapter(tracks.getPartnerTracks(),activity, Global.PartnerNameFragment);
                 recyclerViews[kk].setAdapter(adapter);
-                mProgressDialog.dismiss();
+                activity.mProgressDialog.dismiss();
             }
             public void onFailure(Call<GetPartnerTracksResponse> call, Throwable t)
             {
-                mProgressDialog.dismiss();
+                activity.mProgressDialog.dismiss();
                 Toast.makeText(getContext(),"something went wrong", Toast.LENGTH_SHORT).show();
             }
         });

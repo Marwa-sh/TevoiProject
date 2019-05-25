@@ -34,7 +34,6 @@ import static android.support.v7.widget.RecyclerView.HORIZONTAL;
 import static android.support.v7.widget.RecyclerView.VERTICAL;
 
 public class FilterFragment extends Fragment {
-    ProgressDialog mProgressDialog;
     View rootView;
     List<CategoryObject> categoryObjectList;
     List<SubscipedPartnersObject> subscipedPartners;
@@ -47,16 +46,17 @@ public class FilterFragment extends Fragment {
     SubscripedPartnersAdapter adapterPartners;
     TrackTypeAdapter trackTypeAdapter;
 
+    SideMenu activity;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView=inflater.inflate(R.layout.fragment_filter, container, false);
+        activity = (SideMenu) getActivity();
+
         categoriesRecyclerView= rootView.findViewById(R.id.categories_recycler_view);
         subscripedPartnersRecyclerView = rootView.findViewById(R.id.subscriped_partners);
-
-        mProgressDialog = new ProgressDialog(getActivity());
 
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -76,8 +76,7 @@ public class FilterFragment extends Fragment {
         DividerItemDecoration itemDecorTrackType = new DividerItemDecoration(getContext(), VERTICAL);
         trackTypeRecyclerView.addItemDecoration(itemDecorTrackType);
 
-        mProgressDialog.setMessage("Loading");
-        mProgressDialog.show();
+        activity.mProgressDialog.setMessage("Loading"); activity.mProgressDialog.show();
 
         Call<CategoryResponseList> call = Global.client.GetCategoriesFilters();
         call.enqueue(new Callback<CategoryResponseList>() {
@@ -89,13 +88,16 @@ public class FilterFragment extends Fragment {
                 categoriesRecyclerView.setAdapter(adapterCategories);
                 DividerItemDecoration itemDecor = new DividerItemDecoration(getContext(), VERTICAL);
                 categoriesRecyclerView.addItemDecoration(itemDecor);
+
+                activity.mProgressDialog.dismiss();
             }
 
             @Override
             public void onFailure(Call<CategoryResponseList> call, Throwable t) {
-
+                activity.mProgressDialog.dismiss();
             }
         });
+        activity.mProgressDialog.setMessage("Loading"); activity.mProgressDialog.show();
 
         Call<GetSubscripedPartnersResponse> callPartners = Global.client.GetSubscripedPartners();
         callPartners.enqueue(new Callback<GetSubscripedPartnersResponse>() {
@@ -107,15 +109,16 @@ public class FilterFragment extends Fragment {
                 subscripedPartnersRecyclerView.setAdapter(adapterPartners);
                 DividerItemDecoration itemDecor = new DividerItemDecoration(getContext(), VERTICAL);
                 subscripedPartnersRecyclerView.addItemDecoration(itemDecor);
+                activity.mProgressDialog.dismiss();
             }
 
             @Override
             public void onFailure(Call<GetSubscripedPartnersResponse> call, Throwable t) {
-
+                activity.mProgressDialog.dismiss();
             }
         });
 
-        mProgressDialog.dismiss();
+        //mProgressDialog.dismiss();
         return rootView;
     }
 }

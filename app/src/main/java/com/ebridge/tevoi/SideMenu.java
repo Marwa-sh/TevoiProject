@@ -1,5 +1,6 @@
 package com.ebridge.tevoi;
 
+import android.app.ActionBar;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
@@ -11,21 +12,28 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
+/*import android.support.v7.app.ActionBar;*/
 import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.ebridge.tevoi.Utils.Global;
+import com.ebridge.tevoi.Utils.HelperFunctions;
 import com.ebridge.tevoi.Utils.MyStorage;
 import com.ebridge.tevoi.adapter.DrawerListAdapter;
 import com.ebridge.tevoi.adapter.DrawerListItemObject;
@@ -36,7 +44,10 @@ import com.ebridge.tevoi.rest.ApiClient;
 import com.ebridge.tevoi.rest.ApiInterface;
 
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -104,6 +115,22 @@ public class SideMenu extends FragmentActivity {
 
     // endregion
 
+    // region
+    // main player
+    public LinearLayout mainPlayerLayout;
+    public TrackObject CurrentTrackInPlayer;
+
+    SeekBar seekBarMainPlayer;
+    TextView txtCurrentTime;
+    TextView txtFinishTime;
+    public TextView txtTrackName;
+    ImageButton btnPausePlayMainMediaPlayer;
+
+    public boolean  isActivityPause  = false;
+
+
+    // endregion
+
     // region properties for drawer
     // Within which the entire activity is enclosed
     DrawerLayout mDrawerLayout;
@@ -116,11 +143,13 @@ public class SideMenu extends FragmentActivity {
     // endregion
 
     // region side menu fragments objects
-    TracksList lisTracksFragment = new TracksList();
+    public TracksList lisTracksFragment = new TracksList();
    // TracksList listTracksFargment = new TracksList();
     InterfaceLanguageFragment interfaceLanguageFragment = new InterfaceLanguageFragment();
     LoginFragment loginFragment = new LoginFragment();
+    RegisterFragment registerFragment = new RegisterFragment();
     PartnersFragment partnersFragment = new PartnersFragment();
+    public PartnerNameFragment partnerNameFragment = new PartnerNameFragment();
     NotificationFragment notificationFragment = new NotificationFragment();
     DownloadFragment downloadFragment = new DownloadFragment();
     AboutUsFragment aboutUsFragment = new AboutUsFragment();
@@ -142,21 +171,117 @@ public class SideMenu extends FragmentActivity {
     //
     MenuItem searchBtn ;
 
+    public void initActionBar(String subTitle)
+    {
+        final ActionBar abar =  getActionBar();
+        //abar.setBackgroundDrawable(getResources().getDrawable(R.drawable.actionbar_background));//line under the action bar
+        View viewActionBar = getLayoutInflater().inflate(R.layout.nav_header_main, null);
+        ActionBar.LayoutParams params = new ActionBar.LayoutParams(//Center the textview in the ActionBar !
+                ActionBar.LayoutParams.MATCH_PARENT,
+                ActionBar.LayoutParams.MATCH_PARENT,
+                Gravity.CENTER);
+        TextView textviewTitle = (TextView) viewActionBar.findViewById(R.id.tvTitle);
+        textviewTitle.setText("Tevoi");
+        TextView textviewSubTitle = (TextView) viewActionBar.findViewById(R.id.tvSubTitle);
+        textviewSubTitle.setText(subTitle);
+        abar.setCustomView(viewActionBar, params);
+        abar.setDisplayShowCustomEnabled(true);
+        abar.setDisplayShowTitleEnabled(false);
+        abar.setDisplayHomeAsUpEnabled(true);
+        abar.setIcon(R.color.fontColor);
+        abar.setHomeButtonEnabled(true);
+        abar.setBackgroundDrawable(getResources().getDrawable(R.drawable.launcher_background));
+        //abar.setElevation(0);
+        //abar.setElevation(0);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_side_menu);
 
+        //setContentView(R.layout.activity_main);
+
+        // region media player runnable action
+        this.runOnUiThread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                if (!isActivityPause) {
+                    if (serviceBound)
+                    {
+                        txtTrackName.setText(CurrentTrackInPlayer.getName().toString());
+                        mainPlayerLayout.setVisibility(View.VISIBLE);
+                        if (!player.mMediaPlayer.isPlaying()) {
+                            mProgressDialog.dismiss();
+                        }
+                        if (player.mMediaPlayer.isPlaying())
+                        {
+                            numberOfListenedSeconds += 1;
+                            numberOfCurrentSecondsInTrack += 1;
+                            //activity.numberOfTotalSeconds += activity.numberOfCurrentSeconds;
+                        }
+                        int n = numberOfUnitsSendToServer * Global.ListenUnitInSeconds + Global.ListenUnitInSeconds;
+                        if (numberOfListenedSeconds >= n) {
+                            int numberOfUnRegisteredSeconds = numberOfListenedSeconds - numberOfUnitsSendToServer * Global.ListenUnitInSeconds;
+                            final int numberOfConsumedUnits = numberOfUnRegisteredSeconds / Global.ListenUnitInSeconds;
+                            // send to server that we used 1 unit
+                            Call<IResponse> call = Global.client.AddUnitUsageForUser(CurrentTrackInPlayer.getId(), numberOfConsumedUnits);
+                            call.enqueue(new Callback<IResponse>() {
+                                public void onResponse(Call<IResponse> call, Response<IResponse> response) {
+                                    //generateDataList(response.body());
+                                    IResponse partners = response.body();
+                                    numberOfUnitsSendToServer += numberOfConsumedUnits;
+                                    Toast.makeText(getBaseContext(), "" + numberOfConsumedUnits + " Unit consumed from your quota", Toast.LENGTH_SHORT).show();
+                                }
+
+                                public void onFailure(Call<IResponse> call, Throwable t) {
+
+                                }
+                            });
+                        }
+                        if (seekBarMainPlayer == null)
+                            seekBarMainPlayer = findViewById(R.id.seekBar_main_player);
+
+                        seekBarMainPlayer.setMax(player.mMediaPlayer.getDuration() / 1000);
+                        String timeFormat2 = HelperFunctions.GetTimeFormat(player.mMediaPlayer.getDuration() / 1000);
+                        txtFinishTime.setText(timeFormat2);
+                        //Toast.makeText(activity, timeFormat2, Toast.LENGTH_SHORT).show();
+                        //player = activity.player;
+                        int mCurrentPosition = player.mMediaPlayer.getCurrentPosition() / 1000;
+
+                        seekBarMainPlayer.setProgress(mCurrentPosition);
+                        String timeFormat = HelperFunctions.GetTimeFormat(mCurrentPosition);
+                        txtCurrentTime.setText(timeFormat);
+                    } else
+                        {
+
+                    }
+                    mHandler.postDelayed(this, 1000);
+                }
+            }
+        });
+
+
+        // endregion
+
+
+        initActionBar("Start");
+
         //region detect language
+
+       /* String language = storageManager.getLanguagePreference(this);
+        if(language == null)
+            language = "en";*/
         Resources res = getBaseContext().getResources();
         // Change locale settings in the app.
         DisplayMetrics dm = res.getDisplayMetrics();
         android.content.res.Configuration conf = res.getConfiguration();
-        conf.setLocale(new Locale(Global.Language)); // API 17+ only.
+        conf.setLocale(new Locale("en")); // API 17+ only.
         // Use conf.locale = new Locale(...) if targeting lower versions
         res.updateConfiguration(conf, dm);
         // endregion
-
 
         trackIdPlayedNow = -1;
         searchBtn = (MenuItem)findViewById(R.id.action_search);
@@ -191,7 +316,7 @@ public class SideMenu extends FragmentActivity {
 
             /** Called when a drawer is opened */
             public void onDrawerOpened(View drawerView) {
-                getActionBar().setTitle("Select a river");
+                getActionBar().setTitle("Select");
                 invalidateOptionsMenu();
             }
         };
@@ -217,14 +342,14 @@ public class SideMenu extends FragmentActivity {
         mDrawerList.setAdapter(adapter);
         // endregion
 
-        // Enabling Home button
-        getActionBar().setHomeButtonEnabled(true);
-        getActionBar().setTitle("Tevoi");
-        getActionBar().setSubtitle("subtitle");
-        //getActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.launcher_background));
 
+        // Enabling Home button
+        //getActionBar().setHomeButtonEnabled(true);
+        //getActionBar().setTitle("Tevoi");
+        //getActionBar().setSubtitle("subtitle");
+        //
         // Enabling Up navigation
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        //getActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Setting item click listener for the listview mDrawerList
         mDrawerList.setOnItemClickListener(new OnItemClickListener() {
@@ -233,128 +358,149 @@ public class SideMenu extends FragmentActivity {
                                     View view,
                                     int position,
                                     long id) {
-                if(isPlaying)
+                if(serviceBound)
                 {
-                    isPlaying = false; isPaused = true;
-                    player.mMediaPlayer.pause();
+                    if (!player.mMediaPlayer.isPlaying()) {
+                        isPlaying = false;
+                        isPaused = true;
+                        player.mMediaPlayer.pause();
+                    }
                 }
+
                 // Getting an array of rivers
                 String[] rivers = getResources().getStringArray(R.array.rivers);
 
                 android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
                 //Currently selected river
-                mTitle = rivers[position];
+                mTitle = rivers[position]; initActionBar(mTitle);
                 switch(mTitle)
                 {
                     case "History" :
                     {
                         fragmentTransaction.replace(R.id.content_frame, historyListFragment);
+                        fragmentTransaction.addToBackStack( "History" );
                         fragmentTransaction.commit();
                         break;
                     }
                     case "Play Next" :
                     {
                         fragmentTransaction.replace(R.id.content_frame, playingNowFragment);
+                        fragmentTransaction.addToBackStack( "Play Next" );
                         fragmentTransaction.commit();
                         break;
                     }
                     case "Favourite" :
                     {
                         fragmentTransaction.replace(R.id.content_frame, favouriteFragment);
+                        fragmentTransaction.addToBackStack( "Favourite" );
                         fragmentTransaction.commit();
                         break;
                     }
                     case "My Lists" :
                     {
                         fragmentTransaction.replace(R.id.content_frame, userListsFragment);
+                        fragmentTransaction.addToBackStack( "My Lists" );
                         fragmentTransaction.commit();
                         break;
                     }
                     case "Interface Language" :
                     {
                         fragmentTransaction.replace(R.id.content_frame, interfaceLanguageFragment);
+                        fragmentTransaction.addToBackStack( "Interface Language" );
                         fragmentTransaction.commit();
                         break;
                     }
                     case "Partners" :
                     {
                         fragmentTransaction.replace(R.id.content_frame, partnersFragment);
+                        fragmentTransaction.addToBackStack( "Partners" );
                         fragmentTransaction.commit();
                         break;
                     }
                     case "Notifications" :
                     {
                         fragmentTransaction.replace(R.id.content_frame, notificationFragment);
+                        fragmentTransaction.addToBackStack( "Notifications" );
                         fragmentTransaction.commit();
                         break;
                     }
                     case "Download limits" :
                     {
                         fragmentTransaction.replace(R.id.content_frame, downloadFragment);
+                        fragmentTransaction.addToBackStack( "Download limits" );
                         fragmentTransaction.commit();
                         break;
                     }
                     case "About Us" :
                     {
                         fragmentTransaction.replace(R.id.content_frame, aboutUsFragment);
+                        fragmentTransaction.addToBackStack( "About Us" );
                         fragmentTransaction.commit();
                         break;
                     }
                     case "Feedback and Contact" :
                     {
                         fragmentTransaction.replace(R.id.content_frame, feedbackFragment);
+                        fragmentTransaction.addToBackStack( "Feedback and Contact" );
                         fragmentTransaction.commit();
                         break;
                     }
                     case "Follow Us" :
                     {
                         fragmentTransaction.replace(R.id.content_frame, followUsFragment);
+                        fragmentTransaction.addToBackStack( "Follow Us" );
                         fragmentTransaction.commit();
                         break;
                     }
                     case "List Tracks" :
                     {
                         fragmentTransaction.replace(R.id.content_frame, lisTracksFragment);
+                        fragmentTransaction.addToBackStack( "List Tracks" );
                         fragmentTransaction.commit();
                         break;
                     }
                     case "Filters" :
                     {
                         fragmentTransaction.replace(R.id.content_frame, filterFragment);
+                        fragmentTransaction.addToBackStack( "Filters" );
                         fragmentTransaction.commit();
                         break;
                     }
                     case "Login/Register":
                     {
                         fragmentTransaction.replace(R.id.content_frame, loginFragment);
+                        fragmentTransaction.addToBackStack( "Login/Register" );
+                        fragmentTransaction.commit();
+                        break;
+                    }
+                    default:
+                    {
+                        // Creating a fragment object
+                        SideMenuFragment rFragment = new SideMenuFragment();
+
+                        // Creating a Bundle object
+                        Bundle data = new Bundle();
+
+                        // Setting the index of the currently selected item of mDrawerList
+                        data.putInt("position", position);
+
+                        // Setting the position to the fragment
+                        rFragment.setArguments(data);
+
+                        //FragmentManager fragmentManager = getFragmentManager();
+                        //FragmentTransaction ft = fragmentManager.beginTransaction();
+
+                        // Adding a fragment to the fragment transaction
+                        fragmentTransaction.replace(R.id.content_frame, rFragment);
+                        fragmentTransaction.addToBackStack( "rFragment" );
+
+                        // Committing the transaction
                         fragmentTransaction.commit();
                         break;
                     }
                 };
-                // Creating a fragment object
-                SideMenuFragment rFragment = new SideMenuFragment();
 
-                // Creating a Bundle object
-                Bundle data = new Bundle();
-
-                // Setting the index of the currently selected item of mDrawerList
-                data.putInt("position", position);
-
-                // Setting the position to the fragment
-                rFragment.setArguments(data);
-
-                // Getting reference to the FragmentManager
-                FragmentManager fragmentManager = getFragmentManager();
-
-                // Creating a fragment transaction
-                FragmentTransaction ft = fragmentManager.beginTransaction();
-
-                // Adding a fragment to the fragment transaction
-                ft.replace(R.id.content_frame, rFragment);
-
-                // Committing the transaction
-                ft.commit();
 
                 // Closing the drawer
                 mDrawerLayout.closeDrawer(mDrawerList);
@@ -365,9 +511,11 @@ public class SideMenu extends FragmentActivity {
         // Replace the contents of the container with the new fragment
         //TrackShare frag = new TrackShare();
         ft.replace(R.id.content_frame, lisTracksFragment);
-
+        ft.addToBackStack( "List Tracks" );
         // Committing the transaction
         ft.commit();
+        // init media player in main page elements
+
     }
 
     @Override
@@ -425,6 +573,8 @@ public class SideMenu extends FragmentActivity {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
+
+
 
     // region List Tracks actions
 
@@ -609,6 +759,7 @@ public class SideMenu extends FragmentActivity {
             //ServiceConnection serviceConnection = serviceConnection;
             Intent playerIntent = new Intent(SideMenu.this, MediaPlayerService.class);
             playerIntent.putExtra("media", media);
+            playerIntent.putExtra("activityStatus", isActivityPause);
             getBaseContext().startService(playerIntent);
             getBaseContext().bindService(playerIntent, serviceConnection, Context.BIND_AUTO_CREATE);
 
@@ -649,5 +800,50 @@ public class SideMenu extends FragmentActivity {
     }
     // endregion
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+       isActivityPause = true;
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        isActivityPause = false;
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        int T= getSupportFragmentManager().getBackStackEntryCount();
+        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            finish();
+        }
+        else if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
+            finish();
+        }
+        else
+        {
+            String tr = getSupportFragmentManager().getBackStackEntryAt(T-2).getName();
+            initActionBar(tr);
+            //setTitle(tr);
+            getSupportFragmentManager().popBackStackImmediate();
+            //super.onBackPressed();
+        }
+    }
+
+    // region partner tracks list actions
+    public void changeTabToNewPartnerTracks(View view) {
+        partnerNameFragment.changeTabToNewPartnerTracks(view);
+    }
+
+    public void changeTabToTopRatedPartnerTracks(View view) {
+        partnerNameFragment.changeTabToTopRatedPartnerTracks(view);
+    }
+
+    public void changeToPopularPartnerTracks(View view) {
+        partnerNameFragment.changeToPopularPartnerTracks(view);
+    }
+
+    // endregion
 }

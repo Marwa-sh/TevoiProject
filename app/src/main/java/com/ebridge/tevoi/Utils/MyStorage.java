@@ -17,7 +17,9 @@ public class MyStorage {
     public static final String PREFS_NAME = "Tevoi";
     //public static final String FAVORITES = "Favorite";
     public static final String PlayNowTrack = "PlayNowTrack";
-
+    public static final String PreferenceLanguage = "PreferenceLanguage";
+    public static final String TrackTypeFilter = "TrackTypeFilter";
+    public static final String UserToken = "UserToken";
 
     public void storePlayNowTracks(Context context, List playNowTracks)
     {
@@ -120,4 +122,78 @@ public class MyStorage {
             storePlayNowTracks(context, playNowTracks);
         }
     }
+
+    // region Language storage
+
+    public void storeLanguagePreference(Context context, String language)
+    {
+        SharedPreferences settings;
+        Editor editor;
+        settings = context.getSharedPreferences(PreferenceLanguage, Context.MODE_PRIVATE);
+        editor = settings.edit();
+
+        editor.putString(PreferenceLanguage, language);
+        editor.commit();
+    }
+
+    public String getLanguagePreference(Context context)
+    {
+        SharedPreferences settings;
+        String language = "";
+        settings = context.getSharedPreferences(PreferenceLanguage, Context.MODE_PRIVATE);
+        if (settings.contains(PreferenceLanguage))
+        {
+            language = settings.getString(PreferenceLanguage, null);
+        }
+        else
+            language = Global.DefaultLanguage;
+
+        return language;
+    }
+
+    // endregion
+
+
+    public void storeTrackTypeFilter(Context context, String language)
+    {
+        SharedPreferences settings;
+        Editor editor;
+        settings = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        editor = settings.edit();
+
+        editor.putString(TrackTypeFilter, language);
+        editor.commit();
+    }
+
+
+    // region user token storage
+
+    public void storeTokenPreference(Context context, String token)
+    {
+        SharedPreferences settings;
+        Editor editor;
+        settings = context.getSharedPreferences(UserToken, Context.MODE_PRIVATE);
+        editor = settings.edit();
+
+        editor.putString(UserToken, token);
+        editor.commit();
+    }
+
+    public String getTokenPreference(Context context)
+    {
+        SharedPreferences settings;
+        String token = "";
+        settings = context.getSharedPreferences(UserToken, Context.MODE_PRIVATE);
+        if (settings.contains(UserToken))
+        {
+            token = settings.getString(UserToken, null);
+        }
+        else
+            token = Global.DefaultLanguage;
+
+        return token;
+    }
+
+    // endregion
+
 }

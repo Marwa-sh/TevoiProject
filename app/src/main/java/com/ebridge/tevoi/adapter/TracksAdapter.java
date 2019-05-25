@@ -273,6 +273,7 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
                         FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
                         TrackText textFargment = TrackText.newInstance(selectedTrack.getId(), fragmentName);
                         ft.replace(R.id.content_frame, textFargment);
+                        ft.addToBackStack( "TrackText" );
                         // or ft.add(R.id.your_placeholder, new FooFragment());
                         // Complete the changes added above
                         ft.commit();

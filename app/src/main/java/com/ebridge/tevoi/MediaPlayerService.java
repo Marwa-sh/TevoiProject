@@ -49,6 +49,7 @@ public class MediaPlayerService extends Service implements
     //String url="http://192.168.1.111/TevoiAPI/api/Files/SoundFile?fileName=1.mp3";
 
     String currentAudioUrl = Global.BASE_AUDIO_URL;
+    boolean activityIsPaused = false;
 
     private AudioManager audioManager;
 
@@ -88,7 +89,13 @@ public class MediaPlayerService extends Service implements
             case AudioManager.AUDIOFOCUS_GAIN:
                 // resume playback
                 if (mMediaPlayer == null) initMediaPlayer();
-                else if (!mMediaPlayer.isPlaying()) mMediaPlayer.start();
+                else if (!mMediaPlayer.isPlaying())
+                {
+                    // TODO : check if activity is active
+                    if(!activityIsPaused)
+                        mMediaPlayer.start();
+                    // mMediaPlayer.start();
+                }
                 mMediaPlayer.setVolume(1.0f, 1.0f);
                 break;
             case AudioManager.AUDIOFOCUS_LOSS:
@@ -101,7 +108,8 @@ public class MediaPlayerService extends Service implements
                 // Lost focus for a short time, but we have to stop
                 // playback. We don't release the media player because playback
                 // is likely to resume
-                if (mMediaPlayer.isPlaying()) mMediaPlayer.pause();
+                if (mMediaPlayer.isPlaying())
+                    mMediaPlayer.pause();
                 break;
             case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
                 // Lost focus for a short time, but it's ok to keep playing
@@ -219,9 +227,12 @@ public class MediaPlayerService extends Service implements
     //The system calls this method when an activity, requests the service be started
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        try {
+        try
+        {
             //An audio file is passed to the service through putExtra();
             currentAudioUrl = intent.getExtras().getString("media");
+            activityIsPaused = intent.getExtras().getBoolean("activityStatus");
+
         } catch (NullPointerException e) {
             stopSelf();
         }
@@ -349,9 +360,12 @@ public class MediaPlayerService extends Service implements
                     case TelephonyManager.CALL_STATE_IDLE:
                         // Phone idle. Start playing.
                         if (mMediaPlayer != null) {
-                            if (ongoingCall) {
+                            if (ongoingCall)
+                            {
                                 ongoingCall = false;
-                                resumeMedia();
+                                // TODO : check if app is in background so don't resume
+                                if(!activityIsPaused)
+                                    resumeMedia();
                             }
                         }
                         break;

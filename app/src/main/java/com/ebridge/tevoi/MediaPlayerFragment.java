@@ -605,11 +605,8 @@ public class MediaPlayerFragment extends Fragment {
     {
         // Begin the transaction
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-        // Replace the contents of the container with the new fragment
-        //TrackShare frag = new TrackShare();
         ft.replace(R.id.content_frame, carPlayFargment);
-        // or ft.add(R.id.your_placeholder, new FooFragment());
-        // Complete the changes added above
+        ft.addToBackStack( "CarFargment" );
         ft.commit();
         //carPlayFargment.show(fm, "Dialog Fragment");
     }
