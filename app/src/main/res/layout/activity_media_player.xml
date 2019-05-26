@@ -17,54 +17,54 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/textViewTrackName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TrackName"
-        android:layout_centerHorizontal="true"
-        android:textColor="@color/tevoiBlueSecondary"
-        android:textSize="25dp"
-        android:layout_marginTop="10dp"
-        android:layout_alignParentTop="true"
+        <TextView
+            android:id="@+id/textViewTrackName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TrackName"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/tevoiBlueSecondary"
+            android:textSize="25dp"
+            android:layout_marginTop="10dp"
+            android:layout_alignParentTop="true"
 
-        />
+            />
 
-    <TextView
-        android:id="@+id/textViewCategories"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Categories"
-        android:layout_below="@id/textViewTrackName"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="59dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="5dp"
+        <TextView
+            android:id="@+id/textViewCategories"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Categories"
+            android:layout_below="@id/textViewTrackName"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="59dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
 
-        />
+            />
 
-    <TextView
-        android:id="@+id/textViewAuthors"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="91dp"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/textViewCategories"
-        android:layout_marginTop="5dp"
-        />
+        <TextView
+            android:id="@+id/textViewAuthors"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="91dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/textViewCategories"
+            android:layout_marginTop="5dp"
+            />
 
-    <TextView
-        android:id="@+id/textViewDuration"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        tools:layout_editor_absoluteX="14dp"
-        tools:layout_editor_absoluteY="118dp"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/textViewAuthors"
-        />
+        <TextView
+            android:id="@+id/textViewDuration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            tools:layout_editor_absoluteX="14dp"
+            tools:layout_editor_absoluteY="118dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/textViewAuthors"
+            />
 
         <RatingBar
             android:id="@+id/ratingBar"
@@ -78,19 +78,19 @@
             android:progressTint="@color/tevoiStar"
             />
 
-    <ImageButton
-        android:id="@+id/imgBtnCar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@null"
-        android:src="@drawable/car_icon"
-        tools:layout_editor_absoluteX="122dp"
-        tools:layout_editor_absoluteY="206dp"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/ratingBar"
-        android:layout_marginTop="10dp"
-        android:onClick="imgBtnCarClick"
-        />
+        <ImageButton
+            android:id="@+id/imgBtnCar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:src="@drawable/car_icon"
+            tools:layout_editor_absoluteX="122dp"
+            tools:layout_editor_absoluteY="206dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/ratingBar"
+            android:layout_marginTop="10dp"
+            android:onClick="imgBtnCarClick"
+            />
 
     </RelativeLayout>
     <RelativeLayout
@@ -111,8 +111,8 @@
             android:max="100000"
             android:maxWidth="100000dp"
             android:thumbTint="@color/fontColor"
-
-
+            android:thumb="@mipmap/media_thumb_white"
+            android:layout_marginTop="3dp"
             />
         <TextView
             android:layout_width="wrap_content"
@@ -123,7 +123,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_marginTop="25dp"
-    
+
             />
         <TextView
             android:layout_width="wrap_content"
@@ -276,7 +276,7 @@
     <FrameLayout
         android:id="@+id/ActionsFragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="115dp">
     </FrameLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -292,7 +292,7 @@
             android:textColor="@color/tevoiFontColor"
             android:textSize="20dp"
             android:layout_weight="1"
-
+            android:layout_marginLeft="15dp"
             />
         <ImageView
             android:id="@+id/img_partner_logo"

@@ -8,22 +8,26 @@
     <ImageView
         android:id="@+id/imageView_profile"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginRight="10dp"
         android:clickable="true"
         android:layout_marginLeft="1dp"
-        android:src="@mipmap/blue_circle" />
+        android:src="@mipmap/blue_circle"
+        android:layout_gravity="center_vertical"
+        />
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:background="@color/grey"
+        android:background="@drawable/rounded_button"
+        android:backgroundTint="@color/grey"
         android:layout_marginRight="30dp"
+
         android:layout_marginVertical="10dp"
         android:focusedByDefault="false"
         android:id="@+id/comment_text"
-
+        android:layout_gravity="center_vertical"
         />
 
 

@@ -54,6 +54,7 @@
                 android:progressTint="@color/fontColor"
                 tools:layout_editor_absoluteX="3dp"
                 tools:layout_editor_absoluteY="295dp"
+                android:thumb="@mipmap/media_thumb_white"
 
                 />
             <TextView
