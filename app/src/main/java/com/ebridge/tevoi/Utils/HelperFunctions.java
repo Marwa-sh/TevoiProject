@@ -51,8 +51,8 @@ public class HelperFunctions
         {
             Toast.makeText(activity, R.string.play_now_list_isempty, Toast.LENGTH_SHORT).show();
         }
-        else {
-
+        else
+        {
                 activity.isPlayingFromPlayNowList = true;
                 activity.indexCurrentTrackInPlayList --;
                 if(activity.indexCurrentTrackInPlayList < 0)

@@ -58,7 +58,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SideMenu extends FragmentActivity {
+public class SideMenu extends FragmentActivity implements  ServiceCallbacks {
 
     public ProgressDialog mProgressDialog;
 
@@ -106,7 +106,7 @@ public class SideMenu extends FragmentActivity {
             MediaPlayerService.LocalBinder binder = (MediaPlayerService.LocalBinder) service;
             player = binder.getService();
             serviceBound = true;
-
+            player.setCallbacks(SideMenu.this); // register
             Toast.makeText(SideMenu.this, "Service Bound", Toast.LENGTH_SHORT).show();
         }
         @Override
@@ -902,4 +902,24 @@ public class SideMenu extends FragmentActivity {
 
     }
 
+
+    @Override
+    public void playNext() {
+        //Toast.makeText(this, "Clicked Next", Toast.LENGTH_SHORT).show();
+        HelperFunctions.getNextTrack(this, CurrentTrackInPlayer.getId());
+        player.updateStatusBarInfo(CurrentTrackInPlayer.getName(), CurrentTrackInPlayer.getAuthors());
+    }
+
+
+    @Override
+    public void playPrevious() {
+        //Toast.makeText(this, "Clicked Previous", Toast.LENGTH_SHORT).show();
+        HelperFunctions.getPreviousTrack(this, CurrentTrackInPlayer.getId());
+        player.updateStatusBarInfo(CurrentTrackInPlayer.getName(), CurrentTrackInPlayer.getAuthors());
+    }
+
+    @Override
+    public void playBtn() {
+        player.updateStatusBarInfo(CurrentTrackInPlayer.getName(), CurrentTrackInPlayer.getAuthors());
+    }
 }
