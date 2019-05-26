@@ -22,40 +22,56 @@
         android:id="@+id/comments_recycler_View">
 
     </android.support.v7.widget.RecyclerView>
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:weightSum="7">
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginRight="55dp"
+            >
         <ImageView
             android:id="@+id/imageView_profile"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
             android:clickable="true"
-            android:layout_weight="3"
-            android:src="@mipmap/blue_circle" />
+            android:layout_marginLeft="1dp"
+            android:src="@mipmap/blue_circle"
+            android:layout_gravity="center_vertical"
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-            android:background="@color/grey"
-            android:layout_weight="1"
-            android:layout_marginVertical="10dp"
-            android:id="@+id/textComment"
             />
 
+            <EditText
+                android:id="@+id/textComment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+
+                android:background="@drawable/rounded_button"
+                android:backgroundTint="@color/grey"
+                android:focusedByDefault="false"
+
+                />
+        </LinearLayout>
         <ImageButton
             android:id="@+id/addCommentBtn"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="3"
+            android:layout_width="55dp"
+            android:layout_height="wrap_content"
             android:clickable="true"
             android:background="@null"
             android:scaleY="0.8"
             android:scaleX="0.8"
-            android:src="@mipmap/send_blue"/>
-    </LinearLayout>
+            android:src="@mipmap/send_blue"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:layout_gravity="center_vertical"
+            />
+    </RelativeLayout>
 
 </LinearLayout>

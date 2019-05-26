@@ -28,9 +28,6 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="10dp"
         android:id="@+id/switch_notification_type"
-        app:thumbTint="@color/fontColor"
-        app:trackTint="@color/tevoiBlueSecondary"
-
         />
 
     </RelativeLayout>

@@ -107,7 +107,7 @@
                 android:maxHeight="10000dp"
                 android:max="100000"
                 android:maxWidth="100000dp"
-
+                android:thumb="@mipmap/thumb_white"
                 />
         <RelativeLayout
             android:layout_width="match_parent"

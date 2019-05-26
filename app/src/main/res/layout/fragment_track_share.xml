@@ -18,19 +18,20 @@
             android:layout_marginTop="20dp"
             android:text="share track on social media"
             android:textColor="@color/fontColor"
-            android:textSize="12dp"
+            android:textSize="16dp"
             />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginTop="25dp"
+            >
 
 
             <ImageButton
                 android:id="@+id/imgBtnShareFB"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="28dp"
                 android:layout_marginLeft="30dp"
                 android:background="@drawable/crcile_6_"
                 android:src="@drawable/facebook_logo" />
@@ -41,8 +42,7 @@
                 android:id="@+id/imgBtnShareIN"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="28dp"
+                android:layout_marginLeft="7dp"
                 android:background="@drawable/crcile_6_"
                 android:src="@drawable/instagram_logo"
                 android:onClick="shareClick"
@@ -51,8 +51,7 @@
                 android:id="@+id/imgBtnShareGP"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="28dp"
+                android:layout_marginLeft="7dp"
                 android:background="@drawable/crcile_6_"
                 android:src="@drawable/google_logo"
                 android:onClick="shareClick"
@@ -62,8 +61,7 @@
                 android:id="@+id/imgBtnShareTW"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="28dp"
+                android:layout_marginLeft="7dp"
                 android:background="@drawable/crcile_6_"
                 android:src="@drawable/twitter_logo"
                 android:onClick="shareClick"
@@ -72,8 +70,7 @@
                 android:id="@+id/imgBtnShareWA"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="28dp"
+                android:layout_marginLeft="7dp"
                 android:background="@drawable/crcile_6_"
                 android:src="@drawable/whatsapp_logo"
                 android:onClick="shareClick"
