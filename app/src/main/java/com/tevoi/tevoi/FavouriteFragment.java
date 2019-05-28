@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.tevoi.tevoi.Utils.Global;
 import com.tevoi.tevoi.adapter.TracksAdapter;
+import com.tevoi.tevoi.model.RecyclerViewEmptySupport;
 import com.tevoi.tevoi.model.TrackResponseList;
 
 import retrofit2.Call;
@@ -21,7 +22,8 @@ import retrofit2.Response;
 public class FavouriteFragment extends Fragment {
 
     TracksAdapter adapter ;
-    RecyclerView recyclerView;
+    RecyclerViewEmptySupport recyclerView;
+    //RecyclerView recyclerView;
     SideMenu activity;
     View rootView;
     @Override
@@ -36,6 +38,7 @@ public class FavouriteFragment extends Fragment {
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setEmptyView(rootView.findViewById(R.id.favourite_list_empty));
 
         activity.mProgressDialog.setMessage("Loading"); activity.mProgressDialog.show();
 

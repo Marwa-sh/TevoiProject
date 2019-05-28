@@ -44,11 +44,18 @@
     </android.support.v7.widget.LinearLayoutCompat>
 
 
-    <android.support.v7.widget.RecyclerView
+    <com.tevoi.tevoi.model.RecyclerViewEmptySupport
         android:id="@+id/history_tracks_recycler_View"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
-    </android.support.v7.widget.RecyclerView>
-
+    </com.tevoi.tevoi.model.RecyclerViewEmptySupport>
+    <TextView android:id="@+id/history_list_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="@dimen/text_size"
+        android:paddingTop="@dimen/text_empty_list"
+        android:text="@string/empty_list"
+        />
 </LinearLayout>

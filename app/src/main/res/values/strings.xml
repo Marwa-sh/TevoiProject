@@ -53,4 +53,7 @@
     <string name="interface_language">interface language</string>
     <string name="about_us">About us</string>
 
+
+    <string name="empty_list">Empty List</string>
+
 </resources>

@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.tevoi.tevoi.Utils.Global;
 import com.tevoi.tevoi.adapter.UserListAdapter;
 import com.tevoi.tevoi.model.IResponse;
+import com.tevoi.tevoi.model.RecyclerViewEmptySupport;
 import com.tevoi.tevoi.model.UserListResponse;
 
 import retrofit2.Call;
@@ -25,7 +26,8 @@ import retrofit2.Response;
 
 public class UserListFragment extends Fragment {
     UserListAdapter adapter ;
-    RecyclerView recyclerView;
+    //RecyclerView recyclerView;
+    RecyclerViewEmptySupport recyclerView;
     SideMenu activity;
 
     ImageButton imgBtnAddUserList;
@@ -113,6 +115,7 @@ public class UserListFragment extends Fragment {
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setEmptyView(rootView.findViewById(R.id.user_lists_empty));
 
         activity.mProgressDialog.setMessage("Loading");
         activity.mProgressDialog.show();
