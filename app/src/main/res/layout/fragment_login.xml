@@ -35,6 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="55dp"
             android:layout_marginLeft="31dp"
+            android:layout_marginStart="31dp"
             android:text="User Name"
             android:textColor="@color/fontColor" />
 
@@ -56,6 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="15dp"
             android:layout_marginLeft="31dp"
+            android:layout_marginStart="31dp"
             android:layout_marginTop="10dp"
             android:text="Password"
             android:textColor="@color/fontColor" />
@@ -78,12 +80,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="16dp">
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="32dp"
+            >
 
             <ImageButton
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_marginLeft="32dp"
+
                 android:background="@null"
                 android:scaleType="fitXY"
                 android:src="@drawable/tick"
@@ -95,7 +99,7 @@
                 android:layout_height="wrap_content"
                 android:text="Log in"
                 android:textColor="@color/fontColor"
-                android:layout_marginLeft="7dp"
+                android:layout_marginStart="7dp"
                 android:layout_gravity="center_vertical"
 
                 />
@@ -107,7 +111,7 @@
                 android:scaleType="fitXY"
                 android:src="@drawable/cross"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="83dp"
+                android:layout_marginStart="83dp"
                 android:id="@+id/btn_register"
 
                 />
@@ -117,16 +121,18 @@
                 android:text="Register"
                 android:layout_gravity="center_vertical"
                 android:textColor="@color/fontColor"
-                android:layout_marginLeft="7dp"/>
+                android:layout_marginStart="7dp"/>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp">
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginLeft="25dp"
+            >
             <CheckBox
                 android:layout_marginTop="10dp"
-                android:layout_marginLeft="25dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"
@@ -137,7 +143,7 @@
                 />
             <TextView
                 android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Keep me logged in"
@@ -152,6 +158,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Forgot Password?"
+            android:layout_marginStart="31dp"
             android:layout_marginLeft="31dp"
             android:layout_marginTop="25dp"
             android:textColor="@color/fontColor" />
@@ -160,6 +167,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Please enter your email"
+            android:layout_marginStart="31dp"
             android:layout_marginLeft="31dp"
             android:layout_marginTop="22dp"
             android:textColor="@color/fontColor" />
@@ -179,12 +187,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="16dp">
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginLeft="32dp"
+            >
 
             <ImageButton
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_marginLeft="32dp"
                 android:layout_marginBottom="15dp"
                 android:background="@null"
                 android:scaleType="fitXY"

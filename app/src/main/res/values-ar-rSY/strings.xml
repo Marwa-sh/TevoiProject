@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Tevoi</string>
+    <string name="title_activity_media_player">نشاط مشغل الوسائط</string>
+    <string name="title_activity_media_player_browser">نشاط مستعرض مشغل الوسائط</string>
+    <string name="hasLocation_En">هذا المسار لديه موقع قريب</string>
+    <string name="defaultMapApp_En">"Tevoi فتح خريطة التطبيق الافتراضي. هل أنت متأكد أنك تريد التنقل بعيدًا عن تطبيق "</string>
+    <string name="interface_language">لغة العرض</string>
+    <string name="about_us">من نحن</string>
 </resources>

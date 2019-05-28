@@ -3,7 +3,7 @@
     <string name="title_activity_media_player">MediaPlayerActivity</string>
     <string name="title_activity_media_player_browser">MediaPlayerBrowserActivity</string>
     <string name="hasLocation_En">This Track has a nearby location</string>
-    <string name="defaultMapApp_En"> open you default map App. are you sure you want to navigate away from Tevoi App</string>
+    <string name="defaultMapApp_En">open your default map App. are you sure you want to navigate away from Tevoi App</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string-array name="rivers">
@@ -50,5 +50,7 @@
     <string name="cd_previous">Skip backwards</string>
     <string name="cd_play">Play and pause</string>
     <string name="cd_next">Skip forwards</string>
+    <string name="interface_language">interface language</string>
+    <string name="about_us">About us</string>
 
 </resources>

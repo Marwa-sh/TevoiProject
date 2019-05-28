@@ -17,7 +17,7 @@
         android:textColor="@color/fontColor"
         android:textSize="15dp"
         android:layout_marginTop="27dp"
-        android:layout_marginLeft="30dp"
+        android:layout_marginStart="30dp"
         />
     <LinearLayout
         android:layout_width="wrap_content"
@@ -32,8 +32,6 @@
             android:id="@+id/imgBtnShareFB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
-
             android:background="@drawable/crcile_53_"
             android:src="@drawable/facebook" />
 
@@ -43,8 +41,7 @@
             android:id="@+id/imgBtnShareIN"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="22dp"
-
+            android:layout_marginStart="22dp"
             android:background="@drawable/crcile_53_"
             android:src="@drawable/instagram"
             android:onClick="shareClick"
@@ -53,8 +50,7 @@
             android:id="@+id/imgBtnShareGP"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="22dp"
-
+            android:layout_marginStart="22dp"
             android:background="@drawable/crcile_53_"
             android:src="@drawable/google_plus"
             android:onClick="shareClick"
@@ -64,8 +60,7 @@
             android:id="@+id/imgBtnShareTW"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="22dp"
-
+            android:layout_marginStart="22dp"
             android:background="@drawable/crcile_53_"
             android:src="@drawable/twitter"
             android:onClick="shareClick"
@@ -92,7 +87,7 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="22dp"
+            android:layout_marginStart="22dp"
             android:background="@drawable/crcile_53_"
             android:src="@drawable/blogger"
             android:onClick="shareClick"
@@ -100,7 +95,7 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="22dp"
+            android:layout_marginStart="22dp"
             android:background="@drawable/crcile_53_"
             android:src="@drawable/xing"
             android:onClick="shareClick"
@@ -109,7 +104,7 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="22dp"
+            android:layout_marginStart="22dp"
             android:background="@drawable/crcile_53_"
             android:src="@drawable/vk"
             android:onClick="shareClick"
@@ -137,7 +132,7 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="22dp"
+            android:layout_marginStart="22dp"
             android:background="@drawable/crcile_53_"
             android:src="@drawable/snapchat"
             android:onClick="shareClick"
@@ -145,7 +140,7 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="22dp"
+            android:layout_marginStart="22dp"
             android:background="@drawable/crcile_53_"
             android:src="@drawable/skype"
             android:onClick="shareClick"
@@ -154,7 +149,7 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="22dp"
+            android:layout_marginStart="22dp"
             android:background="@drawable/crcile_53_"
             android:src="@drawable/youtube"
             android:onClick="shareClick"
@@ -182,7 +177,7 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="22dp"
+            android:layout_marginStart="22dp"
             android:background="@drawable/crcile_53_"
             android:src="@drawable/pinterest"
             android:onClick="shareClick"
@@ -190,7 +185,7 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="22dp"
+            android:layout_marginStart="22dp"
             android:background="@drawable/crcile_53_"
             android:src="@drawable/linkedin"
             android:onClick="shareClick"
@@ -199,7 +194,7 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="22dp"
+            android:layout_marginStart="22dp"
             android:background="@drawable/crcile_53_"
             android:src="@drawable/flickr"
             android:onClick="shareClick"
@@ -229,7 +224,7 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="22dp"
+            android:layout_marginStart="22dp"
             android:background="@drawable/crcile_53_"
             android:src="@drawable/behance"
             android:onClick="shareClick"
@@ -238,7 +233,7 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="22dp"
+            android:layout_marginStart="22dp"
             android:background="@drawable/crcile_53_"
             android:src="@drawable/dropbox"
             android:onClick="shareClick"
@@ -248,7 +243,7 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="22dp"
+            android:layout_marginStart="22dp"
             android:background="@drawable/crcile_53_"
             android:src="@drawable/github"
             android:onClick="shareClick"

@@ -287,14 +287,14 @@ public class SideMenu extends FragmentActivity implements  ServiceCallbacks {
 
         //region detect language
 
-       /* String language = storageManager.getLanguagePreference(this);
+        String language = storageManager.getLanguagePreference(this);
         if(language == null)
-            language = "en";*/
+            language = "en";
         Resources res = getBaseContext().getResources();
         // Change locale settings in the app.
         DisplayMetrics dm = res.getDisplayMetrics();
         android.content.res.Configuration conf = res.getConfiguration();
-        conf.setLocale(new Locale("en")); // API 17+ only.
+        conf.setLocale(new Locale(language)); // API 17+ only.
         // Use conf.locale = new Locale(...) if targeting lower versions
         res.updateConfiguration(conf, dm);
         // endregion

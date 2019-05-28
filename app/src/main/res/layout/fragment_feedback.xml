@@ -15,7 +15,7 @@
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="25dp"
+            android:layout_marginStart="25dp"
             android:text="Your Name"
             android:textColor="@color/fontColor" />
         <EditText
@@ -33,7 +33,7 @@
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="25dp"
+            android:layout_marginStart="25dp"
             android:layout_marginTop="16dp"
             android:text="Your email"
             android:textColor="@color/fontColor" />
@@ -53,7 +53,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Your message"
-            android:layout_marginLeft="25dp"
+            android:layout_marginStart="25dp"
             android:layout_marginTop="20dp"
             android:textColor="@color/fontColor" />
         <EditText
@@ -73,12 +73,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="30dp">
+            android:layout_marginTop="30dp"
+            android:layout_marginStart="25dp"
+            >
 
             <ImageButton
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_marginLeft="30dp"
                 android:background="@null"
                 android:scaleType="fitXY"
                 android:src="@drawable/tick"
@@ -91,7 +92,7 @@
                 android:layout_height="wrap_content"
                 android:text="Send"
                 android:textColor="@color/fontColor"
-                android:layout_marginLeft="7dp"
+                android:layout_marginStart="7dp"
                 android:layout_gravity="center_vertical"
                 />
 
@@ -102,7 +103,7 @@
                 android:scaleType="fitXY"
                 android:src="@drawable/cross"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="62dp"
+                android:layout_marginStart="62dp"
                 android:id="@+id/btn_cancel"
 
                 />
@@ -111,10 +112,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Cancel"
-
                 android:layout_gravity="center_vertical"
                 android:textColor="@color/fontColor"
-                android:layout_marginLeft="7dp"/>
+                android:layout_marginStart="7dp"/>
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

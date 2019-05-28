@@ -17,56 +17,65 @@
         >
     </android.support.v7.widget.RecyclerView>
 
-
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/tevoiBluePrimary"
+    >
     <TextView
         android:id="@+id/textView6"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Categories"
-        android:background="@color/tevoiBluePrimary"
         android:textColor="@color/fontColor"
         android:paddingVertical="10dp"
+        android:layout_marginStart="10dp"
         />
-
+</LinearLayout>
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/categories_recycler_view"
+
         />
-    <TextView
-        android:id="@+id/txtSubscripedPartners"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Subscriped Partners"
         android:background="@color/tevoiBluePrimary"
-        android:textColor="@color/fontColor"
-        android:paddingVertical="10dp"
-        />
+        >
+        <TextView
+            android:id="@+id/txtSubscripedPartners"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Subscriped Partners"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/fontColor"
+            android:paddingVertical="10dp"
+            />
 
+    </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/subscriped_partners"
         />
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="5"
         android:background="@color/tevoiBluePrimary"
-
         >
         <TextView
             android:id="@+id/txtClearFilter"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="Clear Filter"
             android:background="@color/tevoiBluePrimary"
             android:textColor="@color/fontColor"
             android:paddingVertical="10dp"
-            android:layout_weight="4"
-            android:layout_marginLeft="5dp"
+           android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
             android:gravity="center_vertical"
             />
 
@@ -76,11 +85,12 @@
             android:src="@mipmap/cross_blue"
             android:background="@drawable/rounded_button"
             android:id="@+id/btn_clear_filter"
-            android:layout_weight="1"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="6dp"
             android:scaleX="0.8"
             android:scaleY="0.7"
             android:padding="2dp"
             />
-    </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>
 </ScrollView>

@@ -12,21 +12,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/tevoiBluePrimary"
-        android:orientation="vertical">
+        android:orientation="vertical"
+
+        >
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/location_header_fragement"
             android:textColor="@color/fontColor"
             android:layout_marginLeft="32dp"
+            android:layout_marginStart="32dp"
             android:layout_marginTop="20dp"
             android:textSize="18dp"
             />
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/location_body_fragement"
             android:layout_marginLeft="32dp"
+            android:layout_marginStart="32dp"
             android:textColor="@color/fontColor"
             android:textSize="11dp"
 
@@ -35,6 +39,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10.78dp"
+            android:layout_marginLeft="32.25dp"
+            android:layout_marginStart="32.25dp"
             >
 
             <ImageButton
@@ -45,7 +51,7 @@
                 android:src="@drawable/tick"
                 android:scaleType="fitXY"
                 android:onClick="locationClick"
-                android:layout_marginLeft="32.25dp"
+
 
                 />
             <TextView
@@ -54,6 +60,7 @@
                 android:text="Yes"
                 android:textColor="@color/fontColor"
                 android:layout_gravity="center_vertical"
+                android:layout_marginStart="4dp"
                 android:layout_marginLeft="4dp"
                 />
             <ImageButton
@@ -65,6 +72,7 @@
                 android:src="@drawable/cross"
                 android:onClick="locationClick"
                 android:layout_marginLeft="69dp"
+                android:layout_marginStart="69dp"
                 />
             <TextView
                 android:layout_width="wrap_content"
@@ -73,6 +81,7 @@
                 android:textColor="@color/fontColor"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="4dp"
+                android:layout_marginStart="4dp"
                 />
         </LinearLayout>
 

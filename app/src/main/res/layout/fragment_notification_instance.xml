@@ -17,7 +17,7 @@
         android:layout_centerVertical="true"
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
-        android:layout_alignParentLeft="true"
+
         />
     <android.support.v7.widget.SwitchCompat
         android:layout_width="wrap_content"
@@ -25,8 +25,8 @@
         android:checked="true"
         android:theme="@style/SCBSwitch"
         android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="10dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="10dp"
         android:id="@+id/switch_notification_type"
         />
 

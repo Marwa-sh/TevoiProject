@@ -21,10 +21,10 @@
         android:layout_height="wrap_content"
         android:divider="?android:listDivider"
         android:layout_toRightOf="@id/status_bar_album_art"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:showDividers="middle"
-        android:background="@color/tevoiFontColor"
+        android:background="@color/tevoiBluePrimary"
         android:dividerPadding="12.0dip">
         <ImageButton
             android:id="@+id/status_bar_prev"
@@ -63,10 +63,10 @@
     <ImageButton
         android:id="@id/status_bar_collapse"
         android:padding="8.0dip"
-        android:background="@color/tevoiFontColor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/apollo_holo_dark_notifiation_bar_collapse"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@mipmap/cross_white_null_background"
+        android:background="@color/tevoiBluePrimary"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true" />
     <LinearLayout
@@ -93,13 +93,14 @@
             />
         <TextView
             android:ellipsize="marquee"
-            android:layout_gravity="left"
+            android:layout_gravity="start"
             android:id="@+id/status_bar_artist_name"
             android:fadingEdge="horizontal"
             android:textColor="@color/tevoiFontColor"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="1"
+
             />
         <TextView
             android:ellipsize="marquee"
