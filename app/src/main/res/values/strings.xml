@@ -51,4 +51,7 @@
     <string name="cd_play">Play and pause</string>
     <string name="cd_next">Skip forwards</string>
 
+
+    <string name="empty_list">Empty List</string>
+
 </resources>

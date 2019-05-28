@@ -11,7 +11,11 @@ import android.widget.Toast;
 
 import com.tevoi.tevoi.Utils.Global;
 import com.tevoi.tevoi.adapter.TracksAdapter;
+import com.tevoi.tevoi.model.RecyclerViewEmptySupport;
+import com.tevoi.tevoi.model.TrackObject;
 import com.tevoi.tevoi.model.TrackResponseList;
+
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -19,7 +23,8 @@ import retrofit2.Response;
 
 public class HistoryListFragment extends Fragment {
     TracksAdapter adapter ;
-    RecyclerView recyclerView;
+    RecyclerViewEmptySupport recyclerView;
+    //RecyclerView recyclerView;
     View rootView;
     SideMenu activity;
     @Override
@@ -29,11 +34,13 @@ public class HistoryListFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_history_list, container, false);
         activity = (SideMenu) getActivity();
 
-
         recyclerView = rootView.findViewById(R.id.history_tracks_recycler_View);
+        //recyclerView = rootView.findViewById(R.id.history_tracks_recycler_View);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setEmptyView(rootView.findViewById(R.id.history_list_empty));
+
 
         activity.mProgressDialog.setMessage("Loading"); activity.mProgressDialog.show();
 

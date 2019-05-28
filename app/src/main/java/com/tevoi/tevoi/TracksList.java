@@ -26,6 +26,7 @@ import com.tevoi.tevoi.Utils.Global;
 import com.tevoi.tevoi.Utils.HelperFunctions;
 import com.tevoi.tevoi.adapter.Track;
 import com.tevoi.tevoi.adapter.TracksAdapter;
+import com.tevoi.tevoi.model.RecyclerViewEmptySupport;
 import com.tevoi.tevoi.model.TrackResponseList;
 
 import java.util.ArrayList;
@@ -37,7 +38,8 @@ import retrofit2.Response;
 public class TracksList extends Fragment implements AdapterView.OnItemSelectedListener {
     ArrayList<Track> mTracks = new ArrayList<>();
     TracksAdapter adapter ;
-    RecyclerView[] recyclerViews= new RecyclerView[3];
+    RecyclerViewEmptySupport[] recyclerViews= new RecyclerViewEmptySupport[3];
+    //RecyclerView[] recyclerViews= new RecyclerView[3];
     int active_tab=0;
     Button[] tabs =  new Button[3];
     public int defaultTab;
@@ -187,6 +189,8 @@ public class TracksList extends Fragment implements AdapterView.OnItemSelectedLi
                             recyclerViews[active_tab].setAdapter(adapter);
                             adapter = new TracksAdapter(tracks.getTrack(),activity, Global.ListTracksFragmentName);
                             recyclerViews[active_tab].setAdapter(adapter);
+                            recyclerViews[active_tab].setEmptyView(rootView.findViewById(R.id.tracks_list_empty));
+
                             activity.mProgressDialog.dismiss();
                         }
                         public void onFailure(Call<TrackResponseList> call, Throwable t)

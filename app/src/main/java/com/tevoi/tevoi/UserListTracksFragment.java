@@ -15,6 +15,7 @@ import com.tevoi.tevoi.Utils.Global;
 import com.tevoi.tevoi.adapter.Track;
 import com.tevoi.tevoi.adapter.TracksAdapter;
 import com.tevoi.tevoi.model.GetUserListTracksResponse;
+import com.tevoi.tevoi.model.RecyclerViewEmptySupport;
 
 import java.util.ArrayList;
 
@@ -26,7 +27,8 @@ public class UserListTracksFragment extends Fragment
 {
     ArrayList<Track> mTracks = new ArrayList<>();
     TracksAdapter adapter ;
-    RecyclerView[] recyclerViews= new RecyclerView[3];
+    //RecyclerView[] recyclerViews= new RecyclerView[3];
+    RecyclerViewEmptySupport[] recyclerViews= new RecyclerViewEmptySupport[3];
     int active_tab=0;
     Button[] tabs =  new Button[3];
     public int defaultTab;
@@ -83,6 +85,8 @@ public class UserListTracksFragment extends Fragment
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerViews[defaultTab].setLayoutManager(layoutManager);
+        recyclerViews[active_tab].setEmptyView(rootView.findViewById(R.id.user_tracks_list_empty));
+
         activateTab(defaultTab);
 
         return  rootView;
@@ -129,6 +133,8 @@ public class UserListTracksFragment extends Fragment
                 recyclerViews[kk].setAdapter(adapter);
                 adapter = new TracksAdapter(tracks.getLstTrack(),activity, Global.UserListTracksFragment);
                 recyclerViews[kk].setAdapter(adapter);
+                recyclerViews[active_tab].setEmptyView(rootView.findViewById(R.id.tracks_list_empty));
+
                 activity.mProgressDialog.dismiss();
                 //Toast.makeText(activity,"tracks:"+x, Toast.LENGTH_SHORT);
             }
