@@ -140,6 +140,19 @@ public class TracksSerializableAdapter extends RecyclerView.Adapter<TracksSerial
                 @Override
                 public void onClick(View v) {
                     Context context = v.getContext();
+                    int i = getAdapterPosition();
+
+                    if(tracks.get(i).isFavourite())
+                    {
+                        btnLike.setText("Dislike");
+                        btnLike.refreshDrawableState();
+                    }
+                    else
+                    {
+                        btnLike.setText("Like");
+                        btnLike.refreshDrawableState();
+                    }
+
                     if(hoverLayout.getVisibility()==View.VISIBLE)
                     {
                         hoverLayout.setVisibility(View.INVISIBLE);
@@ -205,6 +218,9 @@ public class TracksSerializableAdapter extends RecyclerView.Adapter<TracksSerial
                                 if (res.getNumber() == 0)
                                 {
                                     t.setFavourite(true);
+                                    btnLike.setText("Dislike");
+                                    btnLike.refreshDrawableState();
+
                                     Log.d("Favourite :", "onResponse: track liked ");
                                     Toast.makeText(activity, "Like", Toast.LENGTH_LONG).show();
                                 } else {
@@ -229,6 +245,9 @@ public class TracksSerializableAdapter extends RecyclerView.Adapter<TracksSerial
                                 if (res.getNumber() == 0)
                                 {
                                     t.setFavourite(false);
+                                    btnLike.setText("Like");
+                                    btnLike.refreshDrawableState();
+
                                     Log.d("Favourite :", "onResponse: track liked ");
                                     Toast.makeText(activity, "Remove Like", Toast.LENGTH_LONG).show();
                                 } else {

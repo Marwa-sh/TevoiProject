@@ -178,20 +178,24 @@ public class SideMenu extends FragmentActivity implements  ServiceCallbacks {
         final ActionBar abar =  getActionBar();
         //abar.setBackgroundDrawable(getResources().getDrawable(R.drawable.actionbar_background));//line under the action bar
         View viewActionBar = getLayoutInflater().inflate(R.layout.nav_header_main, null);
+
         ActionBar.LayoutParams params = new ActionBar.LayoutParams(//Center the textview in the ActionBar !
                 ActionBar.LayoutParams.MATCH_PARENT,
                 ActionBar.LayoutParams.MATCH_PARENT,
                 Gravity.CENTER);
+
         TextView textviewTitle = viewActionBar.findViewById(R.id.tvTitle);
         textviewTitle.setText("Tevoi");
         TextView textviewSubTitle = viewActionBar.findViewById(R.id.tvSubTitle);
         textviewSubTitle.setText(subTitle);
+
         abar.setCustomView(viewActionBar, params);
         abar.setDisplayShowCustomEnabled(true);
         abar.setDisplayShowTitleEnabled(false);
         abar.setDisplayHomeAsUpEnabled(true);
-        abar.setIcon(R.color.fontColor);
+        abar.setIcon(R.color.colorAccent);
         abar.setHomeButtonEnabled(true);
+
         abar.setBackgroundDrawable(getResources().getDrawable(R.drawable.launcher_background));
         //abar.setElevation(0);
         //abar.setElevation(0);
@@ -226,6 +230,7 @@ public class SideMenu extends FragmentActivity implements  ServiceCallbacks {
                     {
                         txtTrackName.setText(CurrentTrackInPlayer.getName().toString());
                         mainPlayerLayout.setVisibility(View.VISIBLE);
+                        player.updateStatusBarInfo(CurrentTrackInPlayer.getName(), CurrentTrackInPlayer.getAuthors());
                         if (!player.mMediaPlayer.isPlaying())
                         {
                             if(btnPausePlayMainMediaPlayer != null)
@@ -783,7 +788,6 @@ public class SideMenu extends FragmentActivity implements  ServiceCallbacks {
             //playerIntent.putExtra("activityStatus", isActivityPause);
             getBaseContext().startService(playerIntent);
             getBaseContext().bindService(playerIntent, serviceConnection, Context.BIND_AUTO_CREATE);
-
         }
         else
         {
@@ -910,7 +914,6 @@ public class SideMenu extends FragmentActivity implements  ServiceCallbacks {
         player.updateStatusBarInfo(CurrentTrackInPlayer.getName(), CurrentTrackInPlayer.getAuthors());
     }
 
-
     @Override
     public void playPrevious() {
         //Toast.makeText(this, "Clicked Previous", Toast.LENGTH_SHORT).show();
@@ -921,5 +924,17 @@ public class SideMenu extends FragmentActivity implements  ServiceCallbacks {
     @Override
     public void playBtn() {
         player.updateStatusBarInfo(CurrentTrackInPlayer.getName(), CurrentTrackInPlayer.getAuthors());
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (serviceBound)
+        {
+            unbindService(serviceConnection);
+            //service is active
+            player.stopSelf();
+            serviceBound = false;
+        }
     }
 }

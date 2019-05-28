@@ -280,7 +280,7 @@ public class MediaPlayerService extends Service implements
 
         if (currentAudioUrl != null && currentAudioUrl != "" && intent.getAction().equals(Global.ACTION.STARTFOREGROUND_ACTION))
         {
-                initMediaPlayer();
+            initMediaPlayer();
         }
 
         if (intent.getAction().equals(Global.ACTION.STARTFOREGROUND_ACTION))
@@ -289,7 +289,6 @@ public class MediaPlayerService extends Service implements
             if (serviceCallbacks != null) {
                 serviceCallbacks.playBtn();
             }
-            //Toast.makeText(this, "Service Started", Toast.LENGTH_SHORT).show();
 
         }
         else if (intent.getAction().equals(Global.ACTION.PREV_ACTION))
@@ -627,6 +626,8 @@ public class MediaPlayerService extends Service implements
         status.contentIntent = pendingIntent;
         startForeground(Global.NOTIFICATION_ID.FOREGROUND_SERVICE, status);
     }
+
+
 
 
     public void updateStatusBarInfo(String title, String authors)

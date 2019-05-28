@@ -116,6 +116,7 @@ public class HelperFunctions
                 {
                     Toast.makeText(activity, R.string.no_track_to_play, Toast.LENGTH_SHORT).show();
                 }
+                activity.player.updateStatusBarInfo(activity.CurrentTrackInPlayer.getName(),activity.CurrentTrackInPlayer.getAuthors());
         }
     }
 

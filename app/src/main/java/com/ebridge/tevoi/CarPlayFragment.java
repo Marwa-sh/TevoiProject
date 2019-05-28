@@ -268,7 +268,12 @@ public class CarPlayFragment extends Fragment {
                        /* if(seekBar == null)
                             seekBar = (SeekBar) rootView.findViewById(R.id.seekBar);
 */
-                            imgBtnPlay.setImageResource(R.drawable.baseline_pause_24);
+                            if(activity.player.mMediaPlayer.isPlaying()) {
+                                imgBtnPlay.setImageResource(R.drawable.baseline_pause_24);
+                            }
+                            else {
+                                imgBtnPlay.setImageResource(R.drawable.baseline_play_arrow_24);
+                            }
                             seekBar.setMax(activity.player.mMediaPlayer.getDuration() / 1000);
                             String timeFormat2 = HelperFunctions.GetTimeFormat(activity.player.mMediaPlayer.getDuration() / 1000);
                             txtFullTime.setText(timeFormat2);
