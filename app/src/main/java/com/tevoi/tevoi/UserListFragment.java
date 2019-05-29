@@ -115,7 +115,7 @@ public class UserListFragment extends Fragment {
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setEmptyView(rootView.findViewById(R.id.user_lists_empty));
+        /*recyclerView.setEmptyView(rootView.findViewById(R.id.user_lists_empty));*/
 
         activity.mProgressDialog.setMessage("Loading");
         activity.mProgressDialog.show();

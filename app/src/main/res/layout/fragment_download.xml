@@ -120,7 +120,7 @@
             android:layout_height="22dp"
             android:background="@null"
             android:scaleType="fitXY"
-            android:src="@drawable/tick"
+            android:src="@mipmap/tick_blue"
             android:layout_gravity="center_vertical"
 
             />
@@ -137,9 +137,9 @@
         <ImageButton
             android:layout_width="22dp"
             android:layout_height="22dp"
-            android:background="@null"
             android:scaleType="fitXY"
-            android:src="@drawable/cross"
+            android:src="@mipmap/close_blue"
+            android:background="@null"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="40dp"
 
