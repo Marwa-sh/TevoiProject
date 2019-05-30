@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/tevoiBluePrimary"
-            android:text="New"
+            android:text="@string/new_track"
             android:textColor="@color/fontColor"
             android:onClick="changeTabToNewListPartners"/>
 
@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/tevoiBlueSecondary"
-            android:text="Top Rated"
+            android:text="@string/top_rated"
             android:textColor="@color/fontColor"
             android:onClick="changeTabToTopRatedPartners"/>
 
@@ -48,7 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:background="@color/tevoiBlueSecondary"
-        android:text="Popular"
+        android:text="@string/popular"
         android:textColor="@color/fontColor"
         android:onClick="changeToPopularPartners"/>
 

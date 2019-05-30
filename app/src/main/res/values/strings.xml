@@ -55,5 +55,39 @@
 
 
     <string name="empty_list">Empty List</string>
+    <string name="mandatory_fileds">Mandatory fileds*</string>
+    <string name="user_Name">User Name*</string>
+    <string name="email">Email*</string>
+    <string name="password">Password*</string>
+    <string name="confirm_password">Confirm Password*</string>
+    <string name="we_need_info">We need the following information to better guess your preferences</string>
+    <string name="age">Age</string>
+    <string name="gender">Gender</string>
+    <string name="occupation">Occupation</string>
+    <string name="country">Country</string>
+    <string name="register">Register</string>
+    <string name="cancel">Cancel</string>
+    <string name="visit_website">Please visite our website for more info about our services</string>
+    <string name="your_name">Your Name</string>
+    <string name="your_email">Your Email</string>
+    <string name="your_message">Your Message</string>
+    <string name="send">Send</string>
+    <string name="categories">Categories</string>
+    <string name="subscriped_partners">Subscriped Partners</string>
+    <string name="clear_filter">Clear Filter</string>
+    <string name="follow_us">Follow us on social media</string>
+    <string name="new_track">New</string>
+    <string name="top_rated">Top Rated</string>
+    <string name="popular">Popular</string>
+    <string name="arabic">Arabic</string>
+    <string name="english">English</string>
+    <string name="user_name">User Name</string>
+    <string name="log_in">Log in</string>
+    <string name="keep_melogged">Keep me logged in</string>
+    <string name="forgot">Forgot Password?</string>
+    <string name="enter_email">Please enter your email</string>
+    <string name="request_password">Request new password</string>
+    <string name="add_newlist">Add New List</string>
+    <string name="all_notification">All notification</string>
 
 </resources>

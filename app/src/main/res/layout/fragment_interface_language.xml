@@ -37,7 +37,7 @@
             android:layout_marginLeft="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Arabic"
+            android:text="@string/arabic"
             android:textColor="@color/fontColor"
             android:layout_gravity="center_vertical"
             />
@@ -63,7 +63,7 @@
             android:layout_marginLeft="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="English"
+            android:text="@string/english"
             android:textColor="@color/fontColor"
             android:layout_gravity="center_vertical"
             />
