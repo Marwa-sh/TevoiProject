@@ -34,8 +34,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="55dp"
-            android:layout_marginLeft="31dp"
-            android:text="User Name"
+            android:layout_marginStart="31dp"
+            android:text="@string/user_Name"
             android:textColor="@color/fontColor" />
 
         <EditText
@@ -56,8 +56,9 @@
             android:layout_width="wrap_content"
             android:layout_height="15dp"
             android:layout_marginLeft="31dp"
+            android:layout_marginStart="31dp"
             android:layout_marginTop="10dp"
-            android:text="Password"
+            android:text="@string/password"
             android:textColor="@color/fontColor" />
 
         <EditText
@@ -78,24 +79,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="16dp">
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="32dp"
+            >
 
             <ImageButton
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_marginLeft="32dp"
+
                 android:background="@null"
                 android:scaleType="fitXY"
-                android:src="@drawable/tick"
+                android:src="@mipmap/tick_blue"
                 android:layout_gravity="center_vertical"
                 android:id="@+id/btn_Login"
                 />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Log in"
+                android:text="@string/log_in"
                 android:textColor="@color/fontColor"
-                android:layout_marginLeft="7dp"
+                android:layout_marginStart="7dp"
                 android:layout_gravity="center_vertical"
 
                 />
@@ -105,28 +108,29 @@
                 android:layout_height="20dp"
                 android:background="@null"
                 android:scaleType="fitXY"
-                android:src="@drawable/cross"
+                android:src="@mipmap/register"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="83dp"
+                android:layout_marginStart="83dp"
                 android:id="@+id/btn_register"
-
                 />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Register"
+                android:text="@string/register"
                 android:layout_gravity="center_vertical"
                 android:textColor="@color/fontColor"
-                android:layout_marginLeft="7dp"/>
+                android:layout_marginStart="7dp"/>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp">
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginLeft="25dp"
+            >
             <CheckBox
                 android:layout_marginTop="10dp"
-                android:layout_marginLeft="25dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"
@@ -137,10 +141,10 @@
                 />
             <TextView
                 android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Keep me logged in"
+                android:text="@string/keep_melogged"
                 android:textColor="@color/fontColor"
                 android:layout_gravity="center_vertical"
                 />
@@ -151,16 +155,16 @@
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Forgot Password?"
-            android:layout_marginLeft="31dp"
+            android:text="@string/forgot"
+            android:layout_marginStart="31dp"
             android:layout_marginTop="25dp"
             android:textColor="@color/fontColor" />
         <TextView
             android:id="@+id/textView7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Please enter your email"
-            android:layout_marginLeft="31dp"
+            android:text="@string/enter_email"
+            android:layout_marginStart="31dp"
             android:layout_marginTop="22dp"
             android:textColor="@color/fontColor" />
 
@@ -168,9 +172,7 @@
             android:layout_width="match_parent"
             android:layout_height="42dp"
             android:layout_marginStart="30dp"
-            android:layout_marginLeft="31dp"
             android:layout_marginTop="7dp"
-            android:layout_marginRight="30dp"
             android:layout_marginEnd="30dp"
             android:id="@+id/et_enter_email"
 
@@ -179,31 +181,30 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="16dp">
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginBottom="15dp"
+            >
 
             <ImageButton
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_marginLeft="32dp"
-                android:layout_marginBottom="15dp"
+
                 android:background="@null"
                 android:scaleType="fitXY"
-                android:src="@drawable/tick"
+                android:src="@mipmap/tick_blue"
                 android:layout_gravity="center_vertical"
                 android:id="@+id/btn_Request_new_password"
+
                 />
 
             <TextView
-                android:text="Request new password"
+                android:text="@string/request_password"
                 android:textColor="@color/fontColor"
                 android:layout_gravity="center_vertical"
-                android:layout_marginBottom="15dp"
                 android:layout_width="match_parent"
-                android:layout_height="42dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
-                android:layout_marginLeft="31dp"
-                android:layout_marginTop="7dp"
-                android:layout_marginRight="30dp"
                 android:layout_marginEnd="30dp"
                 />
 

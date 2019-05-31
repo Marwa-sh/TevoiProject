@@ -32,15 +32,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginRight="55dp"
+            android:layout_marginEnd="55dp"
+           android:layout_alignParentStart="true"
             >
         <ImageView
             android:id="@+id/imageView_profile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
             android:clickable="true"
-            android:layout_marginLeft="1dp"
+            android:layout_marginStart="1dp"
             android:src="@mipmap/blue_circle"
             android:layout_gravity="center_vertical"
 
@@ -50,8 +51,6 @@
                 android:id="@+id/textComment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="10dp"
-
                 android:background="@drawable/rounded_button"
                 android:backgroundTint="@color/grey"
                 android:focusedByDefault="false"
@@ -67,9 +66,9 @@
             android:scaleY="0.8"
             android:scaleX="0.8"
             android:src="@mipmap/send_blue"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="5dp"
+            android:layout_marginEnd="5dp"
             android:layout_gravity="center_vertical"
             />
     </RelativeLayout>

@@ -17,6 +17,7 @@
             android:layout_height="wrap_content"
             android:text="@string/add_To_list"
             android:layout_marginTop="21dp"
+            android:layout_marginStart="32dp"
             android:layout_marginLeft="32dp"
             android:textColor="@color/fontColor"
             />
@@ -24,19 +25,18 @@
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-             android:layout_marginTop="30dp"
+            android:layout_marginTop="30dp"
             android:background="@color/tevoiBluePrimary"
             android:orientation="horizontal"
+            android:layout_marginStart="32dp"
             >
             <ImageButton
                 android:id="@+id/imgBtnAddTrackToList"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:layout_marginLeft="32dp"
                 android:background="@null"
-                android:src="@drawable/tick"
+                android:src="@mipmap/tick_blue"
                 android:scaleType="fitXY"
-
                 android:clickable="true"
                 android:onClick="addTrackToListClick"
 
@@ -46,25 +46,24 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="AddTrack"
-                android:layout_marginLeft="4dp"
-
+                android:layout_marginStart="4dp"
                 android:textColor="@color/fontColor"
                 />
             <ImageButton
                 android:id="@+id/imgBtnCloseAddToList"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:layout_marginLeft="42dp"
+                android:layout_marginStart="42dp"
                 android:background="@null"
                 android:scaleType="fitXY"
-                android:src="@drawable/cross"
+                android:src="@mipmap/close_blue"
 
                 />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="4dp"
+                android:layout_marginStart="4dp"
                 android:textColor="@color/fontColor"
                 android:text="Cancel"
                 />

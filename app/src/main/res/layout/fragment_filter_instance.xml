@@ -13,13 +13,11 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="16dp"
+            android:layout_height="wrap_content"
             android:text="categories"
             android:textColor="@color/fontColor"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
-
             />
     </LinearLayout>
 

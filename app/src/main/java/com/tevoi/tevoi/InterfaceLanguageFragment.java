@@ -35,7 +35,7 @@ public class InterfaceLanguageFragment extends Fragment {
         }
 
 
-       /* chkEnglish.setOnClickListener(new View.OnClickListener(){
+        chkEnglish.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View v) {
@@ -66,7 +66,7 @@ public class InterfaceLanguageFragment extends Fragment {
                     activity.storageManager.storeLanguagePreference(activity, "en");
             }
 
-        });*/
+        });
 
 
         return rootView;

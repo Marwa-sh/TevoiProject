@@ -33,18 +33,10 @@
             android:layout_marginTop="4dp"
             />
     </LinearLayout>
-        <com.tevoi.tevoi.model.RecyclerViewEmptySupport
+        <android.support.v7.widget.RecyclerView
             android:id="@+id/user_list_recycler_View"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             >
-        </com.tevoi.tevoi.model.RecyclerViewEmptySupport>
-        <TextView android:id="@+id/user_lists_empty"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:textSize="@dimen/text_size"
-            android:paddingTop="@dimen/text_empty_list"
-            android:text="@string/empty_list"
-            />
+        </android.support.v7.widget.RecyclerView>
 </LinearLayout>
