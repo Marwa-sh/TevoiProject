@@ -17,7 +17,7 @@ public class ApiClient
     private static Retrofit retrofit = null;
     public static Retrofit getClient()
     {
-        OkHttpClient okHttpClient = new OkHttpClient().newBuilder().addInterceptor(new Interceptor() {
+        /*OkHttpClient okHttpClient = new OkHttpClient().newBuilder().addInterceptor(new Interceptor() {
             @Override
             public okhttp3.Response intercept(Chain chain) throws IOException {
                 Request originalRequest = chain.request();
@@ -32,13 +32,13 @@ public class ApiClient
                 .connectTimeout(60, TimeUnit.SECONDS)
                 .readTimeout(60, TimeUnit.SECONDS)
                 .writeTimeout(60, TimeUnit.SECONDS)
-                .build();
+                .build();*/
 
-       /* OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
+        OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
                 .connectTimeout(60, TimeUnit.SECONDS)
                 .readTimeout(60, TimeUnit.SECONDS)
                 .writeTimeout(60, TimeUnit.SECONDS)
-                .build();*/
+                .build();
 
         if (retrofit==null) {
             retrofit = new Retrofit.Builder()
