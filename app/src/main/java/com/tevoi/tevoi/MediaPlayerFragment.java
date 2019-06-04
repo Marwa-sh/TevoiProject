@@ -1,5 +1,7 @@
 package com.tevoi.tevoi;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -24,6 +26,8 @@ import com.tevoi.tevoi.model.IResponse;
 import com.tevoi.tevoi.model.RatingResponse;
 import com.tevoi.tevoi.model.TrackObject;
 import com.tevoi.tevoi.model.XmlFragementClickable;
+
+import java.net.URL;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -258,6 +262,18 @@ public class MediaPlayerFragment extends Fragment {
             partnerLogo = rootView.findViewById(R.id.img_partner_logo);
 
             partnerName.setText(currentTrack.getPartnerName());
+            try
+            {
+                URL newurl = new URL(Global.IMAGE_BASE_URL + currentTrack.getPartnerLogo());
+                Bitmap mIcon_val = BitmapFactory.decodeStream(newurl.openConnection() .getInputStream());
+                partnerLogo.setImageBitmap(mIcon_val);
+            }
+            catch (Exception exc)
+            {
+
+            }
+
+
             //String ulrLogo = Uri.parse(currentTrack.getPartnerLogo());
             //partnerLogo.setImageURI(ulrLogo);
             url = Global.BASE_AUDIO_URL + currentTrack.getId();

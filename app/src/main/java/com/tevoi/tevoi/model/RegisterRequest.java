@@ -1,12 +1,22 @@
 package com.tevoi.tevoi.model;
 
-public class RegisterRequest {
+import com.google.gson.annotations.SerializedName;
+
+public class RegisterRequest
+{
+    @SerializedName("UserName")
     public String UserName;
+    @SerializedName("Email")
     public String Email;
+    @SerializedName("Password")
     public String Password;
+    @SerializedName("Age")
     public int Age;
+    @SerializedName("Gender")
     public int Gender;
+    @SerializedName("Occupation")
     public String Occupation;
+    @SerializedName("Country")
     public int Country;
 
     public RegisterRequest() {

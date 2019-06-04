@@ -131,7 +131,7 @@ public class UserListFragment extends Fragment {
                 recyclerView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
                 activity.mProgressDialog.dismiss();
-                Toast.makeText(getContext(),"tracks:"+x, Toast.LENGTH_SHORT);
+                //Toast.makeText(activity,userLists.Message, Toast.LENGTH_LONG).show();
             }
             public void onFailure(Call<UserListResponse> call, Throwable t)
             {
@@ -139,6 +139,8 @@ public class UserListFragment extends Fragment {
                 Toast.makeText(getContext(),"something went wrong", Toast.LENGTH_SHORT);
             }
         });
+
+        //Toast.makeText(activity, "token=" + Global.UserToken, Toast.LENGTH_LONG).show();
 
         return rootView;
     }

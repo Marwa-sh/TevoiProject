@@ -1,6 +1,9 @@
 
 package com.tevoi.tevoi;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -12,37 +15,37 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.tevoi.tevoi.Utils.Global;
+import com.tevoi.tevoi.Utils.MyStorage;
 import com.tevoi.tevoi.model.LoginResponse;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LoginFragment extends Fragment
+public class LoginActivity extends Activity
 {
-    View rootView;
     ImageButton btnLogin, btnRegister, btnRequestNewPassword;
     EditText etUserName,etPassword,etEmail;
     CheckBox checkBoxRememberMe;
-    SideMenu activity;
+    public ProgressDialog mProgressDialog;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.fragment_login);
 
-        rootView = inflater.inflate(R.layout.fragment_login, container, false);
-        activity = (SideMenu) getActivity();
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setCancelable(false);
 
-        btnLogin=rootView.findViewById(R.id.btn_Login);
-        btnRegister=rootView.findViewById(R.id.btn_register);
-        btnRequestNewPassword=rootView.findViewById(R.id.btn_Request_new_password);
+        btnLogin = findViewById(R.id.btn_Login);
+        btnRegister = findViewById(R.id.btn_register);
+        btnRequestNewPassword = findViewById(R.id.btn_Request_new_password);
 
-        etUserName=rootView.findViewById(R.id.et_User_Name);
-        etPassword=rootView.findViewById(R.id.et_Password);
-        etEmail=rootView.findViewById(R.id.et_enter_email);
+        etUserName = findViewById(R.id.et_User_Name);
+        etPassword = findViewById(R.id.et_Password);
+        etEmail = findViewById(R.id.et_enter_email);
 
-        checkBoxRememberMe=rootView.findViewById(R.id.checkBox_remember_me);
+        checkBoxRememberMe=findViewById(R.id.checkBox_remember_me);
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,7 +60,10 @@ public class LoginFragment extends Fragment
                     etPassword.setError("password missing");
                     etPassword.requestFocus();
                 }
-                else {
+                else
+                    {
+                        mProgressDialog.setMessage("Loading"); mProgressDialog.show();
+
                     //Login and get token then save it in shared preference
                     final boolean isRememberMe =checkBoxRememberMe.isChecked();
                     Call<LoginResponse> call =Global.clientDnn.Login(etUserName.getText().toString(),etPassword.getText().toString());
@@ -67,24 +73,27 @@ public class LoginFragment extends Fragment
                             LoginResponse login = response.body();
                             if(login.getNumber() == 0)
                             {
-                                activity.storageManager.storeTokenPreference(activity, login.getToken());
-                                Global.UserToken = activity.storageManager.getTokenPreference(activity);
+                                MyStorage storageManager = new MyStorage();
+                                storageManager.storeTokenPreference(LoginActivity.this, login.getToken());
+                                Global.UserToken = storageManager.getTokenPreference(LoginActivity.this);
+                                //storageManager.storeRememberMePreference(LoginActivity.this, isRememberMe);
 
-                                android.support.v4.app.FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
-                                fragmentTransaction.replace(R.id.content_frame, activity.lisTracksFragment);
-                                fragmentTransaction.addToBackStack( "lisTracksFragment" );
-                                fragmentTransaction.commit();
+                                Intent i = new Intent(getApplicationContext(),SideMenu.class);
+                                startActivity(i);
+                                setContentView(R.layout.activity_side_menu);
+                                mProgressDialog.dismiss();
                             }
                             else
                             {
-                                Toast.makeText(rootView.getContext(),login.Message,Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getBaseContext(),login.Message,Toast.LENGTH_SHORT).show();
+                                mProgressDialog.dismiss();
                             }
 
                         }
 
                         @Override
                         public void onFailure(Call<LoginResponse> call, Throwable t) {
-
+                            Toast.makeText(LoginActivity.this, "", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
@@ -93,15 +102,11 @@ public class LoginFragment extends Fragment
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                android.support.v4.app.FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
-
-                fragmentTransaction.replace(R.id.content_frame, activity.registerFragment);
-                fragmentTransaction.addToBackStack( "registerFragment" );
-                fragmentTransaction.commit();
+                Intent i = new Intent(getApplicationContext(),RegisterActivity.class);
+                startActivity(i);
+                setContentView(R.layout.activity_register);
             }
         });
-
-        return rootView;
 
 
     }

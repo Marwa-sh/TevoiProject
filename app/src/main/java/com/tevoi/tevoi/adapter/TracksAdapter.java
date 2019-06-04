@@ -120,6 +120,7 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
     public int getItemCount() {
         return tracks.size();
     }
+
     class TrackViewHolder extends RecyclerView.ViewHolder
     {
         public  View view;

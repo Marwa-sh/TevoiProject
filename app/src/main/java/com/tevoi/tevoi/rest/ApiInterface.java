@@ -13,6 +13,7 @@ import com.tevoi.tevoi.model.IResponse;
 import com.tevoi.tevoi.model.ListNotificationTypesResponse;
 import com.tevoi.tevoi.model.LoginRequest;
 import com.tevoi.tevoi.model.LoginResponse;
+import com.tevoi.tevoi.model.MainSponsoreLogoResponse;
 import com.tevoi.tevoi.model.PartnerListResponse;
 import com.tevoi.tevoi.model.RatingResponse;
 import com.tevoi.tevoi.model.RegisterDataResponse;
@@ -36,6 +37,10 @@ import retrofit2.http.Query;
 
 public interface ApiInterface {
     /*@Headers({"Content-Type:application/json","Authorization:TevoiTokenSample"})*/
+    @GET("api/Services/GetMainSponsoreLogo")
+    Call<MainSponsoreLogoResponse> GetMainSponsoreLogo();
+
+
     @GET("api/Services/ListMainTrack")
     Call<TrackResponseList> getListMainTrack(@Query("ListTypeEnum") int ListTypeEnum,@Query("index") int index,@Query("size") int size);
 
@@ -156,6 +161,7 @@ public interface ApiInterface {
 
     @GET("api/User/GetRegisterInformation")
     Call<RegisterDataResponse> GetRegisterInformation();
+
     @POST("api/User/Register")
     Call<RegisterResponse> Register(@Query("RegisterRequest") RegisterRequest model);
 

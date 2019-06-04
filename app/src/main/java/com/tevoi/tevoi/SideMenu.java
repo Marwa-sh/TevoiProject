@@ -159,6 +159,7 @@ public class SideMenu extends FragmentActivity implements  ServiceCallbacks {
     public UserListTracksFragment userListTracksFragment = new UserListTracksFragment();
     public MediaPlayerFragment mediaPlayerFragment;
 
+
     // endregion
 
     //

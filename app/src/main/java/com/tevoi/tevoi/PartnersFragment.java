@@ -108,7 +108,7 @@ public class PartnersFragment extends Fragment {
                 //generateDataList(response.body());
                 PartnerListResponse partners=response.body();
                 int x=partners.getPartners().size();
-                recyclerViews[kk].setAdapter(adapter);
+                //recyclerViews[kk].setAdapter(adapter);
                 SideMenu activity = (SideMenu)getActivity();
                 adapter = new PartnerAdapter(partners.getPartners(),activity);
                 recyclerViews[kk].setAdapter(adapter);

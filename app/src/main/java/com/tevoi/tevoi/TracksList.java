@@ -304,7 +304,7 @@ public class TracksList extends Fragment implements AdapterView.OnItemSelectedLi
                 //generateDataList(response.body());
                 TrackResponseList tracks=response.body();
                 int x=tracks.getTrack().size();
-                recyclerViews[kk].setAdapter(adapter);
+                //recyclerViews[kk].setAdapter(adapter);
                 adapter = new TracksAdapter(tracks.getTrack(),activity, Global.ListTracksFragmentName);
                 recyclerViews[kk].setAdapter(adapter);
                 activity.mProgressDialog.dismiss();

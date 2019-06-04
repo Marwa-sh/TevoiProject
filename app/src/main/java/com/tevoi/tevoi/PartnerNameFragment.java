@@ -129,7 +129,7 @@ public class PartnerNameFragment extends Fragment {
                 //generateDataList(response.body());
                 GetPartnerTracksResponse tracks=response.body();
                 int x=tracks.getPartnerTracks().size();
-                recyclerViews[kk].setAdapter(adapter);
+                //recyclerViews[kk].setAdapter(adapter);
                 adapter = new TracksAdapter(tracks.getPartnerTracks(),activity, Global.PartnerNameFragment);
                 recyclerViews[kk].setAdapter(adapter);
                 activity.mProgressDialog.dismiss();

@@ -33,7 +33,30 @@
         <activity
             android:name=".MediaPlayerBrowserActivity"
             android:label="@string/title_activity_media_player_browser" />
+
+        <activity android:name=".LoginActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait">
+
+        </activity>
+
+        <activity android:name=".RegisterActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait">
+
+        </activity>
+
         <activity android:name=".SideMenu"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait">
+            <!--<intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>-->
+
+        </activity>
+        <activity android:name=".IntroActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait">
             <intent-filter>

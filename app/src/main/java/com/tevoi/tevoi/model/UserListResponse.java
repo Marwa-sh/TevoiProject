@@ -2,7 +2,7 @@ package com.tevoi.tevoi.model;
 
 import java.util.List;
 
-public class UserListResponse {
+public class UserListResponse extends IResponse {
     private List<UserListObject> lstUserList;
 
     public List<UserListObject> getLstUserList() {

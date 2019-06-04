@@ -33,10 +33,10 @@
             android:layout_marginTop="4dp"
             />
     </LinearLayout>
-        <android.support.v7.widget.RecyclerView
+        <com.tevoi.tevoi.model.RecyclerViewEmptySupport
             android:id="@+id/user_list_recycler_View"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             >
-        </android.support.v7.widget.RecyclerView>
+        </com.tevoi.tevoi.model.RecyclerViewEmptySupport>
 </LinearLayout>

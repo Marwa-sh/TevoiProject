@@ -3,6 +3,7 @@ package com.tevoi.tevoi.Utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.text.BoringLayout;
 
 import com.tevoi.tevoi.model.TrackSerializableObject;
 import com.google.gson.Gson;
@@ -20,6 +21,7 @@ public class MyStorage {
     public static final String PreferenceLanguage = "PreferenceLanguage";
     public static final String TrackTypeFilter = "TrackTypeFilter";
     public static final String UserToken = "UserToken";
+    public  static final String RememberMe = "RememberMe";
     public static final String ShowHeardTracks="ShowHeardTracks";
     public static final String ShowNewsTracks="ShowNewsTracks";
     public static final String ShowArticlesTracks="ShowArticlesTracks";
@@ -273,5 +275,31 @@ public class MyStorage {
     }
 
     // endRegion
+
+    // region Remember Me
+    public void storeRememberMePreference(Context context, Boolean isRememberMe)
+    {
+        SharedPreferences settings;
+        Editor editor;
+        settings = context.getSharedPreferences(RememberMe, Context.MODE_PRIVATE);
+        editor = settings.edit();
+
+        editor.putBoolean(RememberMe, isRememberMe);
+        editor.commit();
+    }
+
+    public Boolean getRememberMePreference(Context context)
+    {
+        SharedPreferences settings;
+        Boolean isRememberMe = false;
+        settings = context.getSharedPreferences(RememberMe, Context.MODE_PRIVATE);
+        if (settings.contains(RememberMe))
+        {
+            isRememberMe = settings.getBoolean(RememberMe, false);
+        }
+
+        return isRememberMe;
+    }
+    //endregion
 
 }
