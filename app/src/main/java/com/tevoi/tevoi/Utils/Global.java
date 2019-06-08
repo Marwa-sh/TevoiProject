@@ -59,13 +59,13 @@ public class Global {
 
     public interface ACTION
     {
-        public static String MAIN_ACTION = "com.ebridge.tevoi.action.main";
-        public static String INIT_ACTION = "com.ebridge.tevoi.action.init";
-        public static String PREV_ACTION = "com.ebridge.tevoi.action.prev";
-        public static String PLAY_ACTION = "com.ebridge.tevoi.action.play";
-        public static String NEXT_ACTION = "com.ebridge.tevoi.action.next";
-        public static String STARTFOREGROUND_ACTION = "com.ebridge.tevoi.action.startforeground";
-        public static String STOPFOREGROUND_ACTION = "com.ebridge.tevoi.action.stopforeground";
+        public static String MAIN_ACTION = "com.tevoi.tevoi.action.main";
+        public static String INIT_ACTION = "com.tevoi.tevoi.action.init";
+        public static String PREV_ACTION = "com.tevoi.tevoi.action.prev";
+        public static String PLAY_ACTION = "com.tevoi.tevoi.action.play";
+        public static String NEXT_ACTION = "com.tevoi.tevoi.action.next";
+        public static String STARTFOREGROUND_ACTION = "com.tevoi.tevoi.action.startforeground";
+        public static String STOPFOREGROUND_ACTION = "com.tevoi.tevoi.action.stopforeground";
 
     }
     public interface NOTIFICATION_ID

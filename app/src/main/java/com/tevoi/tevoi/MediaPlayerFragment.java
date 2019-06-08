@@ -291,7 +291,8 @@ public class MediaPlayerFragment extends Fragment {
                 {
                     playButton.setImageResource(R.drawable.baseline_play_arrow_24);
                 }
-            }else
+            }
+            else
             {
                 activity.playAudio(url);
                 activity.isPlaying = true;

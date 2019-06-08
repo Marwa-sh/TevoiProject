@@ -9,7 +9,7 @@
     <string-array name="rivers">
         <item>List Tracks</item>
         <item >Interface Language</item>
-        <item >Login/Register</item>
+       <!-- <item >Login/Register</item>-->
         <item >Partners</item>
         <!--<item >Quick Tour</item>-->
         <item >Notifications</item>

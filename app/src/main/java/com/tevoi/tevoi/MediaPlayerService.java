@@ -23,10 +23,16 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
+import android.widget.Toast;
 
 import com.tevoi.tevoi.Utils.Global;
+import com.tevoi.tevoi.model.IResponse;
 
 import java.io.IOException;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MediaPlayerService extends Service implements
         MediaPlayer.OnCompletionListener,
@@ -54,6 +60,10 @@ public class MediaPlayerService extends Service implements
 
     //String url="http://192.168.1.111/TevoiAPI/api/Files/SoundFile?fileName=1.mp3";
     private Handler mHandler = new Handler();
+    int numberOfUnitsSendToServer;
+    public int numberOfListenedSeconds;
+    public int numberOfCurrentSecondsInTrack;
+
 
     String currentAudioUrl = Global.BASE_AUDIO_URL;
     boolean activityIsPaused = false;
@@ -160,12 +170,32 @@ public class MediaPlayerService extends Service implements
     public void run()
     {
 
-        if (mMediaPlayer != null)
-        {
+        if (mMediaPlayer != null) {
+            if (mMediaPlayer.isPlaying()) {
 
-        } else
-        {
+                numberOfListenedSeconds += 1;
+                numberOfCurrentSecondsInTrack += 1;
+                //activity.numberOfTotalSeconds += activity.numberOfCurrentSeconds;
+            }
+            int n = numberOfUnitsSendToServer * Global.ListenUnitInSeconds + Global.ListenUnitInSeconds;
+            if (numberOfListenedSeconds >= n) {
+                int numberOfUnRegisteredSeconds = numberOfListenedSeconds - numberOfUnitsSendToServer * Global.ListenUnitInSeconds;
+                final int numberOfConsumedUnits = numberOfUnRegisteredSeconds / Global.ListenUnitInSeconds;
+                // send to server that we used 1 unit
+                /*Call<IResponse> call = Global.client.AddUnitUsageForUser(CurrentTrackInPlayer.getId(), numberOfConsumedUnits);
+                call.enqueue(new Callback<IResponse>() {
+                    public void onResponse(Call<IResponse> call, Response<IResponse> response) {
+                        //generateDataList(response.body());
+                        IResponse partners = response.body();
+                        numberOfUnitsSendToServer += numberOfConsumedUnits;
+                        Toast.makeText(getBaseContext(), "" + numberOfConsumedUnits + " Unit consumed from your quota", Toast.LENGTH_SHORT).show();
+                    }
 
+                    public void onFailure(Call<IResponse> call, Throwable t) {
+
+                    }
+                });*/
+            }
         }
         mHandler.postDelayed(this, 1000);
 
@@ -720,7 +750,7 @@ public class MediaPlayerService extends Service implements
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
         {
-            String NOTIFICATION_CHANNEL_ID = "com.ebridge.tevoi";
+            String NOTIFICATION_CHANNEL_ID = "com.tevoi.tevoi";
             String channelName = "My Background Service";
             NotificationChannel chan = new NotificationChannel(NOTIFICATION_CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_NONE);
             chan.setLightColor(Color.BLUE);
@@ -759,7 +789,7 @@ public class MediaPlayerService extends Service implements
 
     private void startMyOwnForeground()
     {
-        String NOTIFICATION_CHANNEL_ID = "com.tevoi";
+        String NOTIFICATION_CHANNEL_ID = "com.tevoi.tevoi";
         String channelName = "My Background Service";
         NotificationChannel chan = new NotificationChannel(NOTIFICATION_CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_NONE);
         chan.setLightColor(Color.BLUE);

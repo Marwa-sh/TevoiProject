@@ -189,7 +189,8 @@ public class TracksList extends Fragment implements AdapterView.OnItemSelectedLi
                             recyclerViews[active_tab].setAdapter(adapter);
                             adapter = new TracksAdapter(tracks.getTrack(),activity, Global.ListTracksFragmentName);
                             recyclerViews[active_tab].setAdapter(adapter);
-                            recyclerViews[active_tab].setEmptyView(rootView.findViewById(R.id.tracks_list_empty));
+                            View v = rootView.findViewById(R.id.tracks_list_empty);
+                            recyclerViews[active_tab].setEmptyView(v);
 
                             activity.mProgressDialog.dismiss();
                         }
@@ -306,7 +307,10 @@ public class TracksList extends Fragment implements AdapterView.OnItemSelectedLi
                 int x=tracks.getTrack().size();
                 //recyclerViews[kk].setAdapter(adapter);
                 adapter = new TracksAdapter(tracks.getTrack(),activity, Global.ListTracksFragmentName);
+                View v = rootView.findViewById(R.id.tracks_list_empty);
+                recyclerViews[active_tab].setEmptyView(v);
                 recyclerViews[kk].setAdapter(adapter);
+
                 activity.mProgressDialog.dismiss();
                 Toast.makeText(activity,"tracks:"+x, Toast.LENGTH_SHORT);
             }

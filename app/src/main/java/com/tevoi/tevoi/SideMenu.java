@@ -222,7 +222,7 @@ public class SideMenu extends FragmentActivity implements  ServiceCallbacks {
                     {
                         txtTrackName.setText(CurrentTrackInPlayer.getName().toString());
                         mainPlayerLayout.setVisibility(View.VISIBLE);
-                        player.updateStatusBarInfo(CurrentTrackInPlayer.getName(), CurrentTrackInPlayer.getAuthors());
+                        //player.updateStatusBarInfo(CurrentTrackInPlayer.getName(), CurrentTrackInPlayer.getAuthors());
                         if (!player.mMediaPlayer.isPlaying())
                         {
                             if(btnPausePlayMainMediaPlayer != null)
@@ -557,10 +557,10 @@ public class SideMenu extends FragmentActivity implements  ServiceCallbacks {
             RelativeLayout rlayout = findViewById(R.id.relativeLayoutSearch);
             if(layout!=null)
             {
-                if(layout.getVisibility() == View.INVISIBLE)
+                if(layout.getVisibility() == View.GONE)
                     layout.setVisibility(View.VISIBLE);
                 else
-                    layout.setVisibility(View.INVISIBLE);
+                    layout.setVisibility(View.GONE);
             }
             else
             {
@@ -788,6 +788,7 @@ public class SideMenu extends FragmentActivity implements  ServiceCallbacks {
             Intent broadcastIntent = new Intent(Broadcast_PLAY_NEW_AUDIO);
             broadcastIntent.putExtra("media", media);
             sendBroadcast(broadcastIntent);
+            player.updateStatusBarInfo(CurrentTrackInPlayer.getName(), CurrentTrackInPlayer.getAuthors());
         }
     }
 

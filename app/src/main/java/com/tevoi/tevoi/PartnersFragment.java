@@ -16,6 +16,7 @@ import com.tevoi.tevoi.Utils.Global;
 import com.tevoi.tevoi.adapter.PartnerAdapter;
 import com.tevoi.tevoi.model.PartnerListResponse;
 import com.tevoi.tevoi.model.PartnerObject;
+import com.tevoi.tevoi.model.RecyclerViewEmptySupport;
 
 import java.util.ArrayList;
 
@@ -26,7 +27,7 @@ import retrofit2.Response;
 public class PartnersFragment extends Fragment {
     ArrayList<PartnerObject> lstPartners = new ArrayList<>();
     PartnerAdapter adapter ;
-    RecyclerView[] recyclerViews= new RecyclerView[4];
+    RecyclerViewEmptySupport[] recyclerViews= new RecyclerViewEmptySupport[4];
     int active_tab=0;
     Button[] tabs =  new Button[4];
     public int defaultTab;
@@ -111,6 +112,8 @@ public class PartnersFragment extends Fragment {
                 //recyclerViews[kk].setAdapter(adapter);
                 SideMenu activity = (SideMenu)getActivity();
                 adapter = new PartnerAdapter(partners.getPartners(),activity);
+                recyclerViews[kk].setEmptyView(rootView.findViewById(R.id.partners_list_empty));
+
                 recyclerViews[kk].setAdapter(adapter);
                 activity.mProgressDialog.dismiss();
                 Toast.makeText(getContext(),"partners:"+x, Toast.LENGTH_SHORT);

@@ -130,10 +130,10 @@ public class UserListTracksFragment extends Fragment
                 //generateDataList(response.body());
                 GetUserListTracksResponse tracks=response.body();
                 int x=tracks.getLstTrack().size();
+                recyclerViews[kk].setEmptyView(rootView.findViewById(R.id.user_tracks_list_empty));
                 recyclerViews[kk].setAdapter(adapter);
                 adapter = new TracksAdapter(tracks.getLstTrack(),activity, Global.UserListTracksFragment);
-                recyclerViews[kk].setAdapter(adapter);
-                recyclerViews[active_tab].setEmptyView(rootView.findViewById(R.id.tracks_list_empty));
+                //recyclerViews[kk].setAdapter(adapter);
 
                 activity.mProgressDialog.dismiss();
                 //Toast.makeText(activity,"tracks:"+x, Toast.LENGTH_SHORT);

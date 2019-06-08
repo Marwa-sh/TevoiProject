@@ -10,11 +10,11 @@ public class RecyclerViewEmptySupport extends RecyclerView {
 
     private RecyclerView.AdapterDataObserver emptyObserver = new AdapterDataObserver() {
 
-
         @Override
         public void onChanged() {
             Adapter<?> adapter =  getAdapter();
-            if(adapter != null && emptyView != null) {
+            if(adapter != null && emptyView != null)
+            {
                 if(adapter.getItemCount() == 0) {
                     emptyView.setVisibility(View.VISIBLE);
                     RecyclerViewEmptySupport.this.setVisibility(View.GONE);
