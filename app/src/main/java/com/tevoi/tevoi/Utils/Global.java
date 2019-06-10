@@ -41,7 +41,7 @@ public class Global {
     public  static  final  String PlayNextListFragment = "PlayNextListFragment";
     public  static  final  String CarPlayFragment = "CarPlayFragment";
 
-    public  static  final String GetStreamURL= "http://h2817272.stratoserver.net/TevoiAPI/api/Services/GetStreamAudio?id=";
+    public  static  final String GetStreamURL= "http://h2817272.stratoserver.net/TevoiAPITest/api/Services/GetStreamAudio?id=";
     //public  static  final  String LOGINURL ="http://h2817272.stratoserver.net/Tevoi/DesktopModules/TevoiAPIModuleFolder/";
     public  static  final  String LOGINURL ="http://h2817272.stratoserver.net/Tevoi/DesktopModules/TevoiAPIModuleFolder/";
 
@@ -54,6 +54,7 @@ public class Global {
     public static String UserToken = "";
     public static final String DefaultLanguage = "en";
     public static final String Licence = "";
+    public static int CurrentUserId =0;
 
     // region media player constants
 

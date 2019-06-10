@@ -74,7 +74,7 @@ public class SideMenu extends FragmentActivity implements  ServiceCallbacks {
 
     // region Play Now List Tracks
     public ArrayList<TrackSerializableObject> playNowListTracks = new ArrayList<TrackSerializableObject>();
-    public MyStorage storageManager = new MyStorage();
+    public MyStorage storageManager;
     public boolean isPlayingFromPlayNowList = false;
     public int indexCurrentTrackInPlayList;
     public static final String Broadcast_PLAY_NEW_AUDIO = "com.tevoi.tevoi.CustomMediaPlayerService.PlayNewAudio";
@@ -199,6 +199,7 @@ public class SideMenu extends FragmentActivity implements  ServiceCallbacks {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_side_menu);
 
+        storageManager = new MyStorage(Global.CurrentUserId);
         //setContentView(R.layout.activity_main);
 
         // region media player runnable action

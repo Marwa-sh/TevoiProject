@@ -27,12 +27,25 @@ public class MyStorage
     public static final String ShowNewsTracks="ShowNewsTracks";
     public static final String ShowArticlesTracks="ShowArticlesTracks";
 
+    private  String Suffix =  "_" + USER_ID;
+
+    int UserId;
+    public static final  String USER_ID = "UserId";
+
+    public MyStorage(int userId)
+    {
+        UserId = userId;
+        Suffix = "_" + UserId;
+    }
+
+    // region shared preference for next play list
+
     public void storePlayNowTracks(Context context, List playNowTracks)
     {
         // used for store arrayList in json format
         SharedPreferences settings;
         Editor editor;
-        settings = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        settings = context.getSharedPreferences(PREFS_NAME + Suffix, Context.MODE_PRIVATE);
         editor = settings.edit();
 
         GsonBuilder builder = new GsonBuilder();
@@ -40,7 +53,7 @@ public class MyStorage
         builder.excludeFieldsWithoutExposeAnnotation();
         Gson sExposeGson = builder.create();
         String jsonFavorites = sExposeGson.toJson(playNowTracks);
-        editor.putString(PlayNowTrack, jsonFavorites);
+        editor.putString(PlayNowTrack + Suffix, jsonFavorites);
         editor.commit();
 
         //Tricky- This will helps to resolve issue for :
@@ -73,9 +86,9 @@ public class MyStorage
         // used for retrieving arraylist from json formatted string
         SharedPreferences settings;
         ArrayList<TrackSerializableObject> playNowTracks;
-        settings = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        if (settings.contains(PlayNowTrack)) {
-            String jsonPlayNowTracks = settings.getString(PlayNowTrack, null);
+        settings = context.getSharedPreferences(PREFS_NAME + Suffix, Context.MODE_PRIVATE);
+        if (settings.contains(PlayNowTrack + Suffix)) {
+            String jsonPlayNowTracks = settings.getString(PlayNowTrack + Suffix, null);
 
             GsonBuilder builder = new GsonBuilder();
             builder.excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC);
@@ -129,16 +142,18 @@ public class MyStorage
         }
     }
 
+    //endregion
+
     // region Language storage
 
     public void storeLanguagePreference(Context context, String language)
     {
         SharedPreferences settings;
         Editor editor;
-        settings = context.getSharedPreferences(PreferenceLanguage, Context.MODE_PRIVATE);
+        settings = context.getSharedPreferences(PreferenceLanguage + Suffix, Context.MODE_PRIVATE);
         editor = settings.edit();
 
-        editor.putString(PreferenceLanguage, language);
+        editor.putString(PreferenceLanguage + Suffix, language);
         editor.commit();
     }
 
@@ -146,10 +161,10 @@ public class MyStorage
     {
         SharedPreferences settings;
         String language = "";
-        settings = context.getSharedPreferences(PreferenceLanguage, Context.MODE_PRIVATE);
-        if (settings.contains(PreferenceLanguage))
+        settings = context.getSharedPreferences(PreferenceLanguage + Suffix, Context.MODE_PRIVATE);
+        if (settings.contains(PreferenceLanguage + Suffix))
         {
-            language = settings.getString(PreferenceLanguage, null);
+            language = settings.getString(PreferenceLanguage + Suffix, null);
         }
         else
             language = Global.DefaultLanguage;
@@ -159,19 +174,46 @@ public class MyStorage
 
     // endregion
 
+    // region current user id
+    public void storeCurrentUserId(Context context, int userId)
+    {
+        SharedPreferences settings;
+        Editor editor;
+        settings = context.getSharedPreferences(USER_ID, Context.MODE_PRIVATE);
+        editor = settings.edit();
 
+        editor.putInt(USER_ID, userId);
+        editor.commit();
+    }
+
+    public int getCurrentUserId(Context context)
+    {
+        SharedPreferences settings;
+        int userId = 0;
+        settings = context.getSharedPreferences(USER_ID, Context.MODE_PRIVATE);
+        if (settings.contains(USER_ID))
+        {
+            userId = settings.getInt(USER_ID, 0);
+        }
+
+        return userId;
+    }
+
+    // endregion
+
+    // region track types
     public void storeTrackTypeFilter(Context context, String trackType)
     {
         SharedPreferences settings;
         Editor editor;
-        settings = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        settings = context.getSharedPreferences(PREFS_NAME +Suffix, Context.MODE_PRIVATE);
         editor = settings.edit();
 
-        editor.putString(TrackTypeFilter, trackType);
+        editor.putString(TrackTypeFilter + Suffix, trackType);
         editor.commit();
     }
 
-
+    //endregion
 
     // region user token storage
 
@@ -196,21 +238,21 @@ public class MyStorage
             token = settings.getString(UserToken, null);
         }
         else
-            token = Global.DefaultLanguage;
+            token = "";
 
         return token;
     }
     // endregion
 
-    // Region filters
+    //region filters
     public String getShowHeardTracksState(Context context)
     {
         SharedPreferences settings;
         String state="";
-        settings = context.getSharedPreferences(ShowHeardTracks,context.MODE_PRIVATE);
-        if(settings.contains(ShowHeardTracks))
+        settings = context.getSharedPreferences(ShowHeardTracks + Suffix,context.MODE_PRIVATE);
+        if(settings.contains(ShowHeardTracks + Suffix))
         {
-            state=settings.getString(ShowHeardTracks,"true");
+            state=settings.getString(ShowHeardTracks + Suffix,"true");
         }
         state="true";
         return state;
@@ -220,10 +262,10 @@ public class MyStorage
     {
         SharedPreferences settings;
         String state="";
-        settings = context.getSharedPreferences(ShowNewsTracks,context.MODE_PRIVATE);
-        if(settings.contains(ShowNewsTracks))
+        settings = context.getSharedPreferences(ShowNewsTracks + Suffix,context.MODE_PRIVATE);
+        if(settings.contains(ShowNewsTracks + Suffix))
         {
-            state=settings.getString(ShowNewsTracks,"true");
+            state=settings.getString(ShowNewsTracks + Suffix,"true");
         }
         state="true";
         return state;
@@ -233,10 +275,10 @@ public class MyStorage
     {
         SharedPreferences settings;
         String state="";
-        settings = context.getSharedPreferences(ShowArticlesTracks,context.MODE_PRIVATE);
-        if(settings.contains(ShowArticlesTracks))
+        settings = context.getSharedPreferences(ShowArticlesTracks + Suffix,context.MODE_PRIVATE);
+        if(settings.contains(ShowArticlesTracks + Suffix))
         {
-            state=settings.getString(ShowArticlesTracks,"true");
+            state=settings.getString(ShowArticlesTracks + Suffix,"true");
         }
         state="true";
         return state;
@@ -247,20 +289,20 @@ public class MyStorage
     {
         SharedPreferences settings;
         Editor editor;
-        settings = context.getSharedPreferences(ShowHeardTracks, Context.MODE_PRIVATE);
+        settings = context.getSharedPreferences(ShowHeardTracks + Suffix, Context.MODE_PRIVATE);
         editor = settings.edit();
 
-        editor.putString(UserToken, state);
+        editor.putString(ShowHeardTracks + Suffix, state);
         editor.commit();
     }
     public void storeShowNewsTracksState(Context context, String state)
     {
         SharedPreferences settings;
         Editor editor;
-        settings = context.getSharedPreferences(ShowNewsTracks, Context.MODE_PRIVATE);
+        settings = context.getSharedPreferences(ShowNewsTracks + Suffix, Context.MODE_PRIVATE);
         editor = settings.edit();
 
-        editor.putString(ShowNewsTracks, state);
+        editor.putString(ShowNewsTracks +Suffix, state);
         editor.commit();
     }
 
@@ -268,14 +310,14 @@ public class MyStorage
     {
         SharedPreferences settings;
         Editor editor;
-        settings = context.getSharedPreferences(ShowArticlesTracks, Context.MODE_PRIVATE);
+        settings = context.getSharedPreferences(ShowArticlesTracks +Suffix, Context.MODE_PRIVATE);
         editor = settings.edit();
 
-        editor.putString(ShowArticlesTracks, state);
+        editor.putString(ShowArticlesTracks +Suffix, state);
         editor.commit();
     }
 
-    // endRegion
+    // endregion
 
     // region Remember Me
     public void storeRememberMePreference(Context context, Boolean isRememberMe)

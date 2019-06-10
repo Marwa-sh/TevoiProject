@@ -46,7 +46,7 @@ public class IntroActivity extends Activity {
                 // go to side menu activity
 
                 // check if he has token and he checked remember me
-                MyStorage storageManager = new MyStorage();
+                MyStorage storageManager = new MyStorage(0);
                 Boolean isRememberMe = storageManager.getRememberMePreference(IntroActivity.this);
                 if(isRememberMe)
                 {

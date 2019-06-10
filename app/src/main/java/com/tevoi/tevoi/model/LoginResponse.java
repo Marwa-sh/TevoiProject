@@ -6,6 +6,16 @@ public class LoginResponse  extends IResponse{
 
     @SerializedName("Token")
     private String Token;
+    @SerializedName("UserId")
+    private int UserId;
+
+    public int getUserId() {
+        return UserId;
+    }
+
+    public void setUserId(int userId) {
+        UserId = userId;
+    }
 
     public String getToken(){
         return Token;

@@ -15,6 +15,7 @@ import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.session.MediaSessionManager;
+import android.net.Uri;
 import android.os.Binder;
 import android.os.Build;
 import android.os.Handler;
@@ -34,6 +35,8 @@ import android.util.Log;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 //import android.support.v7.app.NotificationCompat;
 
 import android.view.View;
@@ -409,7 +412,13 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
         try {
             // Set the data source to the mediaFile location
             //mediaPlayer.setDataSource(activeAudio.getData());
-            mMediaPlayer.setDataSource(currentAudioUrl);
+            Map<String,String> headers = new HashMap<>();
+            headers.put("Authorization",Global.UserToken);
+            headers.put("License", "TevoiMobileApp");
+
+            mMediaPlayer.setDataSource(getBaseContext(), Uri.parse(currentAudioUrl), headers);
+
+            //mMediaPlayer.setDataSource(currentAudioUrl);
         } catch (IOException e) {
             e.printStackTrace();
             stopSelf();

@@ -74,7 +74,11 @@ public class LoginActivity extends Activity
                              LoginResponse login = response.body();
                              if(login.getNumber() == 0)
                              {
-                                 MyStorage storageManager = new MyStorage();
+                                 Global.CurrentUserId = login.getUserId();
+                                 //Toast.makeText(LoginActivity.this, ""+Global.CurrentUserId, Toast.LENGTH_SHORT).show();
+                                 MyStorage storageManager = new MyStorage(login.getUserId());
+
+                                 storageManager.storeCurrentUserId(LoginActivity.this,login.getUserId());
                                  storageManager.storeTokenPreference(LoginActivity.this, login.getToken());
                                  Global.UserToken = storageManager.getTokenPreference(LoginActivity.this);
                                  //storageManager.storeRememberMePreference(LoginActivity.this, isRememberMe);
@@ -126,7 +130,10 @@ public class LoginActivity extends Activity
                             LoginResponse login = response.body();
                             if(login.getNumber() == 0)
                             {
-                                MyStorage storageManager = new MyStorage();
+                                Global.CurrentUserId = login.getUserId();
+                                MyStorage storageManager = new MyStorage(login.getUserId());
+
+                                storageManager.storeCurrentUserId(LoginActivity.this,login.getUserId());
                                 storageManager.storeTokenPreference(LoginActivity.this, login.getToken());
                                 Global.UserToken = storageManager.getTokenPreference(LoginActivity.this);
                                 //storageManager.storeRememberMePreference(LoginActivity.this, isRememberMe);
