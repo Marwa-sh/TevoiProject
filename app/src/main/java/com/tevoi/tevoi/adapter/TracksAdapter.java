@@ -72,7 +72,8 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
                 break;
             }
             case Global.UserListTracksFragment:
-            case Global.FavouriteFragmentName: {
+            case Global.FavouriteFragmentName:
+            {
                 row =LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.track_row_instance_all,viewGroup,false);
                 break;
             }
@@ -171,7 +172,11 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
                     activity.CurrentTrackInPlayer = tracks.get(i);
                     if(fragmentName.equals(Global.ListTracksFragmentName))
                     {
-                        activity.playAudio(Global.GetStreamURL +activity.CurrentTrackInPlayer.getId());
+                        activity.playAudio(Global.GetStreamURL +activity.CurrentTrackInPlayer.getId(),
+                                activity.CurrentTrackInPlayer.getName(),
+                                activity.CurrentTrackInPlayer.getAuthors(),
+                                activity.CurrentTrackInPlayer.getId());
+
                         activity.txtTrackName.setText(selectedTrack.getName().toString());
 
                         if(activity.mainPlayerLayout.getVisibility()==View.INVISIBLE)
@@ -195,10 +200,15 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
                         activity.mediaPlayerFragment.currentTrackId = selectedTrack.getId();
                         activity.mediaPlayerFragment.currentTrack = selectedTrack;
                         activity.CurrentTrackInPlayer = selectedTrack;
+
                         ft.replace(R.id.content_frame, activity.mediaPlayerFragment);
                         ft.addToBackStack( "mediaPlayerFragment" );
                         ft.commit();
-                        activity.playAudio(Global.GetStreamURL +activity.CurrentTrackInPlayer.getId());
+                        activity.playAudio(Global.GetStreamURL +activity.CurrentTrackInPlayer.getId(),
+                                activity.CurrentTrackInPlayer.getName(),
+                                activity.CurrentTrackInPlayer.getAuthors(),
+                                activity.CurrentTrackInPlayer.getId());
+
                     }
                     // if we are playing new track
                     /*if(activity.player != null && i != activity.trackIdPlayedNow)

@@ -306,7 +306,7 @@ public class MediaPlayerService extends Service implements
         {
             showNotification();
             if (serviceCallbacks != null) {
-                serviceCallbacks.playBtn();
+                //serviceCallbacks.playBtn();
             }
 
         }
@@ -314,7 +314,7 @@ public class MediaPlayerService extends Service implements
         {
             if (serviceCallbacks != null) {
                 serviceCallbacks.playPrevious();
-                serviceCallbacks.playBtn();
+                //serviceCallbacks.playBtn();
             }
             //Toast.makeText(this, "Clicked Previous", Toast.LENGTH_SHORT).show();
         }
@@ -326,14 +326,14 @@ public class MediaPlayerService extends Service implements
             {   mMediaPlayer.pause(); }
 
             if (serviceCallbacks != null) {
-                serviceCallbacks.playBtn();
+                //serviceCallbacks.playBtn();
             }
         }
         else if (intent.getAction().equals(Global.ACTION.NEXT_ACTION))
         {
             if (serviceCallbacks != null) {
                 serviceCallbacks.playNext();
-                serviceCallbacks.playBtn();
+                //serviceCallbacks.playBtn();
             }
             //Toast.makeText(this, "Clicked Next", Toast.LENGTH_SHORT).show();
         }

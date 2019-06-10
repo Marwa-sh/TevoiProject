@@ -55,8 +55,7 @@ tools:context=".TrackText"
         android:progress="10"
         android:rotation="90"
         android:layout_gravity="center_horizontal"
-
-
+        android:visibility="invisible"
         android:progressBackgroundTint="@color/tevoiBlueSecondary"
         android:progressTint="@color/tevoiBluePrimary"
         android:thumbTint="@color/thumbgrey"

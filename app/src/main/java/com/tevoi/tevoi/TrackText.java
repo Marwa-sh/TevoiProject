@@ -57,7 +57,9 @@ public class TrackText extends Fragment {
                 FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
                 // Replace the contents of the container with the new fragment
                 //TrackAddToList frag = new TrackAddToList();
-                if(PreviousFragmentName.equals(Global.ListTracksFragmentName))
+                if(PreviousFragmentName.equals(Global.PartnerNameFragment))
+                    ft.replace(R.id.content_frame, activity.partnersFragment);
+                else if(PreviousFragmentName.equals(Global.ListTracksFragmentName))
                     ft.replace(R.id.content_frame, activity.lisTracksFragment);
                 else if(PreviousFragmentName.equals(Global.UserListTracksFragment))
                     ft.replace(R.id.content_frame, activity.userListsFragment);

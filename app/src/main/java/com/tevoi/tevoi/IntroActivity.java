@@ -5,14 +5,22 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.app.Activity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
 import com.tevoi.tevoi.Utils.Global;
 import com.tevoi.tevoi.Utils.MyStorage;
 import com.tevoi.tevoi.model.MainSponsoreLogoResponse;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
 
 import retrofit2.Call;
@@ -67,18 +75,24 @@ public class IntroActivity extends Activity {
                 {
                     try
                     {
-                        URL newurl = new URL(Global.IMAGE_BASE_URL + result.getMainSponsoreLogo());
-                        Bitmap mIcon_val = BitmapFactory.decodeStream(newurl.openConnection().getInputStream());
-                        imgMainSponsoreLogo.setImageBitmap(mIcon_val);
+                        //URL newurl = new URL(Global.IMAGE_BASE_URL + result.getMainSponsoreLogo());
+                        //Bitmap mIcon_val = BitmapFactory.decodeStream(newurl.openConnection().getInputStream());
+                        //Bitmap mIcon_val = getBitmapFromURL(Global.IMAGE_BASE_URL + result.getMainSponsoreLogo());
+                        Picasso.with(IntroActivity.this)  //Here, this is context.
+                                .load(Global.IMAGE_BASE_URL + result.getMainSponsoreLogo())  //Url of the image to load.
+                                .into(imgMainSponsoreLogo);
+
+                        //imgMainSponsoreLogo.setImageBitmap(mIcon_val);
                     }
                     catch (Exception exc)
                     {
 
+                        Toast.makeText(IntroActivity.this,"l="+ exc.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                     }
                 }
                 else
                 {
-                    Toast.makeText(getBaseContext(),result.Message,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getBaseContext(),result.getMessage(),Toast.LENGTH_SHORT).show();
                 }
             }
             @Override
@@ -88,7 +102,20 @@ public class IntroActivity extends Activity {
         });
 
     }
-
+    public static Bitmap getBitmapFromURL(String src) {
+        try {
+            URL url = new URL(src);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+            return myBitmap;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
     public  void skipIntro(View view)
     {
 

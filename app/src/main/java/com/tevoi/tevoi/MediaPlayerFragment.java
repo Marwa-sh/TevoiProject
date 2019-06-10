@@ -294,7 +294,10 @@ public class MediaPlayerFragment extends Fragment {
             }
             else
             {
-                activity.playAudio(url);
+                activity.playAudio(url,
+                        activity.CurrentTrackInPlayer.getName(),
+                        activity.CurrentTrackInPlayer.getAuthors(),
+                        activity.CurrentTrackInPlayer.getId());
                 activity.isPlaying = true;
                 playButton.setImageResource(R.drawable.baseline_pause_24);
             }
@@ -340,17 +343,22 @@ public class MediaPlayerFragment extends Fragment {
             if(activity.player.mMediaPlayer.isPlaying())
             {
                 activity.player.mMediaPlayer.pause();
+                activity.player.buildNotification(CustomMediaPlayerService.PlaybackStatus.PAUSED);
                 playButton.setImageResource(R.drawable.baseline_play_arrow_24);
             }
             else
             {
                 activity.player.mMediaPlayer.start();
+                activity.player.buildNotification(CustomMediaPlayerService.PlaybackStatus.PLAYING);
                 playButton.setImageResource(R.drawable.baseline_pause_24);
             }
         }
         else
         {
-            activity.playAudio(url);
+            activity.playAudio(url,
+                    activity.CurrentTrackInPlayer.getName(),
+                    activity.CurrentTrackInPlayer.getAuthors(),
+                    activity.CurrentTrackInPlayer.getId());
             playButton.setImageResource(R.drawable.baseline_pause_24);
         }
        /* if(!activity.isPlaying && !activity.isPaused)

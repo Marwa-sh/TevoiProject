@@ -1,6 +1,7 @@
 package com.tevoi.tevoi;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -10,15 +11,22 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.session.MediaSessionManager;
 import android.os.Binder;
+import android.os.Build;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteException;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.media.app.NotificationCompat.MediaStyle;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -38,23 +46,22 @@ import com.tevoi.tevoi.model.TrackObject;
 public class CustomMediaPlayerService extends Service implements MediaPlayer.OnCompletionListener,
         MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener, MediaPlayer.OnSeekCompleteListener,
         MediaPlayer.OnInfoListener, MediaPlayer.OnBufferingUpdateListener,
-
         AudioManager.OnAudioFocusChangeListener
 {
 
-    public static final String ACTION_PLAY = "com.valdioveliu.valdio.audioplayer.ACTION_PLAY";
-    public static final String ACTION_PAUSE = "com.valdioveliu.valdio.audioplayer.ACTION_PAUSE";
-    public static final String ACTION_PREVIOUS = "com.valdioveliu.valdio.audioplayer.ACTION_PREVIOUS";
-    public static final String ACTION_NEXT = "com.valdioveliu.valdio.audioplayer.ACTION_NEXT";
-    public static final String ACTION_STOP = "com.valdioveliu.valdio.audioplayer.ACTION_STOP";
+    public static final String ACTION_PLAY = "com.tevoi.tevoi.audioplayer.ACTION_PLAY";
+    public static final String ACTION_PAUSE = "com.tevoi.tevoi.audioplayer.ACTION_PAUSE";
+    public static final String ACTION_PREVIOUS = "com.tevoi.tevoi.audioplayer.ACTION_PREVIOUS";
+    public static final String ACTION_NEXT = "com.tevoi.tevoi.audioplayer.ACTION_NEXT";
+    public static final String ACTION_STOP = "com.tevoi.tevoi.audioplayer.ACTION_STOP";
 
-    public static String MAIN_ACTION = "com.ebridge.tevoi.action.main";
-    public static String INIT_ACTION = "com.ebridge.tevoi.action.init";
-    public static String PREV_ACTION = "com.ebridge.tevoi.action.prev";
-    public static String PLAY_ACTION = "com.ebridge.tevoi.action.play";
-    public static String NEXT_ACTION = "com.ebridge.tevoi.action.next";
-    public static String STARTFOREGROUND_ACTION = "com.ebridge.tevoi.action.startforeground";
-    public static String STOPFOREGROUND_ACTION = "com.ebridge.tevoi.action.stopforeground";
+    public static String MAIN_ACTION = "com.tevoi.tevoi.action.main";
+    public static String INIT_ACTION = "com.tevoi.tevoi.action.init";
+    public static String PREV_ACTION = "com.tevoi.tevoi.action.prev";
+    public static String PLAY_ACTION = "com.tevoi.tevoi.action.play";
+    public static String NEXT_ACTION = "com.tevoi.tevoi.action.next";
+    public static String STARTFOREGROUND_ACTION = "com.tevoi.tevoi.action.startforeground";
+    public static String STOPFOREGROUND_ACTION = "com.tevoi.tevoi.action.stopforeground";
 
     public static int FOREGROUND_SERVICE = 101;
 
@@ -91,6 +98,21 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
 
 
     String currentAudioUrl = Global.BASE_AUDIO_URL;
+    //public TrackObject CurrentTrackInServicePlayer;
+    String TrackName= "";
+    String TrackAuthors = "";
+    int TrackId = 0;
+    private Handler mHandler = new Handler();
+    private MyTimerRunnable mRunnable;
+    int numberOfUnitsSendToServer;
+    public int numberOfListenedSeconds;
+    public int numberOfCurrentSecondsInTrack;
+
+    private ServiceCallbacks serviceCallbacks;
+
+    public void setCallbacks(ServiceCallbacks callbacks) {
+        serviceCallbacks = callbacks;
+    }
 
     /**
      * Service lifecycle methods
@@ -113,15 +135,62 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
         registerBecomingNoisyReceiver();
         //Listen for new Audio to play -- BroadcastReceiver
         register_playNewAudio();
+
+        mRunnable = new MyTimerRunnable();
+
     }
+
+    private class MyTimerRunnable implements Runnable {
+        @Override
+        public void run ()
+        {
+
+            if (mMediaPlayer != null) {
+                resumePosition = mMediaPlayer.getCurrentPosition();
+
+                if (mMediaPlayer.isPlaying()) {
+
+                    numberOfListenedSeconds += 1;
+                    numberOfCurrentSecondsInTrack += 1;
+                    //activity.numberOfTotalSeconds += activity.numberOfCurrentSeconds;
+                }
+                int n = numberOfUnitsSendToServer * Global.ListenUnitInSeconds + Global.ListenUnitInSeconds;
+                if (numberOfListenedSeconds >= n)
+                {
+                    int numberOfUnRegisteredSeconds = numberOfListenedSeconds - numberOfUnitsSendToServer * Global.ListenUnitInSeconds;
+                    final int numberOfConsumedUnits = numberOfUnRegisteredSeconds / Global.ListenUnitInSeconds;
+                    // send to server that we used 1 unit
+                /*Call<IResponse> call = Global.client.AddUnitUsageForUser(CurrentTrackInPlayer.getId(), numberOfConsumedUnits);
+                call.enqueue(new Callback<IResponse>() {
+                    public void onResponse(Call<IResponse> call, Response<IResponse> response) {
+                        //generateDataList(response.body());
+                        IResponse partners = response.body();
+                        numberOfUnitsSendToServer += numberOfConsumedUnits;
+                        Toast.makeText(getBaseContext(), "" + numberOfConsumedUnits + " Unit consumed from your quota", Toast.LENGTH_SHORT).show();
+                    }
+
+                    public void onFailure(Call<IResponse> call, Throwable t) {
+
+                    }
+                });*/
+                }
+            }
+            mHandler.postDelayed(this, 1000);
+
+        }
+    }
+
 
     //The system calls this method when an activity, requests the service be started
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        try {
-
+        try
+        {
             //An audio file is passed to the service through putExtra();
             currentAudioUrl = intent.getExtras().getString("media");
+            TrackName = intent.getExtras().getString("TrackName");
+            TrackAuthors = intent.getExtras().getString("TrackAuthors");
+            TrackId =  intent.getExtras().getInt("TrackId");
 
         } catch (NullPointerException e) {
             stopSelf();
@@ -142,6 +211,7 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
 
                     initMediaSession();
                     initMediaPlayer();
+                    mHandler.postDelayed(mRunnable, 1000);
                 }
             } catch (RemoteException e) {
                 e.printStackTrace();
@@ -180,6 +250,8 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
         //unregister BroadcastReceivers
         unregisterReceiver(becomingNoisyReceiver);
         unregisterReceiver(playNewAudio);
+
+        mHandler.removeCallbacks(mRunnable);
     }
 
     /**
@@ -208,7 +280,7 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
         //Invoked when playback of a media source has completed.
         stopMedia();
 
-        removeNotification();
+        //removeNotification();
         //stop the service
         stopSelf();
     }
@@ -352,7 +424,7 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
     private void pauseMedia() {
         if (mMediaPlayer.isPlaying()) {
             mMediaPlayer.pause();
-            resumePosition = mMediaPlayer.getCurrentPosition();
+            //resumePosition = mMediaPlayer.getCurrentPosition();
         }
     }
 
@@ -426,7 +498,8 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
                         if (mMediaPlayer != null) {
                             if (ongoingCall) {
                                 ongoingCall = false;
-                                resumeMedia();
+                                // TODO : check if app is in background so don't resume
+                                //resumeMedia();
                             }
                         }
                         break;
@@ -482,7 +555,10 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
             public void onSkipToNext() {
                 super.onSkipToNext();
 
-                skipToNext();
+                //skipToNext();
+                if (serviceCallbacks != null) {
+                    serviceCallbacks.playNext();
+                }
                 updateMetaData();
                 buildNotification(PlaybackStatus.PLAYING);
             }
@@ -491,7 +567,10 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
             public void onSkipToPrevious() {
                 super.onSkipToPrevious();
 
-                skipToPrevious();
+                //skipToPrevious();
+                if (serviceCallbacks != null) {
+                    serviceCallbacks.playPrevious();
+                }
                 updateMetaData();
                 buildNotification(PlaybackStatus.PLAYING);
             }
@@ -514,17 +593,17 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
     private void updateMetaData()
     {
         Bitmap albumArt = BitmapFactory.decodeResource(getResources(),
-                R.drawable.car_icon); //replace with medias albumArt
+                R.drawable.ic_launcher); //replace with medias albumArt
         // Update the current metadata
         mediaSession.setMetadata(new MediaMetadataCompat.Builder()
                 .putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, albumArt)
-                .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, "Artist")
-                .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, "Album")
-                .putString(MediaMetadataCompat.METADATA_KEY_TITLE, "Title")
+                .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, TrackAuthors)
+                .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, "")
+                .putString(MediaMetadataCompat.METADATA_KEY_TITLE, TrackName)
                 .build());
     }
 
-    private void buildNotification(PlaybackStatus playbackStatus)
+    public void buildNotification(PlaybackStatus playbackStatus)
     {
 
         /**
@@ -551,9 +630,9 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
         }
 
         Bitmap largeIcon = BitmapFactory.decodeResource(getResources(),
-                R.drawable.car_icon); //replace with your own image
+                R.drawable.ic_launcher); //replace with your own image
 
-        // Using RemoteViews to bind custom layouts into Notification
+/*        // Using RemoteViews to bind custom layouts into Notification
         RemoteViews views = new RemoteViews(getPackageName(),
                 R.layout.status_bar);
         RemoteViews bigViews = new RemoteViews(getPackageName(),
@@ -622,9 +701,9 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
         status.flags = Notification.FLAG_ONGOING_EVENT;
         status.icon = R.drawable.ic_launcher;
         status.contentIntent = pendingIntent;
-        startForeground(FOREGROUND_SERVICE, status);
+        startForeground(FOREGROUND_SERVICE, status);*/
 
-       /* Notification.MediaStyle style = new Notification.MediaStyle();
+        /*Notification.MediaStyle style = new Notification.MediaStyle();
         Notification.Builder builder = new Notification.Builder( this )
                 .setSmallIcon( R.drawable.ic_launcher )
                 .setContentTitle( "Media Title" )
@@ -637,41 +716,93 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
         builder.addAction( action );
         builder.addAction( generateAction( android.R.drawable.ic_media_ff, "Fast Foward", ACTION_FAST_FORWARD ) );
         builder.addAction( generateAction( android.R.drawable.ic_media_next, "Next", ACTION_NEXT ) );
-*/
-        //(NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).notify(NOTIFICATION_ID, status);
-
+        (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).notify(NOTIFICATION_ID, status);*/
         // Create a new Notification
-        /*NotificationCompat.Builder notificationBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(this)
-                // Hide the timestamp
-                .setShowWhen(false)
-                // Set the Notification style
-                .setStyle(new NotificationCompat.MediaStyle()
-                        // Attach our MediaSession token
-                        .setMediaSession(mediaSession.getSessionToken())
-                        // Show our playback controls in the compat view
-                        .setShowActionsInCompactView(0, 1, 2))
-                // Set the Notification color
-                .setColor(getResources().getColor(R.color.colorAccent))
-                // Set the large and small icons
-                .setLargeIcon(largeIcon)
-                .setSmallIcon(android.R.drawable.stat_sys_headset)
-                // Set Notification content information
-                .setContentText("Artist")
-                .setContentTitle("Album")
-                .setContentInfo("Title")
-                // Add playback actions
-                .addAction(android.R.drawable.ic_media_previous, "previous", playbackAction(3))
-                .addAction(notificationAction, "pause", play_pauseAction)
-                .addAction(android.R.drawable.ic_media_next, "next", playbackAction(2));
+        String NOTIFICATION_CHANNEL_ID = "com.tevoi.tevoi";
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
-        ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).notify(NOTIFICATION_ID, notificationBuilder.build());*/
+            String channelName = "My Background Service";
+            NotificationChannel chan = new NotificationChannel(NOTIFICATION_CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_LOW);
+            chan.setLightColor(Color.BLUE);
+            chan.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+            NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            assert manager != null;
+            manager.createNotificationChannel(chan);
+        }
+            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
+            Notification notification = notificationBuilder.setOngoing(true)
+                    .setSmallIcon(R.drawable.ic_launcher)
+                    // Hide the timestamp
+                    .setShowWhen(false)
+                    .setAutoCancel(true)
+                    .setOngoing(true)
+                    //.setContentTitle("App is running in background")
+                    .setPriority(NotificationManager.IMPORTANCE_LOW)
+                    .setCategory(Notification.CATEGORY_SERVICE)
+                    .setContentText(TrackAuthors)
+                    .setContentTitle("")
+                    .setContentInfo(TrackName)
+                    .setOnlyAlertOnce(true)
+                    .setStyle(new MediaStyle()
+                            // Attach our MediaSession token
+                            .setMediaSession(mediaSession.getSessionToken())
+                            // Show our playback controls in the compat view
+                            .setShowActionsInCompactView(0, 1, 2))
+                    .setColor(ContextCompat.getColor(this,R.color.tevoiBlueSecondary))
+                    // Set the large and small icons
+                    .setLargeIcon(largeIcon)
+                    .setSmallIcon(android.R.drawable.stat_sys_headset)
+                    // Add playback actions
+                    .addAction(android.R.drawable.ic_media_previous, "previous", playbackAction(3))
+                    .addAction(notificationAction, "pause", play_pauseAction)
+                    .addAction(android.R.drawable.ic_media_next, "next", playbackAction(2))
+                    .build();
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
+            // notificationId is a unique int for each notification that you must define
+            notificationManager.notify(NOTIFICATION_ID, notification);
+
+            //startForeground(NOTIFICATION_ID, notification);
+
+        /*}
+        else {
+            NotificationCompat.Builder notificationBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(this)
+                    // Hide the timestamp
+                    .setShowWhen(false)
+                    // Set the Notification style
+                    .setStyle(new MediaStyle()
+                            // Attach our MediaSession token
+                            .setMediaSession(mediaSession.getSessionToken())
+                            // Show our playback controls in the compat view
+                            .setShowActionsInCompactView(0, 1, 2))
+                    // Set the Notification color
+                    .setColor(getResources().getColor(R.color.tevoiBlueSecondary))
+                    // Set the large and small icons
+                    .setLargeIcon(largeIcon)
+                    .setSmallIcon(android.R.drawable.stat_sys_headset)
+                    // Set Notification content information
+                    .setContentText(TrackAuthors)
+                    .setContentTitle("")
+                    .setContentInfo(TrackName)
+                    //.setPriority(NotificationManager.IMPORTANCE_MIN)
+                    .setCategory(Notification.CATEGORY_SERVICE)
+                    .setOnlyAlertOnce(true)
+                    // Add playback actions
+                    .addAction(android.R.drawable.ic_media_previous, "previous", playbackAction(3))
+                    .addAction(notificationAction, "pause", play_pauseAction)
+                    .addAction(android.R.drawable.ic_media_next, "next", playbackAction(2));
+
+            //startForeground(Global.NOTIFICATION_ID.FOREGROUND_SERVICE, notificationBuilder.getNotification());
+            ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).notify(NOTIFICATION_ID, notificationBuilder.build());
+        }
+*/
     }
 
 
     private PendingIntent playbackAction(int actionNumber)
     {
         Intent playbackAction = new Intent(this, CustomMediaPlayerService.class);
-        Toast.makeText(this, "ma" + actionNumber, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "ma" + actionNumber, Toast.LENGTH_SHORT).show();
         switch (actionNumber) {
             case 0:
                 // Play
@@ -695,10 +826,17 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
         return null;
     }
 
-    private void removeNotification()
+    public void removeNotification()
     {
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        //NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        //notificationManager.cancel(NOTIFICATION_ID);
+        stopForeground(true);
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         notificationManager.cancel(NOTIFICATION_ID);
+
+        //stopForeground(true);
+
     }
 
     private void handleIncomingActions(Intent playbackAction)
@@ -732,6 +870,9 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
             try {
                 //An audio file is passed to the service through putExtra();
                 currentAudioUrl = intent.getExtras().getString("media");
+                TrackName = intent.getExtras().getString("TrackName");
+                TrackAuthors = intent.getExtras().getString("TrackAuthors");
+                TrackId =  intent.getExtras().getInt("TrackId");
             } catch (NullPointerException e) {
                 stopSelf();
             }
@@ -752,6 +893,8 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
         PLAYING,
         PAUSED
     }
+
+
 }
 
 

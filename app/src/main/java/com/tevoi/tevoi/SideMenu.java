@@ -11,6 +11,7 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.print.PrintAttributes;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
@@ -76,11 +77,11 @@ public class SideMenu extends FragmentActivity implements  ServiceCallbacks {
     public MyStorage storageManager = new MyStorage();
     public boolean isPlayingFromPlayNowList = false;
     public int indexCurrentTrackInPlayList;
-    public static final String Broadcast_PLAY_NEW_AUDIO = "com.ebridge.tevoi.MediaPlayerService.PlayNewAudio";
+    public static final String Broadcast_PLAY_NEW_AUDIO = "com.tevoi.tevoi.CustomMediaPlayerService.PlayNewAudio";
     // endregion
 
     // region service for playing media player
-    public MediaPlayerService player;
+    public CustomMediaPlayerService player;
     public boolean serviceBound = false;
     public boolean isPlaying = false;
     public boolean isPaused = false;
@@ -94,7 +95,7 @@ public class SideMenu extends FragmentActivity implements  ServiceCallbacks {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             // We've bound to LocalService, cast the IBinder and get LocalService instance
-            MediaPlayerService.LocalBinder binder = (MediaPlayerService.LocalBinder) service;
+            CustomMediaPlayerService.LocalBinder binder = (CustomMediaPlayerService.LocalBinder) service;
             player = binder.getService();
             serviceBound = true;
             player.setCallbacks(SideMenu.this); // register
@@ -767,19 +768,23 @@ public class SideMenu extends FragmentActivity implements  ServiceCallbacks {
     }
     // endregion
 
-    public void playAudio(String media)
+    public void playAudio(String media, String Name , String Authors, int TrackId)
     {
         //Check is service is active
         //SideMenu activity = (SideMenu)getActivity();
         if (!serviceBound)
         {
             //ServiceConnection serviceConnection = serviceConnection;
-            Intent playerIntent = new Intent(SideMenu.this, MediaPlayerService.class);
+            Intent playerIntent = new Intent(SideMenu.this, CustomMediaPlayerService.class);
             playerIntent.putExtra("media", media);
-            playerIntent.setAction(Global.ACTION.STARTFOREGROUND_ACTION);
+            playerIntent.putExtra("TrackName", Name);
+            playerIntent.putExtra("TrackAuthors", Authors);
+            playerIntent.putExtra("TrackId", TrackId);
+            //playerIntent.setAction(Global.ACTION.STARTFOREGROUND_ACTION);
             //playerIntent.putExtra("activityStatus", isActivityPause);
             getBaseContext().startService(playerIntent);
             getBaseContext().bindService(playerIntent, serviceConnection, Context.BIND_AUTO_CREATE);
+
         }
         else
         {
@@ -787,8 +792,12 @@ public class SideMenu extends FragmentActivity implements  ServiceCallbacks {
             //Send a broadcast to the service -> PLAY_NEW_AUDIO
             Intent broadcastIntent = new Intent(Broadcast_PLAY_NEW_AUDIO);
             broadcastIntent.putExtra("media", media);
+            broadcastIntent.putExtra("TrackName", Name);
+            broadcastIntent.putExtra("TrackAuthors", Authors);
+            broadcastIntent.putExtra("TrackId", TrackId);
+
             sendBroadcast(broadcastIntent);
-            player.updateStatusBarInfo(CurrentTrackInPlayer.getName(), CurrentTrackInPlayer.getAuthors());
+            //player.updateStatusBarInfo(CurrentTrackInPlayer.getName(), CurrentTrackInPlayer.getAuthors());
         }
     }
 
@@ -904,21 +913,22 @@ public class SideMenu extends FragmentActivity implements  ServiceCallbacks {
     public void playNext() {
         //Toast.makeText(this, "Clicked Next", Toast.LENGTH_SHORT).show();
         HelperFunctions.getNextTrack(this, CurrentTrackInPlayer.getId());
-        player.updateStatusBarInfo(CurrentTrackInPlayer.getName(), CurrentTrackInPlayer.getAuthors());
+        //player.updateStatusBarInfo(CurrentTrackInPlayer.getName(), CurrentTrackInPlayer.getAuthors());
     }
 
     @Override
     public void playPrevious() {
         //Toast.makeText(this, "Clicked Previous", Toast.LENGTH_SHORT).show();
         HelperFunctions.getPreviousTrack(this, CurrentTrackInPlayer.getId());
-        player.updateStatusBarInfo(CurrentTrackInPlayer.getName(), CurrentTrackInPlayer.getAuthors());
+        //player.updateStatusBarInfo(CurrentTrackInPlayer.getName(), CurrentTrackInPlayer.getAuthors());
     }
 
-    @Override
+
+    /*@Override
     public void playBtn() {
-        player.updateStatusBarInfo(CurrentTrackInPlayer.getName(), CurrentTrackInPlayer.getAuthors());
+        //player.updateStatusBarInfo(CurrentTrackInPlayer.getName(), CurrentTrackInPlayer.getAuthors());
     }
-
+*/
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -927,6 +937,7 @@ public class SideMenu extends FragmentActivity implements  ServiceCallbacks {
             unbindService(serviceConnection);
             //service is active
             player.stopSelf();
+            player.removeNotification();
             serviceBound = false;
         }
     }

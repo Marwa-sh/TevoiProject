@@ -14,7 +14,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class MyStorage {
+public class MyStorage
+{
     public static final String PREFS_NAME = "Tevoi";
     //public static final String FAVORITES = "Favorite";
     public static final String PlayNowTrack = "PlayNowTrack";

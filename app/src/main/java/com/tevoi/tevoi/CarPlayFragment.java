@@ -109,7 +109,10 @@ public class CarPlayFragment extends Fragment {
                     }
                 }else
                 {
-                    activity.playAudio(url);
+                    activity.playAudio(url,
+                            activity.CurrentTrackInPlayer.getName(),
+                            activity.CurrentTrackInPlayer.getAuthors(),
+                            activity.CurrentTrackInPlayer.getId());
                     activity.isPlaying = true;
                     imgBtnPlay.setImageResource(R.drawable.baseline_pause_24);
                 }
@@ -161,17 +164,22 @@ public class CarPlayFragment extends Fragment {
                     if(activity.player.mMediaPlayer.isPlaying())
                     {
                         activity.player.mMediaPlayer.pause();
+                        activity.player.buildNotification(CustomMediaPlayerService.PlaybackStatus.PAUSED);
                         imgBtnPlay.setImageResource(R.drawable.baseline_play_arrow_24);
                     }
                     else
                     {
                         activity.player.mMediaPlayer.start();
+                        activity.player.buildNotification(CustomMediaPlayerService.PlaybackStatus.PLAYING);
                         imgBtnPlay.setImageResource(R.drawable.baseline_pause_24);
                     }
                 }
                 else
                 {
-                    activity.playAudio(url);
+                    activity.playAudio(url,
+                            activity.CurrentTrackInPlayer.getName(),
+                            activity.CurrentTrackInPlayer.getAuthors(),
+                            activity.CurrentTrackInPlayer.getId());
                     imgBtnPlay.setImageResource(R.drawable.baseline_pause_24);
                 }
             }

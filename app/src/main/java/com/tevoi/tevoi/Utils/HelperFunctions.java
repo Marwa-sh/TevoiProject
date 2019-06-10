@@ -55,7 +55,10 @@ public class HelperFunctions
                     activity.mediaPlayerFragment.currentTrack = CastTrackSerialize(t);
                     activity.CurrentTrackInPlayer = activity.mediaPlayerFragment.currentTrack;
                     activity.mediaPlayerFragment.url = Global.BASE_AUDIO_URL + activity.playNowListTracks.get(activity.indexCurrentTrackInPlayList).getId();
-                    activity.playAudio(activity.mediaPlayerFragment.url);
+                    activity.playAudio(activity.mediaPlayerFragment.url,
+                            activity.CurrentTrackInPlayer.getName(),
+                            activity.CurrentTrackInPlayer.getAuthors(),
+                            activity.CurrentTrackInPlayer.getId());
 
                     //if(activity.isPlaying && !activity.isPaused)
                     //    activity.player.playAudio(activity.mediaPlayerFragment.url, activity);
@@ -89,7 +92,10 @@ public class HelperFunctions
                     activity.mediaPlayerFragment.currentTrack = CastTrackSerialize(t);
                     activity.CurrentTrackInPlayer = activity.mediaPlayerFragment.currentTrack;
                     activity.mediaPlayerFragment.url = Global.BASE_AUDIO_URL + activity.playNowListTracks.get(activity.indexCurrentTrackInPlayList).getId();
-                    activity.playAudio(activity.mediaPlayerFragment.url);
+                    activity.playAudio(activity.mediaPlayerFragment.url,
+                            activity.CurrentTrackInPlayer.getName(),
+                            activity.CurrentTrackInPlayer.getAuthors(),
+                            activity.CurrentTrackInPlayer.getId());
                     //if(activity.isPlaying && !activity.isPaused)
                     //    playAudio(activity.mediaPlayerFragment.url, activity);
                 }
@@ -97,7 +103,7 @@ public class HelperFunctions
                 {
                     Toast.makeText(activity, R.string.no_track_to_play, Toast.LENGTH_SHORT).show();
                 }
-                activity.player.updateStatusBarInfo(activity.CurrentTrackInPlayer.getName(),activity.CurrentTrackInPlayer.getAuthors());
+                //activity.player.updateStatusBarInfo(activity.CurrentTrackInPlayer.getName(),activity.CurrentTrackInPlayer.getAuthors());
         }
     }
 

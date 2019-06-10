@@ -154,11 +154,13 @@ public class TracksList extends Fragment implements AdapterView.OnItemSelectedLi
                     if(activity.player.mMediaPlayer.isPlaying())
                     {
                         activity.player.mMediaPlayer.pause();
+                        activity.player.buildNotification(CustomMediaPlayerService.PlaybackStatus.PAUSED);
                         activity.btnPausePlayMainMediaPlayer.setImageResource(R.drawable.baseline_play_arrow_24);
                     }
                     else
                     {
                         activity.player.mMediaPlayer.start();
+                        activity.player.buildNotification(CustomMediaPlayerService.PlaybackStatus.PLAYING);
                         activity.btnPausePlayMainMediaPlayer.setImageResource(R.drawable.baseline_pause_24);
                     }
                 }
@@ -186,12 +188,12 @@ public class TracksList extends Fragment implements AdapterView.OnItemSelectedLi
                         public void onResponse(Call<TrackResponseList> call, Response<TrackResponseList> response) {
                             TrackResponseList tracks=response.body();
                             int x=tracks.getTrack().size();
-                            recyclerViews[active_tab].setAdapter(adapter);
-                            adapter = new TracksAdapter(tracks.getTrack(),activity, Global.ListTracksFragmentName);
-                            recyclerViews[active_tab].setAdapter(adapter);
                             View v = rootView.findViewById(R.id.tracks_list_empty);
                             recyclerViews[active_tab].setEmptyView(v);
 
+                            adapter = new TracksAdapter(tracks.getTrack(),activity, Global.ListTracksFragmentName);
+                            //recyclerViews[active_tab].setAdapter(adapter);
+                            recyclerViews[active_tab].setAdapter(adapter);
                             activity.mProgressDialog.dismiss();
                         }
                         public void onFailure(Call<TrackResponseList> call, Throwable t)
