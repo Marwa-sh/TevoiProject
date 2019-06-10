@@ -93,7 +93,7 @@ public class MediaPlayerFragment extends Fragment {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.activity_media_player, container, false);
         final SideMenu activity = (SideMenu)getActivity();
-        activity.numberOfCurrentSecondsInTrack =0;
+        //activity.numberOfCurrentSecondsInTrack =0;
 
         fm = getActivity().getSupportFragmentManager();
         scrollViewMediaPlayer = rootView.findViewById(R.id.scrollViewMediaPlayer);
@@ -217,6 +217,7 @@ public class MediaPlayerFragment extends Fragment {
                         int numberofMovedSeconds = progress - activity.numberOfCurrentSecondsInTrack;
                         activity.numberOfCurrentSecondsInTrack = progress;
                         activity.numberOfListenedSeconds += numberofMovedSeconds;
+                        activity.player.numberOfListenedSeconds += numberofMovedSeconds;
                         //Toast.makeText(activity, "numberofMovedSeconds=" + numberofMovedSeconds, Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -437,6 +438,7 @@ public class MediaPlayerFragment extends Fragment {
 
             activity.numberOfCurrentSecondsInTrack = mCurrentPosition;
             activity.numberOfListenedSeconds += 10;
+            activity.player.numberOfListenedSeconds += 10;
 
             seekBar.setProgress(mCurrentPosition);
             String timeFormat = GetTimeFormat(mCurrentPosition);

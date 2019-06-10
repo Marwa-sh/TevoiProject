@@ -64,6 +64,8 @@ public class RegisterFragment  extends Fragment implements SpinnerAdapter, Adapt
                 CountryObject countryObject= countries.get(spnrCountries.getSelectedItemPosition());
                 request.setGender(genderObject.getId());
 
+                allRequiredFieldsFilled();
+                checkPasswordsMatching();
 
                 request.setCountry(countryObject.getId());
                 int age = Integer.parseInt(etAge.getText().toString());

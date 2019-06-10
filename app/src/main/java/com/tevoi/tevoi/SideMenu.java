@@ -243,7 +243,7 @@ public class SideMenu extends FragmentActivity implements  ServiceCallbacks {
                             int numberOfUnRegisteredSeconds = numberOfListenedSeconds - numberOfUnitsSendToServer * Global.ListenUnitInSeconds;
                             final int numberOfConsumedUnits = numberOfUnRegisteredSeconds / Global.ListenUnitInSeconds;
                             // send to server that we used 1 unit
-                            Call<IResponse> call = Global.client.AddUnitUsageForUser(CurrentTrackInPlayer.getId(), numberOfConsumedUnits);
+                            /*Call<IResponse> call = Global.client.AddUnitUsageForUser(CurrentTrackInPlayer.getId(), numberOfConsumedUnits);
                             call.enqueue(new Callback<IResponse>() {
                                 public void onResponse(Call<IResponse> call, Response<IResponse> response) {
                                     //generateDataList(response.body());
@@ -255,7 +255,7 @@ public class SideMenu extends FragmentActivity implements  ServiceCallbacks {
                                 public void onFailure(Call<IResponse> call, Throwable t) {
 
                                 }
-                            });
+                            });*/
                         }
                         if (seekBarMainPlayer == null)
                             seekBarMainPlayer = findViewById(R.id.seekBar_main_player);
@@ -931,7 +931,6 @@ public class SideMenu extends FragmentActivity implements  ServiceCallbacks {
 */
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         if (serviceBound)
         {
             unbindService(serviceConnection);
@@ -940,5 +939,6 @@ public class SideMenu extends FragmentActivity implements  ServiceCallbacks {
             player.removeNotification();
             serviceBound = false;
         }
+        super.onDestroy();
     }
 }

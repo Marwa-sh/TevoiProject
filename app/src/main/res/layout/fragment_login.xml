@@ -94,6 +94,7 @@
                 android:id="@+id/btn_Login"
                 />
             <TextView
+                android:id="@+id/txtLogin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/log_in"

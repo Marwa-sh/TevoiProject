@@ -132,6 +132,7 @@ public class TracksList extends Fragment implements AdapterView.OnItemSelectedLi
                         int numberofMovedSeconds = progress - activity.numberOfCurrentSecondsInTrack;
                         activity.numberOfCurrentSecondsInTrack = progress;
                         activity.numberOfListenedSeconds += numberofMovedSeconds;
+                        activity.player.numberOfListenedSeconds += numberofMovedSeconds;
                         //Toast.makeText(activity, "numberofMovedSeconds=" + numberofMovedSeconds, Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -173,12 +174,13 @@ public class TracksList extends Fragment implements AdapterView.OnItemSelectedLi
         });
         if(btnSearch != null)
         {
+
             btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 EditText txtFilter = rootView.findViewById(R.id.txt_search_filter_value);
                 CheckBox chkIsLocationEnabled = rootView.findViewById(R.id.checkBoxLocationEnable);
-
+                //activity.player.removeNotification();
                 if(!txtFilter.getText().equals(""))
                 {
                     activity.mProgressDialog.setMessage("Loading"); activity.mProgressDialog.show();

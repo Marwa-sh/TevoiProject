@@ -5,13 +5,11 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tevoi.tevoi.Utils.Global;
@@ -24,6 +22,7 @@ import retrofit2.Response;
 
 public class LoginActivity extends Activity
 {
+    TextView txtLogin;
     ImageButton btnLogin, btnRegister, btnRequestNewPassword;
     EditText etUserName,etPassword,etEmail;
     CheckBox checkBoxRememberMe;
@@ -37,6 +36,8 @@ public class LoginActivity extends Activity
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setCancelable(false);
 
+        txtLogin = findViewById(R.id.txtLogin);
+
         btnLogin = findViewById(R.id.btn_Login);
         btnRegister = findViewById(R.id.btn_register);
         btnRequestNewPassword = findViewById(R.id.btn_Request_new_password);
@@ -47,6 +48,58 @@ public class LoginActivity extends Activity
 
         checkBoxRememberMe=findViewById(R.id.checkBox_remember_me);
 
+        txtLogin.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 if(isUserNameFieldEmpty())
+                 {
+                     etUserName.setError("user name missing");
+                     etUserName.requestFocus();
+                 }
+                 else if(isPasswordFieldEmpty())
+                 {
+                     etPassword.setError("password missing");
+                     etPassword.requestFocus();
+                 }
+                 else
+                 {
+                     mProgressDialog.setMessage("Loading"); mProgressDialog.show();
+
+                     //Login and get token then save it in shared preference
+                     final boolean isRememberMe =checkBoxRememberMe.isChecked();
+                     Call<LoginResponse> call =Global.clientDnn.Login(etUserName.getText().toString(),etPassword.getText().toString());
+                     call.enqueue(new Callback<LoginResponse>() {
+                         @Override
+                         public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                             LoginResponse login = response.body();
+                             if(login.getNumber() == 0)
+                             {
+                                 MyStorage storageManager = new MyStorage();
+                                 storageManager.storeTokenPreference(LoginActivity.this, login.getToken());
+                                 Global.UserToken = storageManager.getTokenPreference(LoginActivity.this);
+                                 //storageManager.storeRememberMePreference(LoginActivity.this, isRememberMe);
+
+                                 Intent i = new Intent(getApplicationContext(),SideMenu.class);
+                                 startActivity(i);
+                                 setContentView(R.layout.activity_side_menu);
+                                 mProgressDialog.dismiss();
+                             }
+                             else
+                             {
+                                 Toast.makeText(getBaseContext(),login.Message,Toast.LENGTH_SHORT).show();
+                                 mProgressDialog.dismiss();
+                             }
+
+                         }
+
+                         @Override
+                         public void onFailure(Call<LoginResponse> call, Throwable t) {
+                             Toast.makeText(LoginActivity.this, "", Toast.LENGTH_SHORT).show();
+                         }
+                     });
+                 }
+             }
+        });
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

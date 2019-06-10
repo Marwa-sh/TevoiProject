@@ -27,6 +27,7 @@ import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.media.app.NotificationCompat.MediaStyle;
+
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -40,8 +41,13 @@ import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import com.tevoi.tevoi.Utils.Global;
+import com.tevoi.tevoi.model.IResponse;
 import com.tevoi.tevoi.model.TrackObject;
 
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CustomMediaPlayerService extends Service implements MediaPlayer.OnCompletionListener,
         MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener, MediaPlayer.OnSeekCompleteListener,
@@ -160,19 +166,19 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
                     int numberOfUnRegisteredSeconds = numberOfListenedSeconds - numberOfUnitsSendToServer * Global.ListenUnitInSeconds;
                     final int numberOfConsumedUnits = numberOfUnRegisteredSeconds / Global.ListenUnitInSeconds;
                     // send to server that we used 1 unit
-                /*Call<IResponse> call = Global.client.AddUnitUsageForUser(CurrentTrackInPlayer.getId(), numberOfConsumedUnits);
-                call.enqueue(new Callback<IResponse>() {
-                    public void onResponse(Call<IResponse> call, Response<IResponse> response) {
-                        //generateDataList(response.body());
-                        IResponse partners = response.body();
-                        numberOfUnitsSendToServer += numberOfConsumedUnits;
-                        Toast.makeText(getBaseContext(), "" + numberOfConsumedUnits + " Unit consumed from your quota", Toast.LENGTH_SHORT).show();
-                    }
+                    Call<IResponse> call = Global.client.AddUnitUsageForUser(TrackId, numberOfConsumedUnits);
+                    call.enqueue(new Callback<IResponse>() {
+                        public void onResponse(Call<IResponse> call, Response<IResponse> response) {
+                            //generateDataList(response.body());
+                            IResponse partners = response.body();
+                            numberOfUnitsSendToServer += numberOfConsumedUnits;
+                            Toast.makeText(getBaseContext(), "" + numberOfConsumedUnits + " Unit consumed from your quota", Toast.LENGTH_SHORT).show();
+                        }
 
-                    public void onFailure(Call<IResponse> call, Throwable t) {
+                        public void onFailure(Call<IResponse> call, Throwable t) {
 
-                    }
-                });*/
+                        }
+                    });
                 }
             }
             mHandler.postDelayed(this, 1000);
@@ -212,6 +218,8 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
                     initMediaSession();
                     initMediaPlayer();
                     mHandler.postDelayed(mRunnable, 1000);
+                    //AddListenActiityOnTrack();
+
                 }
             } catch (RemoteException e) {
                 e.printStackTrace();
@@ -225,12 +233,13 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
         return super.onStartCommand(intent, flags, startId);
     }
 
-    @Override
+    /*@Override
     public boolean onUnbind(Intent intent) {
         mediaSession.release();
         removeNotification();
         return super.onUnbind(intent);
     }
+*/
 
     @Override
     public void onDestroy() {
@@ -623,7 +632,8 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
             notificationAction = android.R.drawable.ic_media_pause;
             //create the pause action
             play_pauseAction = playbackAction(1);
-        } else if (playbackStatus == PlaybackStatus.PAUSED) {
+        }
+        else if (playbackStatus == PlaybackStatus.PAUSED) {
             notificationAction = android.R.drawable.ic_media_play;
             //create the play action
             play_pauseAction = playbackAction(0);
@@ -735,7 +745,7 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
                     // Hide the timestamp
                     .setShowWhen(false)
                     .setAutoCancel(true)
-                    .setOngoing(true)
+                    .setOngoing(false)
                     //.setContentTitle("App is running in background")
                     .setPriority(NotificationManager.IMPORTANCE_LOW)
                     .setCategory(Notification.CATEGORY_SERVICE)
@@ -753,6 +763,7 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
                     .setLargeIcon(largeIcon)
                     .setSmallIcon(android.R.drawable.stat_sys_headset)
                     // Add playback actions
+                    .addAction(android.R.drawable.ic_menu_close_clear_cancel, "close", playbackAction(4))
                     .addAction(android.R.drawable.ic_media_previous, "previous", playbackAction(3))
                     .addAction(notificationAction, "pause", play_pauseAction)
                     .addAction(android.R.drawable.ic_media_next, "next", playbackAction(2))
@@ -820,6 +831,12 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
                 // Previous track
                 playbackAction.setAction(ACTION_PREVIOUS);
                 return PendingIntent.getService(this, actionNumber, playbackAction, 0);
+            case 4:
+            {
+                playbackAction.setAction(Global.ACTION.STOPFOREGROUND_ACTION);
+                //removeNotification();
+                return PendingIntent.getService(this, actionNumber, playbackAction, 0);
+            }
             default:
                 break;
         }
@@ -855,6 +872,10 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
         } else if (actionString.equalsIgnoreCase(ACTION_STOP)) {
             transportControls.stop();
         }
+        else if(actionString.equalsIgnoreCase(Global.ACTION.STOPFOREGROUND_ACTION))
+        {
+            removeNotification();
+        }
     }
 
 
@@ -877,6 +898,7 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
                 stopSelf();
             }
             initMediaPlayer();
+           // AddListenActiityOnTrack();
             updateMetaData();
             buildNotification(PlaybackStatus.PLAYING);
         }
@@ -894,7 +916,23 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
         PAUSED
     }
 
+    public  void AddListenActiityOnTrack()
+    {
+        if(TrackId != 0)
+        {
+            Call<IResponse> call = Global.client.AddListenTrackActivity(TrackId);
+                    call.enqueue(new Callback<IResponse>() {
+                        public void onResponse(Call<IResponse> call, Response<IResponse> response) {
+                            IResponse partners = response.body();
 
+                        }
+
+                        public void onFailure(Call<IResponse> call, Throwable t) {
+
+                        }
+                    });
+        }
+    }
 }
 
 

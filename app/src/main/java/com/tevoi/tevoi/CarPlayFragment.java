@@ -142,6 +142,10 @@ public class CarPlayFragment extends Fragment {
                     activity.player.mMediaPlayer.seekTo(progress * 1000);
                     String timeFormat = HelperFunctions.GetTimeFormat(progress);
                     txtCurentTime.setText(timeFormat);
+                    int numberofMovedSeconds = progress - activity.numberOfCurrentSecondsInTrack;
+                    activity.numberOfCurrentSecondsInTrack = progress;
+                    activity.numberOfListenedSeconds += numberofMovedSeconds;
+                    activity.player.numberOfListenedSeconds += numberofMovedSeconds;
                 }
             }
         });

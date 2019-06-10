@@ -66,6 +66,8 @@ public class RegisterActivity extends Activity implements SpinnerAdapter, Adapte
                 CountryObject countryObject= countries.get(spnrCountries.getSelectedItemPosition());
                 request.setGender(genderObject.getId());
 
+                allRequiredFieldsFilled();
+                checkPasswordsMatching();
 
                 request.setCountry(countryObject.getId());
                 int age = Integer.parseInt(etAge.getText().toString());
@@ -92,7 +94,7 @@ public class RegisterActivity extends Activity implements SpinnerAdapter, Adapte
                         }
                         else
                         {
-                            Toast.makeText(getBaseContext(),res.getMessage(),Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getBaseContext(),res.getMessage(),Toast.LENGTH_LONG).show();
                             mProgressDialog.dismiss();
                         }
 
