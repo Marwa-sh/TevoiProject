@@ -135,5 +135,13 @@ public class TrackObject {
     public int getActivityId() {
         return ActivityId;
     }
+
+    public TrackObject( ) {
+
+    }
+    public TrackObject( String name) {
+
+        Name = name;
+    }
 }
 

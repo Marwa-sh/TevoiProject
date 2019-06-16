@@ -70,10 +70,11 @@
         android:paddingTop="@dimen/text_empty_list"
         android:text="@string/empty_list"
         />
-    <!--<ProgressBar
+    <ProgressBar
+        android:id="@+id/main_progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"/>-->
+        android:layout_gravity="center"/>
 
     <include layout="@layout/layout_main_player"
         android:id="@+id/layout_main_player_include"

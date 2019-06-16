@@ -163,6 +163,8 @@ public class SideMenu extends FragmentActivity implements  ServiceCallbacks {
 
     // endregion
 
+    ListTracksFragment listTracksFragment = new ListTracksFragment();
+
     //
     MenuItem searchBtn ;
 
@@ -395,6 +397,13 @@ public class SideMenu extends FragmentActivity implements  ServiceCallbacks {
                 mTitle = rivers[position]; initActionBar(mTitle);
                 switch(mTitle)
                 {
+                    case "Test Pagination":
+                    {
+                        fragmentTransaction.replace(R.id.content_frame, listTracksFragment);
+                        fragmentTransaction.addToBackStack( "History" );
+                        fragmentTransaction.commit();
+                        break;
+                    }
                     case "History" :
                     {
                         fragmentTransaction.replace(R.id.content_frame, historyListFragment);

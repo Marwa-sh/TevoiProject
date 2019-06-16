@@ -38,6 +38,12 @@ import retrofit2.Response;
 
 public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewHolder>
 {
+    // region pagination
+    private static final int ITEM = 0;
+    private static final int LOADING = 1;
+    private boolean isLoadingAdded = false;
+    // endregion
+
     private List<TrackObject> tracks;
     private SideMenu activity;
     private boolean HasPlayNextBtn;
@@ -54,46 +60,37 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
         this.fragmentName = fragmentName;
     }
 
-    public void setHasPlayNextBtn(boolean hasPlayNextBtn) {
-        HasPlayNextBtn = hasPlayNextBtn;
-    }
-
-    public void setHasRemoveBtn(boolean hasRemoveBtn) {
-        HasRemoveBtn = hasRemoveBtn;
-    }
-
-    public TrackViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i)
+    public TrackViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType)
     {
         View row;
-        switch (fragmentName)
-        {
+
+        switch (fragmentName) {
             case Global.HistoryFragmentName: {
-                row =LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.track_row_instance_all,viewGroup,false);
+                row = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.track_row_instance_all, viewGroup, false);
                 break;
             }
             case Global.UserListTracksFragment:
-            case Global.FavouriteFragmentName:
-            {
-                row =LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.track_row_instance_all,viewGroup,false);
+            case Global.FavouriteFragmentName: {
+                row = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.track_row_instance_all, viewGroup, false);
                 break;
             }
             case Global.PlayNowFragmentName: {
-                row =LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.track_row_instance_without_play_next,viewGroup,false);
+                row = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.track_row_instance_without_play_next, viewGroup, false);
                 break;
             }
             case Global.PartnerNameFragment:
             case Global.ListTracksFragmentName: {
-                row =LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.track_row_instance_without_remove,viewGroup,false);
+                row = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.track_row_instance_without_remove, viewGroup, false);
                 break;
             }
-            default:
-            {
-                row =LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.track_row_instance_all,viewGroup,false);
+            default: {
+                row = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.track_row_instance_all, viewGroup, false);
                 break;
             }
         }
         TrackViewHolder holder = new TrackViewHolder(row);
         return holder;
+
     }
 
     @Override
@@ -578,5 +575,11 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
 
     }
 
+    protected class LoadingVH extends RecyclerView.ViewHolder {
+
+        public LoadingVH(View itemView) {
+            super(itemView);
+        }
+    }
 
 }
