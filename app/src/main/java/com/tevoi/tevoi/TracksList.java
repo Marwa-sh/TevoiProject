@@ -27,6 +27,7 @@ import com.tevoi.tevoi.Utils.HelperFunctions;
 import com.tevoi.tevoi.adapter.Track;
 import com.tevoi.tevoi.adapter.TracksAdapter;
 import com.tevoi.tevoi.model.RecyclerViewEmptySupport;
+import com.tevoi.tevoi.model.TrackFilter;
 import com.tevoi.tevoi.model.TrackResponseList;
 
 import java.util.ArrayList;
@@ -185,7 +186,10 @@ public class TracksList extends Fragment implements AdapterView.OnItemSelectedLi
                 {
                     activity.mProgressDialog.setMessage("Loading"); activity.mProgressDialog.show();
 
-                    Call<TrackResponseList> call = Global.client.ListMainTrackWithFilter(txtFilter.getText().toString(), chkIsLocationEnabled.isChecked(), defaultTab, 0 , 10);
+                    TrackFilter filter =  new TrackFilter();
+                    filter.SearchKey = txtFilter.getText().toString(); filter.IsLocationEnabled = chkIsLocationEnabled.isChecked();
+                    filter.ListTypeEnum = defaultTab; filter.Index = 0; filter.Size = 10;
+                    Call<TrackResponseList> call = Global.client.ListMainTrackWithFilter(filter);
                     call.enqueue(new Callback<TrackResponseList>(){
                         public void onResponse(Call<TrackResponseList> call, Response<TrackResponseList> response) {
                             TrackResponseList tracks=response.body();
@@ -301,8 +305,11 @@ public class TracksList extends Fragment implements AdapterView.OnItemSelectedLi
         }
 
         tabs[k].setBackgroundColor(ContextCompat.getColor(activity,R.color.tevoiBluePrimary));
-        //tabs[k].refreshDrawableState();
-        Call<TrackResponseList> call = Global.client.getListMainTrack(k, 0, 10);
+        TrackFilter filter =  new TrackFilter();
+        filter.SearchKey = ""; filter.IsLocationEnabled = false;
+        filter.TrackTypeId =1;
+        filter.ListTypeEnum = defaultTab; filter.Index = 0; filter.Size = 10;
+        Call<TrackResponseList> call = Global.client.getListMainTrack(filter);
         call.enqueue(new Callback <TrackResponseList>(){
             public void onResponse(Call<TrackResponseList> call, Response<TrackResponseList> response)
             {

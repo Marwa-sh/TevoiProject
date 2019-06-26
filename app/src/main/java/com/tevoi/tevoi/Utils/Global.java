@@ -15,12 +15,11 @@ public class Global {
     //public static final String BASE_URL = "http://192.168.1.3/TevoiAPI/";
     //public static  final  String BASE_AUDIO_URL = "http://192.168.1.3/TevoiAPI/api/Services/GetStreamAudio?id=";
 
-    public static final String IMAGE_BASE_URL = "http://h2817272.stratoserver.net/Tevoi/";
+    public static final String IMAGE_BASE_URL = "http://h2817272.stratoserver.net/TevoiTest/";
 
-    public static final String BASE_URL = "http://h2817272.stratoserver.net/TevoiAPITest/";
+    public static final String BASE_URL = "http://h2817272.stratoserver.net/TevoiAPI/";
 
-    public static  final  String BASE_AUDIO_URL = "http://h2817272.stratoserver.net/TevoiAPITest/api/Services/GetStreamAudio?id=";
-
+    public static  final  String BASE_AUDIO_URL = "http://h2817272.stratoserver.net/TevoiAPI/api/Services/GetStreamAudio?id=";
 
     //public static final String BASE_URL = "http://h2817272.stratoserver.net/TevoiAPI/";
 
@@ -41,9 +40,9 @@ public class Global {
     public  static  final  String PlayNextListFragment = "PlayNextListFragment";
     public  static  final  String CarPlayFragment = "CarPlayFragment";
 
-    public  static  final String GetStreamURL= "http://h2817272.stratoserver.net/TevoiAPITest/api/Services/GetStreamAudio?id=";
+    public  static  final String GetStreamURL= "http://h2817272.stratoserver.net/TevoiAPI/api/Services/GetStreamAudio?id=";
     //public  static  final  String LOGINURL ="http://h2817272.stratoserver.net/Tevoi/DesktopModules/TevoiAPIModuleFolder/";
-    public  static  final  String LOGINURL ="http://h2817272.stratoserver.net/Tevoi/DesktopModules/TevoiAPIModuleFolder/";
+    public  static  final  String LOGINURL ="http://h2817272.stratoserver.net/TevoiTest/DesktopModules/TevoiAPIModuleFolder/";
 
 
     public final static ApiInterface client = ApiClient.getClient().create(ApiInterface.class);

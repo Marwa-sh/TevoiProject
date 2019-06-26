@@ -20,6 +20,7 @@ import com.tevoi.tevoi.model.RegisterDataResponse;
 import com.tevoi.tevoi.model.RegisterRequest;
 import com.tevoi.tevoi.model.RegisterResponse;
 import com.tevoi.tevoi.model.TrackCommentResponse;
+import com.tevoi.tevoi.model.TrackFilter;
 import com.tevoi.tevoi.model.TrackLocationResponse;
 import com.tevoi.tevoi.model.TrackObject;
 import com.tevoi.tevoi.model.TrackResponseList;
@@ -36,27 +37,23 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface ApiInterface {
-    /*@Headers({"Content-Type:application/json","Authorization:TevoiTokenSample"})*/
+    /*@Headers({"Content-Type:application/json","Authorization:TevoiTokenSample", "LicenseTevoiMobileApp:"})*/
     @GET("api/Services/GetMainSponsoreLogo")
     Call<MainSponsoreLogoResponse> GetMainSponsoreLogo();
 
 
-    @GET("api/Services/ListMainTrack")
-    Call<TrackResponseList> getListMainTrack(@Query("ListTypeEnum") int ListTypeEnum,@Query("index") int index,@Query("size") int size);
+    @POST("api/Services/ListMainTrack")
+    Call<TrackResponseList> getListMainTrack(@Body TrackFilter model);
 
-    @GET("api/Services/ListMainTrackWithFilter")
-    Call<TrackResponseList> ListMainTrackWithFilter(@Query("searchWord") String searchWord, @Query("isLocationEnabled") boolean isLocationEnabled,@Query("ListTypeEnum") int ListTypeEnum,@Query("index") int index,@Query("size") int size);
+    @POST("api/Services/ListMainTrackWithFilter")
+    Call<TrackResponseList> ListMainTrackWithFilter(@Body TrackFilter model);
 
-
-    @Headers({"Content-Type:application/json","Authorization:TevoiTokenSample"})
     @GET("api/Services/GetHistoryList")
     Call<TrackResponseList> getHistoryList(@Query("index") int index,@Query("size") int size);
 
-    @Headers({"Content-Type:application/json","Authorization:TevoiTokenSample"})
     @GET("api/Services/GetFavouriteList")
     Call<TrackResponseList> getFavouriteList(@Query("index") int index,@Query("size") int size);
 
-    @Headers({"Content-Type:application/json","Authorization:TevoiTokenSample"})
     @GET("api/Services/GetUserLists")
     Call<UserListResponse> getUserLists(@Query("index") int index, @Query("size") int size);
 
@@ -84,32 +81,24 @@ public interface ApiInterface {
     @GET("api/Services/RemoveTrackFromFavourite")
     Call<IResponse> RemoveTrackFromFavourite(@Query("ActivityId") int ActivityId);
 
-    @GET("api/Services/AddListenTrackActivity")
-    Call<IResponse> AddListenTrackActivity(@Query("TrackId") int TrackId);
-
+    /*@GET("api/Services/AddListenTrackActivity")
+    Call<IResponse> AddListenTrackActivity(@Query("TrackId") int TrackId, @Query("numberOfSeconds") int numberOfSeconds);
+*/
     @GET("api/Services/AddTrackToFavourite")
     Call<IResponse> AddTrackToFavourite(@Query("TrackId") int TrackId);
-
-    @POST("api/Services/GetTrackFavouritionState")
-    Call<GetTrackFavouriteResponse> GetTrackFavouritionState(@Query("TrackId") int TrackId, @Query("UserId") int UserId);
 
     @GET("api/Services/AddTrackToUserList")
     Call<IResponse> AddTrackToUserList(@Query("TrackId") int TrackId, @Query("ListId") int ListId);
 
-
     @GET("api/Services/AddUserList")
     Call<IResponse> AddUserList(@Query("ListName") String ListName);
-
 
     @GET("api/Services/EditUserList")
     Call<IResponse> EditUserList(@Query("ListId") int ListId, @Query("NewListName") String NewListName);
 
-
     @GET("api/Services/DeleteUserList")
     Call<IResponse> DeleteUserList(@Query("ListId") int ListId);
 
-
-    @Headers({"Content-Type:application/json","Authorization:TevoiTokenSample"})
     @GET("api/Services/GetPartnersList")
     Call<PartnerListResponse> GetPartnersList(@Query("TypeOfOrder") int TypeOfOrder, @Query("index") int index, @Query("size") int size);
 
@@ -117,11 +106,10 @@ public interface ApiInterface {
     Call<IResponse> AddFollowshipToPartner(@Query("PartnerId") int PartnerId);
 
     @GET("api/Services/UpdateFollowshipToPartner")
-    Call<IResponse> UpdateFollowshipToPartner(@Query("FollowshipId") int FollowshipId, @Query("IsFollow") boolean IsFollow);
+    Call<IResponse> UpdateFollowshipToPartner(@Query("FollowshipId") int FollowshipId);
 
     @GET("api/Services/UpdateCategoryPreference")
-    Call<IResponse> UpdateCategoryPreference(@Query("CategoryId") int CategoryId, @Query("IsPrefered") boolean IsPrefered);
-
+    Call<IResponse> UpdateCategoryPreference(@Query("CategoryId") int CategoryId);
 
     @GET("api/Services/GetCategoriesFilters")
     Call<CategoryResponseList> GetCategoriesFilters();
@@ -129,9 +117,8 @@ public interface ApiInterface {
     @GET("api/Services/GetSubscripedPartners")
     Call<GetSubscripedPartnersResponse> GetSubscripedPartners();
 
-
     @GET("api/Services/AddUnitUsageForUser")
-    Call<IResponse> AddUnitUsageForUser(@Query("TrackId") int TrackId,@Query("NumberOfUnits") int numberOfUnits);
+    Call<IResponse> AddUnitUsageForUser(@Query("TrackId") int TrackId,@Query("NumberOfUnits") int NumberOfSeconds);
 
     @GET("api/Services/GetPartnerTracks")
     Call<GetPartnerTracksResponse> GetPartnerTracks(@Query("PartnerId") int PartnerId,@Query("ListTypeEnum") int ListTypeEnum, @Query("index") int index, @Query("size") int size);
@@ -139,16 +126,11 @@ public interface ApiInterface {
     @GET("api/Services/GetTracksForUserList")
     Call<GetUserListTracksResponse> GetTracksForUserList(@Query("ListId") int ListId, @Query("index") int index, @Query("size") int size);
 
-
     @GET("api/Services/DeleteTrackFromUserList")
     Call<IResponse> DeleteTrackFromUserList(@Query("ListId") int ListId, @Query("TrackId") int TrackId);
 
-
     @POST("api/Services/SendFeedback")
     Call<IResponse> SendFeedback(@Body FeedbackRequest request);
-
-    @POST("api/User/Login")
-    Call<LoginResponse> Login(@Query("model") LoginRequest model);
 
     @GET("api/Services/GetTrackRating")
     Call<RatingResponse> GetTrackRating(@Query("TrackId") int TrackId);

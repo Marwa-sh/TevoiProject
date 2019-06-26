@@ -14,7 +14,7 @@
     <color name="White"></color>
     <color name="grey">#EBEBEB</color>
     <color name="thumbgrey">#535353</color>
-
+    <color name="placeholder_grey">#AAADC4</color>
 
     <!-- A transparent black -->
     <color name="transparent_black">#aa000000</color>
@@ -35,5 +35,9 @@
 
     <!-- White -->
     <color name="white">#ffffffff</color>
+
+
+    <color name="background">#EFEFEF</color>
+    <color name="placeholder_grey_20">#33AAADC4</color>
 
 </resources>

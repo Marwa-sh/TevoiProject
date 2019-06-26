@@ -69,7 +69,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
                     int i = getPosition();
                     final CategoryObject category = categories.get(i);
 
-                    Call<IResponse> call = Global.client.UpdateCategoryPreference(category.getId(), isChecked);
+                    Call<IResponse> call = Global.client.UpdateCategoryPreference(category.getId());
                     call.enqueue(new Callback<IResponse>() {
                         @Override
                         public void onResponse(Call<IResponse> call, Response<IResponse> response) {

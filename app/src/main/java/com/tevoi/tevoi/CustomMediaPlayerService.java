@@ -929,7 +929,7 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
     {
         if(TrackId != 0)
         {
-            Call<IResponse> call = Global.client.AddListenTrackActivity(TrackId);
+            /*Call<IResponse> call = Global.client.AddListenTrackActivity(TrackId, 60);
                     call.enqueue(new Callback<IResponse>() {
                         public void onResponse(Call<IResponse> call, Response<IResponse> response) {
                             IResponse partners = response.body();
@@ -939,7 +939,7 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
                         public void onFailure(Call<IResponse> call, Throwable t) {
 
                         }
-                    });
+                    });*/
         }
     }
 }

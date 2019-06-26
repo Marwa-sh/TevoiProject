@@ -70,7 +70,7 @@ public class SubscripedPartnersAdapter extends RecyclerView.Adapter<SubscripedPa
                     int i = getPosition();
                     final SubscipedPartnersObject partner = partners.get(i);
 
-                    Call<IResponse> call = Global.client.UpdateFollowshipToPartner(partner.getId(), isChecked);
+                    Call<IResponse> call = Global.client.UpdateFollowshipToPartner(partner.getId());
                     call.enqueue(new Callback<IResponse>() {
                         @Override
                         public void onResponse(Call<IResponse> call, Response<IResponse> response) {

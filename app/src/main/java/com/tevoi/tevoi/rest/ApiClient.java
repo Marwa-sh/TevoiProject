@@ -20,6 +20,7 @@ public class ApiClient
     public static Retrofit getClient()
     {
         OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
+                //.addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
                 .addInterceptor(new Interceptor() {
                     @Override
                     public okhttp3.Response intercept(Chain chain) throws IOException {

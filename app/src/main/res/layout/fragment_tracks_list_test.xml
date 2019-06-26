@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/linearLayoutListTracks"
+    android:orientation="vertical"
+    android:isScrollContainer="true"
+    android:scrollbars="vertical"
+    tools:context=".TracksList">
+    <include layout="@layout/layout_searchbar"
+        android:id="@+id/layout_search_include"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        />
+
+
+    <android.support.v7.widget.LinearLayoutCompat
+        android:id="@+id/tabsLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="3">
+
+        <Button
+            android:id="@+id/btnNewList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/tevoiBluePrimary"
+            android:text="New"
+            android:textColor="@color/fontColor"
+            android:onClick="changeTabToNew"/>
+
+        <Button
+            android:id="@+id/btnTopRatedList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/tevoiBlueSecondary"
+            android:text="Top Rated"
+            android:textColor="@color/fontColor"
+            android:onClick="changeTabToTopRated"/>
+
+        <Button
+            android:id="@+id/btnPopularList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/tevoiBlueSecondary"
+            android:text="Popular"
+            android:textColor="@color/fontColor"
+            android:onClick="changeToPopular"/>
+    </android.support.v7.widget.LinearLayoutCompat>
+
+
+    <com.tevoi.tevoi.model.RecyclerViewEmptySupport
+        android:id="@+id/tracks_recycler_View"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+    </com.tevoi.tevoi.model.RecyclerViewEmptySupport>
+
+    <ProgressBar
+        android:id="@+id/main_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
+
+    <TextView android:id="@+id/tracks_list_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="@dimen/text_size"
+        android:paddingTop="@dimen/text_empty_list"
+        android:text="@string/empty_list"
+        />
+
+
+    <include layout="@layout/layout_main_player"
+        android:id="@+id/layout_main_player_include"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        />
+</LinearLayout>

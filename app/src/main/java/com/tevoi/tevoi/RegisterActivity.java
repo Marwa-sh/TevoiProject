@@ -101,7 +101,8 @@ public class RegisterActivity extends Activity implements SpinnerAdapter, Adapte
                     }
 
                     @Override
-                    public void onFailure(Call<RegisterResponse> call, Throwable t) {
+                    public void onFailure(Call<RegisterResponse> call, Throwable t)
+                    {
 
                     }
                 });

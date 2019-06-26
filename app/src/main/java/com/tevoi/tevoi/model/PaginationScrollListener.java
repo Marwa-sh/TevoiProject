@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView;
 
 public abstract class PaginationScrollListener extends RecyclerView.OnScrollListener {
 
-    int PAGE_SIZE = 4;
     LinearLayoutManager layoutManager;
 
     public PaginationScrollListener(LinearLayoutManager layoutManager) {
@@ -19,6 +18,18 @@ public abstract class PaginationScrollListener extends RecyclerView.OnScrollList
         int visibleItemCount = layoutManager.getChildCount();
         int totalItemCount = layoutManager.getItemCount();
         int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
+
+        if (!isLoading() && !isLastPage()) {
+            if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
+                    && firstVisibleItemPosition >= 0
+                    && totalItemCount >= getTotalPageCount()) {
+                loadMoreItems();
+            }
+        }
+
+       /* int visibleItemCount = layoutManager.getChildCount();
+        int totalItemCount = layoutManager.getItemCount();
+        int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
         int g = layoutManager.findLastCompletelyVisibleItemPosition();
 
         if (!isLoading() && !isLastPage())
@@ -27,17 +38,17 @@ public abstract class PaginationScrollListener extends RecyclerView.OnScrollList
             {
                 loadMoreItems();
             }
-           /* if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
+           *//* if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
                     && firstVisibleItemPosition >= 0) {
                 loadMoreItems();
-            }*/
-           /* if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
+            }*//*
+           *//* if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
                     && firstVisibleItemPosition >= 0
                     && totalItemCount >= PAGE_SIZE) {
                 loadMoreItems();
-            }*/
+            }*//*
         }
-
+*/
     }
 
     protected abstract void loadMoreItems();
