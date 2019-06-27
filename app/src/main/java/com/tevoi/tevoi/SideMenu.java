@@ -1071,7 +1071,10 @@ public class SideMenu extends AppCompatActivity implements  ServiceCallbacks , N
         else
         {
             String tr = getSupportFragmentManager().getBackStackEntryAt(T-2).getName();
-            initActionBar(tr);
+            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+            TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
+            TextView mSubTitle = (TextView) toolbar.findViewById(R.id.toolbar_subtitle);
+            mSubTitle.setText(tr);
             //setTitle(tr);
             getSupportFragmentManager().popBackStackImmediate();
             //super.onBackPressed();
