@@ -223,7 +223,6 @@ public class SideMenu extends AppCompatActivity implements  ServiceCallbacks , N
 
         setSupportActionBar(toolbar);
         mTitle.setText("Tevoi");
-        mSubTitle.setText("First Page");
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -647,13 +646,13 @@ public class SideMenu extends AppCompatActivity implements  ServiceCallbacks , N
         mTitle.setText("Tevoi");
         switch(id)
         {
-            /*case "Test Pagination":
+            case R.id.test_pagination:
             {
                 fragmentTransaction.replace(R.id.content_frame, listTracksFragment);
                 fragmentTransaction.addToBackStack( "History" );
                 fragmentTransaction.commit();
                 break;
-            }*/
+            }
             case R.id.list_history :
             {
                 mSubTitle.setText("History");

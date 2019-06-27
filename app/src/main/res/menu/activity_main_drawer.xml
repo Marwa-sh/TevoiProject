@@ -6,6 +6,10 @@
 
     <group android:checkableBehavior="single">
 
+        <item android:id="@+id/test_pagination"
+            app:actionLayout="@layout/drawer_list_item"
+            android:title="Test Pagination" />
+
         <item android:id="@+id/upgrade_to_premium"
             app:actionLayout="@layout/drawer_list_item"
             android:title="Upgrade To Premium"
