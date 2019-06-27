@@ -1,15 +1,19 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+    <style name="AppThemeOld" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
         <item name="colorPrimary">@color/tevoiBluePrimary</item>
         <item name="colorPrimaryDark">@color/tevoiBluePrimary</item>
         <item name="colorAccent">@color/tevoiBluePrimary</item>
     </style>
-    <!-- Base application theme. -->
-    <!--<style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+   <!-- &lt;!&ndash; Base application theme. &ndash;&gt;
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         &lt;!&ndash; Customize your theme here. &ndash;&gt;
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
         <item name="colorPrimary">@color/tevoiBluePrimary</item>
         <item name="colorPrimaryDark">@color/tevoiBluePrimary</item>
         <item name="colorAccent">@color/tevoiBluePrimary</item>
@@ -45,13 +49,32 @@
         <item name="android:textAppearance">@style/TextAppearance.AppCompat</item>
     </style>
 
-
-    <style name="AppTheme.NoActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar" >
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="colorPrimary">@color/tevoiBluePrimary</item>
+        <item name="colorPrimaryDark">@color/tevoiBluePrimary</item>
+        <item name="colorAccent">@color/tevoiBluePrimary</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <!--
+        <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
+            <item name="windowActionBar">false</item>
+            <item name="windowNoTitle">true</item>
+            <item name="android:colorPrimary">?attr/colorPrimary</item>
+            <item name="android:colorPrimaryDark">?attr/colorPrimary</item>
+            <item name="android:colorBackground">@color/background_holo_light</item>
+        </style>-->
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
- </resources>
+
+    <!--
+        <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+        <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+        <style name="Theme.AppTheme.Light.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar" />
+
+    -->
+
+</resources>

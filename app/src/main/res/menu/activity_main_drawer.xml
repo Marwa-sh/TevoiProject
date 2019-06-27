@@ -1,43 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/home"
-            android:icon="@android:drawable/ic_menu_call"
-            android:title="Home" />
-        <item
-            android:id="@+id/timeTable"
-            android:title="Time Table" />
-        <item
-            android:id="@+id/examSchedule"
-            android:title="Exam Schedule" />
-        <item
-            android:id="@+id/attendence"
-            android:title="Attendence" />
-        <item
-            android:id="@+id/result"
-            android:title="Results" />
+
+        <item android:id="@+id/upgrade_to_premium"
+            app:actionLayout="@layout/drawer_list_item"
+            android:title="Upgrade To Premium"
+            app:itemIconTint="@color/tevoiBluePrimary"/>
+
+        <item android:id="@+id/list_tracks"
+            app:actionLayout="@layout/drawer_list_item"
+            android:title="List Tracks" />
+
+        <item android:id="@+id/interface_language"
+            app:actionLayout="@layout/drawer_list_item"
+            android:title="Interface Language" />
+
+
+        <item android:id="@+id/list_partners"
+            app:actionLayout="@layout/drawer_list_item"
+            android:title="Partners" />
+
+    <!--<group android:checkableBehavior="single" android:id="@+id/g1">
+        <item android:id="@+id/list_tracks"
+            app:actionLayout="@layout/drawer_list_item"
+            android:title="List Tracks" />
+    </group>
+    <group android:checkableBehavior="single" android:id="@+id/g2">
+        <item android:id="@+id/interface_language"
+                app:actionLayout="@layout/drawer_list_item"
+                android:title="Interface Language" />
+    </group>
+    <group android:checkableBehavior="single" android:id="@+id/g3">
+        <item android:id="@+id/list_partners"
+            app:actionLayout="@layout/drawer_list_item"
+            android:title="Partners" />
+    </group>-->
+
+        <item android:id="@+id/notifications"
+            app:actionLayout="@layout/drawer_list_item"
+            android:title="Notifications" />
+
+        <item android:id="@+id/download_limits"
+            app:actionLayout="@layout/drawer_list_item"
+            android:title="Donwload Limits" />
+
+        <item android:id="@+id/about_us"
+            app:actionLayout="@layout/drawer_list_item"
+            android:title="About Us" />
+
+        <item android:id="@+id/feedback_contact"
+            app:actionLayout="@layout/drawer_list_item"
+            android:title="Feedback and Contact" />
+
+        <item android:id="@+id/follow_us"
+            app:actionLayout="@layout/drawer_list_item"
+            android:title="Follow Us" />
+
+        <item android:id="@+id/filters"
+            app:actionLayout="@layout/drawer_list_item"
+            android:title="Filter" />
+       <!-- <item
+            android:id="@+id/nav_gallery"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Gallery"
+            android:drawable="@color/tevoiBlueSecondary"
+            app:itemBackground="@color/tevoiBlueSecondary"/>-->
+        <item android:id="@+id/lists"
+            android:title="Lists" />
+
+        <item android:id="@+id/list_history"
+            app:actionLayout="@layout/drawer_list_item"
+            android:title="History" />
+
+        <item android:id="@+id/play_next"
+            app:actionLayout="@layout/drawer_list_item"
+            android:title="Play Next" />
+
+        <item android:id="@+id/list_favourite"
+            app:actionLayout="@layout/drawer_list_item"
+            android:title="Favourite" />
+
+        <item android:id="@+id/my_list"
+            app:actionLayout="@layout/drawer_list_item"
+            android:title="My Lists" />
     </group>
 
-    <item android:title="Social">
+    <!--<item android:title="Lists"
+         >
         <menu>
-            <item
-                android:id="@+id/fb"
-                android:title="Faacebook" />
-            <item
-                android:id="@+id/gplus"
-                android:title="Google +" />
-            <item
-                android:id="@+id/twitter"
-                android:title="Twitter" />
-            <item
-                android:id="@+id/youtube"
-                android:title="Youtube" />
-            <item
-                android:id="@+id/github"
-                android:title="Github" />
+
+                <item android:id="@+id/list_history"
+                    app:actionLayout="@layout/drawer_list_item"
+                    android:title="History" />
+
+                <item android:id="@+id/play_next"
+                    app:actionLayout="@layout/drawer_list_item"
+                    android:title="Play Next" />
+
+                <item android:id="@+id/list_favourite"
+                    app:actionLayout="@layout/drawer_list_item"
+                    android:title="Favourite" />
+
+                <item android:id="@+id/my_list"
+                    app:actionLayout="@layout/drawer_list_item"
+                    android:title="My Lists" />
+
         </menu>
-    </item>
+    </item>-->
 
 </menu>

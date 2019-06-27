@@ -12,10 +12,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.print.PrintAttributes;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 /*import android.support.v7.app.ActionBar;*/
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.Menu;
@@ -51,7 +55,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SideMenu extends FragmentActivity implements  ServiceCallbacks {
+public class SideMenu extends AppCompatActivity implements  ServiceCallbacks , NavigationView.OnNavigationItemSelectedListener {
 
     public ProgressDialog mProgressDialog;
 
@@ -127,12 +131,15 @@ public class SideMenu extends FragmentActivity implements  ServiceCallbacks {
     // endregion
 
     // region properties for drawer
-    // Within which the entire activity is enclosed
-    DrawerLayout mDrawerLayout;
+
+   /* DrawerLayout mDrawerLayout;
     // ListView represents Navigation Drawer
     ListView mDrawerList;
     // ActionBarDrawerToggle indicates the presence of Navigation Drawer in the action bar
-    ActionBarDrawerToggle mDrawerToggle;
+    ActionBarDrawerToggle mDrawerToggle;*/
+    private DrawerLayout drawer;
+    private NavigationView navigationView;
+
     // Title of the action bar
     String mTitle="";
     // endregion
@@ -196,11 +203,41 @@ public class SideMenu extends FragmentActivity implements  ServiceCallbacks {
         //abar.setElevation(0);
         //abar.setElevation(0);
     }
+    private void setfullwidth() {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        DrawerLayout.LayoutParams params = (DrawerLayout.LayoutParams) navigationView.getLayoutParams();
+        params.width = displayMetrics.widthPixels;
+        navigationView.setLayoutParams(params);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_side_menu);
+
+        setContentView(R.layout.activity_main);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
+        TextView mSubTitle = (TextView) toolbar.findViewById(R.id.toolbar_subtitle);
+
+        setSupportActionBar(toolbar);
+        mTitle.setText("Tevoi");
+        mSubTitle.setText("First Page");
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        setfullwidth();
+
+        android.support.v7.app.ActionBarDrawerToggle toggle = new android.support.v7.app.ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.drawer_open, R.string.drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setItemBackground(getDrawable(R.drawable.divider));
+
 
         storageManager = new MyStorage(Global.CurrentUserId);
         //setContentView(R.layout.activity_main);
@@ -289,7 +326,7 @@ public class SideMenu extends FragmentActivity implements  ServiceCallbacks {
         // endregion
 
 
-        initActionBar("Start");
+        //initActionBar("Start");
 
         //region detect language
 
@@ -318,7 +355,8 @@ public class SideMenu extends FragmentActivity implements  ServiceCallbacks {
 
         mediaPlayerFragment = new MediaPlayerFragment();
 
-        // region initialize drawer
+       /*
+       // region initialize drawer
         mTitle = (String) getTitle();
         // Getting reference to the DrawerLayout
         mDrawerLayout = findViewById(R.id.drawer_layout);
@@ -330,13 +368,13 @@ public class SideMenu extends FragmentActivity implements  ServiceCallbacks {
                 R.string.drawer_open,
                 R.string.drawer_close){
 
-            /** Called when drawer is closed */
+            *//** Called when drawer is closed *//*
             public void onDrawerClosed(View view) {
                 getActionBar().setTitle(mTitle);
                 invalidateOptionsMenu();
             }
 
-            /** Called when a drawer is opened */
+            *//** Called when a drawer is opened *//*
             public void onDrawerOpened(View drawerView) {
                 getActionBar().setTitle("Select");
                 invalidateOptionsMenu();
@@ -345,14 +383,14 @@ public class SideMenu extends FragmentActivity implements  ServiceCallbacks {
         // Setting DrawerToggle on DrawerLayout
         mDrawerLayout.addDrawerListener(mDrawerToggle);
 
-        /*ArrayList<DrawerListItemObject> objs = new ArrayList<>();
+        *//*ArrayList<DrawerListItemObject> objs = new ArrayList<>();
         for (int i =0 ; i< getResources().getStringArray(R.array.rivers).length; i++)
         {
             DrawerListItemObject temp = new DrawerListItemObject();
             temp.setName(getResources().getStringArray(R.array.rivers)[i]);
             objs.add(temp);
         }
-        mDrawerList.setAdapter(new DrawerListAdapter(this, R.layout.drawer_list_item, objs));*/
+        mDrawerList.setAdapter(new DrawerListAdapter(this, R.layout.drawer_list_item, objs));*//*
 
         // Creating an ArrayAdapter to add items to the listview mDrawerList
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
@@ -362,7 +400,7 @@ public class SideMenu extends FragmentActivity implements  ServiceCallbacks {
         );
         // Setting the adapter on mDrawerList
         mDrawerList.setAdapter(adapter);
-        // endregion
+        // endregion*/
 
 
         // Enabling Home button
@@ -374,7 +412,7 @@ public class SideMenu extends FragmentActivity implements  ServiceCallbacks {
         //getActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Setting item click listener for the listview mDrawerList
-        mDrawerList.setOnItemClickListener(new OnItemClickListener() {
+       /* mDrawerList.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent,
                                     View view,
@@ -534,7 +572,7 @@ public class SideMenu extends FragmentActivity implements  ServiceCallbacks {
                 // Closing the drawer
                 mDrawerLayout.closeDrawer(mDrawerList);
             }
-        });
+        });*/
 
         android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         // Replace the contents of the container with the new fragment
@@ -548,18 +586,27 @@ public class SideMenu extends FragmentActivity implements  ServiceCallbacks {
     }
 
     @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        mDrawerToggle.syncState();
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            BackBtnAction();
+        }
     }
 
-    /** Handling the touch event of app icon */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         if (id == R.id.action_search)
@@ -586,7 +633,164 @@ public class SideMenu extends FragmentActivity implements  ServiceCallbacks {
         return super.onOptionsItemSelected(item);
     }
 
-    /** Called whenever we call invalidateOptionsMenu() */
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
+        TextView mSubTitle = (TextView) toolbar.findViewById(R.id.toolbar_subtitle);
+
+        mTitle.setText("Tevoi");
+        switch(id)
+        {
+            /*case "Test Pagination":
+            {
+                fragmentTransaction.replace(R.id.content_frame, listTracksFragment);
+                fragmentTransaction.addToBackStack( "History" );
+                fragmentTransaction.commit();
+                break;
+            }*/
+            case R.id.list_history :
+            {
+                mSubTitle.setText("History");
+                fragmentTransaction.replace(R.id.content_frame, historyListFragment);
+                fragmentTransaction.addToBackStack( "History" );
+                fragmentTransaction.commit();
+                break;
+            }
+            case R.id.play_next :
+            {
+                mSubTitle.setText("Play Next");
+                fragmentTransaction.replace(R.id.content_frame, playingNowFragment);
+                fragmentTransaction.addToBackStack( "Play Next" );
+                fragmentTransaction.commit();
+                break;
+            }
+            case R.id.list_favourite :
+            {
+                mSubTitle.setText("Favourite");
+                fragmentTransaction.replace(R.id.content_frame, favouriteFragment);
+                fragmentTransaction.addToBackStack( "Favourite" );
+                fragmentTransaction.commit();
+                break;
+            }
+            case R.id.my_list :
+            {
+                mSubTitle.setText("My Lists");
+                fragmentTransaction.replace(R.id.content_frame, userListsFragment);
+                fragmentTransaction.addToBackStack( "My Lists" );
+                fragmentTransaction.commit();
+                break;
+            }
+            case R.id.interface_language :
+            {
+                mSubTitle.setText("Interface Language");
+                fragmentTransaction.replace(R.id.content_frame, interfaceLanguageFragment);
+                fragmentTransaction.addToBackStack( "Interface Language" );
+                fragmentTransaction.commit();
+                break;
+            }
+            case R.id.list_partners :
+            {
+                mSubTitle.setText("Partners");
+                fragmentTransaction.replace(R.id.content_frame, partnersFragment);
+                fragmentTransaction.addToBackStack( "Partners" );
+                fragmentTransaction.commit();
+                break;
+            }
+            case R.id.notifications :
+            {
+                mSubTitle.setText("Notifications");
+                fragmentTransaction.replace(R.id.content_frame, notificationFragment);
+                fragmentTransaction.addToBackStack( "Notifications" );
+                fragmentTransaction.commit();
+                break;
+            }
+            case R.id.download_limits :
+            {
+                mSubTitle.setText("Download limits");
+                fragmentTransaction.replace(R.id.content_frame, downloadFragment);
+                fragmentTransaction.addToBackStack( "Download limits" );
+                fragmentTransaction.commit();
+                break;
+            }
+            case R.id.about_us :
+            {
+                mSubTitle.setText("About Us");
+                fragmentTransaction.replace(R.id.content_frame, aboutUsFragment);
+                fragmentTransaction.addToBackStack( "About Us" );
+                fragmentTransaction.commit();
+                break;
+            }
+            case R.id.feedback_contact :
+            {
+                mSubTitle.setText("Feedback and Contact");
+                fragmentTransaction.replace(R.id.content_frame, feedbackFragment);
+                fragmentTransaction.addToBackStack( "Feedback and Contact" );
+                fragmentTransaction.commit();
+                break;
+            }
+            case R.id.follow_us :
+            {
+                mSubTitle.setText("Follow Us");
+                fragmentTransaction.replace(R.id.content_frame, followUsFragment);
+                fragmentTransaction.addToBackStack( "Follow Us" );
+                fragmentTransaction.commit();
+                break;
+            }
+            case R.id.list_tracks :
+            {
+                mSubTitle.setText("List Tracks");
+                fragmentTransaction.replace(R.id.content_frame, lisTracksFragment);
+                fragmentTransaction.addToBackStack( "List Tracks" );
+                fragmentTransaction.commit();
+                break;
+            }
+            case R.id.filters :
+            {
+                mSubTitle.setText("Filters");
+                fragmentTransaction.replace(R.id.content_frame, filterFragment);
+                fragmentTransaction.addToBackStack( "Filters" );
+                fragmentTransaction.commit();
+                break;
+            }
+            default:
+            {
+                /*// Creating a fragment object
+                SideMenuFragment rFragment = new SideMenuFragment();
+
+                // Creating a Bundle object
+                Bundle data = new Bundle();
+
+                // Setting the index of the currently selected item of mDrawerList
+                data.putInt("position", position);
+
+                // Setting the position to the fragment
+                rFragment.setArguments(data);
+
+                //FragmentManager fragmentManager = getFragmentManager();
+                //FragmentTransaction ft = fragmentManager.beginTransaction();
+
+                // Adding a fragment to the fragment transaction
+                fragmentTransaction.replace(R.id.content_frame, rFragment);
+                fragmentTransaction.addToBackStack( "rFragment" );
+
+                // Committing the transaction
+                fragmentTransaction.commit();*/
+                break;
+            }
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    /** Called whenever we call invalidateOptionsMenu() *//*
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         // If the drawer is open, hide action items related to the content view
@@ -594,15 +798,7 @@ public class SideMenu extends FragmentActivity implements  ServiceCallbacks {
 
         menu.findItem(R.id.action_search).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
+    }*/
 
 
     // region List Tracks actions
@@ -853,11 +1049,11 @@ public class SideMenu extends FragmentActivity implements  ServiceCallbacks {
 */
 
    // region Back button action handling
-    @Override
+   /* @Override
     public void onBackPressed()
     {
         BackBtnAction();
-    }
+    }*/
 
     public  void BackBtnAction()
     {

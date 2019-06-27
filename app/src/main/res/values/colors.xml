@@ -39,5 +39,12 @@
 
     <color name="background">#EFEFEF</color>
     <color name="placeholder_grey_20">#33AAADC4</color>
+    <color name="holo_light_primary">#00bfc6</color>
+    <color name="holo_light_primary_dark">#00bfc6</color>
+    <color name="background_holo_light">#00bfc6</color>
+    <color name="primary_material_light_1">#00bfc6</color>
+    <color name="primary_dark_material_light_1">#00bfc6</color>
+    <color name="accent_material_light_1">#00bfc6</color>
+    <color name="foreground_material_light">#fefcfc</color>
 
 </resources>

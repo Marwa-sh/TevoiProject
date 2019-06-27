@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tevoi.tevoi.Utils.Global;
@@ -30,7 +33,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class RegisterActivity extends Activity implements SpinnerAdapter, AdapterView.OnItemSelectedListener
+public class RegisterActivity extends AppCompatActivity implements SpinnerAdapter, AdapterView.OnItemSelectedListener
 {
     Spinner spnrCountries, spnrGender;
     List<CountryObject> countries;
@@ -45,6 +48,15 @@ public class RegisterActivity extends Activity implements SpinnerAdapter, Adapte
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        /*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
+        TextView mSubTitle = (TextView) toolbar.findViewById(R.id.toolbar_subtitle);
+
+        setSupportActionBar(toolbar);
+        mTitle.setText("Tevoi");*/
+        //mSubTitle.setText("First Page");
+        //getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setCancelable(false);

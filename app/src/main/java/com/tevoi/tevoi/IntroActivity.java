@@ -5,9 +5,16 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.app.Activity;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
@@ -27,14 +34,25 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class IntroActivity extends Activity {
+public class IntroActivity  extends AppCompatActivity {
 
     ImageView imageViewIntroLogo;
     ImageView imgMainSponsoreLogo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
+
+        /*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
+        TextView mSubTitle = (TextView) toolbar.findViewById(R.id.toolbar_subtitle);
+
+        setSupportActionBar(toolbar);
+        mTitle.setText("Tevoi");*/
+        //mSubTitle.setText("First Page");
+        //getSupportActionBar().setDisplayShowTitleEnabled(false);
+
 
         imgMainSponsoreLogo = findViewById(R.id.img_main_sponsore_logo);
         imageViewIntroLogo = findViewById(R.id.imageViewIntroLogo);
@@ -120,4 +138,5 @@ public class IntroActivity extends Activity {
     {
 
     }
+
 }

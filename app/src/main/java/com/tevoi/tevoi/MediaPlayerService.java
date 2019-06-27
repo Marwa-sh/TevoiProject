@@ -508,7 +508,7 @@ public class MediaPlayerService extends Service implements
         bigViews.setImageViewBitmap(R.id.status_bar_album_art,
                 Global.getDefaultAlbumArt(this));
 
-        Intent notificationIntent = new Intent(this, MainActivity.class);
+        Intent notificationIntent = new Intent(this, MainActivityOld.class);
         notificationIntent.setAction(Global.ACTION.MAIN_ACTION);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                 | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -612,7 +612,7 @@ public class MediaPlayerService extends Service implements
         bigViews.setImageViewBitmap(R.id.status_bar_album_art,
                 Global.getDefaultAlbumArt(this));
 
-        Intent notificationIntent = new Intent(this, MainActivity.class);
+        Intent notificationIntent = new Intent(this, MainActivityOld.class);
         notificationIntent.setAction(Global.ACTION.MAIN_ACTION);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                 | Intent.FLAG_ACTIVITY_CLEAR_TASK);

@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -20,7 +22,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LoginActivity extends Activity
+public class LoginActivity extends AppCompatActivity
 {
     TextView txtLogin;
     ImageButton btnLogin, btnRegister, btnRequestNewPassword;
@@ -32,6 +34,15 @@ public class LoginActivity extends Activity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_login);
+
+        /*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
+        TextView mSubTitle = (TextView) toolbar.findViewById(R.id.toolbar_subtitle);
+
+        setSupportActionBar(toolbar);
+        mTitle.setText("Tevoi");*/
+        //mSubTitle.setText("First Page");
+        //getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setCancelable(false);
