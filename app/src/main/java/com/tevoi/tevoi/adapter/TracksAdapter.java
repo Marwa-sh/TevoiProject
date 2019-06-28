@@ -24,6 +24,7 @@ import com.tevoi.tevoi.SideMenu;
 import com.tevoi.tevoi.TrackText;
 import com.tevoi.tevoi.Utils.Global;
 import com.tevoi.tevoi.model.IResponse;
+import com.tevoi.tevoi.model.LoadingVH;
 import com.tevoi.tevoi.model.TrackObject;
 import com.tevoi.tevoi.model.TrackSerializableObject;
 import com.tevoi.tevoi.model.UserListObject;
@@ -36,12 +37,16 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewHolder>
+public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 {
     // region pagination
     private static final int ITEM = 0;
     private static final int LOADING = 1;
     private boolean isLoadingAdded = false;
+    private boolean retryPageLoad = false;
+    private String errorMsg;
+
+    private PaginationAdapterCallback mCallback;
     // endregion
 
     private List<TrackObject> tracks;
@@ -60,11 +65,43 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
         this.fragmentName = fragmentName;
     }
 
-    public TrackViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType)
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType)
     {
-        View row;
+        LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
+        RecyclerView.ViewHolder viewHolder2 = null;
 
-        switch (fragmentName) {
+        switch (viewType)
+        {
+            case ITEM:
+            {
+                viewHolder2 = getViewHolder(viewGroup,inflater );
+                break;
+            }
+            case LOADING:
+            {
+                try
+                {
+                    View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_progress, viewGroup, false);
+                    viewHolder2 = new LoadingVH(v);
+                }
+                catch (Exception exc)
+                {
+                    viewHolder2 = new LoadingVH(new View(activity));
+                }
+            }
+            break;
+        }
+        return viewHolder2;
+    }
+
+    @NonNull
+    private RecyclerView.ViewHolder getViewHolder(ViewGroup viewGroup, LayoutInflater inflater) {
+        RecyclerView.ViewHolder viewHolder;
+
+        View row;
+        switch (fragmentName)
+        {
             case Global.HistoryFragmentName: {
                 row = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.track_row_instance_all, viewGroup, false);
                 break;
@@ -88,31 +125,58 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
                 break;
             }
         }
-        TrackViewHolder holder = new TrackViewHolder(row);
-        return holder;
+        viewHolder = new TrackViewHolder(row);
+        return viewHolder;
 
     }
 
     @Override
-    public void onBindViewHolder(@NonNull TrackViewHolder viewHolder, int i) {
-        TrackObject track =  tracks.get(i);
-        viewHolder.tvAuthor.setText(track.getAuthors());
-        viewHolder.tvTrackName.setText(track.getName());
-        viewHolder.ratingBar.setRating(track.getRate());
-        viewHolder.tvCategories.setText(track.getCategories());
-        viewHolder.tvDuration.setText(track.getDuration());
-/*
-        viewHolder.btnLike.setOnClickListener(new View.OnClickListener(){
+    public int getItemViewType(int position) {
+        return (position == tracks.size() - 1 && isLoadingAdded) ? LOADING : ITEM;
+    }
 
-            @Override
-            public void onClick(View view) {
-                //notice I implemented onClickListener here
-                // so I can associate this click with final Item item
-                Toast.makeText(context, "Hi maroosh", Toast.LENGTH_SHORT).show();
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int i) {
+
+        switch (getItemViewType(i))
+        {
+            case ITEM:
+                TrackViewHolder viewHolder = (TrackViewHolder) holder;
+                TrackObject track =  tracks.get(i);
+                viewHolder.tvAuthor.setText(track.getAuthors());
+                viewHolder.tvTrackName.setText(track.getName());
+                viewHolder.ratingBar.setRating(track.getRate());
+                viewHolder.tvCategories.setText(track.getCategories());
+                viewHolder.tvDuration.setText(track.getDuration());
+
+                break;
+            case LOADING:
+            {
+                LoadingVH loadingVH = (LoadingVH) holder;
+                if(loadingVH != null) {
+
+                    if (retryPageLoad)
+                    {
+                        loadingVH.mErrorLayout.setVisibility(View.VISIBLE);
+                        loadingVH.mProgressBar.setVisibility(View.GONE);
+
+                        loadingVH.mErrorTxt.setText(
+                                errorMsg != null ?
+                                        errorMsg :
+                                        activity.getString(R.string.error_msg_unknown));
+
+                    } else
+                    {
+                        if(loadingVH.mErrorLayout!= null) loadingVH.mErrorLayout.setVisibility(View.GONE);
+                        if(loadingVH.mProgressBar!= null) loadingVH.mProgressBar.setVisibility(View.VISIBLE);
+                    }
+                }
+                break;
             }
 
-        });*/
         }
+
+    }
 
     @Override
     public int getItemCount() {
@@ -187,7 +251,8 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
                                 //Linearlayout is the layout the fragments are being added to.
                                 View view = activity.lisTracksFragment.linearLayoutListTracks.getChildAt(activity.lisTracksFragment.linearLayoutListTracks.getChildCount()-1);
 
-                                activity.lisTracksFragment.scrollViewListTracks.smoothScrollBy(0,(int)(view.getY() + view.getHeight()));
+                                // TODO : find solution since we removed scroll view
+                                //activity.lisTracksFragment.scrollViewListTracks.smoothScrollBy(0,(int)(view.getY() + view.getHeight()));
                             }
                         });
                     }
@@ -575,11 +640,62 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.TrackViewH
 
     }
 
-    protected class LoadingVH extends RecyclerView.ViewHolder {
 
-        public LoadingVH(View itemView) {
-            super(itemView);
+    // region helpers
+
+    public void add(TrackObject mc) {
+        tracks.add(mc);
+        notifyItemInserted(tracks.size() - 1);
+    }
+
+    public void addAll(List<TrackObject> mcList) {
+        for (TrackObject mc : mcList) {
+            add(mc);
         }
     }
+
+    public void remove(TrackObject city) {
+        int position = tracks.indexOf(city);
+        if (position > -1) {
+            tracks.remove(position);
+            notifyItemRemoved(position);
+        }
+    }
+
+    public void clear() {
+        isLoadingAdded = false;
+        while (getItemCount() > 0) {
+            remove(getItem(0));
+        }
+    }
+
+    public boolean isEmpty() {
+        return getItemCount() == 0;
+    }
+
+
+    public void addLoadingFooter() {
+        isLoadingAdded = true;
+        add(new TrackObject());
+    }
+
+    public void removeLoadingFooter() {
+        isLoadingAdded = false;
+
+        int position = tracks.size() - 1;
+        TrackObject item = getItem(position);
+
+        if (item != null) {
+            tracks.remove(position);
+            notifyItemRemoved(position);
+        }
+    }
+
+    public TrackObject getItem(int position) {
+        return tracks.get(position);
+    }
+
+
+    // endregion
 
 }

@@ -218,11 +218,11 @@ public class SideMenu extends AppCompatActivity implements  ServiceCallbacks , N
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
-        TextView mSubTitle = (TextView) toolbar.findViewById(R.id.toolbar_subtitle);
+        //TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
+        //TextView mSubTitle = (TextView) toolbar.findViewById(R.id.toolbar_subtitle);
 
         setSupportActionBar(toolbar);
-        mTitle.setText("Tevoi");
+        //mTitle.setText("Tevoi");
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -640,10 +640,10 @@ public class SideMenu extends AppCompatActivity implements  ServiceCallbacks , N
 
         android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
+        //TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
         TextView mSubTitle = (TextView) toolbar.findViewById(R.id.toolbar_subtitle);
 
-        mTitle.setText("Tevoi");
+        //mTitle.setText("Tevoi");
         switch(id)
         {
             case R.id.test_pagination:

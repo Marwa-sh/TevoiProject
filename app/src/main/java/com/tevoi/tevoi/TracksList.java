@@ -1,10 +1,14 @@
 package com.tevoi.tevoi;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,26 +21,53 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tevoi.tevoi.Utils.Global;
 import com.tevoi.tevoi.Utils.HelperFunctions;
+import com.tevoi.tevoi.adapter.PaginationAdapter;
 import com.tevoi.tevoi.adapter.Track;
 import com.tevoi.tevoi.adapter.TracksAdapter;
+import com.tevoi.tevoi.model.PaginationScrollListener;
 import com.tevoi.tevoi.model.RecyclerViewEmptySupport;
 import com.tevoi.tevoi.model.TrackFilter;
+import com.tevoi.tevoi.model.TrackObject;
 import com.tevoi.tevoi.model.TrackResponseList;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TracksList extends Fragment implements AdapterView.OnItemSelectedListener {
+public class TracksList extends Fragment implements AdapterView.OnItemSelectedListener
+{
+    // region pagination properties
+
+    //PaginationAdapter adapter;
+    LinearLayoutManager linearLayoutManager;
+    ProgressBar progressBar;
+
+    LinearLayout errorLayout;
+    TextView txtError;
+    Button btnRetry;
+
+    private boolean isLoading = false;
+    private boolean isLastPage = false;
+    private int TOTAL_PAGES = 0;
+    private int currentPage = 0;
+    int PAGE_SIZE =3;
+    // endregion
+
+
+
     ArrayList<Track> mTracks = new ArrayList<>();
     TracksAdapter adapter ;
     RecyclerViewEmptySupport[] recyclerViews= new RecyclerViewEmptySupport[3];
@@ -47,9 +78,8 @@ public class TracksList extends Fragment implements AdapterView.OnItemSelectedLi
     SideMenu activity;
     ImageButton btnSearch;
     public FragmentManager fm;
-    public ScrollView scrollViewListTracks;
+    //public ScrollView scrollViewListTracks;
     public LinearLayout linearLayoutListTracks;
-
 
     View rootView;
     public void initMediaPlayerLayout(View rootView)
@@ -64,6 +94,18 @@ public class TracksList extends Fragment implements AdapterView.OnItemSelectedLi
         activity.btnPausePlayMainMediaPlayer = rootView.findViewById(R.id.img_btn_pause_main_player);
 
     }
+
+    public  void initiatePagination()
+    {
+        errorLayout = (LinearLayout) rootView.findViewById(R.id.error_layout);
+        txtError = (TextView) rootView.findViewById(R.id.error_txt_cause);
+        btnRetry = (Button) rootView.findViewById(R.id.error_btn_retry);
+
+        isLastPage = false;
+        progressBar = (ProgressBar) rootView.findViewById(R.id.main_progress_list_tracks);
+        currentPage = 0;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -73,10 +115,12 @@ public class TracksList extends Fragment implements AdapterView.OnItemSelectedLi
         active_tab = defaultTab;
         btnSearch = rootView.findViewById(R.id.btn_search);
         fm = getActivity().getSupportFragmentManager();
-        scrollViewListTracks = rootView.findViewById(R.id.scrollViewListTracks);
+        //scrollViewListTracks = rootView.findViewById(R.id.scrollViewListTracks);
         linearLayoutListTracks  = rootView.findViewById(R.id.linearLayoutListTracks);
 
         initMediaPlayerLayout(rootView);
+
+        initiatePagination();
 
         activity.mainPlayerLayout.setOnTouchListener(new View.OnTouchListener() {
             public boolean onTouch(View v, MotionEvent event) {
@@ -145,7 +189,6 @@ public class TracksList extends Fragment implements AdapterView.OnItemSelectedLi
             }
         });
 
-
         activity.btnPausePlayMainMediaPlayer.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -175,7 +218,6 @@ public class TracksList extends Fragment implements AdapterView.OnItemSelectedLi
         });
         if(btnSearch != null)
         {
-
             btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -221,23 +263,16 @@ public class TracksList extends Fragment implements AdapterView.OnItemSelectedLi
         tabs[1]= rootView.findViewById(R.id.btnTopRatedList);
         tabs[2] = rootView.findViewById(R.id.btnPopularList);
 
-        mTracks = new ArrayList<>();
-        mTracks.add(new Track());
-        mTracks.add(new Track());
-        mTracks.add(new Track());
-        mTracks.add(new Track());
-        mTracks.add(new Track());
-
         if(defaultTab < 0 || defaultTab > 2)
         {
             defaultTab =0;
         }
-        //defaultTab = 0;
 
-        recyclerViews[defaultTab] = rootView.findViewById(R.id.tracks_recycler_View);
+        /*recyclerViews[defaultTab] = rootView.findViewById(R.id.tracks_recycler_View);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerViews[defaultTab].setLayoutManager(layoutManager);
+        recyclerViews[defaultTab].setLayoutManager(layoutManager);*/
+
         activateTab(defaultTab);
 /*
 
@@ -286,10 +321,10 @@ public class TracksList extends Fragment implements AdapterView.OnItemSelectedLi
         activateTab(2);
     }
 
-    public void activateTab(int k)
+    public void activateTab(final int k)
     {
-        activity.mProgressDialog.setMessage("Loading");
-        activity.mProgressDialog.show();
+        /*activity.mProgressDialog.setMessage("Loading");
+        activity.mProgressDialog.show();*/
 
         final int kk= k;
 
@@ -301,11 +336,56 @@ public class TracksList extends Fragment implements AdapterView.OnItemSelectedLi
         for(int i=0;i<tabs.length;i++)
         {
             tabs[i].setBackgroundColor(ContextCompat.getColor(activity,R.color.tevoiBlueSecondary));
-            //tabs[i].refreshDrawableState();
         }
 
         tabs[k].setBackgroundColor(ContextCompat.getColor(activity,R.color.tevoiBluePrimary));
-        TrackFilter filter =  new TrackFilter();
+
+        linearLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerViews[k].setLayoutManager(linearLayoutManager);
+
+        List<TrackObject> trs = new ArrayList<>();
+        adapter = new TracksAdapter(trs, activity, Global.ListTracksFragmentName);
+
+        recyclerViews[k].setItemAnimator(new DefaultItemAnimator());
+
+        recyclerViews[k].setAdapter(adapter);
+
+        recyclerViews[k].addOnScrollListener(new PaginationScrollListener(linearLayoutManager)
+        {
+            @Override
+            protected void loadMoreItems() {
+                isLoading = true;
+                currentPage += 1;
+
+                loadNextPage(k);
+            }
+
+            @Override
+            public int getTotalPageCount() {
+                return TOTAL_PAGES;
+            }
+
+            @Override
+            public boolean isLastPage() {
+                return isLastPage;
+            }
+
+            @Override
+            public boolean isLoading() {
+                return isLoading;
+            }
+        });
+
+        // mocking network delay for API call
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                loadFirstPage(k);
+            }
+        }, 1000);
+
+        /*TrackFilter filter =  new TrackFilter();
         filter.SearchKey = ""; filter.IsLocationEnabled = false;
         filter.TrackTypeId =1;
         filter.ListTypeEnum = defaultTab; filter.Index = 0; filter.Size = 10;
@@ -330,11 +410,108 @@ public class TracksList extends Fragment implements AdapterView.OnItemSelectedLi
                 activity.mProgressDialog.dismiss();
                 Toast.makeText(activity,"something went wrong", Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
 
     }
 
+    private void loadFirstPage(final int tabId)
+    {
+        activity.mProgressDialog.setMessage("Loading1");
+        activity.mProgressDialog.show();
 
+        TrackFilter filter =  new TrackFilter();
+        filter.SearchKey = ""; filter.IsLocationEnabled = false;
+        filter.TrackTypeId = 1;
+        filter.ListTypeEnum = tabId; filter.Index = currentPage; filter.Size = PAGE_SIZE;
+        Call<TrackResponseList> call = Global.client.getListMainTrack(filter);
+        call.enqueue(new Callback<TrackResponseList>() {
+            public void onResponse(Call<TrackResponseList> call, Response<TrackResponseList> response) {
+
+                TrackResponseList tracks = response.body();
+                TOTAL_PAGES = tracks.getTotalRowCount() / PAGE_SIZE;
+
+                View v = rootView.findViewById(R.id.tracks_list_empty);
+                recyclerViews[tabId].setEmptyView(v);
+
+                progressBar.setVisibility(View.GONE);
+                adapter.addAll(tracks.getTrack());
+
+                if (currentPage <= TOTAL_PAGES) adapter.addLoadingFooter();
+                else isLastPage = true;
+                activity.mProgressDialog.dismiss();
+            }
+
+            public void onFailure(Call<TrackResponseList> call, Throwable t) {
+                activity.mProgressDialog.dismiss();
+                t.printStackTrace();
+                showErrorView(t);
+            }
+        });
+    }
+
+    private void loadNextPage(int tabId) {
+
+        activity.mProgressDialog.setMessage("Loading");
+        activity.mProgressDialog.show();
+
+        TrackFilter filter =  new TrackFilter();
+        filter.SearchKey = ""; filter.IsLocationEnabled = false;
+        filter.TrackTypeId =1;
+        filter.ListTypeEnum = tabId; filter.Index = currentPage; filter.Size = PAGE_SIZE;
+        Call<TrackResponseList> call = Global.client.getListMainTrack(filter);
+        call.enqueue(new Callback<TrackResponseList>() {
+            public void onResponse(Call<TrackResponseList> call, Response<TrackResponseList> response) {
+                //generateDataList(response.body());
+                TrackResponseList tracks = response.body();
+                TOTAL_PAGES = tracks.getTotalRowCount() / PAGE_SIZE;
+                adapter.removeLoadingFooter();
+                isLoading = false;
+
+               /* if(tracks.getTrack().size() == 0 && currentPage != 0)
+                    currentPage --;*/
+
+                adapter.addAll(tracks.getTrack());
+
+                if (currentPage != TOTAL_PAGES) adapter.addLoadingFooter();
+                else isLastPage = true;
+
+                activity.mProgressDialog.dismiss();
+            }
+
+            public void onFailure(Call<TrackResponseList> call, Throwable t) {
+                activity.mProgressDialog.dismiss();currentPage --;
+            }
+        });
+
+
+
+    }
+
+    private void showErrorView(Throwable throwable) {
+        if (errorLayout.getVisibility() == View.GONE) {
+            errorLayout.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.GONE);
+
+            txtError.setText(fetchErrorMessage(throwable));
+        }
+    }
+
+    private String fetchErrorMessage(Throwable throwable) {
+        String errorMsg = getResources().getString(R.string.error_msg_unknown);
+
+        if (!isNetworkConnected()) {
+            errorMsg = getResources().getString(R.string.error_msg_no_internet);
+        } else if (throwable instanceof TimeoutException) {
+            errorMsg = getResources().getString(R.string.error_msg_timeout);
+        }
+
+        return errorMsg;
+    }
+
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo() != null;
+    }
 
     public void onItemSelected(AdapterView<?> parent, View view,
                                int pos, long id) {
