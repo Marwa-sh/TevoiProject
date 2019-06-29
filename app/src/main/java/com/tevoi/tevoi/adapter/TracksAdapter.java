@@ -45,7 +45,6 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private boolean isLoadingAdded = false;
     private boolean retryPageLoad = false;
     private String errorMsg;
-
     private PaginationAdapterCallback mCallback;
     // endregion
 

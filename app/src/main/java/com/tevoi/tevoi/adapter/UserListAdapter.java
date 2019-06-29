@@ -20,6 +20,8 @@ import com.tevoi.tevoi.SideMenu;
 import com.tevoi.tevoi.UserListTracksFragment;
 import com.tevoi.tevoi.Utils.Global;
 import com.tevoi.tevoi.model.IResponse;
+import com.tevoi.tevoi.model.LoadingVH;
+import com.tevoi.tevoi.model.TrackObject;
 import com.tevoi.tevoi.model.UserListObject;
 
 import java.util.List;
@@ -28,8 +30,18 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserListViewHolder>
+public class UserListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 {
+    // region pagination
+    private static final int ITEM = 0;
+    private static final int LOADING = 1;
+    private boolean isLoadingAdded = false;
+    private boolean retryPageLoad = false;
+    private String errorMsg;
+
+    private PaginationAdapterCallback mCallback;
+    // endregion
+
     private List<UserListObject> userLists;
     private SideMenu activity;
 
@@ -37,19 +49,87 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
         this.userLists = userLists;
         this.activity = activity;
     }
-    public UserListAdapter.UserListViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View row= LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.fragment_user_list_instance,viewGroup,false);
-        UserListAdapter.UserListViewHolder holder = new UserListAdapter.UserListViewHolder(row);
 
-        return holder;
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType)
+    {
+        LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
+        RecyclerView.ViewHolder viewHolder2 = null;
+
+        switch (viewType)
+        {
+            case ITEM:
+            {
+                viewHolder2 = getViewHolder(viewGroup,inflater );
+                break;
+            }
+            case LOADING:
+            {
+                try
+                {
+                    View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_progress, viewGroup, false);
+                    viewHolder2 = new LoadingVH(v);
+                }
+                catch (Exception exc)
+                {
+                    viewHolder2 = new LoadingVH(new View(activity));
+                }
+            }
+            break;
+        }
+        return viewHolder2;
+    }
+    @NonNull
+    private RecyclerView.ViewHolder getViewHolder(ViewGroup viewGroup, LayoutInflater inflater) {
+        RecyclerView.ViewHolder viewHolder;
+        View row= LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.fragment_user_list_instance,viewGroup,false);
+        viewHolder = new UserListAdapter.UserListViewHolder(row);
+        return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull UserListAdapter.UserListViewHolder viewHolder, int i) {
-        UserListObject userList =  userLists.get(i);
-        viewHolder.tvUserListName.setText(userList.getName());
-        viewHolder.tvCreationDate.setText(userList.getCreationDate());
-        viewHolder.tvUserListDuration.setText(userList.getDuration());
+    public int getItemViewType(int position) {
+        return (position == userLists.size() - 1 && isLoadingAdded) ? LOADING : ITEM;
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int i) {
+
+        switch (getItemViewType(i))
+        {
+            case ITEM:
+                UserListAdapter.UserListViewHolder viewHolder = (UserListAdapter.UserListViewHolder) holder;
+                UserListObject userList =  userLists.get(i);
+                viewHolder.tvUserListName.setText(userList.getName());
+                viewHolder.tvCreationDate.setText(userList.getCreationDate());
+                viewHolder.tvUserListDuration.setText(userList.getDuration());
+
+                break;
+            case LOADING:
+            {
+                LoadingVH loadingVH = (LoadingVH) holder;
+                if(loadingVH != null) {
+
+                    if (retryPageLoad)
+                    {
+                        loadingVH.mErrorLayout.setVisibility(View.VISIBLE);
+                        loadingVH.mProgressBar.setVisibility(View.GONE);
+
+                        loadingVH.mErrorTxt.setText(
+                                errorMsg != null ?
+                                        errorMsg :
+                                        activity.getString(R.string.error_msg_unknown));
+
+                    } else
+                    {
+                        if(loadingVH.mErrorLayout!= null) loadingVH.mErrorLayout.setVisibility(View.GONE);
+                        if(loadingVH.mProgressBar!= null) loadingVH.mProgressBar.setVisibility(View.VISIBLE);
+                    }
+                }
+                break;
+            }
+
+        }
 
     }
 
@@ -249,6 +329,63 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
         }
     }
 
+    // region helpers
+
+    public void add(UserListObject mc) {
+        userLists.add(mc);
+        notifyItemInserted(userLists.size() - 1);
+    }
+
+    public void addAll(List<UserListObject> mcList)
+    {
+        for (UserListObject mc : mcList) {
+            add(mc);
+        }
+    }
+
+    public void remove(UserListObject city) {
+        int position = userLists.indexOf(city);
+        if (position > -1) {
+            userLists.remove(position);
+            notifyItemRemoved(position);
+        }
+    }
+
+    public void clear() {
+        isLoadingAdded = false;
+        while (getItemCount() > 0) {
+            remove(getItem(0));
+        }
+    }
+
+    public boolean isEmpty() {
+        return getItemCount() == 0;
+    }
+
+
+    public void addLoadingFooter() {
+        isLoadingAdded = true;
+        add(new UserListObject());
+    }
+
+    public void removeLoadingFooter() {
+        isLoadingAdded = false;
+
+        int position = userLists.size() - 1;
+        UserListObject item = getItem(position);
+
+        if (item != null) {
+            userLists.remove(position);
+            notifyItemRemoved(position);
+        }
+    }
+
+    public UserListObject getItem(int position) {
+        return userLists.get(position);
+    }
+
+
+    // endregion
 
 }
 

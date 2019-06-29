@@ -39,13 +39,19 @@
             android:layout_height="match_parent"
             >
         </com.tevoi.tevoi.model.RecyclerViewEmptySupport>
-    <TextView android:id="@+id/user_lists_empty"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:textSize="@dimen/text_size"
-        android:paddingTop="@dimen/text_empty_list"
-        android:text="@string/empty_list"
-        />
+        <TextView android:id="@+id/user_lists_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textSize="@dimen/text_size"
+            android:paddingTop="@dimen/text_empty_list"
+            android:text="@string/empty_list"
+            />
+        <ProgressBar
+            android:id="@+id/main_progress_list_tracks"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+        <include layout="@layout/error_layout"/>
 
 </LinearLayout>
