@@ -1,27 +1,53 @@
 package com.tevoi.tevoi;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tevoi.tevoi.Utils.Global;
+import com.tevoi.tevoi.Utils.HelperFunctions;
 import com.tevoi.tevoi.adapter.TracksAdapter;
+import com.tevoi.tevoi.model.PaginationScrollListener;
 import com.tevoi.tevoi.model.RecyclerViewEmptySupport;
 import com.tevoi.tevoi.model.TrackObject;
 import com.tevoi.tevoi.model.TrackResponseList;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class HistoryListFragment extends Fragment {
+public class HistoryListFragment extends Fragment
+{
+    // region pagination properties
+    LinearLayoutManager linearLayoutManager;
+    ProgressBar progressBar;
+
+    LinearLayout errorLayout;
+    TextView txtError;
+    Button btnRetry;
+
+    private boolean isLoading = false;
+    private boolean isLastPage = false;
+    private int TOTAL_PAGES = 0;
+    private int currentPage = 0;
+    int PAGE_SIZE = Global.PAGE_SIZE;;
+    // endregion
+
     TracksAdapter adapter ;
     RecyclerViewEmptySupport recyclerView;
     //RecyclerView recyclerView;
@@ -35,14 +61,57 @@ public class HistoryListFragment extends Fragment {
         activity = (SideMenu) getActivity();
 
         recyclerView = rootView.findViewById(R.id.history_tracks_recycler_View);
+        initiatePagination();
+
         //recyclerView = rootView.findViewById(R.id.history_tracks_recycler_View);
-        final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(layoutManager);
+        linearLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setEmptyView(rootView.findViewById(R.id.history_list_empty));
 
+        List<TrackObject> trs = new ArrayList<>();
+        adapter = new TracksAdapter(trs, activity, Global.HistoryFragmentName);
 
-        activity.mProgressDialog.setMessage("Loading"); activity.mProgressDialog.show();
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        recyclerView.setAdapter(adapter);
+
+        recyclerView.addOnScrollListener(new PaginationScrollListener(linearLayoutManager)
+        {
+            @Override
+            protected void loadMoreItems() {
+                isLoading = true;
+                currentPage += 1;
+
+                loadNextPage();
+            }
+
+            @Override
+            public int getTotalPageCount() {
+                return TOTAL_PAGES;
+            }
+
+            @Override
+            public boolean isLastPage() {
+                return isLastPage;
+            }
+
+            @Override
+            public boolean isLoading() {
+                return isLoading;
+            }
+        });
+
+        // mocking network delay for API call
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                loadFirstPage();
+            }
+        }, 1000);
+
+
+        /*activity.mProgressDialog.setMessage("Loading"); activity.mProgressDialog.show();
 
         Call<TrackResponseList> call = Global.client.getHistoryList(0, 10);
         call.enqueue(new Callback <TrackResponseList>(){
@@ -63,7 +132,7 @@ public class HistoryListFragment extends Fragment {
                 activity.mProgressDialog.dismiss();
                 Toast.makeText(getContext(),"something went wrong", Toast.LENGTH_SHORT);
             }
-        });
+        });*/
 
         return  rootView;
     }
@@ -78,9 +147,7 @@ public class HistoryListFragment extends Fragment {
     {
         SideMenu activity = (SideMenu) getActivity();
         activity.lisTracksFragment.defaultTab = 0;
-        String[] menuItems = getResources().getStringArray(R.array.rivers);
-        // Updating the action bar title
-        getActivity().getActionBar().setTitle(menuItems[0]);
+        activity.updateSubTite("List Tracks");
 
         android.support.v4.app.FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.content_frame, activity.lisTracksFragment);
@@ -92,9 +159,7 @@ public class HistoryListFragment extends Fragment {
     public void changeTabToTopRatedHistory(View view)
     {
         SideMenu activity = (SideMenu) getActivity();
-        String[] menuItems = getResources().getStringArray(R.array.rivers);
-        // Updating the action bar title
-        getActivity().getActionBar().setTitle(menuItems[0]);
+        activity.updateSubTite("List Tracks");
 
         activity.lisTracksFragment.defaultTab = 1;
         android.support.v4.app.FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
@@ -105,9 +170,8 @@ public class HistoryListFragment extends Fragment {
 
     public void changeToPopularHistory(View view) {
         SideMenu activity = (SideMenu) getActivity();
-        String[] menuItems = getResources().getStringArray(R.array.rivers);
-        // Updating the action bar title
-        getActivity().getActionBar().setTitle(menuItems[0]);
+        activity.updateSubTite("List Tracks");
+
 
         activity.lisTracksFragment.defaultTab = 2;
         android.support.v4.app.FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
@@ -119,5 +183,120 @@ public class HistoryListFragment extends Fragment {
     public void notifyHistoryListAdapter()
     {
         adapter.notifyDataSetChanged();
+    }
+
+
+    public  void initiatePagination()
+    {
+        errorLayout = (LinearLayout) rootView.findViewById(R.id.error_layout);
+        txtError = (TextView) rootView.findViewById(R.id.error_txt_cause);
+        btnRetry = (Button) rootView.findViewById(R.id.error_btn_retry);
+
+        isLastPage = false;
+        progressBar = (ProgressBar) rootView.findViewById(R.id.main_progress_list_tracks);
+        currentPage = 0;
+
+        btnRetry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loadFirstPage();
+            }
+        });
+    }
+
+    private void loadFirstPage()
+    {
+        currentPage = 0;
+        activity.mProgressDialog.setMessage("Loading1");
+        activity.mProgressDialog.show();
+
+        Call<TrackResponseList> call = Global.client.getHistoryList(currentPage, PAGE_SIZE);
+        call.enqueue(new Callback <TrackResponseList>(){
+            public void onResponse(Call<TrackResponseList> call, Response<TrackResponseList> response) {
+                //generateDataList(response.body());
+                SideMenu activity = (SideMenu) getActivity();
+                TrackResponseList tracks=response.body();
+
+                TOTAL_PAGES = tracks.getTotalRowCount() / PAGE_SIZE;
+
+                if(tracks.getTrack().size() == 0) {
+                    View v = rootView.findViewById(R.id.history_list_empty);
+                    recyclerView.setEmptyView(v);
+                }
+                progressBar.setVisibility(View.GONE);
+                adapter.addAll(tracks.getTrack());
+
+                if (currentPage <= TOTAL_PAGES) adapter.addLoadingFooter();
+                else isLastPage = true;
+                activity.mProgressDialog.dismiss();
+                adapter.notifyDataSetChanged();
+            }
+            public void onFailure(Call<TrackResponseList> call, Throwable t)
+            {
+                activity.mProgressDialog.dismiss();
+                t.printStackTrace();
+                showErrorView(t);
+                Toast.makeText(getContext(),"something went wrong", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void loadNextPage() {
+
+        activity.mProgressDialog.setMessage("Loading");
+        activity.mProgressDialog.show();
+
+        Call<TrackResponseList> call = Global.client.getHistoryList(currentPage, PAGE_SIZE);
+        call.enqueue(new Callback <TrackResponseList>(){
+            public void onResponse(Call<TrackResponseList> call, Response<TrackResponseList> response) {
+                //generateDataList(response.body());
+                SideMenu activity = (SideMenu) getActivity();
+                TrackResponseList tracks=response.body();
+
+                TOTAL_PAGES = tracks.getTotalRowCount() / PAGE_SIZE;
+                adapter.removeLoadingFooter();
+                isLoading = false;
+
+                adapter.addAll(tracks.getTrack());
+                if(tracks.getTrack().size() == 0)
+                {
+                    currentPage --;
+                }
+                if (currentPage != TOTAL_PAGES) adapter.addLoadingFooter();
+                else isLastPage = true;
+
+                activity.mProgressDialog.dismiss();
+                adapter.notifyDataSetChanged();
+            }
+            public void onFailure(Call<TrackResponseList> call, Throwable t)
+            {
+                activity.mProgressDialog.dismiss(); currentPage --;
+                t.printStackTrace();
+                showErrorView(t);
+                Toast.makeText(getContext(),"something went wrong", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    private void showErrorView(Throwable throwable) {
+        if (errorLayout.getVisibility() == View.GONE) {
+            errorLayout.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.GONE);
+
+            txtError.setText(fetchErrorMessage(throwable));
+        }
+    }
+
+    private String fetchErrorMessage(Throwable throwable) {
+        String errorMsg = getResources().getString(R.string.error_msg_unknown);
+
+        if (!HelperFunctions.isNetworkConnected(activity)) {
+            errorMsg = getResources().getString(R.string.error_msg_no_internet);
+        } else if (throwable instanceof TimeoutException) {
+            errorMsg = getResources().getString(R.string.error_msg_timeout);
+        }
+
+        return errorMsg;
     }
 }

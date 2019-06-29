@@ -1,11 +1,15 @@
 package com.tevoi.tevoi.Utils;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
 import android.widget.Toast;
 
 import com.tevoi.tevoi.R;
 import com.tevoi.tevoi.SideMenu;
 import com.tevoi.tevoi.model.TrackObject;
 import com.tevoi.tevoi.model.TrackSerializableObject;
+
+import java.util.concurrent.TimeoutException;
 
 public class HelperFunctions
 {
@@ -133,5 +137,9 @@ public class HelperFunctions
     }
 
 
+    public static boolean isNetworkConnected(SideMenu activity) {
+        ConnectivityManager cm = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo() != null;
+    }
 
 }

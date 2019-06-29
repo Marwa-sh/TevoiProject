@@ -1,6 +1,7 @@
 package com.tevoi.tevoi;
 
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
@@ -13,11 +14,11 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.print.PrintAttributes;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 /*import android.support.v7.app.ActionBar;*/
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
@@ -55,7 +56,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SideMenu extends AppCompatActivity implements  ServiceCallbacks , NavigationView.OnNavigationItemSelectedListener {
+public class SideMenu extends AppCompatActivity
+        implements  ServiceCallbacks , NavigationView.OnNavigationItemSelectedListener {
 
     public ProgressDialog mProgressDialog;
 
@@ -218,6 +220,9 @@ public class SideMenu extends AppCompatActivity implements  ServiceCallbacks , N
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        /* setActionBar(toolbar);
+        getActionBar().setDisplayShowTitleEnabled(false);*/
+
         //TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
         //TextView mSubTitle = (TextView) toolbar.findViewById(R.id.toolbar_subtitle);
 
@@ -229,7 +234,7 @@ public class SideMenu extends AppCompatActivity implements  ServiceCallbacks , N
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         setfullwidth();
 
-        android.support.v7.app.ActionBarDrawerToggle toggle = new android.support.v7.app.ActionBarDrawerToggle(
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.drawer_open, R.string.drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
@@ -646,13 +651,13 @@ public class SideMenu extends AppCompatActivity implements  ServiceCallbacks , N
         //mTitle.setText("Tevoi");
         switch(id)
         {
-            case R.id.test_pagination:
+            /*case R.id.test_pagination:
             {
                 fragmentTransaction.replace(R.id.content_frame, listTracksFragment);
                 fragmentTransaction.addToBackStack( "History" );
                 fragmentTransaction.commit();
                 break;
-            }
+            }*/
             case R.id.list_history :
             {
                 mSubTitle.setText("History");
@@ -1151,4 +1156,12 @@ public class SideMenu extends AppCompatActivity implements  ServiceCallbacks , N
         super.onDestroy();
     }
 
+
+
+    public  void updateSubTite(String subTitle)
+    {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        TextView mSubTitle = (TextView) toolbar.findViewById(R.id.toolbar_subtitle);
+        mSubTitle.setText(subTitle);
+    }
 }

@@ -13,6 +13,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,12 +46,20 @@ public class IntroActivity  extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
 
+       /* Window window = this.getWindow();
+        // clear FLAG_TRANSLUCENT_STATUS flag:
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        // add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        // finally change the color
+        window.setStatusBarColor(this.getResources().getColor(R.color.tevoiBluePrimary));*/
+
         /*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
         TextView mSubTitle = (TextView) toolbar.findViewById(R.id.toolbar_subtitle);
 
-        setSupportActionBar(toolbar);
-        mTitle.setText("Tevoi");*/
+        setSupportActionBar(toolbar);*/
+        //mTitle.setText("Tevoi");
         //mSubTitle.setText("First Page");
         //getSupportActionBar().setDisplayShowTitleEnabled(false);
 

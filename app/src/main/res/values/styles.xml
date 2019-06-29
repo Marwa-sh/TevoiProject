@@ -1,14 +1,14 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppThemeOld" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
+    <!--<style name="AppThemeOld" parent="Theme.AppCompat.Light.NoActionBar">
+        &lt;!&ndash; Customize your theme here. &ndash;&gt;
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="colorPrimary">@color/tevoiBluePrimary</item>
         <item name="colorPrimaryDark">@color/tevoiBluePrimary</item>
         <item name="colorAccent">@color/tevoiBluePrimary</item>
-    </style>
+    </style>-->
    <!-- &lt;!&ndash; Base application theme. &ndash;&gt;
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         &lt;!&ndash; Customize your theme here. &ndash;&gt;
@@ -19,6 +19,36 @@
         <item name="colorAccent">@color/tevoiBluePrimary</item>
     </style>-->
 
+
+    <!--<style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+        <item name="colorPrimary">@color/tevoiBluePrimary</item>
+        <item name="colorPrimaryDark">@color/tevoiBluePrimary</item>
+        <item name="colorAccent">@color/tevoiBluePrimary</item>
+        <item name="android:actionBarStyle">@style/AppTheme.NoActionBar</item>
+        <item name="android:statusBarColor">@color/tevoiBluePrimary</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowEnableSplitTouch">false</item>
+        <item name="android:splitMotionEvents">false</item>
+
+    </style>-->
+
+    <!-- This style for back to the Holo design -->
+    <!-- Base application theme. -->
+   <!-- <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+        &lt;!&ndash; Customize your theme here. &ndash;&gt;
+        <item name="colorPrimary">@color/tevoiBluePrimary</item>
+        <item name="colorPrimaryDark">@color/tevoiBluePrimary</item>
+        <item name="colorAccent">@color/tevoiBluePrimary</item>
+        <item name="android:statusBarColor">@color/tevoiBluePrimary</item>
+        <item name="android:actionBarStyle">@style/AppTheme.NoActionBar</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:statusBarColor">@color/tevoiBluePrimary</item>
+    </style>-->
 
     <style name="SCBSwitch" parent="Theme.AppCompat.Light">
         <!-- active thumb & track color (30% transparency) -->
@@ -49,6 +79,7 @@
         <item name="android:textAppearance">@style/TextAppearance.AppCompat</item>
     </style>
 
+
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar" >
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -58,6 +89,9 @@
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+
+
     <!--
         <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
             <item name="windowActionBar">false</item>

@@ -47,4 +47,5 @@
         android:paddingTop="@dimen/text_empty_list"
         android:text="@string/empty_list"
         />
+
 </LinearLayout>

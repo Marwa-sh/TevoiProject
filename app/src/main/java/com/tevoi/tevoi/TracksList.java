@@ -50,8 +50,6 @@ import retrofit2.Response;
 public class TracksList extends Fragment implements AdapterView.OnItemSelectedListener
 {
     // region pagination properties
-
-    //PaginationAdapter adapter;
     LinearLayoutManager linearLayoutManager;
     ProgressBar progressBar;
 
@@ -63,7 +61,7 @@ public class TracksList extends Fragment implements AdapterView.OnItemSelectedLi
     private boolean isLastPage = false;
     private int TOTAL_PAGES = 0;
     private int currentPage = 0;
-    int PAGE_SIZE =3;
+    int PAGE_SIZE = Global.PAGE_SIZE;;
     // endregion
 
 
@@ -104,6 +102,13 @@ public class TracksList extends Fragment implements AdapterView.OnItemSelectedLi
         isLastPage = false;
         progressBar = (ProgressBar) rootView.findViewById(R.id.main_progress_list_tracks);
         currentPage = 0;
+
+        btnRetry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loadFirstPage(active_tab);
+            }
+        });
     }
 
     @Override
@@ -323,11 +328,6 @@ public class TracksList extends Fragment implements AdapterView.OnItemSelectedLi
 
     public void activateTab(final int k)
     {
-        /*activity.mProgressDialog.setMessage("Loading");
-        activity.mProgressDialog.show();*/
-
-        final int kk= k;
-
         for(int i=0;i<recyclerViews.length;i++)
         {
             recyclerViews[i]=null;
@@ -343,6 +343,9 @@ public class TracksList extends Fragment implements AdapterView.OnItemSelectedLi
         linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerViews[k].setLayoutManager(linearLayoutManager);
+
+        /*View v = rootView.findViewById(R.id.tracks_list_empty);
+        recyclerViews[k].setEmptyView(v);*/
 
         List<TrackObject> trs = new ArrayList<>();
         adapter = new TracksAdapter(trs, activity, Global.ListTracksFragmentName);
@@ -416,6 +419,8 @@ public class TracksList extends Fragment implements AdapterView.OnItemSelectedLi
 
     private void loadFirstPage(final int tabId)
     {
+        currentPage = 0;
+
         activity.mProgressDialog.setMessage("Loading1");
         activity.mProgressDialog.show();
 
@@ -430,9 +435,10 @@ public class TracksList extends Fragment implements AdapterView.OnItemSelectedLi
                 TrackResponseList tracks = response.body();
                 TOTAL_PAGES = tracks.getTotalRowCount() / PAGE_SIZE;
 
-                View v = rootView.findViewById(R.id.tracks_list_empty);
-                recyclerViews[tabId].setEmptyView(v);
-
+                if(tracks.getTrack().size() == 0) {
+                    View v = rootView.findViewById(R.id.tracks_list_empty);
+                    recyclerViews[tabId].setEmptyView(v);
+                }
                 progressBar.setVisibility(View.GONE);
                 adapter.addAll(tracks.getTrack());
 
@@ -480,6 +486,8 @@ public class TracksList extends Fragment implements AdapterView.OnItemSelectedLi
 
             public void onFailure(Call<TrackResponseList> call, Throwable t) {
                 activity.mProgressDialog.dismiss();currentPage --;
+                t.printStackTrace();
+                showErrorView(t);
             }
         });
 
@@ -499,7 +507,7 @@ public class TracksList extends Fragment implements AdapterView.OnItemSelectedLi
     private String fetchErrorMessage(Throwable throwable) {
         String errorMsg = getResources().getString(R.string.error_msg_unknown);
 
-        if (!isNetworkConnected()) {
+        if (!HelperFunctions.isNetworkConnected(activity)) {
             errorMsg = getResources().getString(R.string.error_msg_no_internet);
         } else if (throwable instanceof TimeoutException) {
             errorMsg = getResources().getString(R.string.error_msg_timeout);
@@ -508,18 +516,12 @@ public class TracksList extends Fragment implements AdapterView.OnItemSelectedLi
         return errorMsg;
     }
 
-    private boolean isNetworkConnected() {
-        ConnectivityManager cm = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
-        return cm.getActiveNetworkInfo() != null;
-    }
-
     public void onItemSelected(AdapterView<?> parent, View view,
                                int pos, long id) {
         // An item was selected. You can retrieve the selected item using
         // parent.getItemAtPosition(pos)
         Toast.makeText(getContext(), "Hiii there I'm marwa", Toast.LENGTH_LONG).show();
     }
-
     public void onNothingSelected(AdapterView<?> parent) {
         // Another interface callback
     }

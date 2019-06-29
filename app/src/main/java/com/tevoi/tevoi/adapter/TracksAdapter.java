@@ -222,7 +222,6 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
             //--------//
 
-
             imgBtnPlay.setOnClickListener(new View.OnClickListener()
             {
                 @Override
@@ -640,7 +639,6 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     }
 
-
     // region helpers
 
     public void add(TrackObject mc) {
@@ -648,7 +646,8 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         notifyItemInserted(tracks.size() - 1);
     }
 
-    public void addAll(List<TrackObject> mcList) {
+    public void addAll(List<TrackObject> mcList)
+    {
         for (TrackObject mc : mcList) {
             add(mc);
         }
