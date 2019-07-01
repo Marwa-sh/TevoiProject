@@ -169,7 +169,7 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
                     int numberOfUnRegisteredSeconds = numberOfListenedSeconds - numberOfUnitsSendToServer * Global.ListenUnitInSeconds;
                     final int numberOfConsumedUnits = numberOfUnRegisteredSeconds / Global.ListenUnitInSeconds;
                     // send to server that we used 1 unit
-                    Call<IResponse> call = Global.client.AddUnitUsageForUser(TrackId, numberOfConsumedUnits);
+                    Call<IResponse> call = Global.client.AddUnitUsageForUser(TrackId, numberOfConsumedUnits * Global.ListenUnitInSeconds);
                     call.enqueue(new Callback<IResponse>() {
                         public void onResponse(Call<IResponse> call, Response<IResponse> response) {
                             //generateDataList(response.body());

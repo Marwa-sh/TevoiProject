@@ -38,8 +38,10 @@ import com.tevoi.tevoi.Utils.HelperFunctions;
 import com.tevoi.tevoi.Utils.MyStorage;
 import com.tevoi.tevoi.adapter.PaginationAdapterCallback;
 import com.tevoi.tevoi.model.IResponse;
+import com.tevoi.tevoi.model.RegisterDataResponse;
 import com.tevoi.tevoi.model.TrackObject;
 import com.tevoi.tevoi.model.TrackSerializableObject;
+import com.tevoi.tevoi.model.UserSubscriptionInfoResponse;
 import com.tevoi.tevoi.rest.ApiClient;
 import com.tevoi.tevoi.rest.ApiInterface;
 
@@ -59,6 +61,13 @@ import retrofit2.Response;
 public class SideMenu extends AppCompatActivity
         implements  ServiceCallbacks , NavigationView.OnNavigationItemSelectedListener {
 
+    // region subscription Information
+
+    public UserSubscriptionInfoResponse userSubscriptionInfo = new UserSubscriptionInfoResponse();
+
+
+    // endregion
+
     public ProgressDialog mProgressDialog;
 
     // region user usage from quota
@@ -66,7 +75,6 @@ public class SideMenu extends AppCompatActivity
     int numberOfCurrentSeconds;
     int numberOfUnitsSendToServer;
     int userUsageFromServer;
-
 
 
     //endregion
@@ -108,6 +116,7 @@ public class SideMenu extends AppCompatActivity
             player.setCallbacks(SideMenu.this); // register
             Toast.makeText(SideMenu.this, "Service Bound", Toast.LENGTH_SHORT).show();
         }
+
         @Override
         public void onServiceDisconnected(ComponentName name) {
             serviceBound = false;
@@ -127,28 +136,28 @@ public class SideMenu extends AppCompatActivity
     public TextView txtTrackName;
     ImageButton btnPausePlayMainMediaPlayer;
 
-    public boolean  isActivityPause  = false;
+    public boolean isActivityPause = false;
 
 
     // endregion
 
     // region properties for drawer
 
-   /* DrawerLayout mDrawerLayout;
-    // ListView represents Navigation Drawer
-    ListView mDrawerList;
-    // ActionBarDrawerToggle indicates the presence of Navigation Drawer in the action bar
-    ActionBarDrawerToggle mDrawerToggle;*/
+    /* DrawerLayout mDrawerLayout;
+     // ListView represents Navigation Drawer
+     ListView mDrawerList;
+     // ActionBarDrawerToggle indicates the presence of Navigation Drawer in the action bar
+     ActionBarDrawerToggle mDrawerToggle;*/
     private DrawerLayout drawer;
     private NavigationView navigationView;
 
     // Title of the action bar
-    String mTitle="";
+    String mTitle = "";
     // endregion
 
     // region side menu fragments objects
     public TracksList lisTracksFragment = new TracksList();
-   // TracksList listTracksFargment = new TracksList();
+    // TracksList listTracksFargment = new TracksList();
     InterfaceLanguageFragment interfaceLanguageFragment = new InterfaceLanguageFragment();
     LoginFragment loginFragment = new LoginFragment();
     RegisterFragment registerFragment = new RegisterFragment();
@@ -167,6 +176,8 @@ public class SideMenu extends AppCompatActivity
     UserListFragment userListsFragment = new UserListFragment();
     FilterFragment filterFragment = new FilterFragment();
 
+    UpgradeToPremiumFragment upgradeToPremiumFragment = new UpgradeToPremiumFragment();
+
     public UserListTracksFragment userListTracksFragment = new UserListTracksFragment();
     public MediaPlayerFragment mediaPlayerFragment;
 
@@ -176,11 +187,10 @@ public class SideMenu extends AppCompatActivity
     ListTracksFragment listTracksFragment = new ListTracksFragment();
 
     //
-    MenuItem searchBtn ;
+    MenuItem searchBtn;
 
-    public void initActionBar(String subTitle)
-    {
-        final ActionBar abar =  getActionBar();
+    public void initActionBar(String subTitle) {
+        final ActionBar abar = getActionBar();
         //abar.setBackgroundDrawable(getResources().getDrawable(R.drawable.actionbar_background));//line under the action bar
         View viewActionBar = getLayoutInflater().inflate(R.layout.nav_header_main, null);
 
@@ -205,6 +215,7 @@ public class SideMenu extends AppCompatActivity
         //abar.setElevation(0);
         //abar.setElevation(0);
     }
+
     private void setfullwidth() {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -247,11 +258,9 @@ public class SideMenu extends AppCompatActivity
         //setContentView(R.layout.activity_main);
 
         // region media player runnable action
-        this.runOnUiThread(new Runnable()
-        {
+        this.runOnUiThread(new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 /*boolean isForground = isAppInForeground(SideMenu.this, "ComponentInfo{com.ebridge.tevoi/com.ebridge.tevoi.SideMenu}");
                 if(isForground==true){
                    // Toast.makeText(getBaseContext(),"Activity is in foreground, active",1000).show();
@@ -262,22 +271,18 @@ public class SideMenu extends AppCompatActivity
                     isActivityPause = true;
                 }*/
 
-                if (!isActivityPause)
-                {
-                    if (serviceBound && player != null && player.mMediaPlayer != null)
-                    {
+                if (!isActivityPause) {
+                    if (serviceBound && player != null && player.mMediaPlayer != null) {
                         txtTrackName.setText(CurrentTrackInPlayer.getName().toString());
                         mainPlayerLayout.setVisibility(View.VISIBLE);
                         //player.updateStatusBarInfo(CurrentTrackInPlayer.getName(), CurrentTrackInPlayer.getAuthors());
-                        if (!player.mMediaPlayer.isPlaying())
-                        {
-                            if(btnPausePlayMainMediaPlayer != null)
+                        if (!player.mMediaPlayer.isPlaying()) {
+                            if (btnPausePlayMainMediaPlayer != null)
                                 btnPausePlayMainMediaPlayer.setImageResource(R.drawable.baseline_play_arrow_24);
                             mProgressDialog.dismiss();
                         }
-                        if (player.mMediaPlayer.isPlaying())
-                        {
-                            if(btnPausePlayMainMediaPlayer != null)
+                        if (player.mMediaPlayer.isPlaying()) {
+                            if (btnPausePlayMainMediaPlayer != null)
                                 btnPausePlayMainMediaPlayer.setImageResource(R.drawable.baseline_pause_24);
                             numberOfListenedSeconds += 1;
                             numberOfCurrentSecondsInTrack += 1;
@@ -313,12 +318,10 @@ public class SideMenu extends AppCompatActivity
                         seekBarMainPlayer.setProgress(mCurrentPosition);
                         String timeFormat = HelperFunctions.GetTimeFormat(mCurrentPosition);
                         txtCurrentTime.setText(timeFormat);
-                    }
-                    else
-                    {
+                    } else {
                         if (serviceBound && player != null && player.mMediaPlayer != null)
                             player.mMediaPlayer.pause();
-                        if(btnPausePlayMainMediaPlayer != null)
+                        if (btnPausePlayMainMediaPlayer != null)
                             btnPausePlayMainMediaPlayer.setImageResource(R.drawable.baseline_play_arrow_24);
                     }
                     mHandler.postDelayed(this, 1000);
@@ -335,7 +338,7 @@ public class SideMenu extends AppCompatActivity
         //region detect language
 
         String language = storageManager.getLanguagePreference(this);
-        if(language == null)
+        if (language == null)
             language = "en";
         Resources res = getBaseContext().getResources();
         // Change locale settings in the app.
@@ -353,9 +356,14 @@ public class SideMenu extends AppCompatActivity
 
 
         // region load shared prefereces
-        playNowListTracks  = storageManager.loadPlayNowTracks(SideMenu.this);
+        playNowListTracks = storageManager.loadPlayNowTracks(SideMenu.this);
 
         // endregion
+
+
+        // get User subscription Info
+
+        getUserSubscriptionInfo();
 
         mediaPlayerFragment = new MediaPlayerFragment();
 
@@ -582,7 +590,7 @@ public class SideMenu extends AppCompatActivity
         // Replace the contents of the container with the new fragment
         //TrackShare frag = new TrackShare();
         ft.replace(R.id.content_frame, lisTracksFragment);
-        ft.addToBackStack( "List Tracks" );
+        ft.addToBackStack("List Tracks");
         // Committing the transaction
         ft.commit();
         // init media player in main page elements
@@ -613,20 +621,16 @@ public class SideMenu extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        if (id == R.id.action_search)
-        {
+        if (id == R.id.action_search) {
             //SideMenu activity = (SideMenu)getBaseContext();
             LinearLayout layout = findViewById(R.id.test_linear);
             RelativeLayout rlayout = findViewById(R.id.relativeLayoutSearch);
-            if(layout!=null)
-            {
-                if(layout.getVisibility() == View.GONE)
+            if (layout != null) {
+                if (layout.getVisibility() == View.GONE)
                     layout.setVisibility(View.VISIBLE);
                 else
                     layout.setVisibility(View.GONE);
-            }
-            else
-            {
+            } else {
                 android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.content_frame, lisTracksFragment);
                 fragmentTransaction.commit();
@@ -649,8 +653,7 @@ public class SideMenu extends AppCompatActivity
         TextView mSubTitle = (TextView) toolbar.findViewById(R.id.toolbar_subtitle);
 
         //mTitle.setText("Tevoi");
-        switch(id)
-        {
+        switch (id) {
             /*case R.id.test_pagination:
             {
                 fragmentTransaction.replace(R.id.content_frame, listTracksFragment);
@@ -658,112 +661,104 @@ public class SideMenu extends AppCompatActivity
                 fragmentTransaction.commit();
                 break;
             }*/
-            case R.id.list_history :
-            {
+            case R.id.upgrade_to_premium: {
+                fragmentTransaction.replace(R.id.content_frame, upgradeToPremiumFragment);
+                fragmentTransaction.addToBackStack("upgradeToPremiumFragment");
+                fragmentTransaction.commit();
+                break;
+            }
+            case R.id.list_history: {
                 mSubTitle.setText("History");
                 fragmentTransaction.replace(R.id.content_frame, historyListFragment);
-                fragmentTransaction.addToBackStack( "History" );
+                fragmentTransaction.addToBackStack("History");
                 fragmentTransaction.commit();
                 break;
             }
-            case R.id.play_next :
-            {
+            case R.id.play_next: {
                 mSubTitle.setText("Play Next");
                 fragmentTransaction.replace(R.id.content_frame, playingNowFragment);
-                fragmentTransaction.addToBackStack( "Play Next" );
+                fragmentTransaction.addToBackStack("Play Next");
                 fragmentTransaction.commit();
                 break;
             }
-            case R.id.list_favourite :
-            {
+            case R.id.list_favourite: {
                 mSubTitle.setText("Favourite");
                 fragmentTransaction.replace(R.id.content_frame, favouriteFragment);
-                fragmentTransaction.addToBackStack( "Favourite" );
+                fragmentTransaction.addToBackStack("Favourite");
                 fragmentTransaction.commit();
                 break;
             }
-            case R.id.my_list :
-            {
+            case R.id.my_list: {
                 mSubTitle.setText("My Lists");
                 fragmentTransaction.replace(R.id.content_frame, userListsFragment);
-                fragmentTransaction.addToBackStack( "My Lists" );
+                fragmentTransaction.addToBackStack("My Lists");
                 fragmentTransaction.commit();
                 break;
             }
-            case R.id.interface_language :
-            {
+            case R.id.interface_language: {
                 mSubTitle.setText("Interface Language");
                 fragmentTransaction.replace(R.id.content_frame, interfaceLanguageFragment);
-                fragmentTransaction.addToBackStack( "Interface Language" );
+                fragmentTransaction.addToBackStack("Interface Language");
                 fragmentTransaction.commit();
                 break;
             }
-            case R.id.list_partners :
-            {
+            case R.id.list_partners: {
                 mSubTitle.setText("Partners");
                 fragmentTransaction.replace(R.id.content_frame, partnersFragment);
-                fragmentTransaction.addToBackStack( "Partners" );
+                fragmentTransaction.addToBackStack("Partners");
                 fragmentTransaction.commit();
                 break;
             }
-            case R.id.notifications :
-            {
+            case R.id.notifications: {
                 mSubTitle.setText("Notifications");
                 fragmentTransaction.replace(R.id.content_frame, notificationFragment);
-                fragmentTransaction.addToBackStack( "Notifications" );
+                fragmentTransaction.addToBackStack("Notifications");
                 fragmentTransaction.commit();
                 break;
             }
-            case R.id.download_limits :
-            {
+            case R.id.download_limits: {
                 mSubTitle.setText("Download limits");
                 fragmentTransaction.replace(R.id.content_frame, downloadFragment);
-                fragmentTransaction.addToBackStack( "Download limits" );
+                fragmentTransaction.addToBackStack("Download limits");
                 fragmentTransaction.commit();
                 break;
             }
-            case R.id.about_us :
-            {
+            case R.id.about_us: {
                 mSubTitle.setText("About Us");
                 fragmentTransaction.replace(R.id.content_frame, aboutUsFragment);
-                fragmentTransaction.addToBackStack( "About Us" );
+                fragmentTransaction.addToBackStack("About Us");
                 fragmentTransaction.commit();
                 break;
             }
-            case R.id.feedback_contact :
-            {
+            case R.id.feedback_contact: {
                 mSubTitle.setText("Feedback and Contact");
                 fragmentTransaction.replace(R.id.content_frame, feedbackFragment);
-                fragmentTransaction.addToBackStack( "Feedback and Contact" );
+                fragmentTransaction.addToBackStack("Feedback and Contact");
                 fragmentTransaction.commit();
                 break;
             }
-            case R.id.follow_us :
-            {
+            case R.id.follow_us: {
                 mSubTitle.setText("Follow Us");
                 fragmentTransaction.replace(R.id.content_frame, followUsFragment);
-                fragmentTransaction.addToBackStack( "Follow Us" );
+                fragmentTransaction.addToBackStack("Follow Us");
                 fragmentTransaction.commit();
                 break;
             }
-            case R.id.list_tracks :
-            {
+            case R.id.list_tracks: {
                 mSubTitle.setText("List Tracks");
                 fragmentTransaction.replace(R.id.content_frame, lisTracksFragment);
-                fragmentTransaction.addToBackStack( "List Tracks" );
+                fragmentTransaction.addToBackStack("List Tracks");
                 fragmentTransaction.commit();
                 break;
             }
-            case R.id.filters :
-            {
+            case R.id.filters: {
                 mSubTitle.setText("Filters");
                 fragmentTransaction.replace(R.id.content_frame, filterFragment);
-                fragmentTransaction.addToBackStack( "Filters" );
+                fragmentTransaction.addToBackStack("Filters");
                 fragmentTransaction.commit();
                 break;
             }
-            default:
-            {
+            default: {
                 /*// Creating a fragment object
                 SideMenuFragment rFragment = new SideMenuFragment();
 
@@ -794,7 +789,9 @@ public class SideMenu extends AppCompatActivity
         return true;
     }
 
-    /** Called whenever we call invalidateOptionsMenu() *//*
+    /**
+     * Called whenever we call invalidateOptionsMenu()
+     *//*
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         // If the drawer is open, hide action items related to the content view
@@ -806,65 +803,61 @@ public class SideMenu extends AppCompatActivity
 
 
     // region List Tracks actions
-
-    public void changeTabToNew(View view)
-    {
+    public void changeTabToNew(View view) {
         lisTracksFragment.changeTabToNew(view);
     }
+
     public void changeTabToTopRated(View view) {
         lisTracksFragment.changeTabToTopRated(view);
     }
+
     public void changeToPopular(View view) {
         lisTracksFragment.changeToPopular(view);
     }
     // endregion
 
     // region media player actions
-    public void playTrack(View view)
-    {
+    public void playTrack(View view) {
         mediaPlayerFragment.playTrack(view);
     }
-    public void imgBtnForwardClick(View view)
-    {
+
+    public void imgBtnForwardClick(View view) {
         mediaPlayerFragment.imgBtnForwardClick(view);
     }
-    public void imgBtnReplayClick(View view)
-    {
+
+    public void imgBtnReplayClick(View view) {
         mediaPlayerFragment.imgBtnReplayClick(view);
     }
 
-    public  void imgBtnPreviuosClick(View view)
-    {
+    public void imgBtnPreviuosClick(View view) {
         mediaPlayerFragment.imgBtnPreviuosClick(view);
     }
 
-    public  void imgBtnNextClick(View view)
-    {
+    public void imgBtnNextClick(View view) {
         mediaPlayerFragment.imgBtnNextClick(view);
     }
 
-    public void imgBtnAddtoListClick(View view)
-    {
+    public void imgBtnAddtoListClick(View view) {
         mediaPlayerFragment.imgBtnAddtoListClick(view);
     }
-    public void imgBtnLocationClick(View view)
-    {
+
+    public void imgBtnLocationClick(View view) {
         mediaPlayerFragment.imgBtnLocationClick(view);
     }
+
     public void imgBtnGetTrackTextClick(View view) {
         mediaPlayerFragment.imgBtnGetTrackTextClick(view);
     }
-    public void imgBtnCommentClick(View view)
-    {
+
+    public void imgBtnCommentClick(View view) {
         mediaPlayerFragment.imgBtnCommentClick(view);
     }
-    public void imgBtnShareClick(View view)
-    {
+
+    public void imgBtnShareClick(View view) {
         mediaPlayerFragment.imgBtnShareClick(view);
     }
 
-    public void imgBtnCarClick(View view)
-    {
+    public void imgBtnCarClick(View view) {
         mediaPlayerFragment.imgBtnCarClick(view);
     }
 
@@ -874,20 +867,19 @@ public class SideMenu extends AppCompatActivity
 
 
     // other fragments actions
-    public void locationClick(View v)
-    {
+    public void locationClick(View v) {
         mediaPlayerFragment.locationClick(v);
     }
-    public void shareClick(View v)
-    {
+
+    public void shareClick(View v) {
         mediaPlayerFragment.shareClick(v);
     }
-    public void addTrackToListClick(View v)
-    {
+
+    public void addTrackToListClick(View v) {
         mediaPlayerFragment.addTrackToListClick(v);
     }
-    public void addCommentBtn(View v)
-    {
+
+    public void addCommentBtn(View v) {
         mediaPlayerFragment.addCommentBtn(v);
     }
 
@@ -896,76 +888,75 @@ public class SideMenu extends AppCompatActivity
 
 
     // region actions in play now list fragment
-    public void changeTabToNewPlayNow(View view)
-    {
+    public void changeTabToNewPlayNow(View view) {
         playingNowFragment.changeTabToNewPlayNow(view);
     }
-    public void changeTabToTopRatedPlayNow(View view)
-    {
+
+    public void changeTabToTopRatedPlayNow(View view) {
         playingNowFragment.changeTabToTopRatedPlayNow(view);
     }
+
     public void changeToPopularPlayNow(View view) {
         playingNowFragment.changeToPopularPlayNow(view);
     }
     // endregion
 
     // region actions in history list fragment
-    public void changeTabToNewHistory(View view)
-    {
+    public void changeTabToNewHistory(View view) {
         historyListFragment.changeTabToNewHistory(view);
     }
-    public void changeTabToTopRatedHistory(View view)
-    {
+
+    public void changeTabToTopRatedHistory(View view) {
         historyListFragment.changeTabToTopRatedHistory(view);
     }
+
     public void changeToPopularHistory(View view) {
         historyListFragment.changeToPopularHistory(view);
     }
     // endregion
 
     // region actions in favourite list fragment
-    public void changeTabToNewFavourite(View view)
-    {
+    public void changeTabToNewFavourite(View view) {
         favouriteFragment.changeTabToNewFavourite(view);
     }
-    public void changeTabToTopRatedFavourite(View view)
-    {
+
+    public void changeTabToTopRatedFavourite(View view) {
         favouriteFragment.changeTabToTopRatedFavourite(view);
     }
+
     public void changeToPopularFavourite(View view) {
         favouriteFragment.changeToPopularFavourite(view);
     }
     // endregion
-    
+
     // region Helper functions
-    public void AddTrackToList(int TrackId, SideMenu activity )
-    {
+    public void AddTrackToList(int TrackId, SideMenu activity) {
         ApiInterface client = ApiClient.getClient().create(ApiInterface.class);
         Call<IResponse> call = client.AddTrackToUserList(TrackId, 1);
-        call.enqueue(new Callback<IResponse>(){
+        call.enqueue(new Callback<IResponse>() {
             public void onResponse(Call<IResponse> call, Response<IResponse> response) {
                 //generateDataList(response.body());
-                IResponse result  =response.body();
+                IResponse result = response.body();
                 Toast.makeText(SideMenu.this, R.string.track_added_to_list_successfully, Toast.LENGTH_SHORT).show();
             }
-            public void onFailure(Call<IResponse> call, Throwable t)
-            {
-                IResponse r =  new IResponse();
-                r.Message= t.getMessage();
+
+            public void onFailure(Call<IResponse> call, Throwable t) {
+                IResponse r = new IResponse();
+                r.Message = t.getMessage();
                 r.Number = -1;
                 Toast.makeText(SideMenu.this, R.string.general_error, Toast.LENGTH_SHORT).show();
             }
         });
 
     }
-    
+
     //endregion
 
     // region Parter fragment actions
-    public  void changeToAlphabetOrder(View view)
-    {
+    public void changeToAlphabetOrder(View view) {
         partnersFragment.activateTab(0);
     }
+
     public void changeTabToNewListPartners(View view) {
         partnersFragment.activateTab(1);
     }
@@ -979,12 +970,10 @@ public class SideMenu extends AppCompatActivity
     }
     // endregion
 
-    public void playAudio(String media, String Name , String Authors, int TrackId)
-    {
+    public void playAudio(String media, String Name, String Authors, int TrackId) {
         //Check is service is active
         //SideMenu activity = (SideMenu)getActivity();
-        if (!serviceBound)
-        {
+        if (!serviceBound) {
             //ServiceConnection serviceConnection = serviceConnection;
             Intent playerIntent = new Intent(SideMenu.this, CustomMediaPlayerService.class);
             playerIntent.putExtra("media", media);
@@ -996,9 +985,7 @@ public class SideMenu extends AppCompatActivity
             getBaseContext().startService(playerIntent);
             getBaseContext().bindService(playerIntent, serviceConnection, Context.BIND_AUTO_CREATE);
 
-        }
-        else
-        {
+        } else {
             //Service is active
             //Send a broadcast to the service -> PLAY_NEW_AUDIO
             Intent broadcastIntent = new Intent(Broadcast_PLAY_NEW_AUDIO);
@@ -1013,28 +1000,27 @@ public class SideMenu extends AppCompatActivity
     }
 
     // region add notify functins for adapters
-    public void notifyUserListAdapter()
-    {
+    public void notifyUserListAdapter() {
         userListsFragment.notifyUserListAdapter();
     }
-    public void notifyHistoryListAdapter()
-    {
+
+    public void notifyHistoryListAdapter() {
         historyListFragment.notifyHistoryListAdapter();
     }
-    public void notifyFavouriteListAdapter()
-    {
+
+    public void notifyFavouriteListAdapter() {
         favouriteFragment.notifyFavouriteListAdapter();
     }
-    public void notifyPlayNextListAdapter()
-    {
+
+    public void notifyPlayNextListAdapter() {
         playingNowFragment.notifyPlayNextListAdapter();
     }
-    public void notifyTarcksListAdapter()
-    {
+
+    public void notifyTarcksListAdapter() {
         lisTracksFragment.notifyTarcksListAdapter();
     }
-    public  void notifyUserListTracksAdapter()
-    {
+
+    public void notifyUserListTracksAdapter() {
         userListTracksFragment.notifyUserListTracksAdapter();
     }
     // endregion
@@ -1052,29 +1038,25 @@ public class SideMenu extends AppCompatActivity
     }
 */
 
-   // region Back button action handling
+    // region Back button action handling
    /* @Override
     public void onBackPressed()
     {
         BackBtnAction();
     }*/
 
-    public  void BackBtnAction()
-    {
+    public void BackBtnAction() {
 
-        int T= getSupportFragmentManager().getBackStackEntryCount();
+        int T = getSupportFragmentManager().getBackStackEntryCount();
         if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
             moveTaskToBack(true);
             //finish();
-        }
-        else if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
+        } else if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
             //Toast.makeText(this, "hi count 1", Toast.LENGTH_SHORT).show();
             moveTaskToBack(true);
             //finish();
-        }
-        else
-        {
-            String tr = getSupportFragmentManager().getBackStackEntryAt(T-2).getName();
+        } else {
+            String tr = getSupportFragmentManager().getBackStackEntryAt(T - 2).getName();
             Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
             TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
             TextView mSubTitle = (TextView) toolbar.findViewById(R.id.toolbar_subtitle);
@@ -1145,8 +1127,7 @@ public class SideMenu extends AppCompatActivity
 */
     @Override
     protected void onDestroy() {
-        if (serviceBound)
-        {
+        if (serviceBound) {
             unbindService(serviceConnection);
             //service is active
             player.stopSelf();
@@ -1157,11 +1138,29 @@ public class SideMenu extends AppCompatActivity
     }
 
 
-
-    public  void updateSubTite(String subTitle)
-    {
+    public void updateSubTite(String subTitle) {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         TextView mSubTitle = (TextView) toolbar.findViewById(R.id.toolbar_subtitle);
         mSubTitle.setText(subTitle);
+    }
+
+
+    public void getUserSubscriptionInfo()
+    {
+        Call<UserSubscriptionInfoResponse> call = Global.client.GetUserSubscriptionInfo();
+            call.enqueue(new Callback<UserSubscriptionInfoResponse>()
+            {
+                @Override
+                public void onResponse
+                (Call < UserSubscriptionInfoResponse > call, Response < UserSubscriptionInfoResponse > response) {
+                    userSubscriptionInfo = response.body();
+                }
+
+                @Override
+                public void onFailure (Call < UserSubscriptionInfoResponse > call, Throwable t){
+                       // TODO :
+                    userSubscriptionInfo = new UserSubscriptionInfoResponse();
+                }
+            });
     }
 }

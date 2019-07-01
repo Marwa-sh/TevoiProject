@@ -54,7 +54,7 @@ public class UserListFragment extends Fragment
     private boolean isLastPage = false;
     private int TOTAL_PAGES = 0;
     private int currentPage = 0;
-    int PAGE_SIZE = Global.PAGE_SIZE;;
+    int PAGE_SIZE = 6;
     // endregion
 
 
@@ -118,7 +118,7 @@ public class UserListFragment extends Fragment
                                                     IResponse result = response.body();
                                                     Toast.makeText(getContext(),result.getMessage(), Toast.LENGTH_LONG).show();
                                                     activity.mProgressDialog.dismiss();
-                                                    GetUserLists();
+                                                    doRefresh();
                                                 }
                                                 public void onFailure(Call<IResponse> call, Throwable t)
                                                 {
@@ -156,9 +156,7 @@ public class UserListFragment extends Fragment
         adapter = new UserListAdapter(lists, activity);
 
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-
         recyclerView.setAdapter(adapter);
-
         recyclerView.addOnScrollListener(new PaginationScrollListener(linearLayoutManager)
         {
             @Override
@@ -281,9 +279,9 @@ public class UserListFragment extends Fragment
             public void onResponse(Call<UserListResponse> call, Response<UserListResponse> response) {
                 //generateDataList(response.body());
                 SideMenu activity = (SideMenu) getActivity();
-                UserListResponse userLists =response.body();
+                UserListResponse userLists = response.body();
 
-                //TOTAL_PAGES = userLists.getTotalRowCount() / PAGE_SIZE;
+                TOTAL_PAGES = userLists.getTotalRowCount() / PAGE_SIZE;
 
                 if(userLists.getLstUserList().size() == 0) {
                     View v = rootView.findViewById(R.id.favourite_list_empty);
@@ -319,15 +317,15 @@ public class UserListFragment extends Fragment
                 SideMenu activity = (SideMenu) getActivity();
                 UserListResponse userLists =response.body();
 
-                //TOTAL_PAGES = userLists.getTotalRowCount() / PAGE_SIZE;
+                TOTAL_PAGES = userLists.getTotalRowCount() / PAGE_SIZE;
                 adapter.removeLoadingFooter();
                 isLoading = false;
 
                 adapter.addAll(userLists.getLstUserList());
-                if(userLists.getLstUserList().size() == 0)
+               /* if(userLists.getLstUserList().size() == 0)
                 {
                     currentPage --;
-                }
+                }*/
                 if (currentPage != TOTAL_PAGES) adapter.addLoadingFooter();
                 else isLastPage = true;
 
@@ -366,5 +364,11 @@ public class UserListFragment extends Fragment
         return errorMsg;
     }
 
-
+    private void doRefresh() {
+        progressBar.setVisibility(View.VISIBLE);
+        //  Execute network request if cache is expired; otherwise do not update data.
+        adapter.getUserLists().clear();
+        adapter.notifyDataSetChanged();
+        loadFirstPage();
+    }
 }

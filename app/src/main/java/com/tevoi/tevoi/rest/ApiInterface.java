@@ -2,6 +2,7 @@ package com.tevoi.tevoi.rest;
 
 
 
+import com.tevoi.tevoi.model.AboutUsResponse;
 import com.tevoi.tevoi.model.AddCommentResponse;
 import com.tevoi.tevoi.model.CategoryResponseList;
 import com.tevoi.tevoi.model.FeedbackRequest;
@@ -26,6 +27,7 @@ import com.tevoi.tevoi.model.TrackObject;
 import com.tevoi.tevoi.model.TrackResponseList;
 import com.tevoi.tevoi.model.TrackTextResponse;
 import com.tevoi.tevoi.model.UserListResponse;
+import com.tevoi.tevoi.model.UserSubscriptionInfoResponse;
 
 
 import okhttp3.ResponseBody;
@@ -118,7 +120,7 @@ public interface ApiInterface {
     Call<GetSubscripedPartnersResponse> GetSubscripedPartners();
 
     @GET("api/Services/AddUnitUsageForUser")
-    Call<IResponse> AddUnitUsageForUser(@Query("TrackId") int TrackId,@Query("NumberOfUnits") int NumberOfSeconds);
+    Call<IResponse> AddUnitUsageForUser(@Query("TrackId") int TrackId,@Query("NumberOfSeconds") int NumberOfSeconds);
 
     @GET("api/Services/GetPartnerTracks")
     Call<GetPartnerTracksResponse> GetPartnerTracks(@Query("PartnerId") int PartnerId,@Query("ListTypeEnum") int ListTypeEnum, @Query("index") int index, @Query("size") int size);
@@ -147,4 +149,9 @@ public interface ApiInterface {
     @POST("api/User/Register")
     Call<RegisterResponse> Register(@Query("RegisterRequest") RegisterRequest model);
 
+    @GET("api/Services/GetAboutUs")
+    Call<AboutUsResponse> GetAboutUs();
+
+    @GET("api/Services/GetUserSubscriptionInfo")
+    Call<UserSubscriptionInfoResponse> GetUserSubscriptionInfo();
 }

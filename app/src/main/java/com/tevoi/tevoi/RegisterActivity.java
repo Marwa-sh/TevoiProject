@@ -148,9 +148,11 @@ public class RegisterActivity extends AppCompatActivity implements SpinnerAdapte
         spnrGender.setOnItemSelectedListener(this);
 
         Call<RegisterDataResponse> call = Global.client.GetRegisterInformation();
-        call.enqueue(new Callback<RegisterDataResponse>() {
+        call.enqueue(new Callback<RegisterDataResponse>()
+        {
             @Override
-            public void onResponse(Call<RegisterDataResponse> call, Response<RegisterDataResponse> response) {
+            public void onResponse(Call<RegisterDataResponse> call, Response<RegisterDataResponse> response)
+            {
                 RegisterDataResponse registerData = response.body();
                 countries = registerData.getLstCountry();
                 genders = registerData.getLstGender();

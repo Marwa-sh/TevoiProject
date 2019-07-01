@@ -238,7 +238,7 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
                         activity.txtTrackName.setText(selectedTrack.getName().toString());
 
-                        if(activity.mainPlayerLayout.getVisibility()==View.INVISIBLE)
+                        if(activity.mainPlayerLayout.getVisibility() == View.INVISIBLE)
                         {
                             activity.mainPlayerLayout.setVisibility(View.VISIBLE);
                         }

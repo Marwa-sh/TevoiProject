@@ -45,6 +45,11 @@ public class UserListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private List<UserListObject> userLists;
     private SideMenu activity;
 
+    public List<UserListObject> getUserLists()
+    {
+        return  userLists;
+    }
+
     public UserListAdapter(List<UserListObject> userLists, SideMenu activity) {
         this.userLists = userLists;
         this.activity = activity;
