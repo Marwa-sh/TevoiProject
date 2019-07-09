@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import com.tevoi.tevoi.Utils.Global;
 import com.tevoi.tevoi.adapter.CategoriesAdapter;
@@ -19,6 +20,7 @@ import com.tevoi.tevoi.model.CategoryResponseList;
 import com.tevoi.tevoi.model.GetSubscripedPartnersResponse;
 import com.tevoi.tevoi.model.SubscipedPartnersObject;
 import com.tevoi.tevoi.model.TrackTypeObject;
+import com.tevoi.tevoi.model.UserFiltersResponse;
 
 import java.util.List;
 
@@ -41,16 +43,21 @@ public class FilterFragment extends Fragment {
     SubscripedPartnersAdapter adapterPartners;
     TrackTypeAdapter trackTypeAdapter;
 
+    ImageButton btnClearFilter;
+
+
     SideMenu activity;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        rootView=inflater.inflate(R.layout.fragment_filter, container, false);
+        rootView = inflater.inflate(R.layout.fragment_filter, container, false);
         activity = (SideMenu) getActivity();
+        btnClearFilter = rootView.findViewById(R.id.btn_clear_filter);
 
-        categoriesRecyclerView= rootView.findViewById(R.id.categories_recycler_view);
+
+        categoriesRecyclerView = rootView.findViewById(R.id.categories_recycler_view);
         subscripedPartnersRecyclerView = rootView.findViewById(R.id.subscriped_partners);
 
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -66,19 +73,54 @@ public class FilterFragment extends Fragment {
 
         trackTypeRecyclerView = rootView.findViewById(R.id.track_type_recycler_view);
         trackTypeRecyclerView.setLayoutManager(layoutManager);
-        trackTypeAdapter = new TrackTypeAdapter(getContext());
+        //trackTypeAdapter = new TrackTypeAdapter(getContext());
         trackTypeRecyclerView.setAdapter(trackTypeAdapter);
         DividerItemDecoration itemDecorTrackType = new DividerItemDecoration(getContext(), VERTICAL);
         trackTypeRecyclerView.addItemDecoration(itemDecorTrackType);
 
-        TrackTypeObject[] trackTypeObjects = trackTypeAdapter.getTrackTypeObjects();
+        //TrackTypeObject[] trackTypeObjects = trackTypeAdapter.getTrackTypeObjects();
 
+        btnClearFilter.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v) {
 
+            }
+        });
 
+        final SideMenu activity = (SideMenu) getActivity();
 
         activity.mProgressDialog.setMessage("Loading"); activity.mProgressDialog.show();
 
-        Call<CategoryResponseList> call = Global.client.GetCategoriesFilters();
+        Call<UserFiltersResponse> call = Global.client.GetUserFilters();
+        call.enqueue(new Callback<UserFiltersResponse>()
+        {
+            @Override
+            public void onResponse(Call<UserFiltersResponse> call, Response<UserFiltersResponse> response)
+            {
+                UserFiltersResponse filters = response.body();
+
+               /* adapterCategories = new CategoriesAdapter(filters.getMainTopicList(), activity);
+                categoriesRecyclerView.setAdapter(adapterCategories);*/
+                DividerItemDecoration itemDecor = new DividerItemDecoration(getContext(), VERTICAL);
+                categoriesRecyclerView.addItemDecoration(itemDecor);
+
+                adapterPartners = new SubscripedPartnersAdapter(filters.getSubscripedPartners(),activity);
+                subscripedPartnersRecyclerView.setAdapter(adapterPartners);
+                DividerItemDecoration itemDecorPartner = new DividerItemDecoration(getContext(), VERTICAL);
+                subscripedPartnersRecyclerView.addItemDecoration(itemDecor);
+
+                activity.mProgressDialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(Call<UserFiltersResponse> call, Throwable t) {
+                activity.mProgressDialog.dismiss();
+            }
+        });
+
+
+        /*Call<CategoryResponseList> call = Global.client.GetCategoriesFilters();
         call.enqueue(new Callback<CategoryResponseList>() {
             @Override
             public void onResponse(Call<CategoryResponseList> call, Response<CategoryResponseList> response) {
@@ -96,8 +138,8 @@ public class FilterFragment extends Fragment {
             public void onFailure(Call<CategoryResponseList> call, Throwable t) {
                 activity.mProgressDialog.dismiss();
             }
-        });
-        activity.mProgressDialog.setMessage("Loading"); activity.mProgressDialog.show();
+        });*/
+       /* activity.mProgressDialog.setMessage("Loading"); activity.mProgressDialog.show();
 
         Call<GetSubscripedPartnersResponse> callPartners = Global.client.GetSubscripedPartners();
         callPartners.enqueue(new Callback<GetSubscripedPartnersResponse>() {
@@ -116,7 +158,7 @@ public class FilterFragment extends Fragment {
             public void onFailure(Call<GetSubscripedPartnersResponse> call, Throwable t) {
                 activity.mProgressDialog.dismiss();
             }
-        });
+        });*/
 
         //mProgressDialog.dismiss();
         return rootView;

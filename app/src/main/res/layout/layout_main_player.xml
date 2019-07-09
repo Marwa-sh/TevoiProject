@@ -6,15 +6,13 @@
     android:layout_height="match_parent"
     android:id="@+id/linearLayout_media_player_main"
     android:orientation="vertical"
-    android:paddingTop="325dp"
-    android:visibility="invisible">
+    android:visibility="gone">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/tevoiBluePrimary"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

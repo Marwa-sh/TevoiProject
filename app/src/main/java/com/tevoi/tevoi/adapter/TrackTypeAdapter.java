@@ -12,16 +12,19 @@ import android.widget.TextView;
 import com.tevoi.tevoi.R;
 import com.tevoi.tevoi.model.TrackTypeObject;
 
+import java.util.List;
+
 public class TrackTypeAdapter extends RecyclerView.Adapter<TrackTypeAdapter.TrackTypeViewHolder>
 {
-    public TrackTypeObject[] trackTypeObjects;
+    //public TrackTypeObject[] trackTypeObjects;
     private Context context;
+    public List<TrackTypeObject> trackTypeObjects;
 
-    public TrackTypeObject[] getTrackTypeObjects() {
+    public List<TrackTypeObject> getTrackTypeObjects() {
         return trackTypeObjects;
     }
 
-    public void setTrackTypeObjects(TrackTypeObject[] trackTypeObjects) {
+    public void setTrackTypeObjects(List<TrackTypeObject> trackTypeObjects) {
         this.trackTypeObjects = trackTypeObjects;
     }
 
@@ -33,7 +36,7 @@ public class TrackTypeAdapter extends RecyclerView.Adapter<TrackTypeAdapter.Trac
         this.context = context;
     }
 
-    public TrackTypeAdapter(TrackTypeObject[] trackTypeObjects, Context context) {
+    public TrackTypeAdapter(List<TrackTypeObject> trackTypeObjects, Context context) {
         this.trackTypeObjects = trackTypeObjects;
         this.context = context;
     }
@@ -42,28 +45,17 @@ public class TrackTypeAdapter extends RecyclerView.Adapter<TrackTypeAdapter.Trac
 
     }
 
-    public TrackTypeAdapter(Context context){
+    public TrackTypeAdapter(Context context, List<TrackTypeObject> trackTypeObjects)
+    {
         this.context=context;
-        this.trackTypeObjects= new TrackTypeObject[3];
-        trackTypeObjects[0]=new TrackTypeObject();
-        trackTypeObjects[1]=new TrackTypeObject();
-        trackTypeObjects[2]=new TrackTypeObject();
-
-        trackTypeObjects[0].setName("Don't Show Heard Tracks");
-        trackTypeObjects[0].setTrackTypeFilter(false);
-
-        trackTypeObjects[1].setName("News");
-        trackTypeObjects[1].setTrackTypeFilter(false);
-
-        trackTypeObjects[2].setName("Articles");
-        trackTypeObjects[2].setTrackTypeFilter(false);
-
+        this.trackTypeObjects= trackTypeObjects;
 
     }
 
     @NonNull
     @Override
-    public TrackTypeViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public TrackTypeViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i)
+    {
         View row= LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.layout_filter_instance,viewGroup,false);
         TrackTypeAdapter.TrackTypeViewHolder holder = new TrackTypeViewHolder(row);
         return holder;
@@ -73,19 +65,14 @@ public class TrackTypeAdapter extends RecyclerView.Adapter<TrackTypeAdapter.Trac
     @Override
     public void onBindViewHolder(@NonNull TrackTypeViewHolder trackTypeViewHolder, int i) {
 
-        trackTypeViewHolder.tvTrackType.setText(trackTypeObjects[i].getName());
-        trackTypeViewHolder.checkBoxFilterState.setChecked(trackTypeObjects[i].isTrackTypeFilter());
-
-        
-
-
+        trackTypeViewHolder.tvTrackType.setText(trackTypeObjects.get(i).getName());
+        trackTypeViewHolder.checkBoxFilterState.setChecked(trackTypeObjects.get(i).isTrackTypeFilter());
     }
 
     @Override
     public int getItemCount() {
-        return 3;
+        return trackTypeObjects.size();
     }
-
 
     public class TrackTypeViewHolder extends RecyclerView.ViewHolder
     {

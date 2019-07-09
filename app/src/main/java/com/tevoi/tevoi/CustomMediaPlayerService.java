@@ -46,6 +46,7 @@ import android.widget.Toast;
 import com.tevoi.tevoi.Utils.Global;
 import com.tevoi.tevoi.model.IResponse;
 import com.tevoi.tevoi.model.TrackObject;
+import com.tevoi.tevoi.model.UserSubscriptionInfoResponse;
 
 
 import retrofit2.Call;
@@ -157,8 +158,8 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
             if (mMediaPlayer != null) {
                 resumePosition = mMediaPlayer.getCurrentPosition();
 
-                if (mMediaPlayer.isPlaying()) {
-
+                if (mMediaPlayer.isPlaying())
+                {
                     numberOfListenedSeconds += 1;
                     numberOfCurrentSecondsInTrack += 1;
                     //activity.numberOfTotalSeconds += activity.numberOfCurrentSeconds;
@@ -169,16 +170,25 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
                     int numberOfUnRegisteredSeconds = numberOfListenedSeconds - numberOfUnitsSendToServer * Global.ListenUnitInSeconds;
                     final int numberOfConsumedUnits = numberOfUnRegisteredSeconds / Global.ListenUnitInSeconds;
                     // send to server that we used 1 unit
-                    Call<IResponse> call = Global.client.AddUnitUsageForUser(TrackId, numberOfConsumedUnits * Global.ListenUnitInSeconds);
-                    call.enqueue(new Callback<IResponse>() {
-                        public void onResponse(Call<IResponse> call, Response<IResponse> response) {
+                    Call<UserSubscriptionInfoResponse> call = Global.client.AddUnitUsageForUser(TrackId, numberOfConsumedUnits * Global.ListenUnitInSeconds);
+                    call.enqueue(new Callback<UserSubscriptionInfoResponse>() {
+                        public void onResponse(Call<UserSubscriptionInfoResponse> call, Response<UserSubscriptionInfoResponse> response) {
                             //generateDataList(response.body());
-                            IResponse partners = response.body();
+                            UserSubscriptionInfoResponse updatedUserUsage = response.body();
                             numberOfUnitsSendToServer += numberOfConsumedUnits;
                             Toast.makeText(getBaseContext(), "" + numberOfConsumedUnits + " Unit consumed from your quota", Toast.LENGTH_SHORT).show();
+                            serviceCallbacks.updateUserUsage(updatedUserUsage);
+                            if(updatedUserUsage.IsFreeSubscription)
+                            {
+                                /*if(updatedUserUsage.numberOfListenUnitsConsumed >= updatedUserUsage.FreeSubscriptionLimit.DailyListenMaxUnits)
+                                {
+                                    mMediaPlayer.stop();
+                                    serviceCallbacks.setFlagUserExceedsDailyUsageListen();
+                                }*/
+                            }
                         }
 
-                        public void onFailure(Call<IResponse> call, Throwable t) {
+                        public void onFailure(Call<UserSubscriptionInfoResponse> call, Throwable t) {
 
                         }
                     });
@@ -925,23 +935,7 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
         PAUSED
     }
 
-    public  void AddListenActiityOnTrack()
-    {
-        if(TrackId != 0)
-        {
-            /*Call<IResponse> call = Global.client.AddListenTrackActivity(TrackId, 60);
-                    call.enqueue(new Callback<IResponse>() {
-                        public void onResponse(Call<IResponse> call, Response<IResponse> response) {
-                            IResponse partners = response.body();
 
-                        }
-
-                        public void onFailure(Call<IResponse> call, Throwable t) {
-
-                        }
-                    });*/
-        }
-    }
 }
 
 

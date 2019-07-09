@@ -2,8 +2,8 @@ package com.tevoi.tevoi.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class TrackObject {
-
+public class TrackObject
+{
     @SerializedName("Id")
     private  int Id;
     @SerializedName("Name")
@@ -28,7 +28,8 @@ public class TrackObject {
     private String PartnerLogo;
     @SerializedName("ActivityId")
     private int ActivityId;
-    private boolean IsFaourite;
+    @SerializedName("IsFavourite")
+    private boolean IsFavourite;
 
     //private int TypeId;
     //private int TypeName;
@@ -57,12 +58,12 @@ public class TrackObject {
         Categories = categories;
     }
 
-    public boolean isFaourite() {
-        return IsFaourite;
+    public boolean isFavourite() {
+        return IsFavourite;
     }
 
-    public void setFaourite(boolean faourite) {
-        IsFaourite = faourite;
+    public void setFavourite(boolean favourite) {
+        IsFavourite = favourite;
     }
 
     public void setHasLocation(boolean hasLocation) {

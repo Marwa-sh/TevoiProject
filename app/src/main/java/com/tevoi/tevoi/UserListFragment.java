@@ -326,7 +326,7 @@ public class UserListFragment extends Fragment
                 {
                     currentPage --;
                 }*/
-                if (currentPage != TOTAL_PAGES) adapter.addLoadingFooter();
+                if (TOTAL_PAGES != 0 && currentPage != TOTAL_PAGES) adapter.addLoadingFooter();
                 else isLastPage = true;
 
                 activity.mProgressDialog.dismiss();

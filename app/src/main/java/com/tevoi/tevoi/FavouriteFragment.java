@@ -227,6 +227,7 @@ public class FavouriteFragment extends Fragment {
 
                 if (currentPage <= TOTAL_PAGES) adapter.addLoadingFooter();
                 else isLastPage = true;
+
                 activity.mProgressDialog.dismiss();
                 adapter.notifyDataSetChanged();
             }
@@ -257,11 +258,11 @@ public class FavouriteFragment extends Fragment {
                 isLoading = false;
 
                 adapter.addAll(tracks.getTrack());
-                if(tracks.getTrack().size() == 0)
+               /* if(tracks.getTrack().size() == 0)
                 {
                     currentPage --;
-                }
-                if (currentPage != TOTAL_PAGES) adapter.addLoadingFooter();
+                }*/
+                if (TOTAL_PAGES != 0 && currentPage != TOTAL_PAGES) adapter.addLoadingFooter();
                 else isLastPage = true;
 
                 activity.mProgressDialog.dismiss();

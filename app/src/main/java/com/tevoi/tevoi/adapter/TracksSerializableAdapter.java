@@ -231,7 +231,7 @@ public class TracksSerializableAdapter extends RecyclerView.Adapter<TracksSerial
                     else
                     {
                         // unfavourite
-                        Call<IResponse> call = Global.client.RemoveTrackFromFavourite(t.getActivityId());
+                        Call<IResponse> call = Global.client.RemoveTrackFromFavourite(t.getId());
                         call.enqueue(new Callback<IResponse>() {
                             @Override
                             public void onResponse(Call<IResponse> call, Response<IResponse> response) {

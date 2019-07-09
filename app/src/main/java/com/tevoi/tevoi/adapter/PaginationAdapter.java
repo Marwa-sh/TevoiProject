@@ -1,9 +1,9 @@
 package com.tevoi.tevoi.adapter;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -24,109 +25,81 @@ import com.tevoi.tevoi.SideMenu;
 import com.tevoi.tevoi.TrackText;
 import com.tevoi.tevoi.Utils.Global;
 import com.tevoi.tevoi.model.IResponse;
-import com.tevoi.tevoi.model.LoadingVH;
 import com.tevoi.tevoi.model.TrackObject;
 import com.tevoi.tevoi.model.TrackSerializableObject;
 import com.tevoi.tevoi.model.UserListObject;
 import com.tevoi.tevoi.model.UserListResponse;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-
-public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
+public class PaginationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 {
-    // region pagination
     private static final int ITEM = 0;
     private static final int LOADING = 1;
     private boolean isLoadingAdded = false;
     private boolean retryPageLoad = false;
     private String errorMsg;
-    private PaginationAdapterCallback mCallback;
-    // endregion
 
     private List<TrackObject> tracks;
     private SideMenu activity;
-    private boolean HasPlayNextBtn;
-    private boolean HasRemoveBtn;
-    private boolean HasAddToListBtn = true;
-    private boolean HasReadTextBtn = true;
-    private boolean HasFavouriteBtn = true;
-
     private String fragmentName = "";
 
-    public TracksAdapter(List<TrackObject> tracks, SideMenu activity, String fragmentName) {
+    private PaginationAdapterCallback mCallback;
+
+    public PaginationAdapter(List<TrackObject> tracks, SideMenu activity, String fragmentName) {
         this.tracks = tracks;
         this.activity = activity;
         this.fragmentName = fragmentName;
     }
 
-    @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType)
-    {
-        LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-        RecyclerView.ViewHolder viewHolder2 = null;
+    public void setmCallback(PaginationAdapterCallback mCallback) {
+        this.mCallback = mCallback;
+    }
 
-        switch (viewType)
-        {
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
+    {
+        /*RecyclerView.ViewHolder viewHolder = null;
+        LayoutInflater inflater = LayoutInflater.from(activity);
+        viewHolder = getViewHolder(parent, inflater);
+
+        return viewHolder;*/
+
+        RecyclerView.ViewHolder viewHolder2 = null;
+        LayoutInflater inflater2 = LayoutInflater.from(parent.getContext());
+
+        switch (viewType) {
             case ITEM:
-            {
-                viewHolder2 = getViewHolder(viewGroup,inflater );
+                viewHolder2 = getViewHolder(parent, inflater2);
                 break;
-            }
-            case LOADING:
-            {
+            case LOADING: {
                 try
                 {
-                    View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_progress, viewGroup, false);
-                    viewHolder2 = new LoadingVH(v);
+                    View v2 = inflater2.inflate(R.layout.item_progress, parent, false);
+                    viewHolder2 = new LoadingVH(v2);
                 }
                 catch (Exception exc)
                 {
                     viewHolder2 = new LoadingVH(new View(activity));
                 }
             }
-            break;
+                break;
         }
         return viewHolder2;
+
     }
 
     @NonNull
-    private RecyclerView.ViewHolder getViewHolder(ViewGroup viewGroup, LayoutInflater inflater) {
+    private RecyclerView.ViewHolder getViewHolder(ViewGroup parent, LayoutInflater inflater) {
         RecyclerView.ViewHolder viewHolder;
-
-        View row;
-        switch (fragmentName)
-        {
-            case Global.HistoryFragmentName: {
-                row = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.track_row_instance_all, viewGroup, false);
-                break;
-            }
-            case Global.UserListTracksFragment:
-            case Global.FavouriteFragmentName: {
-                row = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.track_row_instance_all, viewGroup, false);
-                break;
-            }
-            case Global.PlayNowFragmentName: {
-                row = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.track_row_instance_without_play_next, viewGroup, false);
-                break;
-            }
-            case Global.PartnerNameFragment:
-            case Global.ListTracksFragmentName: {
-                row = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.track_row_instance_without_remove, viewGroup, false);
-                break;
-            }
-            default: {
-                row = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.track_row_instance_all, viewGroup, false);
-                break;
-            }
-        }
-        viewHolder = new TrackViewHolder(row);
+        View v1 = inflater.inflate(R.layout.track_row_instance_all, parent, false);
+        viewHolder = new TrackVH(v1);
         return viewHolder;
-
     }
 
     @Override
@@ -135,13 +108,20 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int i) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
-        switch (getItemViewType(i))
-        {
+        /*TrackVH viewHolder = (TrackVH) holder;
+        TrackObject track =  tracks.get(position);
+        viewHolder.tvAuthor.setText(track.getAuthors());
+        viewHolder.tvTrackName.setText(track.getName());
+        viewHolder.ratingBar.setRating(track.getRate());
+        viewHolder.tvCategories.setText(track.getCategories());
+        viewHolder.tvDuration.setText(track.getDuration());*/
+
+        switch (getItemViewType(position)) {
             case ITEM:
-                TrackViewHolder viewHolder = (TrackViewHolder) holder;
-                TrackObject track =  tracks.get(i);
+                TrackVH viewHolder = (TrackVH) holder;
+                TrackObject track =  tracks.get(position);
                 viewHolder.tvAuthor.setText(track.getAuthors());
                 viewHolder.tvTrackName.setText(track.getName());
                 viewHolder.ratingBar.setRating(track.getRate());
@@ -149,6 +129,7 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 viewHolder.tvDuration.setText(track.getDuration());
 
                 break;
+
             case LOADING:
             {
                 LoadingVH loadingVH = (LoadingVH) holder;
@@ -166,7 +147,7 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
                     } else
                     {
-                        if(loadingVH.mErrorLayout!= null) loadingVH.mErrorLayout.setVisibility(View.GONE);
+                       if(loadingVH.mErrorLayout!= null) loadingVH.mErrorLayout.setVisibility(View.GONE);
                         if(loadingVH.mProgressBar!= null) loadingVH.mProgressBar.setVisibility(View.VISIBLE);
                     }
                 }
@@ -175,14 +156,82 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         }
 
+
     }
 
     @Override
     public int getItemCount() {
-        return tracks.size();
+        return tracks == null ? 0 : tracks.size();
     }
 
-    class TrackViewHolder extends RecyclerView.ViewHolder
+    /*
+   Helpers
+   _________________________________________________________________________________________________
+    */
+
+    public void add(TrackObject mc) {
+        tracks.add(mc);
+        notifyItemInserted(tracks.size() - 1);
+    }
+
+    public void addAll(List<TrackObject> mcList) {
+        for (TrackObject mc : mcList) {
+            add(mc);
+        }
+    }
+
+    public void remove(TrackObject city) {
+        int position = tracks.indexOf(city);
+        if (position > -1) {
+            tracks.remove(position);
+            notifyItemRemoved(position);
+        }
+    }
+
+    public void clear() {
+        isLoadingAdded = false;
+        while (getItemCount() > 0) {
+            remove(getItem(0));
+        }
+    }
+
+    public boolean isEmpty() {
+        return getItemCount() == 0;
+    }
+
+
+    public void addLoadingFooter() {
+        isLoadingAdded = true;
+        add(new TrackObject());
+    }
+
+    public void removeLoadingFooter() {
+        isLoadingAdded = false;
+
+        int position = tracks.size() - 1;
+        TrackObject item = getItem(position);
+
+        if (item != null) {
+            tracks.remove(position);
+            notifyItemRemoved(position);
+        }
+    }
+
+    public TrackObject getItem(int position) {
+        return tracks.get(position);
+    }
+
+
+   /*
+   View Holders
+   _________________________________________________________________________________________________
+    */
+
+    /**
+     * Main list's content ViewHolder
+     */
+
+    class TrackVH extends RecyclerView.ViewHolder
     {
         public  View view;
         TextView tvTrackName;
@@ -197,7 +246,8 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         LinearLayout trackDetailsLayout;
         Button btnLike, btnAddToList, btnAddPlayNext,btnReadText, btnRemove;
         boolean hoverVisisble = false;
-        public TrackViewHolder(@NonNull final View itemView)
+
+        public TrackVH(@NonNull final View itemView)
         {
             super(itemView);
             //this.view=itemView.findViewWithTag(R.id.track_row_layout);
@@ -221,6 +271,7 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
             //--------//
 
+
             imgBtnPlay.setOnClickListener(new View.OnClickListener()
             {
                 @Override
@@ -238,7 +289,7 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
                         activity.txtTrackName.setText(selectedTrack.getName().toString());
 
-                        if(activity.mainPlayerLayout.getVisibility() == View.INVISIBLE)
+                        if(activity.mainPlayerLayout.getVisibility()==View.INVISIBLE)
                         {
                             activity.mainPlayerLayout.setVisibility(View.VISIBLE);
                         }
@@ -248,9 +299,9 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                             public void run() {
                                 //Linearlayout is the layout the fragments are being added to.
                                 View view = activity.lisTracksFragment.linearLayoutListTracks.getChildAt(activity.lisTracksFragment.linearLayoutListTracks.getChildCount()-1);
-                                //view.getParent().requestChildFocus(view ,view);
+
                                 // TODO : find solution since we removed scroll view
-                                //activity.lisTracksFragment.scrollViewListTracks.smoothScrollBy(0,(int)(view.getY() + view.getHeight()));
+                                // activity.lisTracksFragment.scrollViewListTracks.smoothScrollBy(0,(int)(view.getY() + view.getHeight()));
                             }
                         });
                     }
@@ -270,25 +321,7 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                                 activity.CurrentTrackInPlayer.getId());
 
                     }
-                    // if we are playing new track
-                    /*if(activity.player != null && i != activity.trackIdPlayedNow)
-                    {
-                        // reset the media player
-                        activity.player.resetMediaPlayer();
-                        activity.isPaused =false; activity.isPlaying = false;
-                        activity.serviceBound = false;
-                    }*/
-                    /*FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
-                    // Replace the contents of the container with the new fragment
-                    //TrackAddToList frag = new TrackAddToList();
-                    activity.mediaPlayerFragment.currentTrackId = selectedTrack.getId();
-                    activity.mediaPlayerFragment.currentTrack = selectedTrack;
-                    activity.CurrentTrackInPlayer = selectedTrack;
 
-                    ft.replace(R.id.content_frame, activity.mediaPlayerFragment);
-                    // or ft.add(R.id.your_placeholder, new FooFragment());
-                    // Complete the changes added above
-                    ft.commit();*/
                 }
             });
 
@@ -317,8 +350,6 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     else
                     {
                         hoverLayout.setVisibility(View.VISIBLE);
-                        //imgBtnPlay.setVisibility(View.INVISIBLE);
-                        //trackDetailsLayout.setVisibility(View.INVISIBLE);
                     }
                 }
             });
@@ -335,8 +366,6 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                         TrackText textFargment = TrackText.newInstance(selectedTrack.getId(), fragmentName);
                         ft.replace(R.id.content_frame, textFargment);
                         ft.addToBackStack( "TrackText" );
-                        // or ft.add(R.id.your_placeholder, new FooFragment());
-                        // Complete the changes added above
                         ft.commit();
                     }
                     else
@@ -356,7 +385,7 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                         switch (fragmentName)
                         {
                             case Global.HistoryFragmentName:
-                                {
+                            {
                                 Toast.makeText(activity, "HistoryFragmentName", Toast.LENGTH_SHORT).show();
                                 Call<IResponse> call = Global.client.RemoveFromHistory(selectedTrack.getId());
                                 call.enqueue(new Callback<IResponse>() {
@@ -384,7 +413,7 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                             }
                             case Global.FavouriteFragmentName: {
                                 //Toast.makeText(context, "FavouriteFragmentName", Toast.LENGTH_SHORT).show();
-                                Call<IResponse> call = Global.client.RemoveTrackFromFavourite(selectedTrack.getId());
+                                Call<IResponse> call = Global.client.RemoveTrackFromFavourite(selectedTrack.getActivityId());
                                 call.enqueue(new Callback<IResponse>() {
                                     @Override
                                     public void onResponse(Call<IResponse> call, Response<IResponse> response) {
@@ -408,7 +437,7 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                                 break;
                             }
                             case Global.PlayNowFragmentName:
-                                {
+                            {
                                 Toast.makeText(activity, "PlayNowFragmentName remove", Toast.LENGTH_SHORT).show();
                                 break;
                             }
@@ -452,7 +481,7 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 public void onClick(View v) {
                     //Like or dislike this track.
                     int i = getPosition();
-                   final TrackObject t = tracks.get(i);
+                    final TrackObject t = tracks.get(i);
                     if(!t.isFavourite())
                     {
                         Call<IResponse> call = Global.client.AddTrackToFavourite(t.getId());
@@ -592,42 +621,13 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                             Toast.makeText(activity, "You have to lists", Toast.LENGTH_LONG).show();
                         }
                     });
-                  /*  // here we need to add track to play next list
-                    int Id = activity.mediaPlayerFragment.currentTrack.getId();
-                    String Name = activity.mediaPlayerFragment.currentTrack.getName();
-                    TrackSerializableObject track = new TrackSerializableObject();
-                    track.setId(Id);
-                    track.setName(Name);
-                    track.setDuration("03:20");
-                    track.setAuthor("Authors");
-                    track.setCategories("Categories");
-                    track.setRate(2);
-
-                    Toast.makeText(activity, "Hi add to list", Toast.LENGTH_SHORT).show();*/
 
                 }
             });
-            if(btnAddPlayNext!= null)
-            {
+            if(btnAddPlayNext!= null) {
                 btnAddPlayNext.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View v)
-                    {
-                        if(activity.userSubscriptionInfo.IsFreeSubscription)
-                        {
-                            if(activity.userSubscriptionInfo.numberOfListenUnitsConsumed < activity.userSubscriptionInfo.FreeSubscriptionLimit.MonthlyListenMaxUnits)
-                            {
-
-                            }
-                            else
-                            {
-                                // user quota is finished
-                            }
-                        }
-                        else
-                        {
-                            // store infor of track
-                        }
+                    public void onClick(View v) {
                         int i = getAdapterPosition();
                         TrackObject selectedTrack = tracks.get(i);
                         TrackSerializableObject track = new TrackSerializableObject();
@@ -655,62 +655,54 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     }
 
-    // region helpers
 
-    public void add(TrackObject mc) {
-        tracks.add(mc);
-        notifyItemInserted(tracks.size() - 1);
+    protected class LoadingVH extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        private ProgressBar mProgressBar;
+        private ImageButton mRetryBtn;
+        private TextView mErrorTxt;
+        private LinearLayout mErrorLayout;
+
+        public LoadingVH(View itemView) {
+            super(itemView);
+
+            mProgressBar = (ProgressBar) itemView.findViewById(R.id.loadmore_progress);
+            mRetryBtn = (ImageButton) itemView.findViewById(R.id.loadmore_retry);
+            mErrorTxt = (TextView) itemView.findViewById(R.id.loadmore_errortxt);
+            mErrorLayout = (LinearLayout) itemView.findViewById(R.id.loadmore_errorlayout);
+
+            if(mRetryBtn != null) {
+                mRetryBtn.setOnClickListener(this);
+                mErrorLayout.setOnClickListener(this);
+            }
+        }
+
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()) {
+                case R.id.loadmore_retry:
+                case R.id.loadmore_errorlayout:
+
+                    showRetry(false, null);
+                    //mCallback.retryPageLoad();
+
+                    break;
+            }
+        }
     }
 
-    public void addAll(List<TrackObject> mcList)
+    /**
+     * Displays Pagination retry footer view along with appropriate errorMsg
+     *
+     * @param show
+     * @param errorMsg to display if page load fails
+     */
+    public void showRetry(boolean show, @Nullable String errorMsg)
     {
-        for (TrackObject mc : mcList) {
-            add(mc);
-        }
+        retryPageLoad = show;
+        notifyItemChanged(tracks.size() - 1);
+
+        if (errorMsg != null) this.errorMsg = errorMsg;
     }
-
-    public void remove(TrackObject city) {
-        int position = tracks.indexOf(city);
-        if (position > -1) {
-            tracks.remove(position);
-            notifyItemRemoved(position);
-        }
-    }
-
-    public void clear() {
-        isLoadingAdded = false;
-        while (getItemCount() > 0) {
-            remove(getItem(0));
-        }
-    }
-
-    public boolean isEmpty() {
-        return getItemCount() == 0;
-    }
-
-
-    public void addLoadingFooter() {
-        isLoadingAdded = true;
-        add(new TrackObject());
-    }
-
-    public void removeLoadingFooter() {
-        isLoadingAdded = false;
-
-        int position = tracks.size() - 1;
-        TrackObject item = getItem(position);
-
-        if (item != null) {
-            tracks.remove(position);
-            notifyItemRemoved(position);
-        }
-    }
-
-    public TrackObject getItem(int position) {
-        return tracks.get(position);
-    }
-
-
-    // endregion
 
 }

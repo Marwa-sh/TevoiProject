@@ -26,6 +26,7 @@ import com.tevoi.tevoi.model.TrackLocationResponse;
 import com.tevoi.tevoi.model.TrackObject;
 import com.tevoi.tevoi.model.TrackResponseList;
 import com.tevoi.tevoi.model.TrackTextResponse;
+import com.tevoi.tevoi.model.UserFiltersResponse;
 import com.tevoi.tevoi.model.UserListResponse;
 import com.tevoi.tevoi.model.UserSubscriptionInfoResponse;
 
@@ -78,10 +79,10 @@ public interface ApiInterface {
     Call<AddCommentResponse> AddComment(@Query("TrackId") int TrackId, @Query("CommentText") String CommentText);
 
     @GET("api/Services/RemoveFromHistory")
-    Call<IResponse> RemoveFromHistory(@Query("ActivityId") int ActivityId);
+    Call<IResponse> RemoveFromHistory(@Query("TrackId") int TrackId);
 
     @GET("api/Services/RemoveTrackFromFavourite")
-    Call<IResponse> RemoveTrackFromFavourite(@Query("ActivityId") int ActivityId);
+    Call<IResponse> RemoveTrackFromFavourite(@Query("TrackId") int TrackId);
 
     /*@GET("api/Services/AddListenTrackActivity")
     Call<IResponse> AddListenTrackActivity(@Query("TrackId") int TrackId, @Query("numberOfSeconds") int numberOfSeconds);
@@ -120,7 +121,7 @@ public interface ApiInterface {
     Call<GetSubscripedPartnersResponse> GetSubscripedPartners();
 
     @GET("api/Services/AddUnitUsageForUser")
-    Call<IResponse> AddUnitUsageForUser(@Query("TrackId") int TrackId,@Query("NumberOfSeconds") int NumberOfSeconds);
+    Call<UserSubscriptionInfoResponse> AddUnitUsageForUser(@Query("TrackId") int TrackId,@Query("NumberOfSeconds") int NumberOfSeconds);
 
     @GET("api/Services/GetPartnerTracks")
     Call<GetPartnerTracksResponse> GetPartnerTracks(@Query("PartnerId") int PartnerId,@Query("ListTypeEnum") int ListTypeEnum, @Query("index") int index, @Query("size") int size);
@@ -154,4 +155,7 @@ public interface ApiInterface {
 
     @GET("api/Services/GetUserSubscriptionInfo")
     Call<UserSubscriptionInfoResponse> GetUserSubscriptionInfo();
+
+    @GET("api/Services/GetUserFilters")
+    Call<UserFiltersResponse> GetUserFilters();
 }

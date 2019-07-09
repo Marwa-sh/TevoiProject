@@ -64,7 +64,7 @@ public class SideMenu extends AppCompatActivity
     // region subscription Information
 
     public UserSubscriptionInfoResponse userSubscriptionInfo = new UserSubscriptionInfoResponse();
-
+    public boolean IsListenDailyLimitsExceeded = false;
 
     // endregion
 
@@ -271,12 +271,25 @@ public class SideMenu extends AppCompatActivity
                     isActivityPause = true;
                 }*/
 
-                if (!isActivityPause) {
-                    if (serviceBound && player != null && player.mMediaPlayer != null) {
+                if (!isActivityPause)
+                {
+                    if (serviceBound && player != null && player.mMediaPlayer != null)
+                    {
                         txtTrackName.setText(CurrentTrackInPlayer.getName().toString());
                         mainPlayerLayout.setVisibility(View.VISIBLE);
                         //player.updateStatusBarInfo(CurrentTrackInPlayer.getName(), CurrentTrackInPlayer.getAuthors());
-                        if (!player.mMediaPlayer.isPlaying()) {
+
+                        if(IsListenDailyLimitsExceeded)
+                        {
+
+                        }
+                        else
+                        {
+
+                        }
+
+                        if (!player.mMediaPlayer.isPlaying())
+                        {
                             if (btnPausePlayMainMediaPlayer != null)
                                 btnPausePlayMainMediaPlayer.setImageResource(R.drawable.baseline_play_arrow_24);
                             mProgressDialog.dismiss();
@@ -1119,6 +1132,17 @@ public class SideMenu extends AppCompatActivity
         //player.updateStatusBarInfo(CurrentTrackInPlayer.getName(), CurrentTrackInPlayer.getAuthors());
     }
 
+    @Override
+    public  void updateUserUsage(UserSubscriptionInfoResponse response)
+    {
+        userSubscriptionInfo = response;
+    }
+
+    @Override
+    public void setFlagUserExceedsDailyUsageListen()
+    {
+        IsListenDailyLimitsExceeded = true;
+    }
 
     /*@Override
     public void playBtn() {
