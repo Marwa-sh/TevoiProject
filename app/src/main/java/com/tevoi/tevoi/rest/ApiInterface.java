@@ -158,4 +158,7 @@ public interface ApiInterface {
 
     @GET("api/Services/GetUserFilters")
     Call<UserFiltersResponse> GetUserFilters();
+
+    @GET("api/Services/RemoveAllUserLists")
+    Call<IResponse> RemoveAllUserLists();
 }

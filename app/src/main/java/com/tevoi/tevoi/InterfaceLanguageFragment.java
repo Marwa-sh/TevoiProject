@@ -24,7 +24,7 @@ public class InterfaceLanguageFragment extends Fragment {
         chkEnglish = rootView.findViewById(R.id.chk_english);
 
         SideMenu activity = (SideMenu) getActivity();
-        String language = activity.storageManager.getLanguagePreference(activity);
+        String language = activity.storageManager.getLanguageUIPreference(activity);
 
         if(language.equals("ar"))
         {
@@ -45,9 +45,9 @@ public class InterfaceLanguageFragment extends Fragment {
 
                 SideMenu activity = (SideMenu) getActivity();
                 if(checked)
-                    activity.storageManager.storeLanguagePreference(activity, "en");
+                    activity.storageManager.storeLanguageUIPreference(activity, "en");
                 else
-                    activity.storageManager.storeLanguagePreference(activity, "ar");
+                    activity.storageManager.storeLanguageUIPreference(activity, "ar");
             }
 
         });
@@ -61,9 +61,9 @@ public class InterfaceLanguageFragment extends Fragment {
                 chkEnglish.setChecked(!checked);
                 SideMenu activity = (SideMenu) getActivity();
                 if(checked)
-                    activity.storageManager.storeLanguagePreference(activity, "ar");
+                    activity.storageManager.storeLanguageUIPreference(activity, "ar");
                 else
-                    activity.storageManager.storeLanguagePreference(activity, "en");
+                    activity.storageManager.storeLanguageUIPreference(activity, "en");
             }
 
         });

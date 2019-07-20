@@ -51,7 +51,8 @@ public class Global {
     public static  final int ListenUnitInSeconds = 60;
 
     public static String UserToken = "";
-    public static final String DefaultLanguage = "en";
+    public static final String DefaultUILanguage = "en";
+    public static final String DefaultTrackLanguage = "en-US";
     public static final String Licence = "";
     public static int CurrentUserId =0;
 

@@ -53,5 +53,39 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"/>
         <include layout="@layout/error_layout"/>
+    <LinearLayout
+        android:id="@+id/bottom_panel"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="20"
+        android:layout_alignParentBottom="true">
+        <TextView
+            android:id="@+id/txtClearFilter"
+            android:layout_weight="19"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/clear_filter"
+            android:background="@color/tevoiBluePrimary"
+            android:textColor="@color/fontColor"
+            android:paddingVertical="10dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            />
 
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/cross_blue"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_button"
+            android:id="@+id/btn_clear_user_lists"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="6dp"
+            android:scaleX="0.8"
+            android:scaleY="0.9"
+            android:padding="2dp"
+            />
+    </LinearLayout>
 </LinearLayout>

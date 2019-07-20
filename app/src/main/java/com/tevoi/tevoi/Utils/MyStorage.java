@@ -19,7 +19,8 @@ public class MyStorage
     public static final String PREFS_NAME = "Tevoi";
     //public static final String FAVORITES = "Favorite";
     public static final String PlayNowTrack = "PlayNowTrack";
-    public static final String PreferenceLanguage = "PreferenceLanguage";
+    public static final String PreferenceUILanguage = "PreferenceUILanguage";
+    public static final String PreferenceTrackLanguage = "PreferenceTrackLanguage";
     public static final String TrackTypeFilter = "TrackTypeFilter";
     public static final String UserToken = "UserToken";
     public  static final String RememberMe = "RememberMe";
@@ -144,30 +145,60 @@ public class MyStorage
 
     //endregion
 
-    // region Language storage
+    // region UI Language storage
 
-    public void storeLanguagePreference(Context context, String language)
+    public void storeLanguageUIPreference(Context context, String language)
     {
         SharedPreferences settings;
         Editor editor;
-        settings = context.getSharedPreferences(PreferenceLanguage + Suffix, Context.MODE_PRIVATE);
+        settings = context.getSharedPreferences(PreferenceUILanguage + Suffix, Context.MODE_PRIVATE);
         editor = settings.edit();
 
-        editor.putString(PreferenceLanguage + Suffix, language);
+        editor.putString(PreferenceUILanguage + Suffix, language);
         editor.commit();
     }
 
-    public String getLanguagePreference(Context context)
+    public String getLanguageUIPreference(Context context)
     {
         SharedPreferences settings;
         String language = "";
-        settings = context.getSharedPreferences(PreferenceLanguage + Suffix, Context.MODE_PRIVATE);
-        if (settings.contains(PreferenceLanguage + Suffix))
+        settings = context.getSharedPreferences(PreferenceUILanguage + Suffix, Context.MODE_PRIVATE);
+        if (settings.contains(PreferenceUILanguage + Suffix))
         {
-            language = settings.getString(PreferenceLanguage + Suffix, null);
+            language = settings.getString(PreferenceUILanguage + Suffix, null);
         }
         else
-            language = Global.DefaultLanguage;
+            language = Global.DefaultUILanguage;
+
+        return language;
+    }
+
+    // endregion
+
+    // region Track Language storage
+
+    public void storeLanguageTrackPreference(Context context, String language)
+    {
+        SharedPreferences settings;
+        Editor editor;
+        settings = context.getSharedPreferences(PreferenceTrackLanguage + Suffix, Context.MODE_PRIVATE);
+        editor = settings.edit();
+
+        editor.putString(PreferenceTrackLanguage + Suffix, language);
+        editor.commit();
+    }
+
+    public String getLanguageTrackPreference(Context context)
+    {
+        SharedPreferences settings;
+        String language = "";
+        settings = context.getSharedPreferences(PreferenceTrackLanguage + Suffix, Context.MODE_PRIVATE);
+        if (settings.contains(PreferenceTrackLanguage + Suffix))
+        {
+            language = settings.getString(PreferenceTrackLanguage + Suffix, null);
+        }
+        else
+            language = Global.DefaultTrackLanguage;
 
         return language;
     }
@@ -305,7 +336,6 @@ public class MyStorage
         editor.putString(ShowNewsTracks +Suffix, state);
         editor.commit();
     }
-
     public void storeShowArticlesTracksState(Context context, String state)
     {
         SharedPreferences settings;

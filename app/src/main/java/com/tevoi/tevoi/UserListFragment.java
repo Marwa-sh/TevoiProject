@@ -62,7 +62,7 @@ public class UserListFragment extends Fragment
     //RecyclerView recyclerView;
     RecyclerViewEmptySupport recyclerView;
     SideMenu activity;
-
+    ImageButton btn_clear_user_lists;
     ImageButton imgBtnAddUserList;
 
     View rootView;
@@ -72,8 +72,31 @@ public class UserListFragment extends Fragment
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_user_list, container, false);
         activity = (SideMenu)getActivity();
+        btn_clear_user_lists = rootView.findViewById(R.id.btn_clear_user_lists);
 
         initiatePagination();
+
+        btn_clear_user_lists.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Call<IResponse> call = Global.client.RemoveAllUserLists();
+                call.enqueue(new Callback <IResponse>(){
+                    public void onResponse(Call<IResponse> call, Response<IResponse> response) {
+                        //generateDataList(response.body());
+                        SideMenu activity = (SideMenu) getActivity();
+                        IResponse result = response.body();
+                        Toast.makeText(activity, result.getMessage(), Toast.LENGTH_SHORT).show();
+
+                    }
+                    public void onFailure(Call<IResponse> call, Throwable t)
+                    {
+                        Toast.makeText(getContext(),"something went wrong", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
 
         imgBtnAddUserList = rootView.findViewById(R.id.imgBtnAddUserList);
         imgBtnAddUserList.setOnClickListener(new View.OnClickListener()

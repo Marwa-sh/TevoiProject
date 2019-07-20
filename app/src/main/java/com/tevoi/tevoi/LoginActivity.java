@@ -18,7 +18,9 @@ import android.widget.Toast;
 
 import com.tevoi.tevoi.Utils.Global;
 import com.tevoi.tevoi.Utils.MyStorage;
+import com.tevoi.tevoi.model.InternetConnectionListener;
 import com.tevoi.tevoi.model.LoginResponse;
+import com.tevoi.tevoi.rest.ApiClient;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -27,6 +29,8 @@ import retrofit2.Response;
 public class LoginActivity extends AppCompatActivity
 {
     TextView txtLogin;
+    TextView txtRegister;
+
     ImageButton btnLogin, btnRegister, btnRequestNewPassword;
     EditText etUserName,etPassword,etEmail;
     CheckBox checkBoxRememberMe;
@@ -58,6 +62,7 @@ public class LoginActivity extends AppCompatActivity
         mProgressDialog.setCancelable(false);
 
         txtLogin = findViewById(R.id.txtLogin);
+        txtRegister = findViewById(R.id.txtRegister);
 
         btnLogin = findViewById(R.id.btn_Login);
         btnRegister = findViewById(R.id.btn_register);
@@ -188,7 +193,14 @@ public class LoginActivity extends AppCompatActivity
                 setContentView(R.layout.activity_register);
             }
         });
-
+        txtRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(),RegisterActivity.class);
+                startActivity(i);
+                setContentView(R.layout.activity_register);
+            }
+        });
 
     }
 

@@ -1,9 +1,15 @@
 package com.tevoi.tevoi.rest;
 
 
+import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 import com.tevoi.tevoi.Utils.Global;
+import com.tevoi.tevoi.model.InternetConnectionListener;
+import com.tevoi.tevoi.model.NetworkConnectionInterceptor;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -17,9 +23,26 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ApiClient
 {
     private static Retrofit retrofit = null;
+
     public static Retrofit getClient()
     {
         OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
+                /*.addInterceptor(new NetworkConnectionInterceptor() {
+                    @Override
+                    public boolean isInternetAvailable() {
+                        return isInternetAvailableV();
+                    }
+
+                    @Override
+                    public void onInternetUnavailable() {
+                        // we can broadcast this event to activity/fragment/service
+                        // through LocalBroadcastReceiver or
+                        // RxBus/EventBus
+                        // also we can call our own interface method
+                        // like this.
+                        mInternetConnectionListener.onInternetUnavailable();
+                    }
+                })*/
                 //.addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
                 .addInterceptor(new Interceptor() {
                     @Override
@@ -27,7 +50,7 @@ public class ApiClient
                         Request originalRequest = chain.request();
 
                         Request.Builder builder = originalRequest.newBuilder().header("Authorization",
-                                Global.UserToken).addHeader("Content-Language", Global.DefaultLanguage)
+                                Global.UserToken).addHeader("Content-Language", Global.DefaultUILanguage)
                                 .addHeader("License", "TevoiMobileApp");
 
                         Request newRequest = builder.build();
@@ -82,7 +105,6 @@ public class ApiClient
                 .readTimeout(60, TimeUnit.SECONDS)
                 .writeTimeout(60, TimeUnit.SECONDS)
                 .build();*/
-
         if (retrofit==null) {
             retrofit = new Retrofit.Builder()
                     .baseUrl(Global.BASE_URL)
@@ -92,5 +114,12 @@ public class ApiClient
         }
         return retrofit;
     }
+
+    /*public boolean isInternetAvailableV() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }*/
 }
 

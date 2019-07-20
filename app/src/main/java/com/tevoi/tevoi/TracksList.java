@@ -33,6 +33,8 @@ import com.tevoi.tevoi.Utils.HelperFunctions;
 import com.tevoi.tevoi.adapter.PaginationAdapter;
 import com.tevoi.tevoi.adapter.Track;
 import com.tevoi.tevoi.adapter.TracksAdapter;
+import com.tevoi.tevoi.model.CustomApp;
+import com.tevoi.tevoi.model.InternetConnectionListener;
 import com.tevoi.tevoi.model.PaginationScrollListener;
 import com.tevoi.tevoi.model.RecyclerViewEmptySupport;
 import com.tevoi.tevoi.model.TrackFilter;
@@ -47,7 +49,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TracksList extends Fragment implements AdapterView.OnItemSelectedListener
+public class TracksList extends Fragment
+        implements AdapterView.OnItemSelectedListener
+        //, InternetConnectionListener
 {
     // region pagination properties
     LinearLayoutManager linearLayoutManager;
@@ -106,7 +110,10 @@ public class TracksList extends Fragment implements AdapterView.OnItemSelectedLi
         btnRetry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                loadFirstPage(active_tab);
+                errorLayout.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
+                activateTab(active_tab);
+                //loadFirstPage(active_tab);
             }
         });
     }
@@ -114,9 +121,14 @@ public class TracksList extends Fragment implements AdapterView.OnItemSelectedLi
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_tracks_list, container, false);
         activity  = (SideMenu)getActivity();
+
+        /*CustomApp d = ((CustomApp) activity.getApplication());
+        d.setInternetConnectionListener(this);*/
+
         active_tab = defaultTab;
         btnSearch = rootView.findViewById(R.id.btn_search);
         fm = getActivity().getSupportFragmentManager();
@@ -360,7 +372,6 @@ public class TracksList extends Fragment implements AdapterView.OnItemSelectedLi
             protected void loadMoreItems() {
                 isLoading = true;
                 currentPage += 1;
-
                 loadNextPage(k);
             }
 
@@ -427,11 +438,15 @@ public class TracksList extends Fragment implements AdapterView.OnItemSelectedLi
         TrackFilter filter =  new TrackFilter();
         filter.SearchKey = ""; filter.IsLocationEnabled = false;
         filter.TrackTypeId = 1;
-        filter.ListTypeEnum = tabId; filter.Index = currentPage; filter.Size = PAGE_SIZE;
-        Call<TrackResponseList> call = Global.client.getListMainTrack(filter);
-        call.enqueue(new Callback<TrackResponseList>() {
-            public void onResponse(Call<TrackResponseList> call, Response<TrackResponseList> response) {
+        filter.ListTypeEnum = tabId;
+        filter.Index = currentPage; filter.Size = PAGE_SIZE;
 
+
+        Call<TrackResponseList> call = ((CustomApp) activity.getApplication()).getApiService().getListMainTrack(filter);
+        //Call<TrackResponseList> call = Global.client.getListMainTrack(filter);
+        call.enqueue(new Callback<TrackResponseList>() {
+            public void onResponse(Call<TrackResponseList> call, Response<TrackResponseList> response)
+            {
                 TrackResponseList tracks = response.body();
                 TOTAL_PAGES = tracks.getTotalRowCount() / PAGE_SIZE;
 
@@ -447,7 +462,8 @@ public class TracksList extends Fragment implements AdapterView.OnItemSelectedLi
                 activity.mProgressDialog.dismiss();
             }
 
-            public void onFailure(Call<TrackResponseList> call, Throwable t) {
+            public void onFailure(Call<TrackResponseList> call, Throwable t)
+            {
                 activity.mProgressDialog.dismiss();
                 t.printStackTrace();
                 showErrorView(t);
@@ -464,7 +480,8 @@ public class TracksList extends Fragment implements AdapterView.OnItemSelectedLi
         filter.SearchKey = ""; filter.IsLocationEnabled = false;
         filter.TrackTypeId =1;
         filter.ListTypeEnum = tabId; filter.Index = currentPage; filter.Size = PAGE_SIZE;
-        Call<TrackResponseList> call = Global.client.getListMainTrack(filter);
+        Call<TrackResponseList> call = ((CustomApp) activity.getApplication()).getApiService().getListMainTrack(filter);
+        //Call<TrackResponseList> call = Global.client.getListMainTrack(filter);
         call.enqueue(new Callback<TrackResponseList>() {
             public void onResponse(Call<TrackResponseList> call, Response<TrackResponseList> response) {
                 //generateDataList(response.body());
@@ -478,7 +495,7 @@ public class TracksList extends Fragment implements AdapterView.OnItemSelectedLi
 
                 adapter.addAll(tracks.getTrack());
 
-                if (currentPage != TOTAL_PAGES) adapter.addLoadingFooter();
+                if (TOTAL_PAGES != 0 && currentPage != TOTAL_PAGES) adapter.addLoadingFooter();
                 else isLastPage = true;
 
                 activity.mProgressDialog.dismiss();
@@ -495,8 +512,10 @@ public class TracksList extends Fragment implements AdapterView.OnItemSelectedLi
 
     }
 
-    private void showErrorView(Throwable throwable) {
-        if (errorLayout.getVisibility() == View.GONE) {
+    private void showErrorView(Throwable throwable)
+    {
+        if (errorLayout.getVisibility() == View.GONE)
+        {
             errorLayout.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.GONE);
 
@@ -531,4 +550,12 @@ public class TracksList extends Fragment implements AdapterView.OnItemSelectedLi
     {
         adapter.notifyDataSetChanged();
     }
+
+
+    /*@Override
+    public void onInternetUnavailable() {
+        // hide content UI
+       // Toast.makeText(activity, "Hi there I'm Marwa", Toast.LENGTH_SHORT).show();
+        // show No Internet Connection UI
+    }*/
 }
