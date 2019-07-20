@@ -161,4 +161,10 @@ public interface ApiInterface {
 
     @GET("api/Services/RemoveAllUserLists")
     Call<IResponse> RemoveAllUserLists();
+
+    @GET("api/Services/UpdateUIDefaultLanguage")
+    Call<IResponse> UpdateUIDefaultLanguage(@Query("LanguageId") int LanguageId);
+
+    @GET("api/Services/UpdateTrackDefaultLanguage")
+    Call<IResponse> UpdateTrackDefaultLanguage(@Query("LanguageId") int LanguageId);
 }

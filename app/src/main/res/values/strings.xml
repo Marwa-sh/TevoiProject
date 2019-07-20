@@ -54,6 +54,9 @@
     <string name="interface_language">interface language</string>
     <string name="about_us">About us</string>
 
+    <string name="track_language">Default Track Language</string>
+    <string name="show_default_audio_language">Show audio tracks in selected language only.</string>
+
 
     <string name="empty_list">Empty List</string>
     <string name="mandatory_fileds">Mandatory fileds*</string>

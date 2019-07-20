@@ -13,11 +13,13 @@ import android.widget.ImageButton;
 
 import com.tevoi.tevoi.Utils.Global;
 import com.tevoi.tevoi.adapter.CategoriesAdapter;
+import com.tevoi.tevoi.adapter.MainTopicAdapter;
 import com.tevoi.tevoi.adapter.SubscripedPartnersAdapter;
 import com.tevoi.tevoi.adapter.TrackTypeAdapter;
 import com.tevoi.tevoi.model.CategoryObject;
 import com.tevoi.tevoi.model.CategoryResponseList;
 import com.tevoi.tevoi.model.GetSubscripedPartnersResponse;
+import com.tevoi.tevoi.model.MainTopic;
 import com.tevoi.tevoi.model.SubscipedPartnersObject;
 import com.tevoi.tevoi.model.TrackTypeObject;
 import com.tevoi.tevoi.model.UserFiltersResponse;
@@ -35,16 +37,16 @@ public class FilterFragment extends Fragment {
     List<CategoryObject> categoryObjectList;
     List<SubscipedPartnersObject> subscipedPartners;
 
-    RecyclerView trackTypeRecyclerView;
-    RecyclerView categoriesRecyclerView;
+    //RecyclerView categoriesRecyclerView;
+    RecyclerView mainTopicsRecyclerView;
     RecyclerView subscripedPartnersRecyclerView;
 
-    CategoriesAdapter adapterCategories;
+    //CategoriesAdapter adapterCategories;
+    MainTopicAdapter adapterMainTopics;
     SubscripedPartnersAdapter adapterPartners;
-    TrackTypeAdapter trackTypeAdapter;
+    //TrackTypeAdapter trackTypeAdapter;
 
     ImageButton btnClearFilter;
-
 
     SideMenu activity;
 
@@ -57,7 +59,7 @@ public class FilterFragment extends Fragment {
         btnClearFilter = rootView.findViewById(R.id.btn_clear_filter);
 
 
-        categoriesRecyclerView = rootView.findViewById(R.id.categories_recycler_view);
+        //categoriesRecyclerView = rootView.findViewById(R.id.categories_recycler_view);
         subscripedPartnersRecyclerView = rootView.findViewById(R.id.subscriped_partners);
 
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -65,18 +67,18 @@ public class FilterFragment extends Fragment {
 
         final LinearLayoutManager layoutManager2 = new LinearLayoutManager(getContext());
         layoutManager2.setOrientation(LinearLayoutManager.VERTICAL);
-        categoriesRecyclerView.setLayoutManager(layoutManager2);
+        //categoriesRecyclerView.setLayoutManager(layoutManager2);
 
         final LinearLayoutManager layoutManagerPartners = new LinearLayoutManager(getContext());
         layoutManagerPartners.setOrientation(LinearLayoutManager.VERTICAL);
         subscripedPartnersRecyclerView.setLayoutManager(layoutManagerPartners);
 
-        trackTypeRecyclerView = rootView.findViewById(R.id.track_type_recycler_view);
-        trackTypeRecyclerView.setLayoutManager(layoutManager);
+        //trackTypeRecyclerView = rootView.findViewById(R.id.track_type_recycler_view);
+        //trackTypeRecyclerView.setLayoutManager(layoutManager);
         //trackTypeAdapter = new TrackTypeAdapter(getContext());
-        trackTypeRecyclerView.setAdapter(trackTypeAdapter);
+        //trackTypeRecyclerView.setAdapter(trackTypeAdapter);
         DividerItemDecoration itemDecorTrackType = new DividerItemDecoration(getContext(), VERTICAL);
-        trackTypeRecyclerView.addItemDecoration(itemDecorTrackType);
+        //trackTypeRecyclerView.addItemDecoration(itemDecorTrackType);
 
         //TrackTypeObject[] trackTypeObjects = trackTypeAdapter.getTrackTypeObjects();
 
@@ -103,7 +105,7 @@ public class FilterFragment extends Fragment {
                /* adapterCategories = new CategoriesAdapter(filters.getMainTopicList(), activity);
                 categoriesRecyclerView.setAdapter(adapterCategories);*/
                 DividerItemDecoration itemDecor = new DividerItemDecoration(getContext(), VERTICAL);
-                categoriesRecyclerView.addItemDecoration(itemDecor);
+                //categoriesRecyclerView.addItemDecoration(itemDecor);
 
                 adapterPartners = new SubscripedPartnersAdapter(filters.getSubscripedPartners(),activity);
                 subscripedPartnersRecyclerView.setAdapter(adapterPartners);

@@ -90,4 +90,12 @@ public class Global {
 
     // endregion
 
+
+    // region Language Enumerations
+
+    public static int Arabic = 2;
+    public static int English = 3;
+
+    // endregion
+
 }
