@@ -67,6 +67,10 @@
         <item android:id="@+id/filters"
             app:actionLayout="@layout/drawer_list_item"
             android:title="Filter" />
+
+     <item android:id="@+id/user_filters"
+         app:actionLayout="@layout/drawer_list_item"
+         android:title="User Filter" />
        <!-- <item
             android:id="@+id/nav_gallery"
             android:icon="@drawable/ic_menu_gallery"

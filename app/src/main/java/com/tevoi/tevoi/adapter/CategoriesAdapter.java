@@ -1,4 +1,4 @@
-package com.tevoi.tevoi.adapter;
+package com.tevoi.tevoi.accordion;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;

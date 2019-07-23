@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 
 import com.tevoi.tevoi.Utils.Global;
-import com.tevoi.tevoi.adapter.CategoriesAdapter;
 import com.tevoi.tevoi.adapter.MainTopicAdapter;
 import com.tevoi.tevoi.adapter.SubscripedPartnersAdapter;
 import com.tevoi.tevoi.adapter.TrackTypeAdapter;

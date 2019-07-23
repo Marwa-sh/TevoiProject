@@ -175,6 +175,7 @@ public class SideMenu extends AppCompatActivity
     MyListFragment myListFragment = new MyListFragment();
     UserListFragment userListsFragment = new UserListFragment();
     FilterFragment filterFragment = new FilterFragment();
+    UserFilterFragment userFilterFragment = new UserFilterFragment();
 
     UpgradeToPremiumFragment upgradeToPremiumFragment = new UpgradeToPremiumFragment();
 
@@ -769,6 +770,14 @@ public class SideMenu extends AppCompatActivity
                 mSubTitle.setText("Filters");
                 fragmentTransaction.replace(R.id.content_frame, filterFragment);
                 fragmentTransaction.addToBackStack("Filters");
+                fragmentTransaction.commit();
+                break;
+            }
+            case R.id.user_filters:
+                {
+                mSubTitle.setText("User Filters");
+                fragmentTransaction.replace(R.id.content_frame, userFilterFragment);
+                fragmentTransaction.addToBackStack("User Filters");
                 fragmentTransaction.commit();
                 break;
             }

@@ -11,6 +11,8 @@ import com.tevoi.tevoi.rest.ApiClientDnn;
 import com.tevoi.tevoi.rest.ApiInterface;
 import com.tevoi.tevoi.rest.ApiInterfaceDnn;
 
+import java.util.Date;
+
 public class Global {
     //public static final String BASE_URL = "http://192.168.1.3/TevoiAPI/";
     //public static  final  String BASE_AUDIO_URL = "http://192.168.1.3/TevoiAPI/api/Services/GetStreamAudio?id=";
@@ -95,6 +97,12 @@ public class Global {
 
     public static int Arabic = 2;
     public static int English = 3;
+
+    // endregion
+
+
+    // region unregistered users info
+    public static int NumberOfAllowedMinutes = 15;
 
     // endregion
 

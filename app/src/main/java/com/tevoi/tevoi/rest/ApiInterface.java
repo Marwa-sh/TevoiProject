@@ -167,4 +167,10 @@ public interface ApiInterface {
 
     @GET("api/Services/UpdateTrackDefaultLanguage")
     Call<IResponse> UpdateTrackDefaultLanguage(@Query("LanguageId") int LanguageId);
+
+
+    @GET("api/User/RequestNewPassword")
+    Call<IResponse> RequestNewPassword(@Query("Email") String Email);
+
+
 }

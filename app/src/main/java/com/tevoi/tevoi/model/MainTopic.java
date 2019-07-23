@@ -1,5 +1,7 @@
 package com.tevoi.tevoi.model;
 
+import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup;
+
 import java.util.List;
 
 public class MainTopic

@@ -2,7 +2,8 @@ package com.tevoi.tevoi.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class CategoryObject {
+public class CategoryObject
+{
     @SerializedName("Id")
     private int Id;
     @SerializedName("Name")
@@ -17,7 +18,6 @@ public class CategoryObject {
         Name = name;
 
     }
-
     public void setId(int id) {
         Id = id;
     }

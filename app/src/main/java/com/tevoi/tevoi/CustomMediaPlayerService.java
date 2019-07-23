@@ -171,7 +171,8 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
                     final int numberOfConsumedUnits = numberOfUnRegisteredSeconds / Global.ListenUnitInSeconds;
                     // send to server that we used 1 unit
                     Call<UserSubscriptionInfoResponse> call = Global.client.AddUnitUsageForUser(TrackId, numberOfConsumedUnits * Global.ListenUnitInSeconds);
-                    call.enqueue(new Callback<UserSubscriptionInfoResponse>() {
+                    call.enqueue(new Callback<UserSubscriptionInfoResponse>()
+                    {
                         public void onResponse(Call<UserSubscriptionInfoResponse> call, Response<UserSubscriptionInfoResponse> response) {
                             //generateDataList(response.body());
                             UserSubscriptionInfoResponse updatedUserUsage = response.body();
@@ -187,7 +188,6 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
                                 }*/
                             }
                         }
-
                         public void onFailure(Call<UserSubscriptionInfoResponse> call, Throwable t) {
 
                         }
@@ -907,17 +907,21 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
 
             stopMedia();
             mMediaPlayer.reset();
-            try {
+            try
+            {
                 //An audio file is passed to the service through putExtra();
                 currentAudioUrl = intent.getExtras().getString("media");
                 TrackName = intent.getExtras().getString("TrackName");
                 TrackAuthors = intent.getExtras().getString("TrackAuthors");
                 TrackId =  intent.getExtras().getInt("TrackId");
-            } catch (NullPointerException e) {
+
+            }
+            catch (NullPointerException e)
+            {
                 stopSelf();
             }
             initMediaPlayer();
-           // AddListenActiityOnTrack();
+            AddListenActivityOnTrack();
             updateMetaData();
             buildNotification(PlaybackStatus.PLAYING);
         }
@@ -935,6 +939,36 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
         PAUSED
     }
 
+    public void AddListenActivityOnTrack()
+    {
+        int numOfUnits = numberOfCurrentSecondsInTrack / Global.ListenUnitInSeconds;
+        int remainingSeconds = numberOfListenedSeconds - numOfUnits * Global.ListenUnitInSeconds;
+        if(remainingSeconds > 0)
+        {
+            Call<UserSubscriptionInfoResponse> call = Global.client.AddUnitUsageForUser(TrackId, remainingSeconds);
+            call.enqueue(new Callback<UserSubscriptionInfoResponse>()
+            {
+                public void onResponse(Call<UserSubscriptionInfoResponse> call, Response<UserSubscriptionInfoResponse> response) {
+                    //generateDataList(response.body());
+                    UserSubscriptionInfoResponse updatedUserUsage = response.body();
+                    serviceCallbacks.updateUserUsage(updatedUserUsage);
+                    Toast.makeText(CustomMediaPlayerService.this, "Doooooone", Toast.LENGTH_SHORT).show();
+                    if(updatedUserUsage.IsFreeSubscription)
+                    {
+                                /*if(updatedUserUsage.numberOfListenUnitsConsumed >= updatedUserUsage.FreeSubscriptionLimit.DailyListenMaxUnits)
+                                {
+                                    mMediaPlayer.stop();
+                                    serviceCallbacks.setFlagUserExceedsDailyUsageListen();
+                                }*/
+                    }
+                }
+                public void onFailure(Call<UserSubscriptionInfoResponse> call, Throwable t) {
+                    Toast.makeText(CustomMediaPlayerService.this, "errrrrrro", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+    }
 
 }
 

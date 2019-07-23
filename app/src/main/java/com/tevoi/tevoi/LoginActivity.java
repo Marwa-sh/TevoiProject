@@ -30,6 +30,7 @@ public class LoginActivity extends AppCompatActivity
 {
     TextView txtLogin;
     TextView txtRegister;
+    TextView txtForgetPassword;
 
     ImageButton btnLogin, btnRegister, btnRequestNewPassword;
     EditText etUserName,etPassword,etEmail;
@@ -63,6 +64,7 @@ public class LoginActivity extends AppCompatActivity
 
         txtLogin = findViewById(R.id.txtLogin);
         txtRegister = findViewById(R.id.txtRegister);
+        txtForgetPassword = findViewById(R.id.txt_forget_password);
 
         btnLogin = findViewById(R.id.btn_Login);
         btnRegister = findViewById(R.id.btn_register);
@@ -201,7 +203,14 @@ public class LoginActivity extends AppCompatActivity
                 setContentView(R.layout.activity_register);
             }
         });
-
+        txtForgetPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(),ForgetPasswordActivity.class);
+                startActivity(i);
+                setContentView(R.layout.activity_register);
+            }
+        });
     }
 
     //Region Helping Checkers
