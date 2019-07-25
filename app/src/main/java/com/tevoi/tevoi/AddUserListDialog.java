@@ -12,7 +12,8 @@ public class AddUserListDialog extends DialogFragment
 {
     private EditText mEditText;
 
-    public AddUserListDialog() {
+    public AddUserListDialog()
+    {
         // Empty constructor is required for DialogFragment
         // Make sure not to add arguments to the constructor
         // Use `newInstance` instead as shown below

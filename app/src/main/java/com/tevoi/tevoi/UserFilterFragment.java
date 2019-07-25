@@ -86,6 +86,7 @@ public class UserFilterFragment extends Fragment
             }
         });
 */
+        mainTopics = new ArrayList<MultiCheckMainTopic>();
        activity.mProgressDialog.setMessage("Loading"); activity.mProgressDialog.show();
 
         Call<UserFiltersResponse> call = Global.client.GetUserFilters();

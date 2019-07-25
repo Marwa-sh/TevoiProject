@@ -9,7 +9,8 @@ import android.support.v4.app.DialogFragment;
 
 public class CustomCommentFragment extends DialogFragment {
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
+    public Dialog onCreateDialog(Bundle savedInstanceState)
+    {
         return new AlertDialog.Builder(getActivity())
                 // Set Dialog Icon
                 //.setIcon(R.drawable.car_icon)
