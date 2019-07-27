@@ -96,7 +96,6 @@ public class UserFilterFragment extends Fragment
             public void onResponse(Call<UserFiltersResponse> call, Response<UserFiltersResponse> response)
             {
                 UserFiltersResponse filters = response.body();
-
                 for (int i =0; i< filters.getMainTopicList().size(); i++)
                 {
                     List<CategoryObject> categories = filters.getMainTopicList().get(i).CategoriesList;
