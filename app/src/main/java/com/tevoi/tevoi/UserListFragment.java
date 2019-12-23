@@ -44,7 +44,7 @@ public class UserListFragment extends Fragment
 
     LinearLayout errorLayout;
     TextView txtError;
-    Button btnRetry;
+    Button btnRetry,btnahmad;
 
     private boolean isLoading = false;
     private boolean isLastPage = false;
