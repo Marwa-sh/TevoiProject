@@ -2,14 +2,13 @@ package com.tevoi.tevoi.Utils;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
+import androidx.appcompat.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.tevoi.tevoi.R;
 import com.tevoi.tevoi.SideMenu;
 import com.tevoi.tevoi.model.TrackObject;
 import com.tevoi.tevoi.model.TrackSerializableObject;
-
-import java.util.concurrent.TimeoutException;
 
 public class HelperFunctions
 {
@@ -31,71 +30,56 @@ public class HelperFunctions
 
     public  static  void getPreviousTrack(SideMenu activity, int currentTrackId)
     {
-        int listSize = activity.playNowListTracks.size();
+        int listSize = activity.lstTracks.size();
         if(listSize == 0)
         {
             Toast.makeText(activity, R.string.play_now_list_isempty, Toast.LENGTH_SHORT).show();
         }
         else
         {
-                activity.isPlayingFromPlayNowList = true;
+                //activity.isPlayingFromPlayNowList = true;
                 activity.indexCurrentTrackInPlayList --;
                 if(activity.indexCurrentTrackInPlayList < 0)
                     activity.indexCurrentTrackInPlayList = listSize -1;
 
                 if(activity.indexCurrentTrackInPlayList >= 0 )
                 {
-                    //resetMediaPlayer(activity);
-                    // reset the media player
-                    //if(activity.serviceBound)
-                    //{
-                    //    activity.player.resetMediaPlayer();
-                    //}
-                    //activity.serviceBound = false;
-                    //activity.isPaused =false; activity.isPlaying = false;
-                    //activity.serviceBound = false;
-
-                    TrackSerializableObject t = activity.playNowListTracks.get(activity.indexCurrentTrackInPlayList);
-                    activity.mediaPlayerFragment.currentTrack = CastTrackSerialize(t);
+                    TrackObject t = activity.lstTracks.get(activity.indexCurrentTrackInPlayList);
+                    activity.mediaPlayerFragment.currentTrack = t;
                     activity.CurrentTrackInPlayer = activity.mediaPlayerFragment.currentTrack;
-                    activity.mediaPlayerFragment.url = Global.BASE_AUDIO_URL + activity.playNowListTracks.get(activity.indexCurrentTrackInPlayList).getId();
+                    activity.mediaPlayerFragment.url = Global.BASE_AUDIO_URL + activity.lstTracks.get(activity.indexCurrentTrackInPlayList).getId();
                     activity.playAudio(activity.mediaPlayerFragment.url,
                             activity.CurrentTrackInPlayer.getName(),
                             activity.CurrentTrackInPlayer.getAuthors(),
                             activity.CurrentTrackInPlayer.getId());
-
-                    //if(activity.isPlaying && !activity.isPaused)
-                    //    activity.player.playAudio(activity.mediaPlayerFragment.url, activity);
                 }
                 else
                 {
                     Toast.makeText(activity, R.string.no_track_to_play, Toast.LENGTH_SHORT).show();
                 }
-
-
         }
     }
 
-    public  static  void getNextTrack(SideMenu activity, int currentTrackId)
+    public  static  void  getNextTrack(SideMenu activity, int currentTrackId)
     {
-        int listSize = activity.playNowListTracks.size();
+        int listSize = activity.lstTracks.size();
         if(listSize == 0)
         {
             Toast.makeText(activity, R.string.play_now_list_isempty, Toast.LENGTH_SHORT).show();
         }
         else
         {
-                activity.isPlayingFromPlayNowList = true;
+                //activity.isPlayingFromPlayNowList = true;
                 activity.indexCurrentTrackInPlayList ++;
                 if(activity.indexCurrentTrackInPlayList >= listSize)
                     activity.indexCurrentTrackInPlayList = 0;
 
                 if(activity.indexCurrentTrackInPlayList < listSize )
                 {
-                    TrackSerializableObject t = activity.playNowListTracks.get(activity.indexCurrentTrackInPlayList);
-                    activity.mediaPlayerFragment.currentTrack = CastTrackSerialize(t);
+                    TrackObject t = activity.lstTracks.get(activity.indexCurrentTrackInPlayList);
+                    activity.mediaPlayerFragment.currentTrack = t;
                     activity.CurrentTrackInPlayer = activity.mediaPlayerFragment.currentTrack;
-                    activity.mediaPlayerFragment.url = Global.BASE_AUDIO_URL + activity.playNowListTracks.get(activity.indexCurrentTrackInPlayList).getId();
+                    activity.mediaPlayerFragment.url = Global.BASE_AUDIO_URL + activity.lstTracks.get(activity.indexCurrentTrackInPlayList).getId();
                     activity.playAudio(activity.mediaPlayerFragment.url,
                             activity.CurrentTrackInPlayer.getName(),
                             activity.CurrentTrackInPlayer.getAuthors(),
@@ -111,7 +95,91 @@ public class HelperFunctions
         }
     }
 
-   /* public static void resetMediaPlayer(SideMenu activity)
+   /* public  static  void getPreviousTrack(SideMenu activity, int currentTrackId)
+    {
+        int listSize = activity.playNowListTracks.size();
+        if(listSize == 0)
+        {
+            Toast.makeText(activity, R.string.play_now_list_isempty, Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            activity.isPlayingFromPlayNowList = true;
+            activity.indexCurrentTrackInPlayList --;
+            if(activity.indexCurrentTrackInPlayList < 0)
+                activity.indexCurrentTrackInPlayList = listSize -1;
+
+            if(activity.indexCurrentTrackInPlayList >= 0 )
+            {
+                //resetMediaPlayer(activity);
+                // reset the media player
+                //if(activity.serviceBound)
+                //{
+                //    activity.player.resetMediaPlayer();
+                //}
+                //activity.serviceBound = false;
+                //activity.isPaused =false; activity.isPlaying = false;
+                //activity.serviceBound = false;
+
+                TrackSerializableObject t = activity.playNowListTracks.get(activity.indexCurrentTrackInPlayList);
+                activity.mediaPlayerFragment.currentTrack = CastTrackSerialize(t);
+                activity.CurrentTrackInPlayer = activity.mediaPlayerFragment.currentTrack;
+                activity.mediaPlayerFragment.url = Global.BASE_AUDIO_URL + activity.playNowListTracks.get(activity.indexCurrentTrackInPlayList).getId();
+                activity.playAudio(activity.mediaPlayerFragment.url,
+                        activity.CurrentTrackInPlayer.getName(),
+                        activity.CurrentTrackInPlayer.getAuthors(),
+                        activity.CurrentTrackInPlayer.getId());
+
+                //if(activity.isPlaying && !activity.isPaused)
+                //    activity.player.playAudio(activity.mediaPlayerFragment.url, activity);
+            }
+            else
+            {
+                Toast.makeText(activity, R.string.no_track_to_play, Toast.LENGTH_SHORT).show();
+            }
+
+
+        }
+    }
+
+    public  static  void  getNextTrack(SideMenu activity, int currentTrackId)
+    {
+        int listSize = activity.playNowListTracks.size();
+        if(listSize == 0)
+        {
+            Toast.makeText(activity, R.string.play_now_list_isempty, Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            activity.isPlayingFromPlayNowList = true;
+            activity.indexCurrentTrackInPlayList ++;
+            if(activity.indexCurrentTrackInPlayList >= listSize)
+                activity.indexCurrentTrackInPlayList = 0;
+
+            if(activity.indexCurrentTrackInPlayList < listSize )
+            {
+                TrackSerializableObject t = activity.playNowListTracks.get(activity.indexCurrentTrackInPlayList);
+                activity.mediaPlayerFragment.currentTrack = CastTrackSerialize(t);
+                activity.CurrentTrackInPlayer = activity.mediaPlayerFragment.currentTrack;
+                activity.mediaPlayerFragment.url = Global.BASE_AUDIO_URL + activity.playNowListTracks.get(activity.indexCurrentTrackInPlayList).getId();
+                activity.playAudio(activity.mediaPlayerFragment.url,
+                        activity.CurrentTrackInPlayer.getName(),
+                        activity.CurrentTrackInPlayer.getAuthors(),
+                        activity.CurrentTrackInPlayer.getId());
+                //if(activity.isPlaying && !activity.isPaused)
+                //    playAudio(activity.mediaPlayerFragment.url, activity);
+            }
+            else
+            {
+                Toast.makeText(activity, R.string.no_track_to_play, Toast.LENGTH_SHORT).show();
+            }
+            //activity.player.updateStatusBarInfo(activity.CurrentTrackInPlayer.getName(),activity.CurrentTrackInPlayer.getAuthors());
+        }
+    }*/
+
+
+
+    /* public static void resetMediaPlayer(SideMenu activity)
     {
         // reset the media player
         if(activity.serviceBound)
@@ -137,9 +205,21 @@ public class HelperFunctions
     }
 
 
-    public static boolean isNetworkConnected(SideMenu activity) {
+    /*public static boolean isNetworkConnected(SideMenu activity)
+    {
         ConnectivityManager cm = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
         return cm.getActiveNetworkInfo() != null;
     }
+    public static boolean isNetworkConnected(LoginActivity activity)
+    {
+        ConnectivityManager cm = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo() != null;
+    }*/
+    public static boolean isNetworkConnected(AppCompatActivity activity)
+    {
+        ConnectivityManager cm = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo() != null;
+    }
+
 
 }

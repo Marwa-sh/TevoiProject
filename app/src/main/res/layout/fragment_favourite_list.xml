@@ -6,7 +6,7 @@
         tools:context=".FavouriteFragment"
         android:orientation="vertical" >
 
-        <android.support.v7.widget.LinearLayoutCompat
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/tabsFavouriteLinearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -17,31 +17,42 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@color/tevoiBluePrimary"
-                android:text="New"
+                android:background="@color/tevoiBrownLight"
+                android:text="@string/new_track"
+                android:padding="@dimen/btn_padding"
                 android:textColor="@color/fontColor"
                 android:onClick="changeTabToNewFavourite"/>
-
+            <TextView
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/tevoiOutLine"
+                />
             <Button
                 android:id="@+id/btnTopRatedListFavourite"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@color/tevoiBlueSecondary"
-                android:text="Top Rated"
+                android:background="@color/tevoiBrownDark"
+                android:text="@string/top_rated"
+                android:padding="@dimen/btn_padding"
                 android:textColor="@color/fontColor"
                 android:onClick="changeTabToTopRatedFavourite"/>
-
+            <TextView
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/tevoiOutLine"
+                />
             <Button
                 android:id="@+id/btnPopularListFavourite"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@color/tevoiBlueSecondary"
-                android:text="Popular"
+                android:background="@color/tevoiBrownDark"
+                android:text="@string/popular"
+                android:padding="@dimen/btn_padding"
                 android:textColor="@color/fontColor"
                 android:onClick="changeToPopularFavourite"/>
-        </android.support.v7.widget.LinearLayoutCompat>
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
 
         <com.tevoi.tevoi.model.RecyclerViewEmptySupport
@@ -54,7 +65,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAlignment="center"
-            android:textSize="@dimen/text_size"
+            android:layout_gravity="center"
+            android:textSize="16dp"
             android:paddingTop="@dimen/text_empty_list"
             android:text="@string/empty_list"
             />
@@ -63,6 +75,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"/>
-    <include layout="@layout/error_layout"/>
+    <include layout="@layout/error_layout_inner"/>
 
     </LinearLayout>

@@ -1,12 +1,14 @@
 package com.tevoi.tevoi;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.tevoi.tevoi.Utils.Global;
@@ -21,7 +23,11 @@ public class TrackText extends Fragment {
 
     int TrackId;
     String PreviousFragmentName;
-    public static TrackText newInstance(int trackId, String previousFragmentName ) {
+    ProgressBar progressBar;
+    LinearLayout linearLayout;
+
+    public static TrackText newInstance(int trackId, String previousFragmentName )
+    {
         TrackText f = new TrackText();
         // Supply num input as an argument.
         Bundle args = new Bundle();
@@ -74,8 +80,15 @@ public class TrackText extends Fragment {
             }
         });
 
+        progressBar = rootView.findViewById(R.id.loader_text);
+        linearLayout = rootView.findViewById(R.id.linear_layout_text);
+
+
         SideMenu a = ((SideMenu) getActivity());
         // here we need to open maps app
+        progressBar.setVisibility(View.VISIBLE);
+        linearLayout.setVisibility(View.INVISIBLE);
+
         Call<TrackTextResponse> call = Global.client.GetTrackText(TrackId);
         call.enqueue(new Callback<TrackTextResponse>(){
             public void onResponse(Call<TrackTextResponse> call, Response<TrackTextResponse> response)
@@ -87,11 +100,15 @@ public class TrackText extends Fragment {
                     TextView tv = rootView.findViewById(R.id.text_track);
                     tv.setText(text.TrackText);
                 }
+                progressBar.setVisibility(View.INVISIBLE);
+                linearLayout.setVisibility(View.VISIBLE);
             }
             public void onFailure(Call<TrackTextResponse> call, Throwable t)
             {
                 TextView tv = rootView.findViewById(R.id.text_track);
                 tv.setText("No Text");
+                progressBar.setVisibility(View.INVISIBLE);
+                linearLayout.setVisibility(View.VISIBLE);
             }
         });
 

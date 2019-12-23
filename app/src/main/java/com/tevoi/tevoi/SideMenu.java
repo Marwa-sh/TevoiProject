@@ -1,7 +1,6 @@
 package com.tevoi.tevoi;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
@@ -9,42 +8,43 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.res.Resources;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
-import android.print.PrintAttributes;
-import android.support.design.widget.NavigationView;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
+import com.google.android.material.navigation.NavigationView;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 /*import android.support.v7.app.ActionBar;*/
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import android.text.Html;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 
 import com.tevoi.tevoi.Utils.Global;
 import com.tevoi.tevoi.Utils.HelperFunctions;
 import com.tevoi.tevoi.Utils.MyStorage;
-import com.tevoi.tevoi.adapter.PaginationAdapterCallback;
 import com.tevoi.tevoi.model.IResponse;
-import com.tevoi.tevoi.model.RegisterDataResponse;
+import com.tevoi.tevoi.model.InternetConnectionListener;
 import com.tevoi.tevoi.model.TrackObject;
 import com.tevoi.tevoi.model.TrackSerializableObject;
 import com.tevoi.tevoi.model.UserSubscriptionInfoResponse;
 import com.tevoi.tevoi.rest.ApiClient;
 import com.tevoi.tevoi.rest.ApiInterface;
 
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -59,13 +59,17 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SideMenu extends AppCompatActivity
-        implements  ServiceCallbacks , NavigationView.OnNavigationItemSelectedListener {
+        implements  ServiceCallbacks , NavigationView.OnNavigationItemSelectedListener, InternetConnectionListener {
+
+    // region Guest Information
+    public boolean isDemoUser = false;
+    public boolean isExceedsQuotaDemoUser = false;
+
+    //endregion
 
     // region subscription Information
-
     public UserSubscriptionInfoResponse userSubscriptionInfo = new UserSubscriptionInfoResponse();
     public boolean IsListenDailyLimitsExceeded = false;
-
     // endregion
 
     public ProgressDialog mProgressDialog;
@@ -85,7 +89,6 @@ public class SideMenu extends AppCompatActivity
     public int indexCurrentTrackInUserList;
 
     // endregion
-
 
     // region Play Now List Tracks
     public ArrayList<TrackSerializableObject> playNowListTracks = new ArrayList<TrackSerializableObject>();
@@ -125,8 +128,7 @@ public class SideMenu extends AppCompatActivity
 
     // endregion
 
-    // region
-    // main player
+    // region main player
     public LinearLayout mainPlayerLayout;
     public TrackObject CurrentTrackInPlayer;
 
@@ -135,11 +137,19 @@ public class SideMenu extends AppCompatActivity
     TextView txtFinishTime;
     public TextView txtTrackName;
     ImageButton btnPausePlayMainMediaPlayer;
+    ProgressBar playerLoader;
 
     public boolean isActivityPause = false;
 
 
     // endregion
+
+    // region banner
+    public LinearLayout linearLayoutBanner;
+    public ImageView imgBanner;
+    public TextView txtLink;
+
+    //endregion
 
     // region properties for drawer
 
@@ -151,16 +161,12 @@ public class SideMenu extends AppCompatActivity
     private DrawerLayout drawer;
     private NavigationView navigationView;
 
-    // Title of the action bar
-    String mTitle = "";
     // endregion
 
     // region side menu fragments objects
     public TracksList lisTracksFragment = new TracksList();
-    // TracksList listTracksFargment = new TracksList();
     InterfaceLanguageFragment interfaceLanguageFragment = new InterfaceLanguageFragment();
-    LoginFragment loginFragment = new LoginFragment();
-    RegisterFragment registerFragment = new RegisterFragment();
+
     PartnersFragment partnersFragment = new PartnersFragment();
     public PartnerNameFragment partnerNameFragment = new PartnerNameFragment();
     NotificationFragment notificationFragment = new NotificationFragment();
@@ -172,25 +178,36 @@ public class SideMenu extends AppCompatActivity
     HistoryListFragment historyListFragment = new HistoryListFragment();
     PlayingNowFragment playingNowFragment = new PlayingNowFragment();
     FavouriteFragment favouriteFragment = new FavouriteFragment();
-    MyListFragment myListFragment = new MyListFragment();
+    //MyListFragment myListFragment = new MyListFragment();
     UserListFragment userListsFragment = new UserListFragment();
-    FilterFragment filterFragment = new FilterFragment();
-    UserFilterFragment userFilterFragment = new UserFilterFragment();
+    //FilterFragment filterFragment = new FilterFragment();
+    public UserFilterFragment userFilterFragment = new UserFilterFragment();
 
     UpgradeToPremiumFragment upgradeToPremiumFragment = new UpgradeToPremiumFragment();
 
     public UserListTracksFragment userListTracksFragment = new UserListTracksFragment();
     public MediaPlayerFragment mediaPlayerFragment;
+    ErrorFragment errorFragment = ErrorFragment.newInstance(Global.ListTracksFragmentName);
+    public String CurrentFragmentName = Global.ListTracksFragmentName;
+
+    // endregion
+
+    // region handle List of track for next and previous buttons
+
+    public List<TrackObject> lstTracks = new ArrayList<>();
 
 
     // endregion
 
-    ListTracksFragment listTracksFragment = new ListTracksFragment();
+
+
+    //ListTracksFragment listTracksFragment = new ListTracksFragment();
 
     //
     MenuItem searchBtn;
 
-    public void initActionBar(String subTitle) {
+    public void initActionBar(String subTitle)
+    {
         final ActionBar abar = getActionBar();
         //abar.setBackgroundDrawable(getResources().getDrawable(R.drawable.actionbar_background));//line under the action bar
         View viewActionBar = getLayoutInflater().inflate(R.layout.nav_header_main, null);
@@ -217,7 +234,8 @@ public class SideMenu extends AppCompatActivity
         //abar.setElevation(0);
     }
 
-    private void setfullwidth() {
+    private void setfullwidth()
+    {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         DrawerLayout.LayoutParams params = (DrawerLayout.LayoutParams) navigationView.getLayoutParams();
@@ -226,59 +244,280 @@ public class SideMenu extends AppCompatActivity
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
+
+        storageManager = new MyStorage(Global.CurrentUserId);
+        //region detect language
+
+        String language = storageManager.getLanguageUIPreference(this);
+        if (language == null)
+            language = "en";
+        Global.UserUILanguage = language;
+        Resources res = getBaseContext().getResources();
+        // Change locale settings in the app.
+        DisplayMetrics dm = res.getDisplayMetrics();
+        android.content.res.Configuration conf = res.getConfiguration();
+        conf.setLocale(new Locale(language)); // API 17+ only.
+        // Use conf.locale = new Locale(...) if targeting lower versions
+        res.updateConfiguration(conf, dm);
+
+        // endregion
 
         setContentView(R.layout.activity_main);
 
+        Bundle b = getIntent().getExtras();
+        if(b != null)
+            isDemoUser = b.getBoolean("IsDemoUser");
+
+        if(isDemoUser)
+            Toast.makeText(getApplicationContext(), "You're guest", Toast.LENGTH_SHORT).show();
+        //HelperFunctions.downloadAudioFile(SideMenu.this, 14);
+
+        final androidx.fragment.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final TextView mSubTitle = (TextView) toolbar.findViewById(R.id.toolbar_subtitle);
+        ImageView btnTevoiLogo = toolbar.findViewById(R.id.tevoi_logo_img);
+
+        btnTevoiLogo.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                if(!CurrentFragmentName.equals(Global.ListTracksFragmentName))
+                {
+                    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                    if (drawer.isDrawerOpen(GravityCompat.START))
+                    {
+                        drawer.closeDrawer(GravityCompat.START);
+                    }
+                    mSubTitle.setText(R.string.title_list_tracks);
+                    fragmentTransaction.replace(R.id.content_frame, lisTracksFragment);
+                    fragmentTransaction.addToBackStack(getResources().getString(R.string.title_list_tracks));
+                    CurrentFragmentName = Global.ListTracksFragmentName;
+                    try
+                    {
+                        fragmentTransaction.commit();
+                    }
+                    catch (Exception exc)
+                    {
+                    }
+                }
+            }
+        });
+
+
+        ImageView imgFilter = findViewById(R.id.tevoi_filter_img);
+        imgFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                if(isDemoUser)
+                {
+                    Toast.makeText(getApplicationContext(), R.string.demo_user_need_to_register, Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    mSubTitle.setText(R.string.title_filter);
+                /*//Load animation
+                Animation slide_down = AnimationUtils.loadAnimation(getApplicationContext(),
+                        R.anim.slide_down);
+
+                Animation slide_up = AnimationUtils.loadAnimation(getApplicationContext(),
+                        R.anim.slide_up);
+
+                // Start animation
+                RelativeLayout vf = findViewById(R.id.rl_test);
+                LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View row = inflater.inflate(R.layout.fragment_filter, vf, false);
+                View v = View.inflate(getBaseContext(), R.layout.fragment_filter, null);
+                vf.startAnimation(slide_down);*/
+                    androidx.fragment.app.FragmentTransaction fragTransaction = getSupportFragmentManager().beginTransaction();
+
+                    if (!CurrentFragmentName.equals(Global.FilterFragmentName)) {
+                        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                        if (drawer.isDrawerOpen(GravityCompat.START)) {
+                            drawer.closeDrawer(GravityCompat.START);
+                        }
+                        CurrentFragmentName = Global.FilterFragmentName;
+                        fragTransaction.setCustomAnimations(R.anim.slide_in_up, R.anim.slide_out_up);
+                        fragTransaction.replace(R.id.content_frame, userFilterFragment);
+                        fragTransaction.addToBackStack(mSubTitle.getText().toString());
+                        try {
+                            fragTransaction.commit();
+                        } catch (Exception exc) {
+                        }
+                    }
+                }
+            }
+        });
         /* setActionBar(toolbar);
         getActionBar().setDisplayShowTitleEnabled(false);*/
 
         //TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
         //TextView mSubTitle = (TextView) toolbar.findViewById(R.id.toolbar_subtitle);
 
+
         setSupportActionBar(toolbar);
         //mTitle.setText("Tevoi");
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+        //toolbar.setNavigationIcon(R.mipmap.settings_menu_hover);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         setfullwidth();
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.drawer_open, R.string.drawer_close);
+                this, drawer, toolbar, R.string.drawer_open, R.string.drawer_close)
+        {
+            public void onDrawerOpened(View drawerView)
+            {
+                super.onDrawerOpened(drawerView);
+
+                Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+                //TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
+                TextView mSubTitle = (TextView) toolbar.findViewById(R.id.toolbar_subtitle);
+                mSubTitle.setText(R.string.title_setting);
+
+                getSupportActionBar().setHomeButtonEnabled(true);
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                getSupportActionBar().setHomeAsUpIndicator(R.mipmap.arrow_back_normal);
+
+            }
+           /* @Override
+            public void onDrawerStateChanged(int newState) {
+                if (newState == DrawerLayout.STATE_SETTLING) {
+                    if (!isDrawerOpen()) {
+                        // starts opening
+                        getActionBar()
+                                .setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+                    } else {
+                        // closing drawer
+                        getActionBar()
+                                .setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+                    }
+                    invalidateOptionsMenu();
+                }
+            }*/
+
+            @Override
+            public void onDrawerClosed(View drawerView)
+            {
+                // Called when a drawer has settled in a completely closed state.
+                getSupportActionBar().setHomeButtonEnabled(true);
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                getSupportActionBar().setHomeAsUpIndicator(R.mipmap.settings_menu_normal);
+            }
+
+        };
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setItemBackground(getDrawable(R.drawable.divider));
 
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.mipmap.settings_menu_normal);
 
-        storageManager = new MyStorage(Global.CurrentUserId);
+
+        //region code for changing menu item text style
+        Menu menuNav = navigationView.getMenu();
+        MenuItem menuUpgradeToPremium = menuNav.findItem(R.id.upgrade_to_premium);
+        MenuItem menuLists = menuNav.findItem((R.id.lists));
+
+        menuUpgradeToPremium.setTitle(Html.fromHtml("<b><font color='#84754B'>" + getResources().getString(R.string.title_upgrade_to_premium) +  "</font></b>"));
+        menuLists.setTitle(Html.fromHtml("<b><font color='#535353'>" + getResources().getString(R.string.title_lists) +  "</font></b>"));
+
+
+        // CHANGE ACTION VIEW FOR MENU ITEMS
+        String lang = storageManager.getLanguageUIPreference(this);
+        if(lang.equals("ar"))
+        {
+            MenuItem upgrade_to_premium = menuNav.findItem(R.id.upgrade_to_premium);
+            setActionLayout(upgrade_to_premium);
+
+            menuLists = menuNav.findItem((R.id.list_tracks));
+            setActionLayout(menuLists);
+
+            MenuItem interface_language = menuNav.findItem(R.id.interface_language);
+            setActionLayout(interface_language);
+
+            MenuItem list_partners = menuNav.findItem((R.id.list_partners));
+            setActionLayout(list_partners);
+
+            MenuItem notifications = menuNav.findItem(R.id.notifications);
+            setActionLayout(notifications);
+
+            MenuItem download_limits = menuNav.findItem((R.id.download_limits));
+            setActionLayout(download_limits);
+
+            MenuItem about_us = menuNav.findItem(R.id.about_us);
+            setActionLayout(about_us);
+
+            MenuItem feedback_contact = menuNav.findItem((R.id.feedback_contact));
+            setActionLayout(feedback_contact);
+
+            MenuItem follow_us = menuNav.findItem(R.id.follow_us);
+            setActionLayout(follow_us);
+
+            MenuItem list_history = menuNav.findItem((R.id.list_history));
+            setActionLayout(list_history);
+
+            MenuItem play_next = menuNav.findItem(R.id.play_next);
+            setActionLayout(play_next);
+
+            MenuItem list_favourite = menuNav.findItem((R.id.list_favourite));
+            setActionLayout(list_favourite);
+
+            MenuItem my_list = menuNav.findItem(R.id.my_list);
+            setActionLayout(my_list);
+
+            MenuItem logout = menuNav.findItem((R.id.logout));
+            setActionLayout(logout);
+
+            /*interface_language.setActionView(view);list_partners.setActionView(view);
+            notifications.setActionView(view);download_limits.setActionView(view);
+            about_us.setActionView(view);feedback_contact.setActionView(view);
+            follow_us.setActionView(view);list_history.setActionView(view);
+            play_next.setActionView(view); list_favourite.setActionView(view);
+            my_list.setActionView(view); logout.setActionView(view);*/
+        }
+        if(isDemoUser)
+        {
+            MenuItem logout = menuNav.findItem((R.id.logout));
+            logout.setTitle(Html.fromHtml(""+getResources().getString(R.string.sign_in)));
+        }
+
+        /*View v = menuTest.getActionView();
+        TextView gg =  v.findViewById(R.id.hhhhhh);
+        gg.setBackgroundColor(getResources().getColor(R.color.tevoiBrownDark));
+        menuTest.setActionView(v);*/
+        //SpannableString spanString = new SpannableString(menuTest.getTitle().toString());
+        //spanString.setSpan(new ForegroundColorSpan(Color.RED), 0,     spanString.length(), 0); //fix the color to white
+        //dd.setTitle(Html.fromHtml("<font color='#ff3824'>Settings</font>"));
+
+        /*View v = findViewById(R.id.testLis);
+        dd.setActionView(v);*/
+        //menuTest.setActionView(v);
+
+        //endregion
+
+
+
+
         //setContentView(R.layout.activity_main);
 
         // region media player runnable action
         this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                /*boolean isForground = isAppInForeground(SideMenu.this, "ComponentInfo{com.ebridge.tevoi/com.ebridge.tevoi.SideMenu}");
-                if(isForground==true){
-                   // Toast.makeText(getBaseContext(),"Activity is in foreground, active",1000).show();
-                    isActivityPause = false;
-                }
-                else
-                {
-                    isActivityPause = true;
-                }*/
-
                 if (!isActivityPause)
                 {
                     if (serviceBound && player != null && player.mMediaPlayer != null)
                     {
                         txtTrackName.setText(CurrentTrackInPlayer.getName().toString());
                         mainPlayerLayout.setVisibility(View.VISIBLE);
-                        //player.updateStatusBarInfo(CurrentTrackInPlayer.getName(), CurrentTrackInPlayer.getAuthors());
 
                         if(IsListenDailyLimitsExceeded)
                         {
@@ -292,34 +531,22 @@ public class SideMenu extends AppCompatActivity
                         if (!player.mMediaPlayer.isPlaying())
                         {
                             if (btnPausePlayMainMediaPlayer != null)
-                                btnPausePlayMainMediaPlayer.setImageResource(R.drawable.baseline_play_arrow_24);
+                                btnPausePlayMainMediaPlayer.setImageResource(R.mipmap.play_white_normal);
                             mProgressDialog.dismiss();
                         }
                         if (player.mMediaPlayer.isPlaying()) {
                             if (btnPausePlayMainMediaPlayer != null)
-                                btnPausePlayMainMediaPlayer.setImageResource(R.drawable.baseline_pause_24);
+                                btnPausePlayMainMediaPlayer.setImageResource(R.mipmap.pause_normal_white);
                             numberOfListenedSeconds += 1;
                             numberOfCurrentSecondsInTrack += 1;
                             //activity.numberOfTotalSeconds += activity.numberOfCurrentSeconds;
                         }
                         int n = numberOfUnitsSendToServer * Global.ListenUnitInSeconds + Global.ListenUnitInSeconds;
-                        if (numberOfListenedSeconds >= n) {
+                        if (numberOfListenedSeconds >= n)
+                        {
                             int numberOfUnRegisteredSeconds = numberOfListenedSeconds - numberOfUnitsSendToServer * Global.ListenUnitInSeconds;
                             final int numberOfConsumedUnits = numberOfUnRegisteredSeconds / Global.ListenUnitInSeconds;
-                            // send to server that we used 1 unit
-                            /*Call<IResponse> call = Global.client.AddUnitUsageForUser(CurrentTrackInPlayer.getId(), numberOfConsumedUnits);
-                            call.enqueue(new Callback<IResponse>() {
-                                public void onResponse(Call<IResponse> call, Response<IResponse> response) {
-                                    //generateDataList(response.body());
-                                    IResponse partners = response.body();
-                                    numberOfUnitsSendToServer += numberOfConsumedUnits;
-                                    Toast.makeText(getBaseContext(), "" + numberOfConsumedUnits + " Unit consumed from your quota", Toast.LENGTH_SHORT).show();
-                                }
 
-                                public void onFailure(Call<IResponse> call, Throwable t) {
-
-                                }
-                            });*/
                         }
                         if (seekBarMainPlayer == null)
                             seekBarMainPlayer = findViewById(R.id.seekBar_main_player);
@@ -336,7 +563,7 @@ public class SideMenu extends AppCompatActivity
                         if (serviceBound && player != null && player.mMediaPlayer != null)
                             player.mMediaPlayer.pause();
                         if (btnPausePlayMainMediaPlayer != null)
-                            btnPausePlayMainMediaPlayer.setImageResource(R.drawable.baseline_play_arrow_24);
+                            btnPausePlayMainMediaPlayer.setImageResource(R.mipmap.play_white_normal);
                     }
                     mHandler.postDelayed(this, 1000);
                 }
@@ -346,23 +573,11 @@ public class SideMenu extends AppCompatActivity
 
         // endregion
 
+        Global.client = ApiClient.getClient(this).create(ApiInterface.class);
 
         //initActionBar("Start");
 
-        //region detect language
 
-        String language = storageManager.getLanguageUIPreference(this);
-        if (language == null)
-            language = "en";
-        Resources res = getBaseContext().getResources();
-        // Change locale settings in the app.
-        DisplayMetrics dm = res.getDisplayMetrics();
-        android.content.res.Configuration conf = res.getConfiguration();
-        conf.setLocale(new Locale(language)); // API 17+ only.
-        // Use conf.locale = new Locale(...) if targeting lower versions
-        res.updateConfiguration(conf, dm);
-
-        // endregion
 
         trackIdPlayedNow = -1;
         searchBtn = findViewById(R.id.action_search);
@@ -601,53 +816,105 @@ public class SideMenu extends AppCompatActivity
             }
         });*/
 
-        android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+
+
+        androidx.fragment.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         // Replace the contents of the container with the new fragment
         //TrackShare frag = new TrackShare();
+        mSubTitle.setText(R.string.title_list_tracks);
         ft.replace(R.id.content_frame, lisTracksFragment);
-        ft.addToBackStack("List Tracks");
+        String mSubTitleCurrent = getResources().getString(R.string.title_list_tracks);
+        ft.addToBackStack(mSubTitleCurrent);
         // Committing the transaction
         ft.commit();
-        // init media player in main page elements
+
+
+        /*Intent intent = getIntent();
+        try
+        {
+            // open activity from notification
+            String action = intent.getAction().toUpperCase();
+            String f  ="";
+
+            int g = player.TrackId;
+
+            if(CurrentTrackInPlayer != null)
+            {
+                mediaPlayerFragment.currentTrackId = CurrentTrackInPlayer.getId();
+                mediaPlayerFragment.currentTrack = CurrentTrackInPlayer;
+                ft.replace(R.id.content_frame, mediaPlayerFragment);
+                String mSubTitleCurrent = getResources().getString(R.string.title_list_tracks);
+                ft.addToBackStack(mSubTitleCurrent);
+            }
+            else
+            {
+                ft.replace(R.id.content_frame, lisTracksFragment);
+                String mSubTitleCurrent = getResources().getString(R.string.title_list_tracks);
+                ft.addToBackStack(mSubTitleCurrent);
+            }
+        }
+        catch (Exception exc)
+        {
+            ft.replace(R.id.content_frame, lisTracksFragment);
+            String mSubTitleCurrent = getResources().getString(R.string.title_list_tracks);
+            ft.addToBackStack(mSubTitleCurrent);
+        }
+*/
 
     }
 
     @Override
-    public void onBackPressed() {
+    public void onBackPressed()
+    {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
+        if (drawer.isDrawerOpen(GravityCompat.START))
+        {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
+        } else
+        {
             BackBtnAction();
         }
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        MenuItem m = menu.getItem(0);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        if (id == R.id.action_search) {
+        if (id == R.id.action_search)
+        {
             //SideMenu activity = (SideMenu)getBaseContext();
             LinearLayout layout = findViewById(R.id.test_linear);
             RelativeLayout rlayout = findViewById(R.id.relativeLayoutSearch);
-            if (layout != null) {
+            if (layout != null)
+            {
                 if (layout.getVisibility() == View.GONE)
                     layout.setVisibility(View.VISIBLE);
                 else
                     layout.setVisibility(View.GONE);
-            } else {
-                android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            }
+            else
+            {
+                Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+                //TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
+                TextView mSubTitle = (TextView) toolbar.findViewById(R.id.toolbar_subtitle);
+                mSubTitle.setText(R.string.title_list_tracks);
+
+                androidx.fragment.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.content_frame, lisTracksFragment);
+                fragmentTransaction.addToBackStack(mSubTitle.getText().toString());
                 fragmentTransaction.commit();
             }
 
@@ -658,127 +925,215 @@ public class SideMenu extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(MenuItem item)
+    {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        navigateToMenuItem(id);
 
-        android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+
+    public void navigateToMenuItem(int id)
+    {
+        androidx.fragment.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
         TextView mSubTitle = (TextView) toolbar.findViewById(R.id.toolbar_subtitle);
 
-        //mTitle.setText("Tevoi");
-        switch (id) {
-            /*case R.id.test_pagination:
+        switch (id)
+        {
+            case R.id.upgrade_to_premium:
             {
-                fragmentTransaction.replace(R.id.content_frame, listTracksFragment);
-                fragmentTransaction.addToBackStack( "History" );
-                fragmentTransaction.commit();
-                break;
-            }*/
-            case R.id.upgrade_to_premium: {
-                fragmentTransaction.replace(R.id.content_frame, upgradeToPremiumFragment);
-                fragmentTransaction.addToBackStack("upgradeToPremiumFragment");
-                fragmentTransaction.commit();
-                break;
+                if(isDemoUser)
+                {
+                    Toast.makeText(getApplicationContext(), R.string.demo_user_need_to_register, Toast.LENGTH_SHORT).show();
+                    break;
+                }
+                else {
+                    CurrentFragmentName = Global.UpgradeToPremiumFragmentName;
+                    mSubTitle.setText(R.string.title_upgrade_to_premium);
+                    fragmentTransaction.replace(R.id.content_frame, upgradeToPremiumFragment);
+                    fragmentTransaction.addToBackStack(mSubTitle.getText().toString());
+                    fragmentTransaction.commit();
+                    break;
+                }
             }
             case R.id.list_history: {
-                mSubTitle.setText("History");
-                fragmentTransaction.replace(R.id.content_frame, historyListFragment);
-                fragmentTransaction.addToBackStack("History");
-                fragmentTransaction.commit();
-                break;
+                if (isDemoUser) {
+                    Toast.makeText(getApplicationContext(), R.string.demo_user_need_to_register, Toast.LENGTH_SHORT).show();
+                    break;
+                } else {
+                    CurrentFragmentName = Global.HistoryFragmentName;
+                    mSubTitle.setText(R.string.title_history);
+                    fragmentTransaction.replace(R.id.content_frame, historyListFragment);
+                    fragmentTransaction.addToBackStack(mSubTitle.getText().toString());
+                    fragmentTransaction.commit();
+                    break;
+                }
             }
             case R.id.play_next: {
-                mSubTitle.setText("Play Next");
-                fragmentTransaction.replace(R.id.content_frame, playingNowFragment);
-                fragmentTransaction.addToBackStack("Play Next");
-                fragmentTransaction.commit();
-                break;
+                if(isDemoUser)
+                {
+                    Toast.makeText(getApplicationContext(), R.string.demo_user_need_to_register, Toast.LENGTH_SHORT).show();
+                    break;
+                }
+                else {
+                    CurrentFragmentName = Global.PlayNextListFragment;
+                    mSubTitle.setText(R.string.title_play_next);
+                    fragmentTransaction.replace(R.id.content_frame, playingNowFragment);
+                    fragmentTransaction.addToBackStack(mSubTitle.getText().toString());
+                    fragmentTransaction.commit();
+                    break;
+                }
             }
             case R.id.list_favourite: {
-                mSubTitle.setText("Favourite");
-                fragmentTransaction.replace(R.id.content_frame, favouriteFragment);
-                fragmentTransaction.addToBackStack("Favourite");
-                fragmentTransaction.commit();
-                break;
+                if(isDemoUser)
+                {
+                    Toast.makeText(getApplicationContext(), R.string.demo_user_need_to_register, Toast.LENGTH_SHORT).show();
+                    break;
+                }
+                else {
+                    CurrentFragmentName = Global.FavouriteFragmentName;
+                    mSubTitle.setText(R.string.title_favourite);
+                    fragmentTransaction.replace(R.id.content_frame, favouriteFragment);
+                    fragmentTransaction.addToBackStack(mSubTitle.getText().toString());
+                    fragmentTransaction.commit();
+                    break;
+                }
             }
             case R.id.my_list: {
-                mSubTitle.setText("My Lists");
-                fragmentTransaction.replace(R.id.content_frame, userListsFragment);
-                fragmentTransaction.addToBackStack("My Lists");
-                fragmentTransaction.commit();
-                break;
+                if(isDemoUser)
+                {
+                    Toast.makeText(getApplicationContext(), R.string.demo_user_need_to_register, Toast.LENGTH_SHORT).show();
+                    break;
+                }
+                else {
+                    CurrentFragmentName = Global.UserListsFragment;
+                    mSubTitle.setText(R.string.title_my_list);
+                    fragmentTransaction.replace(R.id.content_frame, userListsFragment);
+                    fragmentTransaction.addToBackStack(mSubTitle.getText().toString());
+                    fragmentTransaction.commit();
+                    break;
+                }
             }
-            case R.id.interface_language: {
-                mSubTitle.setText("Interface Language");
-                fragmentTransaction.replace(R.id.content_frame, interfaceLanguageFragment);
-                fragmentTransaction.addToBackStack("Interface Language");
-                fragmentTransaction.commit();
-                break;
+            case R.id.interface_language:
+                {
+                    if(isDemoUser)
+                    {
+                        Toast.makeText(getApplicationContext(), R.string.demo_user_need_to_register, Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+                    else {
+                        CurrentFragmentName = Global.InterfaceLanguageFragmentName;
+                        mSubTitle.setText(R.string.title_interface_language);
+                        fragmentTransaction.replace(R.id.content_frame, interfaceLanguageFragment);
+                        fragmentTransaction.addToBackStack(mSubTitle.getText().toString());
+                        fragmentTransaction.commit();
+                        break;
+                    }
             }
             case R.id.list_partners: {
-                mSubTitle.setText("Partners");
-                fragmentTransaction.replace(R.id.content_frame, partnersFragment);
-                fragmentTransaction.addToBackStack("Partners");
-                fragmentTransaction.commit();
-                break;
+                if(isDemoUser)
+                {
+                    Toast.makeText(getApplicationContext(), R.string.demo_user_need_to_register, Toast.LENGTH_SHORT).show();
+                    break;
+                }
+                else {
+                    CurrentFragmentName = Global.PartnersListFragmentName;
+                    mSubTitle.setText(R.string.title_partners);
+                    fragmentTransaction.replace(R.id.content_frame, partnersFragment);
+                    fragmentTransaction.addToBackStack(mSubTitle.getText().toString());
+                    fragmentTransaction.commit();
+                    break;
+                }
             }
             case R.id.notifications: {
-                mSubTitle.setText("Notifications");
-                fragmentTransaction.replace(R.id.content_frame, notificationFragment);
-                fragmentTransaction.addToBackStack("Notifications");
-                fragmentTransaction.commit();
-                break;
+                if(isDemoUser)
+                {
+                    Toast.makeText(getApplicationContext(), R.string.demo_user_need_to_register, Toast.LENGTH_SHORT).show();
+                    break;
+                }
+                else {
+                    CurrentFragmentName = Global.NotificationFragmentName;
+                    mSubTitle.setText(R.string.title_notifications);
+                    fragmentTransaction.replace(R.id.content_frame, notificationFragment);
+                    fragmentTransaction.addToBackStack(mSubTitle.getText().toString());
+                    fragmentTransaction.commit();
+                    break;
+                }
             }
-            case R.id.download_limits: {
-                mSubTitle.setText("Download limits");
-                fragmentTransaction.replace(R.id.content_frame, downloadFragment);
-                fragmentTransaction.addToBackStack("Download limits");
-                fragmentTransaction.commit();
-                break;
+            case R.id.download_limits:
+            {
+                if(isDemoUser)
+                {
+                    Toast.makeText(getApplicationContext(), R.string.demo_user_need_to_register, Toast.LENGTH_SHORT).show();
+                    break;
+                }
+                else {
+                    CurrentFragmentName = Global.DownloadFragmentName;
+                    mSubTitle.setText(R.string.title_donwload_limits);
+                    fragmentTransaction.replace(R.id.content_frame, downloadFragment);
+                    fragmentTransaction.addToBackStack(mSubTitle.getText().toString());
+                    fragmentTransaction.commit();
+                    break;
+                }
             }
             case R.id.about_us: {
-                mSubTitle.setText("About Us");
+                CurrentFragmentName = Global.AboutUsFragmentName;
+                mSubTitle.setText(R.string.title_about_us);
                 fragmentTransaction.replace(R.id.content_frame, aboutUsFragment);
-                fragmentTransaction.addToBackStack("About Us");
+                fragmentTransaction.addToBackStack(mSubTitle.getText().toString());
                 fragmentTransaction.commit();
                 break;
             }
             case R.id.feedback_contact: {
-                mSubTitle.setText("Feedback and Contact");
-                fragmentTransaction.replace(R.id.content_frame, feedbackFragment);
-                fragmentTransaction.addToBackStack("Feedback and Contact");
-                fragmentTransaction.commit();
-                break;
+                if(isDemoUser)
+                {
+                    Toast.makeText(getApplicationContext(), R.string.demo_user_need_to_register, Toast.LENGTH_SHORT).show();
+                    break;
+                }
+                else {
+                    CurrentFragmentName = Global.FeedbackFragmentName;
+                    mSubTitle.setText(R.string.title_contact_us);
+                    fragmentTransaction.replace(R.id.content_frame, feedbackFragment);
+                    fragmentTransaction.addToBackStack(mSubTitle.getText().toString());
+                    fragmentTransaction.commit();
+                    break;
+                }
             }
             case R.id.follow_us: {
-                mSubTitle.setText("Follow Us");
+                CurrentFragmentName = Global.FollowUsFragmentName;
+                mSubTitle.setText(R.string.title_follow_us);
                 fragmentTransaction.replace(R.id.content_frame, followUsFragment);
-                fragmentTransaction.addToBackStack("Follow Us");
+                fragmentTransaction.addToBackStack(mSubTitle.getText().toString());
                 fragmentTransaction.commit();
                 break;
             }
             case R.id.list_tracks: {
-                mSubTitle.setText("List Tracks");
+
+                CurrentFragmentName = Global.ListTracksFragmentName;
+                mSubTitle.setText(R.string.title_list_tracks);
                 fragmentTransaction.replace(R.id.content_frame, lisTracksFragment);
-                fragmentTransaction.addToBackStack("List Tracks");
+                fragmentTransaction.addToBackStack(mSubTitle.getText().toString());
                 fragmentTransaction.commit();
                 break;
+
             }
-            case R.id.filters: {
-                mSubTitle.setText("Filters");
-                fragmentTransaction.replace(R.id.content_frame, filterFragment);
-                fragmentTransaction.addToBackStack("Filters");
-                fragmentTransaction.commit();
-                break;
-            }
-            case R.id.user_filters:
-                {
-                mSubTitle.setText("User Filters");
-                fragmentTransaction.replace(R.id.content_frame, userFilterFragment);
-                fragmentTransaction.addToBackStack("User Filters");
-                fragmentTransaction.commit();
+            case R.id.logout :
+            {
+                // TODO : logout
+                // delete token
+                storageManager.storeTokenPreference(this, "");
+                // go to login
+                Intent i = new Intent(getApplicationContext(),LoginActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
+                getApplicationContext().startActivity(i);
+                finish(); // finish the current activity
+
                 break;
             }
             default: {
@@ -806,11 +1161,8 @@ public class SideMenu extends AppCompatActivity
                 break;
             }
         }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
     }
+
 
     /**
      * Called whenever we call invalidateOptionsMenu()
@@ -954,8 +1306,7 @@ public class SideMenu extends AppCompatActivity
 
     // region Helper functions
     public void AddTrackToList(int TrackId, SideMenu activity) {
-        ApiInterface client = ApiClient.getClient().create(ApiInterface.class);
-        Call<IResponse> call = client.AddTrackToUserList(TrackId, 1);
+        Call<IResponse> call = Global.client.AddTrackToUserList(TrackId, 1);
         call.enqueue(new Callback<IResponse>() {
             public void onResponse(Call<IResponse> call, Response<IResponse> response) {
                 //generateDataList(response.body());
@@ -996,7 +1347,10 @@ public class SideMenu extends AppCompatActivity
     public void playAudio(String media, String Name, String Authors, int TrackId) {
         //Check is service is active
         //SideMenu activity = (SideMenu)getActivity();
-        if (!serviceBound) {
+        btnPausePlayMainMediaPlayer.setVisibility(View.GONE);
+        playerLoader.setVisibility(View.VISIBLE);
+        if (!serviceBound)
+        {
             //ServiceConnection serviceConnection = serviceConnection;
             Intent playerIntent = new Intent(SideMenu.this, CustomMediaPlayerService.class);
             playerIntent.putExtra("media", media);
@@ -1007,6 +1361,7 @@ public class SideMenu extends AppCompatActivity
             //playerIntent.putExtra("activityStatus", isActivityPause);
             getBaseContext().startService(playerIntent);
             getBaseContext().bindService(playerIntent, serviceConnection, Context.BIND_AUTO_CREATE);
+            //mProgressDialog.show(); mProgressDialog.setCancelable(false);
 
         } else {
             //Service is active
@@ -1029,6 +1384,10 @@ public class SideMenu extends AppCompatActivity
 
     public void notifyHistoryListAdapter() {
         historyListFragment.notifyHistoryListAdapter();
+    }
+
+    public void doRefreshFavouriteList() {
+        favouriteFragment.doRefresh();
     }
 
     public void notifyFavouriteListAdapter() {
@@ -1147,6 +1506,39 @@ public class SideMenu extends AppCompatActivity
     {
         userSubscriptionInfo = response;
     }
+    @Override
+    public boolean isDemoUser()
+    {
+        return  isDemoUser;
+    }
+    @Override
+    public boolean isExceedsQuotaDemoUser()
+    {
+        return  isExceedsQuotaDemoUser;
+    }
+
+    @Override
+    public void addUnitsForDemoUser(int n)
+    {
+        int oldUnits = storageManager.getDemoUsagePreference(this);
+        int newUnits = oldUnits +  n;
+        storageManager.storeDemoUsagePreference(this, newUnits);
+    }
+    @Override
+    public void setUserExceedsQuota()
+    {
+        isExceedsQuotaDemoUser = true;
+    }
+
+
+
+
+    @Override
+    public int getUnitsForDemoUser()
+    {
+        int n =storageManager.getDemoUsagePreference(this);
+        return n;
+    }
 
     @Override
     public void setFlagUserExceedsDailyUsageListen()
@@ -1196,5 +1588,128 @@ public class SideMenu extends AppCompatActivity
                     userSubscriptionInfo = new UserSubscriptionInfoResponse();
                 }
             });
+    }
+
+
+    @Override
+    public boolean isInternetAvailable()
+    {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+    @Override
+    public void onInternetUnavailable()
+    {
+        // TODO: show error page with retry button
+        Log.d(  "Maaa" , CurrentFragmentName);
+
+        if(CurrentFragmentName == Global.MediaPlayerFragmentName)
+        {
+            mediaPlayerFragment.ratingBar.setRating(0);
+            mediaPlayerFragment.ratingBar.setIsIndicator(true);
+        }
+        else
+        {
+            androidx.fragment.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+            //TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
+            TextView mSubTitle = (TextView) toolbar.findViewById(R.id.toolbar_subtitle);
+            String noInternetConnection = getResources().getString(R.string.title_no_internet_connection);
+
+            errorFragment.PreviousFragmentName = CurrentFragmentName;
+            // mSubTitle.setText(noInternetConnection);
+            fragmentTransaction.replace(R.id.content_frame, errorFragment);
+            fragmentTransaction.addToBackStack(noInternetConnection);
+            fragmentTransaction.commit();
+
+        }
+        Log.d("MyTagGoesHere", "This is my log message at the debug level here");
+    }
+
+
+    public void deleteTrackFromPlayNowList(int trackId)
+    {
+        storageManager.removeTrackById(SideMenu.this, trackId);
+        playNowListTracks = storageManager.loadPlayNowTracks(SideMenu.this);
+
+    }
+    public  void AddListenTrack(int trackId)
+    {
+        Call<UserSubscriptionInfoResponse> call = Global.client.AddListenTrackWithQuota(trackId);
+        call.enqueue(new Callback<UserSubscriptionInfoResponse>()
+        {
+            @Override
+            public void onResponse
+                    (Call < UserSubscriptionInfoResponse > call, Response < UserSubscriptionInfoResponse > response) {
+                userSubscriptionInfo = response.body();
+            }
+
+            @Override
+            public void onFailure (Call < UserSubscriptionInfoResponse > call, Throwable t){
+                // TODO :
+                userSubscriptionInfo = new UserSubscriptionInfoResponse();
+            }
+        });
+    }
+
+    @Override
+    public void showLoaderMediaPlayer()
+    {
+        mProgressDialog.setMessage(getResources().getString( R.string.loader_msg));
+        mProgressDialog.show();
+        mProgressDialog.setCancelable(false);
+        isLoaderVisible = true;
+    }
+
+    @Override
+    public void hideLoaderMediaPlayer()
+    {
+        btnPausePlayMainMediaPlayer.setVisibility(View.VISIBLE);
+        playerLoader.setVisibility(View.INVISIBLE);
+        //mProgressDialog.dismiss();
+        //isLoaderVisible =  false;
+    }
+    boolean isLoaderVisible = false;
+    @Override
+    public boolean isLoaderVisible()
+    {
+        return isLoaderVisible;
+    }
+
+
+    private void initiateArabicMenu(Menu menuNav)
+    {
+        MenuItem upgrade_to_premium = menuNav.findItem(R.id.upgrade_to_premium);
+        MenuItem menuLists = menuNav.findItem((R.id.list_tracks));
+        MenuItem interface_language = menuNav.findItem(R.id.interface_language);
+        MenuItem list_partners = menuNav.findItem((R.id.list_partners));
+        MenuItem notifications = menuNav.findItem(R.id.notifications);
+        MenuItem download_limits = menuNav.findItem((R.id.download_limits));
+        MenuItem about_us = menuNav.findItem(R.id.about_us);
+        MenuItem feedback_contact = menuNav.findItem((R.id.feedback_contact));
+        MenuItem follow_us = menuNav.findItem(R.id.follow_us);
+        MenuItem list_history = menuNav.findItem((R.id.list_history));
+        MenuItem play_next = menuNav.findItem(R.id.play_next);
+        MenuItem list_favourite = menuNav.findItem((R.id.list_favourite));
+        MenuItem my_list = menuNav.findItem(R.id.my_list);
+        MenuItem logout = menuNav.findItem((R.id.logout));
+
+        View view = View.inflate(this, R.layout.drawer_list_item_ar, null);
+
+        upgrade_to_premium.setActionView(view);menuLists.setActionView(view);
+        interface_language.setActionView(view);list_partners.setActionView(view);
+        notifications.setActionView(view);download_limits.setActionView(view);
+        about_us.setActionView(view);feedback_contact.setActionView(view);
+        follow_us.setActionView(view);list_history.setActionView(view);
+        play_next.setActionView(view); list_favourite.setActionView(view);
+        my_list.setActionView(view); logout.setActionView(view);
+    }
+
+    private  void setActionLayout(MenuItem m)
+    {
+        View view = View.inflate(this, R.layout.drawer_list_item_ar, null);
+        m.setActionView(view);
     }
 }

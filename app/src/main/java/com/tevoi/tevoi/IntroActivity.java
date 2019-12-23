@@ -4,19 +4,13 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.app.Activity;
-import android.support.design.widget.NavigationView;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.DisplayMetrics;
-import android.util.Log;
+
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
@@ -24,9 +18,6 @@ import com.tevoi.tevoi.Utils.Global;
 import com.tevoi.tevoi.Utils.MyStorage;
 import com.tevoi.tevoi.model.MainSponsoreLogoResponse;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -70,7 +61,6 @@ public class IntroActivity  extends AppCompatActivity {
         imageViewIntroLogo.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-
                 // go to side menu activity
 
                 // check if he has token and he checked remember me
@@ -80,15 +70,17 @@ public class IntroActivity  extends AppCompatActivity {
                 {
                     // TODO : check token date
                     Intent i = new Intent(getApplicationContext(),SideMenu.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
                     startActivity(i);
-                    setContentView(R.layout.activity_side_menu);
+                    //setContentView(R.layout.activity_side_menu);
                 }
                 else
                 {
                     // go to login
                     Intent i = new Intent(getApplicationContext(),LoginActivity.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
                     startActivity(i);
-                    setContentView(R.layout.fragment_login);
+                    //setContentView(R.layout.fragment_login);
                 }
 
             }
@@ -103,19 +95,13 @@ public class IntroActivity  extends AppCompatActivity {
                 {
                     try
                     {
-                        //URL newurl = new URL(Global.IMAGE_BASE_URL + result.getMainSponsoreLogo());
-                        //Bitmap mIcon_val = BitmapFactory.decodeStream(newurl.openConnection().getInputStream());
-                        //Bitmap mIcon_val = getBitmapFromURL(Global.IMAGE_BASE_URL + result.getMainSponsoreLogo());
                         Picasso.with(IntroActivity.this)  //Here, this is context.
                                 .load(Global.IMAGE_BASE_URL + result.getMainSponsoreLogo())  //Url of the image to load.
                                 .into(imgMainSponsoreLogo);
-
-                        //imgMainSponsoreLogo.setImageBitmap(mIcon_val);
                     }
                     catch (Exception exc)
                     {
-
-                        Toast.makeText(IntroActivity.this,"l="+ exc.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                        //Toast.makeText(IntroActivity.this,"l="+ exc.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                     }
                 }
                 else
@@ -128,6 +114,44 @@ public class IntroActivity  extends AppCompatActivity {
 
             }
         });
+
+        Thread timer= new Thread()
+        {
+            public void run()
+            {
+                try
+                {
+                    //Display for 5 seconds
+                    sleep(2000);
+                }
+                catch (InterruptedException e)
+                {
+                    // TODO: handle exception
+                    e.printStackTrace();
+                }
+                finally
+                {
+                    // check if he has token and he checked remember me
+                    MyStorage storageManager = new MyStorage(0);
+                    Boolean isRememberMe = storageManager.getRememberMePreference(IntroActivity.this);
+                    if(isRememberMe)
+                    {
+                        // TODO : check token date
+                        Intent i = new Intent(getApplicationContext(),SideMenu.class);
+                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
+                        startActivity(i);
+                    }
+                    else
+                    {
+                        // go to login
+                        Intent i = new Intent(getApplicationContext(),LoginActivity.class);
+                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
+                        startActivity(i);
+                    }
+                }
+            }
+        };
+        timer.start();
 
     }
     public static Bitmap getBitmapFromURL(String src) {

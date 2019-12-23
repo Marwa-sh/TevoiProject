@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:background="@color/tevoiBlueSecondary"
     android:weightSum="5"
     >
     <!--<TextView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -21,5 +20,17 @@
         android:background="#FFFFFF"
         android:minHeight="?android:attr/listPreferredItemHeightSmall"/>-->
 
+
+    <ImageButton
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@mipmap/more_arrow_light_grey"
+        android:backgroundTint="@color/tevoiBrownLight"
+        android:background="@null"
+        android:rotation="-270"
+        android:gravity="right"
+        android:id="@+id/btnGoTo"
+        android:layout_weight="4"
+        />
 
 </LinearLayout>

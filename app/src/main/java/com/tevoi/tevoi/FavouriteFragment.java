@@ -3,11 +3,10 @@ package com.tevoi.tevoi;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +21,6 @@ import com.tevoi.tevoi.Utils.HelperFunctions;
 import com.tevoi.tevoi.adapter.TracksAdapter;
 import com.tevoi.tevoi.model.PaginationScrollListener;
 import com.tevoi.tevoi.model.RecyclerViewEmptySupport;
-import com.tevoi.tevoi.model.TrackFilter;
 import com.tevoi.tevoi.model.TrackObject;
 import com.tevoi.tevoi.model.TrackResponseList;
 
@@ -39,7 +37,6 @@ public class FavouriteFragment extends Fragment {
     // region pagination properties
     LinearLayoutManager linearLayoutManager;
     ProgressBar progressBar;
-
     LinearLayout errorLayout;
     TextView txtError;
     Button btnRetry;
@@ -53,10 +50,8 @@ public class FavouriteFragment extends Fragment {
 
     TracksAdapter adapter ;
     RecyclerViewEmptySupport recyclerView;
-    //RecyclerView recyclerView;
     SideMenu activity;
     View rootView;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,20 +59,23 @@ public class FavouriteFragment extends Fragment {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_favourite_list, container, false);
         activity = (SideMenu) getActivity();
+        View emptyView = rootView.findViewById(R.id.favourite_list_empty);
 
         recyclerView = rootView.findViewById(R.id.favourite_tracks_recycler_View);
         initiatePagination();
+
         linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setEmptyView(rootView.findViewById(R.id.favourite_list_empty));
+        recyclerView.setEmptyView(emptyView);
 
         List<TrackObject> trs = new ArrayList<>();
-        adapter = new TracksAdapter(trs, activity, Global.FavouriteFragmentName);
+        adapter = new TracksAdapter(trs, activity, Global.FavouriteFragmentName, recyclerView);
 
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
         recyclerView.setAdapter(adapter);
+        emptyView.setVisibility(View.INVISIBLE);
 
         recyclerView.addOnScrollListener(new PaginationScrollListener(linearLayoutManager)
         {
@@ -145,7 +143,7 @@ public class FavouriteFragment extends Fragment {
         SideMenu activity = (SideMenu) getActivity();
         activity.lisTracksFragment.defaultTab = 0;
         activity.updateSubTite("List Tracks");
-        android.support.v4.app.FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
+        androidx.fragment.app.FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.content_frame, activity.lisTracksFragment);
         ft.addToBackStack( "List Tracks" );
         ft.commit();
@@ -162,7 +160,7 @@ public class FavouriteFragment extends Fragment {
         activity.updateSubTite("List Tracks");
 
         activity.lisTracksFragment.defaultTab = 1;
-        android.support.v4.app.FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
+        androidx.fragment.app.FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.content_frame, activity.lisTracksFragment);
         ft.addToBackStack( "List Tracks" );
         ft.commit();
@@ -174,7 +172,7 @@ public class FavouriteFragment extends Fragment {
         activity.updateSubTite("List Tracks");
 
         activity.lisTracksFragment.defaultTab = 2;
-        android.support.v4.app.FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
+        androidx.fragment.app.FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.content_frame, activity.lisTracksFragment);
         ft.addToBackStack( "List Tracks" );
         ft.commit();
@@ -206,8 +204,8 @@ public class FavouriteFragment extends Fragment {
     private void loadFirstPage()
     {
         currentPage = 0;
-        activity.mProgressDialog.setMessage("Loading1");
-        activity.mProgressDialog.show();
+        //activity.mProgressDialog.setMessage("Loading1");
+        //activity.mProgressDialog.show();
 
         Call<TrackResponseList> call = Global.client.getFavouriteList(currentPage, PAGE_SIZE);
         call.enqueue(new Callback <TrackResponseList>(){
@@ -218,33 +216,37 @@ public class FavouriteFragment extends Fragment {
 
                 TOTAL_PAGES = tracks.getTotalRowCount() / PAGE_SIZE;
 
-                if(tracks.getTrack().size() == 0) {
+                if(tracks.getLstTrack().size() == 0) {
                     View v = rootView.findViewById(R.id.favourite_list_empty);
                     recyclerView.setEmptyView(v);
                 }
                 progressBar.setVisibility(View.GONE);
-                adapter.addAll(tracks.getTrack());
+                adapter.addAll(tracks.getLstTrack());
 
-                if (currentPage <= TOTAL_PAGES) adapter.addLoadingFooter();
+                if (currentPage != 0 && currentPage <= TOTAL_PAGES) adapter.addLoadingFooter();
                 else isLastPage = true;
 
-                activity.mProgressDialog.dismiss();
+                // add these tracks to the  list in Side Menu
+                activity.lstTracks = new ArrayList<>();
+                activity.lstTracks.addAll(tracks.getLstTrack());
+
+                //activity.mProgressDialog.dismiss();
                 adapter.notifyDataSetChanged();
             }
             public void onFailure(Call<TrackResponseList> call, Throwable t)
             {
-                activity.mProgressDialog.dismiss();
-                t.printStackTrace();
-                showErrorView(t);
-                Toast.makeText(getContext(),"something went wrong", Toast.LENGTH_SHORT).show();
+                //activity.mProgressDialog.dismiss();
+                //t.printStackTrace();
+                //showErrorView(t);
+                //Toast.makeText(getContext(),"something went wrong", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void loadNextPage() {
-
-        activity.mProgressDialog.setMessage("Loading");
-        activity.mProgressDialog.show();
+    private void loadNextPage()
+    {
+        //activity.mProgressDialog.setMessage("Loading");
+        //activity.mProgressDialog.show();
 
         Call<TrackResponseList> call = Global.client.getFavouriteList(currentPage, PAGE_SIZE);
         call.enqueue(new Callback <TrackResponseList>(){
@@ -257,7 +259,7 @@ public class FavouriteFragment extends Fragment {
                 adapter.removeLoadingFooter();
                 isLoading = false;
 
-                adapter.addAll(tracks.getTrack());
+                adapter.addAll(tracks.getLstTrack());
                /* if(tracks.getTrack().size() == 0)
                 {
                     currentPage --;
@@ -265,12 +267,15 @@ public class FavouriteFragment extends Fragment {
                 if (TOTAL_PAGES != 0 && currentPage != TOTAL_PAGES) adapter.addLoadingFooter();
                 else isLastPage = true;
 
-                activity.mProgressDialog.dismiss();
+                // add these tracks to the  list in Side Menu
+                activity.lstTracks.addAll(tracks.getLstTrack());
+
+                //activity.mProgressDialog.dismiss();
                 adapter.notifyDataSetChanged();
             }
             public void onFailure(Call<TrackResponseList> call, Throwable t)
             {
-                activity.mProgressDialog.dismiss(); currentPage --;
+                //activity.mProgressDialog.dismiss(); currentPage --;
                 t.printStackTrace();
                 showErrorView(t);
                 Toast.makeText(getContext(),"something went wrong", Toast.LENGTH_SHORT).show();
@@ -300,4 +305,11 @@ public class FavouriteFragment extends Fragment {
         return errorMsg;
     }
 
+    public void doRefresh() {
+        progressBar.setVisibility(View.VISIBLE);
+        //  Execute network request if cache is expired; otherwise do not update data.
+        adapter.getTracksList().clear();
+        adapter.notifyDataSetChanged();
+        loadFirstPage();
+    }
 }

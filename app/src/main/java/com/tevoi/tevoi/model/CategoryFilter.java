@@ -5,10 +5,12 @@ import android.os.Parcelable;
 
 public class CategoryFilter implements Parcelable {
 
+    private int id;
     private String name;
     private boolean isFavorite;
 
-    public CategoryFilter(String name, boolean isFavorite) {
+    public CategoryFilter(int id,String name, boolean isFavorite) {
+        this.id = id;
         this.name = name;
         this.isFavorite = isFavorite;
     }
@@ -20,7 +22,9 @@ public class CategoryFilter implements Parcelable {
     public String getName() {
         return name;
     }
-
+    public int getId() {
+        return id;
+    }
     public boolean isFavorite() {
         return isFavorite;
     }

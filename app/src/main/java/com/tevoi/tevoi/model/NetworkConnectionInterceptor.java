@@ -15,6 +15,7 @@ public abstract  class NetworkConnectionInterceptor implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
+
         if (!isInternetAvailable()) {
             onInternetUnavailable();
         }

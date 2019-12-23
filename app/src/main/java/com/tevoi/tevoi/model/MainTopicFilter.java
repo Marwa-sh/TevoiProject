@@ -11,7 +11,7 @@ public class MainTopicFilter extends ExpandableGroup<CategoryFilter>
     public String Name ;
     public boolean FilterValue ;
 
-    public MainTopicFilter(String title, List<CategoryFilter> items, int iconResId) {
+    public MainTopicFilter(int id, String title, List<CategoryFilter> items, int iconResId) {
         super(title, items);
         this.iconResId = iconResId;
     }

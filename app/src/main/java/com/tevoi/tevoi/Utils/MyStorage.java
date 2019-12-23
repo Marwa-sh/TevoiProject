@@ -23,10 +23,13 @@ public class MyStorage
     public static final String PreferenceTrackLanguage = "PreferenceTrackLanguage";
     public static final String TrackTypeFilter = "TrackTypeFilter";
     public static final String UserToken = "UserToken";
-    public  static final String RememberMe = "RememberMe";
+    public static final String RememberMe = "RememberMe";
     public static final String ShowHeardTracks="ShowHeardTracks";
     public static final String ShowNewsTracks="ShowNewsTracks";
     public static final String ShowArticlesTracks="ShowArticlesTracks";
+    public static final String IsFirstTime = "IsFirstTime";
+    public static final String DemoUsageUnits = "DemoUsageUnits";
+
 
     private  String Suffix =  "_" + USER_ID;
 
@@ -36,6 +39,12 @@ public class MyStorage
     public MyStorage(int userId)
     {
         UserId = userId;
+        Suffix = "_" + UserId;
+    }
+
+    public MyStorage()
+    {
+        UserId = 0;
         Suffix = "_" + UserId;
     }
 
@@ -126,7 +135,8 @@ public class MyStorage
         return result;
     }
 
-    public void removeTrack(Context context, TrackSerializableObject myModel) {
+    public void removeTrack(Context context, TrackSerializableObject myModel)
+    {
         ArrayList<TrackSerializableObject> playNowTracks = loadPlayNowTracks(context);
         if (playNowTracks != null)
         {
@@ -143,6 +153,32 @@ public class MyStorage
         }
     }
 
+    public void removeTrackById(Context context, int trackId)
+    {
+        ArrayList<TrackSerializableObject> playNowTracks = loadPlayNowTracks(context);
+        if (playNowTracks != null)
+        {
+            for ( int i =0; i< playNowTracks.size(); i++)
+            {
+                if(playNowTracks.get(i).getId() == trackId)
+                {
+                    playNowTracks.remove(i);
+                    break;
+                }
+            }
+            //playNowTracks.remove(myModel);
+            storePlayNowTracks(context, playNowTracks);
+        }
+    }
+    public void deletePlayNowList(Context context)
+    {
+        ArrayList<TrackSerializableObject> playNowTracks = loadPlayNowTracks(context);
+        for ( int i =0; i< playNowTracks.size(); i++)
+        {
+            playNowTracks.remove(i);
+        }
+        storePlayNowTracks(context, playNowTracks);
+    }
     //endregion
 
     // region UI Language storage
@@ -375,4 +411,53 @@ public class MyStorage
     }
     //endregion
 
+    // region Is First Time
+    public void storeIsFirstTimePreference(Context context, Boolean isFirstTime)
+    {
+        SharedPreferences settings;
+        Editor editor;
+        settings = context.getSharedPreferences(IsFirstTime, Context.MODE_PRIVATE);
+        editor = settings.edit();
+
+        editor.putBoolean(IsFirstTime, isFirstTime);
+        editor.commit();
+    }
+
+    public Boolean getIsFirstTimePreference(Context context)
+    {
+        SharedPreferences settings;
+        Boolean isFirstTime = false;
+        settings = context.getSharedPreferences(IsFirstTime, Context.MODE_PRIVATE);
+        if (settings.contains(IsFirstTime))
+        {
+            isFirstTime = settings.getBoolean(IsFirstTime, false);
+        }
+
+        return isFirstTime;
+    }
+    //endregion
+
+    //region DemoUsageUnits
+    public void storeDemoUsagePreference(Context context, int demoUsageUnits)
+    {
+        SharedPreferences settings;
+        Editor editor;
+        settings = context.getSharedPreferences(DemoUsageUnits, Context.MODE_PRIVATE);
+        editor = settings.edit();
+
+        editor.putInt(DemoUsageUnits, demoUsageUnits);
+        editor.commit();
+    }
+    public int  getDemoUsagePreference(Context context)
+    {
+        SharedPreferences settings;
+        int demoUsageUnits = 0;
+        settings = context.getSharedPreferences(DemoUsageUnits, Context.MODE_PRIVATE);
+        if (settings.contains(DemoUsageUnits))
+        {
+            demoUsageUnits = settings.getInt(DemoUsageUnits, 0);
+        }
+        return demoUsageUnits;
+    }
+    //endregion
 }

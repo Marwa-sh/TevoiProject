@@ -2,11 +2,13 @@ package com.tevoi.tevoi.model;
 
 import java.util.List;
 
-public class PartnerListResponse extends  IResponse{
+public class PartnerListResponse extends  IResponse
+{
+    private  int TotalRowCount;
     private List<PartnerObject> Partners;
 
-    public void setPartners(List<PartnerObject> partners) {
-        this.Partners = partners;
+    public int getTotalRowCount() {
+        return TotalRowCount;
     }
 
     public List<PartnerObject> getPartners() {

@@ -53,7 +53,8 @@
     <string name="cd_next">Skip forwards</string>
     <string name="interface_language">interface language</string>
     <string name="about_us">About us</string>
-
+    <string name="logout">Logout</string>
+    <string name="demo_user_need_to_register">Sorry, You need to register.</string>
     <string name="track_language">Default Track Language</string>
     <string name="show_default_audio_language">Show audio tracks in selected language only.</string>
 
@@ -90,14 +91,78 @@
     <string name="keep_melogged">Keep me logged in</string>
     <string name="forgot">Forgot Password?</string>
     <string name="enter_email">Please enter your email</string>
-    <string name="request_password">Request new password</string>
+    <string name="request_password">Request new Password</string>
     <string name="add_newlist">Add New List</string>
     <string name="all_notification">All notification</string>
 
-    <string name="error_msg">Sorry! Couldn\'t fetch tracks.</string>
+    <string name="error_msg">Sorry! Couldn\'t load page.</string>
     <string name="btn_retry">Retry</string>
-    <string name="error_msg_no_internet">Not connected to internet</string>
+    <string name="error_msg_no_internet">You\'re Not connected to internet. Please check your connection and try again</string>
     <string name="error_msg_timeout">The server took too long to respond</string>
     <string name="error_msg_unknown">An unexpected error occurred</string>
     <string name="tap_to_reload">Tap to reload</string>
+
+    <string name="continue_as_guest">Continue as a guest</string>
+    <string name="continue_as_guest_text">If you continue as a guest some features will not be availlable</string>
+
+    <string name="title_upgrade_to_premium">Upgrade to premium</string>
+    <string name="title_list_tracks">Stream</string>
+    <string name="title_interface_language">Interface Language</string>
+    <string name="title_partners">Partners</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_donwload_limits">Donwload Limits</string>
+    <string name="title_about_us">About Us</string>
+    <string name="title_contact_us">Contact Us</string>
+    <string name="title_follow_us">Follow Us</string>
+    <string name="title_history">History</string>
+    <string name="title_filter">Filter</string>
+    <string name="title_play_next">Play Next</string>
+    <string name="title_favourite">Favourite</string>
+    <string name="title_my_list">My Lists</string>
+    <string name="title_no_internet_connection">No Internet Connection</string>
+    <string name="title_lists">Lists</string>
+    <string name="title_setting">Setting</string>
+    <string name="no_quota_for_offline">You don\'nt have enough quota for getting this track offline.</string>
+    <string name="no_quota_for_today">Sorry ,,, Your quota is finished for today.</string>
+
+    <string name="dont_show_heard_tracks">Don\'t Show heard tracks</string>
+    <string name="msg_play_now_deleted_successfully">Play now deleted successfully</string>
+
+
+    <string name="list_name_required">Name can\'t be empty</string>
+
+    <!--  Resources for Delete dialog user list -->
+    <string name="dialog_message">Delete List</string>
+    <string name="dialog_title_remove_from_list">Are you sure you want to delete list?</string>
+    <string name="Yes">Yes</string>
+    <string name="No" translatable="false">No</string>
+
+    <string name="clear_selection">Clear Selections</string>
+    <string name="loader_msg"></string>
+    <string name="add_track_to_list">Add Track</string>
+    <string name="offer_coupon">offer coupon</string>
+    <string name="choose_subscription_period">choose subscription period</string>
+    <string name="proceed_to_payment">Proceed to Payment</string>
+    <string name="month_1">1 Month</string>
+    <string name="month_3">3 Months</string>
+    <string name="month_6">6 Months</string>
+    <string name="month_12">12 Months</string>
+
+
+    <string name="track_will_download">Track will be downloaded ... </string>
+    <string name="no_lists_to_delete">No Lists to delete.</string>
+    <string name="no_lists_for_user">You don\'t have lists yet.</string>
+
+    <!-- Drawer buttons text -->
+    <string name="add_to_play_next">Add to play next</string>
+    <string name="add_to_list_txt">Add to list</string>
+    <string name="read_track_text">Read Text</string>
+    <string name="like_track">Like</string>
+    <string name="remove_track">Remove</string>
+
+    <string name="sign_in">Sign in</string>
+
+
+    <string name="dialog_title_clear_user_list">Are you sure you want to delete all lists? This will delete the tracks related to them also.</string>
+
 </resources>

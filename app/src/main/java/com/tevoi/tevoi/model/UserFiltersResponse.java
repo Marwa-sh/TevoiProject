@@ -5,6 +5,7 @@ import java.util.List;
 public class UserFiltersResponse
 {
     public List<MainTopic> MainTopicList;
+    public  boolean IsShowHearedTracks;
     //public List<CategoryObject> CategoriesList;
     public List<SubscipedPartnersObject> SubscripedPartners;
     //public List<TrackTypeObject> TrackTypesList;

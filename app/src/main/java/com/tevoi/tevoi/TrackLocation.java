@@ -8,11 +8,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 
+import com.tevoi.tevoi.Utils.Global;
 import com.tevoi.tevoi.model.TrackLocationResponse;
-import com.tevoi.tevoi.rest.ApiClient;
-import com.tevoi.tevoi.rest.ApiInterface;
 
 import java.util.List;
 
@@ -40,8 +39,7 @@ public class TrackLocation extends Fragment  {
                 SideMenu p = ((SideMenu) this.getActivity());
                 int trackId = p.mediaPlayerFragment.currentTrack.getId();
                 // here we need to open maps app
-                ApiInterface client = ApiClient.getClient().create(ApiInterface.class);
-                Call<TrackLocationResponse> call = client.GetTrackLocation(2);
+                Call<TrackLocationResponse> call = Global.client.GetTrackLocation(2);
                 call.enqueue(new Callback<TrackLocationResponse>(){
                     public void onResponse(Call<TrackLocationResponse> call, Response<TrackLocationResponse> response)
                     {

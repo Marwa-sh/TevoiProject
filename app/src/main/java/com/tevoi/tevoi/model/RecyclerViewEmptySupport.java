@@ -1,7 +1,7 @@
 package com.tevoi.tevoi.model;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -15,11 +15,13 @@ public class RecyclerViewEmptySupport extends RecyclerView {
             Adapter<?> adapter =  getAdapter();
             if(adapter != null && emptyView != null)
             {
-                if(adapter.getItemCount() == 0) {
+                if(adapter.getItemCount() == 0)
+                {
                     emptyView.setVisibility(View.VISIBLE);
                     RecyclerViewEmptySupport.this.setVisibility(View.GONE);
                 }
-                else {
+                else
+                {
                     emptyView.setVisibility(View.GONE);
                     RecyclerViewEmptySupport.this.setVisibility(View.VISIBLE);
                 }
@@ -43,6 +45,7 @@ public class RecyclerViewEmptySupport extends RecyclerView {
     @Override
     public void setAdapter(Adapter adapter) {
         super.setAdapter(adapter);
+
 
         if(adapter != null) {
             adapter.registerAdapterDataObserver(emptyObserver);

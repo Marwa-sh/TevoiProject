@@ -2,17 +2,15 @@
 package com.tevoi.tevoi;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+
+import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.tevoi.tevoi.Utils.Global;
 import com.tevoi.tevoi.model.AboutUsResponse;
-import com.tevoi.tevoi.model.RegisterDataResponse;
 
 import retrofit2.Call;
 import retrofit2.Callback;

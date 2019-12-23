@@ -3,7 +3,6 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
-    <color name="tevoiBrown">#84754b</color>
     <color name="fontColor">#ffffff</color>
     <color name="tevoiBluePrimary">#00BFC6</color>
     <color name="tevoiBlueSecondary">#75d5b6</color>
@@ -13,8 +12,16 @@
     <color name="tevoiComment">#EBEBEB</color>
     <color name="White"></color>
     <color name="grey">#EBEBEB</color>
+    <color name="red">#D81B60</color>
     <color name="thumbgrey">#535353</color>
     <color name="placeholder_grey">#AAADC4</color>
+
+    <!-- Tevoi New Colors -->
+    <color name="tevoiBlack">#37393F</color>
+    <color name="tevoiBrownDark">#84754B</color>
+    <color name="tevoiBrownLight">#AD9960</color>
+    <color name="tevoiOutLine">#C7C7CC</color>
+    <color name="tevoiSwitchBlackLight">#535353</color>
 
     <!-- A transparent black -->
     <color name="transparent_black">#aa000000</color>
@@ -46,5 +53,11 @@
     <color name="primary_dark_material_light_1">#00bfc6</color>
     <color name="accent_material_light_1">#00bfc6</color>
     <color name="foreground_material_light">#fefcfc</color>
+
+
+    <!-- Seek bar-->
+    <color name="seek_bar_background">#ababab</color>
+    <color name="seek_bar_progress">#ffb600</color>
+    <color name="seek_bar_secondary_progress">#3399CC</color>
 
 </resources>

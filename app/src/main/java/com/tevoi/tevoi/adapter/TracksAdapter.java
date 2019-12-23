@@ -3,9 +3,10 @@ package com.tevoi.tevoi.adapter;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,14 +23,17 @@ import android.widget.Toast;
 import com.tevoi.tevoi.R;
 import com.tevoi.tevoi.SideMenu;
 import com.tevoi.tevoi.TrackText;
+import com.tevoi.tevoi.Utils.FileHelper;
 import com.tevoi.tevoi.Utils.Global;
 import com.tevoi.tevoi.model.IResponse;
 import com.tevoi.tevoi.model.LoadingVH;
+import com.tevoi.tevoi.model.RecyclerViewEmptySupport;
 import com.tevoi.tevoi.model.TrackObject;
 import com.tevoi.tevoi.model.TrackSerializableObject;
 import com.tevoi.tevoi.model.UserListObject;
 import com.tevoi.tevoi.model.UserListResponse;
 
+import java.io.File;
 import java.util.List;
 
 import retrofit2.Call;
@@ -50,18 +54,35 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     private List<TrackObject> tracks;
     private SideMenu activity;
+    private RecyclerViewEmptySupport recyclerVw;
+
+
     private boolean HasPlayNextBtn;
     private boolean HasRemoveBtn;
     private boolean HasAddToListBtn = true;
     private boolean HasReadTextBtn = true;
     private boolean HasFavouriteBtn = true;
 
+
+
     private String fragmentName = "";
 
-    public TracksAdapter(List<TrackObject> tracks, SideMenu activity, String fragmentName) {
+    int indexLastOpenDrawer = 0;
+    int indexLastPlayedTrack = 0;
+
+    private int previousPosition = 0;
+    private boolean flagFirstItemSelected = false;
+
+    public TracksAdapter(List<TrackObject> tracks, SideMenu activity, String fragmentName, RecyclerViewEmptySupport recycler) {
         this.tracks = tracks;
         this.activity = activity;
         this.fragmentName = fragmentName;
+        this.recyclerVw = recycler;
+    }
+
+    public List<TrackObject> getTracksList()
+    {
+        return tracks;
     }
 
     @Override
@@ -212,6 +233,7 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             hoverLayout = itemView.findViewById(R.id.hoverButtonsLayout);
             trackDetailsLayout = itemView.findViewById(R.id.layout_track_details);
 
+            tvCategories.setSelected(true);
             //Hover Buttons
             btnAddPlayNext = itemView.findViewById(R.id.btn_add_play_next);
             btnAddToList = itemView.findViewById(R.id.btn_add_to_list);
@@ -219,56 +241,118 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             btnReadText = itemView.findViewById(R.id.btn_read_text);
             btnRemove = itemView.findViewById(R.id.btn_remove);
 
+
+            /*imgBtnDrawer.setOnTouchListener(new OnSwipeTouchListener(activity) {
+                public void onSwipeTop() {
+                    Toast.makeText(activity, "top", Toast.LENGTH_SHORT).show();
+                }
+                public void onSwipeRight() {
+                    Toast.makeText(activity, "right", Toast.LENGTH_SHORT).show();
+                }
+                public void onSwipeLeft() {
+                    Toast.makeText(activity, "left", Toast.LENGTH_SHORT).show();
+                }
+                public void onSwipeBottom() {
+                    Toast.makeText(activity, "bottom", Toast.LENGTH_SHORT).show();
+                }
+
+            });*/
+
             //--------//
+            String lang = activity.storageManager.getLanguageUIPreference(activity);
+            if(lang.equals("ar"))
+                imgBtnPlay.setScaleX(-1);
 
             imgBtnPlay.setOnClickListener(new View.OnClickListener()
             {
                 @Override
                 public void onClick(View v)
                 {
+                    boolean isAllowed = true;
                     int i = getAdapterPosition();
                     TrackObject selectedTrack =  tracks.get(i);
-                    activity.CurrentTrackInPlayer = tracks.get(i);
-                    if(fragmentName.equals(Global.ListTracksFragmentName))
+
+                    long numberOfSeconds = FileHelper.GetNumberOfSeconds(selectedTrack.getDuration());
+                    if(activity.userSubscriptionInfo.IsFreeSubscription)
                     {
-                        activity.playAudio(Global.GetStreamURL +activity.CurrentTrackInPlayer.getId(),
-                                activity.CurrentTrackInPlayer.getName(),
-                                activity.CurrentTrackInPlayer.getAuthors(),
-                                activity.CurrentTrackInPlayer.getId());
-
-                        activity.txtTrackName.setText(selectedTrack.getName().toString());
-
-                        if(activity.mainPlayerLayout.getVisibility() == View.INVISIBLE)
+                        int remainingSeconds = activity.userSubscriptionInfo.FreeSubscriptionLimit.DailyListenMaxUnits - activity.userSubscriptionInfo.numberOfListenUnitsConsumed;
+                        if(remainingSeconds > 0 && remainingSeconds * Global.ListenUnitInSeconds >= numberOfSeconds)
                         {
-                            activity.mainPlayerLayout.setVisibility(View.VISIBLE);
+                            //  he can get the audio offline
+                            isAllowed = true;
                         }
-                        activity.lisTracksFragment.fm.executePendingTransactions();
-                        activity.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                //Linearlayout is the layout the fragments are being added to.
-                                View view = activity.lisTracksFragment.linearLayoutListTracks.getChildAt(activity.lisTracksFragment.linearLayoutListTracks.getChildCount()-1);
-                                //view.getParent().requestChildFocus(view ,view);
-                                // TODO : find solution since we removed scroll view
-                                //activity.lisTracksFragment.scrollViewListTracks.smoothScrollBy(0,(int)(view.getY() + view.getHeight()));
-                            }
-                        });
+                        else
+                        {
+                            isAllowed = false;
+                            // user quota is finished
+                            String message = activity.getResources().getString(R.string.no_quota_for_offline);
+                            Toast.makeText(activity, message , Toast.LENGTH_LONG).show();
+                        }
                     }
                     else
                     {
-                        FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
-                        activity.mediaPlayerFragment.currentTrackId = selectedTrack.getId();
-                        activity.mediaPlayerFragment.currentTrack = selectedTrack;
-                        activity.CurrentTrackInPlayer = selectedTrack;
+                        isAllowed = true;
+                    }
 
-                        ft.replace(R.id.content_frame, activity.mediaPlayerFragment);
-                        ft.addToBackStack( "mediaPlayerFragment" );
-                        ft.commit();
-                        activity.playAudio(Global.GetStreamURL +activity.CurrentTrackInPlayer.getId(),
-                                activity.CurrentTrackInPlayer.getName(),
-                                activity.CurrentTrackInPlayer.getAuthors(),
-                                activity.CurrentTrackInPlayer.getId());
+                    if(isAllowed)
+                    {
+                        activity.CurrentTrackInPlayer = tracks.get(i);
+                        if (fragmentName.equals(Global.ListTracksFragmentName))
+                        {
+                            // region pause previouse track
+                            ImageButton imgBtnPlayPrevious = null;
+                            View view = null;
+                            if (i == indexLastPlayedTrack)
+                            {
+                                /*view = recyclerVw.findViewHolderForAdapterPosition(indexLastPlayedTrack).itemView;
+                                linearLayoutHover = (LinearLayout) view.findViewById(R.id.hoverButtonsLayout);
+                                linearLayoutHover.setVisibility(View.INVISIBLE);
+                                indexLastPlayedTrack = i;*/
+                            }
+                            else
+                            {
+                                RecyclerView.ViewHolder f = recyclerVw.findViewHolderForAdapterPosition(indexLastPlayedTrack);
+                                if(f != null)
+                                {
+                                    view = f.itemView;
+                                    imgBtnPlayPrevious = (ImageButton) view.findViewById(R.id.btn_play_pause);
+                                    imgBtnPlayPrevious.setImageResource(R.mipmap.play_normal_list);
+                                }
+                                indexLastPlayedTrack = i;
+                            }
+                            //endregion
 
+                            imgBtnPlay.setImageResource(R.mipmap.pause_normal_list);
+                            activity.playAudio(Global.GetStreamURL + activity.CurrentTrackInPlayer.getId(),
+                                    activity.CurrentTrackInPlayer.getName(),
+                                    activity.CurrentTrackInPlayer.getAuthors(),
+                                    activity.CurrentTrackInPlayer.getId());
+
+                            activity.txtTrackName.setText(selectedTrack.getName().toString());
+
+                            if (activity.mainPlayerLayout.getVisibility() == View.INVISIBLE) {
+                                activity.mainPlayerLayout.setVisibility(View.VISIBLE);
+                            }
+                            activity.lisTracksFragment.fm.executePendingTransactions();
+
+                        }
+                        else
+                        {
+                            FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
+                            activity.mediaPlayerFragment.currentTrackId = selectedTrack.getId();
+                            activity.mediaPlayerFragment.currentTrack = selectedTrack;
+                            activity.CurrentTrackInPlayer = selectedTrack;
+                            activity.CurrentFragmentName = Global.MediaPlayerFragmentName;
+
+                            ft.replace(R.id.content_frame, activity.mediaPlayerFragment);
+                            ft.addToBackStack("MediaPlayerFragment");
+                            ft.commit();
+                            activity.playAudio(Global.GetStreamURL + activity.CurrentTrackInPlayer.getId(),
+                                    activity.CurrentTrackInPlayer.getName(),
+                                    activity.CurrentTrackInPlayer.getAuthors(),
+                                    activity.CurrentTrackInPlayer.getId());
+
+                        }
                     }
                     // if we are playing new track
                     /*if(activity.player != null && i != activity.trackIdPlayedNow)
@@ -294,31 +378,55 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
             imgBtnDrawer.setOnClickListener(new View.OnClickListener(){
                 @Override
-                public void onClick(View v) {
-                    final Context context = v.getContext();
-                    int i = getAdapterPosition();
+                public void onClick(View v)
+                {
+                    if(activity.isDemoUser)
+                    {
+                        Toast.makeText(activity, R.string.demo_user_need_to_register, Toast.LENGTH_SHORT).show();
+                    }
+                    else
+                    {
+                        final Context context = v.getContext();
+                        int i = getAdapterPosition();
 
-                    if(tracks.get(i).isFavourite())
-                    {
-                        btnLike.setText("Dislike");
-                        btnLike.refreshDrawableState();
-                    }
-                    else
-                    {
-                        btnLike.setText("Like");
-                        btnLike.refreshDrawableState();
-                    }
-                    if(hoverLayout.getVisibility()==View.VISIBLE)
-                    {
-                        hoverLayout.setVisibility(View.INVISIBLE);
-                        //imgBtnPlay.setVisibility(View.VISIBLE);
-                        //trackDetailsLayout.setVisibility(View.VISIBLE);
-                    }
-                    else
-                    {
-                        hoverLayout.setVisibility(View.VISIBLE);
-                        //imgBtnPlay.setVisibility(View.INVISIBLE);
-                        //trackDetailsLayout.setVisibility(View.INVISIBLE);
+                        LinearLayout linearLayoutHover = null;
+                        View view = null;
+
+                        if (i == indexLastOpenDrawer)
+                        {
+                            /*view = recyclerVw.findViewHolderForAdapterPosition(indexLastOpenDrawer).itemView;
+                            linearLayoutHover = (LinearLayout) view.findViewById(R.id.hoverButtonsLayout);
+                            linearLayoutHover.setVisibility(View.INVISIBLE);
+                            indexLastOpenDrawer = i;*/
+                        }
+                        else
+                        {
+                            RecyclerView.ViewHolder f = recyclerVw.findViewHolderForAdapterPosition(indexLastOpenDrawer);
+                            if(f!= null)
+                            {
+                                view = f.itemView;
+                                linearLayoutHover = (LinearLayout) view.findViewById(R.id.hoverButtonsLayout);
+                                linearLayoutHover.setVisibility(View.INVISIBLE);
+                            }
+                            indexLastOpenDrawer = i;
+                        }
+                        if (tracks.get(i).isFavourite()) {
+                            btnLike.setText("Dislike");
+                            btnLike.refreshDrawableState();
+                        } else {
+                            btnLike.setText("Like");
+                            btnLike.refreshDrawableState();
+                        }
+                        if (hoverLayout.getVisibility() == View.VISIBLE)
+                        {
+                            hoverLayout.setVisibility(View.INVISIBLE);
+                            //imgBtnPlay.setVisibility(View.VISIBLE);
+                            //trackDetailsLayout.setVisibility(View.VISIBLE);
+                        } else {
+                            hoverLayout.setVisibility(View.VISIBLE);
+                            //imgBtnPlay.setVisibility(View.INVISIBLE);
+                            //trackDetailsLayout.setVisibility(View.INVISIBLE);
+                        }
                     }
                 }
             });
@@ -408,13 +516,14 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                                 break;
                             }
                             case Global.PlayNowFragmentName:
-                                {
+                            {
+                                // TODO: remove from play now list
                                 Toast.makeText(activity, "PlayNowFragmentName remove", Toast.LENGTH_SHORT).show();
                                 break;
                             }
                             case Global.UserListTracksFragment:
                             {
-                                activity.mProgressDialog.setMessage("Loading");
+                                activity.mProgressDialog.setMessage(activity.getResources().getString( R.string.loader_msg));
                                 activity.mProgressDialog.show();
 
                                 Call<IResponse> call = Global.client.DeleteTrackFromUserList(activity.userListTracksFragment.currenUsertListId, selectedTrack.getId());
@@ -467,7 +576,7 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                                     btnLike.refreshDrawableState();
 
                                     Log.d("Favourite :", "onResponse: track liked ");
-                                    Toast.makeText(activity, "Like", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(activity, "Track added to favourite", Toast.LENGTH_LONG).show();
                                 } else {
                                     Log.d("Favourite Error", "onResponse: " + res.getMessage());
                                     Toast.makeText(activity, "Error Like", Toast.LENGTH_LONG).show();
@@ -494,6 +603,7 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                                     btnLike.refreshDrawableState();
 
                                     Log.d("Favourite :", "onResponse: track liked ");
+                                    Toast.makeText(activity, "Track removed from favourite", Toast.LENGTH_LONG).show();
                                     //Toast.makeText(activity, "Remove Like", Toast.LENGTH_LONG).show();
                                 } else {
                                     Log.d("Favourite Error", "onResponse: " + res.getMessage());
@@ -508,7 +618,7 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     }
                     if(fragmentName.equals(Global.FavouriteFragmentName))
                     {
-                        activity.notifyFavouriteListAdapter();
+                        activity.doRefreshFavouriteList();
                     }
                     else if(fragmentName.equals(Global.HistoryFragmentName))
                     {
@@ -518,7 +628,7 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     {
                         activity.notifyTarcksListAdapter();
                     }
-                    //hoverLayout.setVisibility(View.INVISIBLE);
+                    hoverLayout.setVisibility(View.INVISIBLE);
                 }
             });
             btnAddToList.setOnClickListener(new View.OnClickListener() {
@@ -532,60 +642,66 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                         public void onResponse(Call<UserListResponse> call, Response<UserListResponse> response)
                         {
                             UserListResponse listsNames = response.body();
-                            LayoutInflater li = LayoutInflater.from(activity);
-                            final View promptsView = li.inflate(R.layout.layout_user_lists_spinner, null);
+                            if(listsNames != null && listsNames.getLstUserList().size() != 0) {
 
-                            Spinner spinner = promptsView.findViewById(R.id.user_lists_spinner);
-                            // TODO:  get user lists
-                            // Create an ArrayAdapter using the string array and a default spinner layout
-                            ArrayAdapter adapter = new ArrayAdapter(activity, R.layout.spinner, listsNames.getLstUserList());
 
-                            // Specify the layout to use when the list of choices appears
-                            //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                            // Apply the adapter to the spinner
-                            spinner.setAdapter(adapter);
+                                LayoutInflater li = LayoutInflater.from(activity);
+                                final View promptsView = li.inflate(R.layout.layout_user_lists_spinner, null);
 
-                            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
+                                Spinner spinner = promptsView.findViewById(R.id.user_lists_spinner);
+                                // TODO:  get user lists
+                                // Create an ArrayAdapter using the string array and a default spinner layout
+                                ArrayAdapter adapter = new ArrayAdapter(activity, R.layout.spinner, listsNames.getLstUserList());
 
-                            // set prompts.xml to alertdialog builder
-                            alertDialogBuilder.setView(promptsView);
+                                // Specify the layout to use when the list of choices appears
+                                //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                // Apply the adapter to the spinner
+                                spinner.setAdapter(adapter);
+                                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
 
-                            // set dialog message
-                            alertDialogBuilder
-                                    .setCancelable(false)
-                                    .setPositiveButton("OK",
-                                            new DialogInterface.OnClickListener() {
-                                                public void onClick(DialogInterface dialog,int id) {
-                                                    UserListObject selectedList = (UserListObject) ( ((Spinner) promptsView.findViewById(R.id.user_lists_spinner) ).getSelectedItem());
-                                                    //Toast.makeText(context, selectedList.getName(), Toast.LENGTH_SHORT).show();
+                                // set prompts.xml to alertdialog builder
+                                alertDialogBuilder.setView(promptsView);
 
-                                                    Call<IResponse> call = Global.client.AddTrackToUserList(trackSelected.getId(), selectedList.getId());
-                                                    call.enqueue(new Callback<IResponse>(){
-                                                        public void onResponse(Call<IResponse> call, Response<IResponse> response)
-                                                        {
-                                                            IResponse result = response.body();
-                                                            Toast.makeText(activity, result.getMessage(), Toast.LENGTH_SHORT).show();
+                                // set dialog message
+                                alertDialogBuilder
+                                        .setCancelable(false)
+                                        .setPositiveButton("OK",
+                                                new DialogInterface.OnClickListener() {
+                                                    public void onClick(DialogInterface dialog, int id) {
+                                                        UserListObject selectedList = (UserListObject) (((Spinner) promptsView.findViewById(R.id.user_lists_spinner)).getSelectedItem());
+                                                        //Toast.makeText(context, selectedList.getName(), Toast.LENGTH_SHORT).show();
 
-                                                        }
-                                                        public void onFailure(Call<IResponse> call, Throwable t)
-                                                        {
-                                                            Toast.makeText(activity, "You have to lists", Toast.LENGTH_LONG).show();
-                                                        }
-                                                    });
-                                                }
-                                            })
-                                    .setNegativeButton("Cancel",
-                                            new DialogInterface.OnClickListener() {
-                                                public void onClick(DialogInterface dialog,int id) {
-                                                    Toast.makeText(activity, "No Select", Toast.LENGTH_SHORT).show();
-                                                    dialog.cancel();
-                                                }
-                                            });
+                                                        Call<IResponse> call = Global.client.AddTrackToUserList(trackSelected.getId(), selectedList.getId());
+                                                        call.enqueue(new Callback<IResponse>() {
+                                                            public void onResponse(Call<IResponse> call, Response<IResponse> response) {
+                                                                IResponse result = response.body();
+                                                                Toast.makeText(activity, result.getMessage(), Toast.LENGTH_SHORT).show();
 
-                            // create alert dialog
-                            AlertDialog alertDialog = alertDialogBuilder.create();
-                            // show it
-                            alertDialog.show();
+                                                            }
+
+                                                            public void onFailure(Call<IResponse> call, Throwable t) {
+                                                                Toast.makeText(activity, "You have to lists", Toast.LENGTH_LONG).show();
+                                                            }
+                                                        });
+                                                    }
+                                                })
+                                        .setNegativeButton("Cancel",
+                                                new DialogInterface.OnClickListener() {
+                                                    public void onClick(DialogInterface dialog, int id) {
+                                                        Toast.makeText(activity, "No Select", Toast.LENGTH_SHORT).show();
+                                                        dialog.cancel();
+                                                    }
+                                                });
+
+                                // create alert dialog
+                                AlertDialog alertDialog = alertDialogBuilder.create();
+                                // show it
+                                alertDialog.show();
+                            }
+                            else
+                            {
+                                Toast.makeText(activity, R.string.no_lists_for_user, Toast.LENGTH_SHORT).show();
+                            }
                         }
                         public void onFailure(Call<UserListResponse> call, Throwable t)
                         {
@@ -609,44 +725,72 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             });
             if(btnAddPlayNext!= null)
             {
-                btnAddPlayNext.setOnClickListener(new View.OnClickListener() {
+                btnAddPlayNext.setOnClickListener(new View.OnClickListener()
+                {
                     @Override
                     public void onClick(View v)
                     {
+                        int i = getAdapterPosition();
+                        final TrackObject selectedTrack =  tracks.get(i);
+                        boolean isAllowed = true;
+
+                        long numberOfSeconds = FileHelper.GetNumberOfSeconds(selectedTrack.getDuration());
                         if(activity.userSubscriptionInfo.IsFreeSubscription)
                         {
-                            if(activity.userSubscriptionInfo.numberOfListenUnitsConsumed < activity.userSubscriptionInfo.FreeSubscriptionLimit.MonthlyListenMaxUnits)
+                            int remainingSeconds = activity.userSubscriptionInfo.FreeSubscriptionLimit.DailyListenMaxUnits - activity.userSubscriptionInfo.numberOfListenUnitsConsumed;
+                            if(remainingSeconds > 0 && remainingSeconds * Global.ListenUnitInSeconds > numberOfSeconds)
                             {
-
+                                //  he can get the audio offline
+                                isAllowed = true;
                             }
                             else
                             {
+                                isAllowed = false;
                                 // user quota is finished
+                                String message = activity.getResources().getString(R.string.no_quota_for_offline);
+                                Toast.makeText(activity, message , Toast.LENGTH_LONG).show();
                             }
                         }
                         else
                         {
-                            // store infor of track
+                            isAllowed = true;
                         }
-                        int i = getAdapterPosition();
-                        TrackObject selectedTrack = tracks.get(i);
-                        TrackSerializableObject track = new TrackSerializableObject();
-                        track.setId(selectedTrack.getId());
-                        track.setName(selectedTrack.getName());
-                        track.setDuration(selectedTrack.getDuration());
-                        track.setAuthor(selectedTrack.getAuthors());
-                        track.setCategories(selectedTrack.getCategories());
-                        track.setRate((int) selectedTrack.getRate());
-                        track.setFavourite(selectedTrack.isFavourite());
-                        track.setActivityId(selectedTrack.getActivityId());
-                        track.setHasLocation(selectedTrack.isHasLocation());
-                        track.setHasText(selectedTrack.isHasText());
-                        track.setPartnerId(selectedTrack.getPartnerId());
-                        track.setPartnerName(selectedTrack.getPartnerName());
-                        track.setPartnerLogo(selectedTrack.getPartnerLogo());
-                        String result = activity.storageManager.addTrack(activity, track);
-                        activity.playNowListTracks = activity.storageManager.loadPlayNowTracks(activity);
-                        Toast.makeText(activity, result, Toast.LENGTH_LONG).show();
+                        if(isAllowed)
+                        {
+                            //TrackObject selectedTrack = tracks.get(i);
+                            TrackSerializableObject track = new TrackSerializableObject();
+                            track.setId(selectedTrack.getId());
+                            track.setName(selectedTrack.getName());
+                            track.setDuration(selectedTrack.getDuration());
+                            track.setAuthor(selectedTrack.getAuthors());
+                            track.setCategories(selectedTrack.getCategories());
+                            track.setRate((int) selectedTrack.getRate());
+                            track.setFavourite(selectedTrack.isFavourite());
+                            track.setActivityId(selectedTrack.getActivityId());
+                            track.setHasLocation(selectedTrack.isHasLocation());
+                            track.setHasText(selectedTrack.isHasText());
+                            track.setPartnerId(selectedTrack.getPartnerId());
+                            track.setPartnerName(selectedTrack.getPartnerName());
+                            track.setPartnerLogo(selectedTrack.getPartnerLogo());
+
+                            // we make the add after the file downloaded successfully
+
+                            //String result = activity.storageManager.addTrack(activity, track);
+                            //Toast.makeText(activity, result, Toast.LENGTH_LONG).show();
+                            activity.playNowListTracks = activity.storageManager.loadPlayNowTracks(activity);
+                            String pathTrack = activity.getFilesDir().getAbsolutePath() + Global.PlayNowListDirectory + File.separator + track.getId() + ".mp3";
+                            //HelperFunctions.deleteDirectory(activity.getFilesDir().getAbsolutePath() + Global.PlayNowListDirectory);
+                            boolean isFound = FileHelper.isFileExist(pathTrack);
+                            if(isFound)
+                            {
+                                Log.d("Marwa", "deleted = " + pathTrack);
+                                FileHelper.deleteFile(pathTrack);
+                            }
+                            Toast.makeText(activity, R.string.track_will_download, Toast.LENGTH_SHORT).show();
+                            FileHelper.downloadAudioFile(activity, track);
+                            // add download activity for the user
+
+                        }
                     }
                 });
             }
@@ -706,8 +850,13 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
     }
 
-    public TrackObject getItem(int position) {
-        return tracks.get(position);
+    // TODO : check availlablilty
+    public TrackObject getItem(int position)
+    {
+        if(tracks.size() != 0)
+            return tracks.get(position);
+        else
+            return null;
     }
 
 

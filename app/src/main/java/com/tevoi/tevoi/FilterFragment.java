@@ -2,10 +2,10 @@
 package com.tevoi.tevoi;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,13 +14,8 @@ import android.widget.ImageButton;
 import com.tevoi.tevoi.Utils.Global;
 import com.tevoi.tevoi.adapter.MainTopicAdapter;
 import com.tevoi.tevoi.adapter.SubscripedPartnersAdapter;
-import com.tevoi.tevoi.adapter.TrackTypeAdapter;
 import com.tevoi.tevoi.model.CategoryObject;
-import com.tevoi.tevoi.model.CategoryResponseList;
-import com.tevoi.tevoi.model.GetSubscripedPartnersResponse;
-import com.tevoi.tevoi.model.MainTopic;
 import com.tevoi.tevoi.model.SubscipedPartnersObject;
-import com.tevoi.tevoi.model.TrackTypeObject;
 import com.tevoi.tevoi.model.UserFiltersResponse;
 
 import java.util.List;
@@ -29,7 +24,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static android.support.v7.widget.RecyclerView.VERTICAL;
+import static androidx.recyclerview.widget.RecyclerView.VERTICAL;
 
 public class FilterFragment extends Fragment {
     View rootView;
@@ -91,7 +86,7 @@ public class FilterFragment extends Fragment {
 
         final SideMenu activity = (SideMenu) getActivity();
 
-        activity.mProgressDialog.setMessage("Loading"); activity.mProgressDialog.show();
+        activity.mProgressDialog.setMessage(getResources().getString( R.string.loader_msg)); activity.mProgressDialog.show();
 
         Call<UserFiltersResponse> call = Global.client.GetUserFilters();
         call.enqueue(new Callback<UserFiltersResponse>()

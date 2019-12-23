@@ -14,7 +14,7 @@
         android:background="@color/tevoiBluePrimary"
         android:theme="@style/AppTheme.AppBarOverlay">
 
-        <android.support.v7.widget.Toolbar
+        <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
@@ -41,7 +41,7 @@
                     android:layout_gravity="center" />
             </LinearLayout>
 
-        </android.support.v7.widget.Toolbar>
+        </androidx.appcompat.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
 
@@ -304,7 +304,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/tevoiBluePrimary">
+    android:background="@color/tevoiBrownDark">
 
 
     <LinearLayout
@@ -319,6 +319,7 @@
             android:orientation="vertical"
             android:textSize="16dp"
             android:textColor="@color/White"
+            android:background="@color/tevoiBlack"
             android:layout_gravity="center_horizontal"
             >
             <ImageView
@@ -339,6 +340,38 @@
                 />
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/txt_register_load_error_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="25dp"
+                android:visibility="gone"
+                android:textColor="@color/tevoiBlack" />
+            <Button
+                android:id="@+id/error_btn_retry"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="@dimen/activity_margin_content"
+                android:text="@string/btn_retry"
+                android:visibility="gone"
+                android:textColor="@color/white"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/linear_form_fields"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
@@ -350,10 +383,11 @@
                 android:layout_marginTop="10dp"
                 android:src="@drawable/userprofile_128x128_8"
                 android:foregroundTint="@color/fontColor"
-
-
+                android:id="@+id/img_upload_profile_picture"
                 />
         </RelativeLayout>
+
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -534,9 +568,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="16dp">
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="50dp">
 
-            <ImageButton
+            <Button
+                android:id ="@+id/btn_Register"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/register"
+                android:textColor="@color/white"
+                android:textSize="@dimen/btn_txt_size"
+                android:background="@drawable/button_bg_rounded_corners"
+                android:padding="@dimen/btn_padding"
+                android:layout_marginStart="32dp"
+                />
+
+            <!-- <ImageButton
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginStart="32dp"
@@ -548,7 +595,7 @@
 
                 />
 
-            <TextView
+           <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/register"
@@ -556,18 +603,16 @@
                 android:layout_marginStart="7dp"
                 android:layout_gravity="center_vertical"
                 />
-
+-->
             <ImageButton
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:background="@null"
                 android:scaleType="fitXY"
-                android:src="@drawable/cross"
+                android:src="@mipmap/close_button_normal"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="83dp"
                 android:id="@+id/imgbtn_register_cancel"
-
-
                 />
 
             <TextView
@@ -578,5 +623,15 @@
                 android:textColor="@color/fontColor"
                 android:layout_marginStart="7dp"/>
         </LinearLayout>
+        <TextView
+            android:id="@+id/txt_register_error_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="31dp"
+            android:layout_marginTop="25dp"
+            android:visibility="gone"
+            android:textColor="@color/tevoiBlack" />
+        </LinearLayout>
+
     </LinearLayout>
 </ScrollView>

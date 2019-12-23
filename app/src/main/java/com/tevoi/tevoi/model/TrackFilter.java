@@ -18,4 +18,13 @@ public class TrackFilter {
     public int ListTypeEnum ;
     public int Index ;
     public int Size ;
+
+
+    public String getStringFilter()
+    {
+        return  "SearchKey=" + SearchKey + ",IsLocationEnabled=" + IsLocationEnabled + ",WithoutHistory="+ WithoutHistory +
+                ",ListTypeEnum=" + ListTypeEnum + ",Index="+ Index +",Size=" + Size
+                +",TrackTypeId=" +TrackTypeId + ",Latitude=" + Latitude + ",Longitude=" +Longitude;
+    }
+
 }

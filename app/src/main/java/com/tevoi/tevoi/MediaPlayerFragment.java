@@ -4,9 +4,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +35,7 @@ import retrofit2.Response;
 
 public class MediaPlayerFragment extends Fragment {
 
-    //private MediaPlayerService player;
+
     //boolean serviceBound = false;
 
     //boolean isPlaying = false;
@@ -56,7 +56,7 @@ public class MediaPlayerFragment extends Fragment {
     TextView trackAuthors;
     TextView currentTime;
     TextView fullTime;
-    RatingBar ratingBar;
+    public RatingBar ratingBar;
     public ScrollView scrollViewMediaPlayer;
     public LinearLayout linearLayoutMediaPlayer;
     TextView partnerName;
@@ -86,6 +86,9 @@ public class MediaPlayerFragment extends Fragment {
     private Handler mHandler = new Handler();
     //Make sure you update Seekbar on UI thread
 
+    ImageButton imgBtnNext;
+    ImageButton imgBtnPrev;
+    ImageButton imgBtnShuffle;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -98,6 +101,18 @@ public class MediaPlayerFragment extends Fragment {
         fm = getActivity().getSupportFragmentManager();
         scrollViewMediaPlayer = rootView.findViewById(R.id.scrollViewMediaPlayer);
         linearLayoutMediaPlayer = rootView.findViewById(R.id.linearLayoutMediaPlayer);
+
+        imgBtnNext = rootView.findViewById(R.id.imgBtnNext);
+        imgBtnPrev = rootView.findViewById(R.id.imgBtnPreviuos);
+        imgBtnShuffle = rootView.findViewById(R.id.imgBtnShuffle);
+
+        if(Global.DefaultUILanguage.equals("ar"))
+        {
+            imgBtnNext.setScaleX(-1);
+            imgBtnPrev.setScaleX(-1);
+            playButton.setScaleX(-1);
+            imgBtnShuffle.setScaleX(-1);
+        }
 
         playButton = rootView.findViewById(R.id.imageButtonPlay);
         seekBar = rootView.findViewById(R.id.seekBar);
@@ -145,15 +160,15 @@ public class MediaPlayerFragment extends Fragment {
 
                             if(activity.player.mMediaPlayer.isPlaying())
                             {
-                                playButton.setImageResource(R.drawable.baseline_pause_24);
+                                playButton.setImageResource(R.mipmap.pause_normal_white);
                             }
                             else
                             {
-                                playButton.setImageResource(R.drawable.baseline_play_arrow_24);
+                                playButton.setImageResource(R.mipmap.play_white_normal);
                             }
 
                         } else {
-                            playButton.setImageResource(R.drawable.baseline_play_arrow_24);
+                            playButton.setImageResource(R.mipmap.play_white_normal);
                         }
                         mHandler.postDelayed(this, 1000);
                     }
@@ -173,22 +188,30 @@ public class MediaPlayerFragment extends Fragment {
 
         ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                if(!ratingEnabled)
-                    return;
-                int Rating  = (int)ratingBar.getRating();
-                //Toast.makeText(activity, ""+Rating, Toast.LENGTH_SHORT).show();
-                Call<IResponse> call=Global.client.SetTrackRating(currentTrack.getId(),Rating);
-                call.enqueue(new Callback<IResponse>() {
-                    @Override
-                    public void onResponse(Call<IResponse> call, Response<IResponse> response) {
-                        IResponse rating = response.body();
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser)
+            {
+                if(activity.isDemoUser)
+                {
+                    Toast.makeText(activity, R.string.demo_user_need_to_register, Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    if(!ratingEnabled)
+                        return;
+                    int Rating  = (int)ratingBar.getRating();
+                    //Toast.makeText(activity, ""+Rating, Toast.LENGTH_SHORT).show();
+                    Call<IResponse> call=Global.client.SetTrackRating(currentTrack.getId(),Rating);
+                    call.enqueue(new Callback<IResponse>() {
+                        @Override
+                        public void onResponse(Call<IResponse> call, Response<IResponse> response) {
+                            IResponse rating = response.body();
 
-                    }
-                    @Override
-                    public void onFailure(Call<IResponse> call, Throwable t) {
-                    }
-                });
+                        }
+                        @Override
+                        public void onFailure(Call<IResponse> call, Throwable t) {
+                        }
+                    });
+                }
             }
         });
 
@@ -205,7 +228,8 @@ public class MediaPlayerFragment extends Fragment {
             }
 
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
+            {
                 SideMenu activity = (SideMenu)getActivity();
                 if(activity!= null) {
                     if (activity.serviceBound && fromUser) {
@@ -216,8 +240,11 @@ public class MediaPlayerFragment extends Fragment {
                         currentTime.setText(timeFormat);
                         int numberofMovedSeconds = progress - activity.numberOfCurrentSecondsInTrack;
                         activity.numberOfCurrentSecondsInTrack = progress;
-                        activity.numberOfListenedSeconds += numberofMovedSeconds;
-                        activity.player.numberOfListenedSeconds += numberofMovedSeconds;
+                        if(numberofMovedSeconds > 0)
+                        {
+                            activity.numberOfListenedSeconds += numberofMovedSeconds;
+                            activity.player.numberOfListenedSeconds += numberofMovedSeconds;
+                        }
                         //Toast.makeText(activity, "numberofMovedSeconds=" + numberofMovedSeconds, Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -236,29 +263,40 @@ public class MediaPlayerFragment extends Fragment {
 
             trackCategories = rootView.findViewById(R.id.textViewCategories);
             trackCategories.setText(currentTrack.getCategories());
+            trackCategories.setSelected(true);
 
             trackAuthors = rootView.findViewById(R.id.textViewAuthors);
             trackAuthors.setText(currentTrack.getAuthors());
             commentFragment = CommentFragment.newInstance(currentTrack.getId());
             textFargment = TrackText.newInstance(currentTrack.getId(), Global.MediaPlayerFragmentName);
 
-            Call<RatingResponse> callRating=Global.client.GetTrackRating(currentTrack.getId());
-            callRating.enqueue(new Callback<RatingResponse>() {
-                @Override
-                public void onResponse(Call<RatingResponse> call, Response<RatingResponse> response) {
-                    RatingResponse res = response.body();
-                    ratingBar.setRating((float)res.getRating());
-                    ratingEnabled = true;
-                    //Toast.makeText(activity, res.getMessage(), Toast.LENGTH_SHORT).show();
-                }
+            // TODO :  check if no internet connection the make the rate section
+            // disables
+            if(activity.isInternetAvailable())
+            {
+                Call<RatingResponse> callRating=Global.client.GetTrackRating(currentTrack.getId());
+                callRating.enqueue(new Callback<RatingResponse>() {
+                    @Override
+                    public void onResponse(Call<RatingResponse> call, Response<RatingResponse> response) {
+                        RatingResponse res = response.body();
+                        ratingBar.setRating((float)res.getRating());
+                        ratingEnabled = true;
+                        //Toast.makeText(activity, res.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
 
-                @Override
-                public void onFailure(Call<RatingResponse> call, Throwable t) {
-                    ratingBar.setRating(0);
-                    ratingEnabled = true;
+                    @Override
+                    public void onFailure(Call<RatingResponse> call, Throwable t) {
+                        ratingBar.setRating(0);
+                        ratingEnabled = true;
 
-                }
-            });
+                    }
+                });
+            }
+            else
+            {
+                ratingBar.setRating(0);
+                ratingBar.setIsIndicator(true);
+            }
             partnerName = rootView.findViewById(R.id.tv_partner_name);
             partnerLogo = rootView.findViewById(R.id.img_partner_logo);
 
@@ -273,8 +311,6 @@ public class MediaPlayerFragment extends Fragment {
             {
 
             }
-
-
             //String ulrLogo = Uri.parse(currentTrack.getPartnerLogo());
             //partnerLogo.setImageURI(ulrLogo);
             url = Global.BASE_AUDIO_URL + currentTrack.getId();
@@ -282,25 +318,27 @@ public class MediaPlayerFragment extends Fragment {
             {
 
             }
-            if(activity.serviceBound)
+            if(activity.IsListenDailyLimitsExceeded)
             {
-                if(activity.player.mMediaPlayer.isPlaying())
-                {
-                    playButton.setImageResource(R.drawable.baseline_pause_24);
-                }
-                else
-                {
-                    playButton.setImageResource(R.drawable.baseline_play_arrow_24);
-                }
+                Toast.makeText(activity, R.string.no_quota_for_today, Toast.LENGTH_SHORT).show();
             }
             else
             {
-                activity.playAudio(url,
-                        activity.CurrentTrackInPlayer.getName(),
-                        activity.CurrentTrackInPlayer.getAuthors(),
-                        activity.CurrentTrackInPlayer.getId());
-                activity.isPlaying = true;
-                playButton.setImageResource(R.drawable.baseline_pause_24);
+                if (activity.serviceBound)
+                {
+                    if (activity.player.mMediaPlayer.isPlaying()) {
+                        playButton.setImageResource(R.mipmap.pause_normal_white);
+                    } else {
+                        playButton.setImageResource(R.mipmap.play_white_normal);
+                    }
+                } else {
+                    activity.playAudio(url,
+                            activity.CurrentTrackInPlayer.getName(),
+                            activity.CurrentTrackInPlayer.getAuthors(),
+                            activity.CurrentTrackInPlayer.getId());
+                    activity.isPlaying = true;
+                    playButton.setImageResource(R.mipmap.pause_normal_white);
+                }
             }
         }
         else
@@ -339,28 +377,31 @@ public class MediaPlayerFragment extends Fragment {
     public void playTrack(View view)
     {
         SideMenu activity = (SideMenu)getActivity();
-        if(activity.serviceBound)
+        if(activity.IsListenDailyLimitsExceeded)
         {
-            if(activity.player.mMediaPlayer.isPlaying())
-            {
-                activity.player.mMediaPlayer.pause();
-                activity.player.buildNotification(CustomMediaPlayerService.PlaybackStatus.PAUSED);
-                playButton.setImageResource(R.drawable.baseline_play_arrow_24);
-            }
-            else
-            {
-                activity.player.mMediaPlayer.start();
-                activity.player.buildNotification(CustomMediaPlayerService.PlaybackStatus.PLAYING);
-                playButton.setImageResource(R.drawable.baseline_pause_24);
-            }
+            Toast.makeText(activity, R.string.no_quota_for_today, Toast.LENGTH_SHORT).show();
         }
         else
         {
-            activity.playAudio(url,
-                    activity.CurrentTrackInPlayer.getName(),
-                    activity.CurrentTrackInPlayer.getAuthors(),
-                    activity.CurrentTrackInPlayer.getId());
-            playButton.setImageResource(R.drawable.baseline_pause_24);
+            if (activity.serviceBound)
+            {
+                if (activity.player.mMediaPlayer.isPlaying()) {
+                    activity.player.mMediaPlayer.pause();
+                    activity.player.buildNotification(CustomMediaPlayerService.PlaybackStatus.PAUSED);
+                    playButton.setImageResource(R.mipmap.play_white_normal);
+                } else {
+                    activity.player.mMediaPlayer.start();
+                    activity.player.buildNotification(CustomMediaPlayerService.PlaybackStatus.PLAYING);
+                    playButton.setImageResource(R.mipmap.pause_normal_white);
+                }
+            } else
+            {
+                activity.playAudio(url,
+                        activity.CurrentTrackInPlayer.getName(),
+                        activity.CurrentTrackInPlayer.getAuthors(),
+                        activity.CurrentTrackInPlayer.getId());
+                playButton.setImageResource(R.mipmap.pause_normal_white);
+            }
         }
        /* if(!activity.isPlaying && !activity.isPaused)
         {
@@ -384,17 +425,6 @@ public class MediaPlayerFragment extends Fragment {
             }
         }*/
     }
-
-    /*
-    public void onTextBtnClick(View view)
-    {
-        Toast.makeText(this,"hi",Toast.LENGTH_SHORT);
-        Intent i = new Intent(this,MediaPlayerActivity.class);
-        //i.putExtra("media","http://192.168.1.111/FileServer/api/Files/Get?fileName=1.mp3");
-        startActivity(i);
-
-    }
-    */
 
    /* private  void refreshMediaPlayStatus()
     {
@@ -491,7 +521,7 @@ public class MediaPlayerFragment extends Fragment {
             String timeFormat = GetTimeFormat(activity.player.mMediaPlayer.getDuration()/ 1000);
             fullTime.setText(timeFormat);
             activity.isPlaying = true; activity.isPaused = false;
-            playButton.setImageResource(R.drawable.baseline_pause_24);
+            playButton.setImageResource(R.mipmap.pause_normal_white);
         }
         refreshCurrentTrackInfo();
     }
@@ -501,39 +531,130 @@ public class MediaPlayerFragment extends Fragment {
     //region actions to buttons
     public  void imgBtnAddtoListClick(View view)
     {
-        // Begin the transaction
-        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-        // Replace the contents of the container with the new fragment
-        //TrackAddToList frag = new TrackAddToList();
-        ft.replace(R.id.ActionsFragment, addToListFragment);
-        // or ft.add(R.id.your_placeholder, new FooFragment());
-        // Complete the changes added above
-        ft.commit();
-
-        fm.executePendingTransactions();
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-            //Linearlayout is the layout the fragments are being added to.
-                View view = linearLayoutMediaPlayer.getChildAt(linearLayoutMediaPlayer.getChildCount()-1);
-
-                scrollViewMediaPlayer.smoothScrollBy(0,(int)(view.getY() + view.getHeight()));
-            }
-        });
-
-
-    }
-
-    public void imgBtnLocationClick(View view) {
-
-        // CHECK IF THIS TRACK HAS LOCATION
-        if(hasLocation)
+        SideMenu activity = (SideMenu)getActivity();
+        if(activity.isDemoUser)
         {
+            Toast.makeText(activity, R.string.demo_user_need_to_register, Toast.LENGTH_SHORT).show();
+        }
+        else {
             // Begin the transaction
             FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
             // Replace the contents of the container with the new fragment
-            //TrackLocation frag = new TrackLocation();
-            ft.replace(R.id.ActionsFragment, locationFragment);
+            //TrackAddToList frag = new TrackAddToList();
+            ft.replace(R.id.ActionsFragment, addToListFragment);
+            // or ft.add(R.id.your_placeholder, new FooFragment());
+            // Complete the changes added above
+            ft.commit();
+
+            fm.executePendingTransactions();
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    //Linearlayout is the layout the fragments are being added to.
+                    View view = linearLayoutMediaPlayer.getChildAt(linearLayoutMediaPlayer.getChildCount() - 1);
+
+                    scrollViewMediaPlayer.smoothScrollBy(0, (int) (view.getY() + view.getHeight()));
+                }
+            });
+
+        }
+    }
+
+    public void imgBtnLocationClick(View view)
+    {
+        SideMenu activity = (SideMenu)getActivity();
+        if(activity.isDemoUser)
+        {
+            Toast.makeText(activity, R.string.demo_user_need_to_register, Toast.LENGTH_SHORT).show();
+        }
+        else {
+            // CHECK IF THIS TRACK HAS LOCATION
+            if (hasLocation) {
+                // Begin the transaction
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                // Replace the contents of the container with the new fragment
+                //TrackLocation frag = new TrackLocation();
+                ft.replace(R.id.ActionsFragment, locationFragment);
+                // or ft.add(R.id.your_placeholder, new FooFragment());
+                // Complete the changes added above
+                ft.commit();
+                fm.executePendingTransactions();
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        //Linearlayout is the layout the fragments are being added to.
+                        View view = linearLayoutMediaPlayer.getChildAt(linearLayoutMediaPlayer.getChildCount() - 1);
+
+                        scrollViewMediaPlayer.smoothScrollBy(0, (int) (view.getY() + view.getHeight()));
+                    }
+                });
+            } else {
+                Toast.makeText(getActivity(), R.string.track_has_no_location, Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    public void imgBtnGetTrackTextClick(View view)
+    {
+        SideMenu activity = (SideMenu)getActivity();
+        if(activity.isDemoUser)
+        {
+            Toast.makeText(activity, R.string.demo_user_need_to_register, Toast.LENGTH_SHORT).show();
+        }
+        else {
+            if (hasText) {
+                FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
+                TrackText textFargment = TrackText.newInstance(activity.CurrentTrackInPlayer.getId(), Global.MediaPlayerFragmentName);
+                ft.replace(R.id.content_frame, textFargment);
+                ft.addToBackStack("TrackText");
+                // or ft.add(R.id.your_placeholder, new FooFragment());
+                // Complete the changes added above
+                ft.commit();
+
+            /*FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+
+            ft.replace(R.id.content_frame, textFargment);
+
+            ft.commit();*/
+            } else {
+                Toast.makeText(getActivity(), R.string.track_has_no_text, Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    public  void imgBtnCommentClick(View view)
+    {
+        SideMenu activity = (SideMenu)getActivity();
+        if(activity.isDemoUser)
+        {
+            Toast.makeText(activity, R.string.demo_user_need_to_register, Toast.LENGTH_SHORT).show();
+        }
+        else {
+            FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+            // Replace the contents of the container with the new fragment
+            //TrackShare frag = new TrackShare();
+            ft.replace(R.id.content_frame, commentFragment);
+            ft.addToBackStack("TrackComment");
+            // or ft.add(R.id.your_placeholder, new FooFragment());
+            // Complete the changes added above
+            ft.commit();
+        }
+
+    }
+
+    public  void  imgBtnShareClick(View view)
+    {
+        SideMenu activity = (SideMenu)getActivity();
+        if(activity.isDemoUser)
+        {
+            Toast.makeText(activity, R.string.demo_user_need_to_register, Toast.LENGTH_SHORT).show();
+        }
+        else {
+            // Begin the transaction
+            FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+            // Replace the contents of the container with the new fragment
+            //TrackShare frag = new TrackShare();
+            ft.replace(R.id.ActionsFragment, trackShareFragment);
             // or ft.add(R.id.your_placeholder, new FooFragment());
             // Complete the changes added above
             ft.commit();
@@ -542,83 +663,12 @@ public class MediaPlayerFragment extends Fragment {
                 @Override
                 public void run() {
                     //Linearlayout is the layout the fragments are being added to.
-                    View view = linearLayoutMediaPlayer.getChildAt(linearLayoutMediaPlayer.getChildCount()-1);
+                    View view = linearLayoutMediaPlayer.getChildAt(linearLayoutMediaPlayer.getChildCount() - 1);
 
-                    scrollViewMediaPlayer.smoothScrollBy(0,(int)(view.getY() + view.getHeight()));
+                    scrollViewMediaPlayer.smoothScrollBy(0, (int) (view.getY() + view.getHeight()));
                 }
             });
         }
-        else
-        {
-            Toast.makeText(getActivity(), R.string.track_has_no_location, Toast.LENGTH_LONG).show();
-        }
-    }
-
-    public void imgBtnGetTrackTextClick(View view)
-    {
-        if(hasText) {
-            SideMenu activity = (SideMenu) getActivity();
-
-            FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
-            TrackText textFargment = TrackText.newInstance(activity.CurrentTrackInPlayer.getId(), Global.MediaPlayerFragmentName);
-            ft.replace(R.id.content_frame, textFargment);
-            ft.addToBackStack( "TrackText" );
-            // or ft.add(R.id.your_placeholder, new FooFragment());
-            // Complete the changes added above
-            ft.commit();
-
-            /*FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-
-            ft.replace(R.id.content_frame, textFargment);
-
-            ft.commit();*/
-        }
-        else
-        {
-            Toast.makeText(getActivity(), R.string.track_has_no_text, Toast.LENGTH_LONG).show();
-        }
-    }
-
-    public  void imgBtnCommentClick(View view)
-    {
-        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-        // Replace the contents of the container with the new fragment
-        //TrackShare frag = new TrackShare();
-        ft.replace(R.id.content_frame, commentFragment);
-        ft.addToBackStack( "TrackComment" );
-        // or ft.add(R.id.your_placeholder, new FooFragment());
-        // Complete the changes added above
-        ft.commit();
-        //CommentFragment dFragment = CommentFragment.newInstance(1);
-        // Show DialogFragment
-        //commentFragment.show(fm, "Dialog Fragment");
-
-        //CustomCommentFragment alertdFragment = new CustomCommentFragment();
-        // Show Alert DialogFragment
-        //alertdFragment.show(fm, "Alert Dialog Fragment");
-
-    }
-
-    public  void  imgBtnShareClick(View view)
-    {
-        // Begin the transaction
-        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-        // Replace the contents of the container with the new fragment
-        //TrackShare frag = new TrackShare();
-        ft.replace(R.id.ActionsFragment, trackShareFragment);
-        // or ft.add(R.id.your_placeholder, new FooFragment());
-        // Complete the changes added above
-        ft.commit();
-        fm.executePendingTransactions();
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                //Linearlayout is the layout the fragments are being added to.
-                View view = linearLayoutMediaPlayer.getChildAt(linearLayoutMediaPlayer.getChildCount()-1);
-
-                scrollViewMediaPlayer.smoothScrollBy(0,(int)(view.getY() + view.getHeight()));
-            }
-        });
     }
 
     public  void imgBtnCarClick(View view)
@@ -628,7 +678,6 @@ public class MediaPlayerFragment extends Fragment {
         ft.replace(R.id.content_frame, carPlayFargment);
         ft.addToBackStack( "CarFargment" );
         ft.commit();
-        //carPlayFargment.show(fm, "Dialog Fragment");
     }
 
     //endregion

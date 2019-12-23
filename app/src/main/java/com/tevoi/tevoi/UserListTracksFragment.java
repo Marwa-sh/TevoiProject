@@ -1,10 +1,9 @@
 package com.tevoi.tevoi;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.fragment.app.Fragment;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,17 +32,18 @@ public class UserListTracksFragment extends Fragment
     Button[] tabs =  new Button[3];
     public int defaultTab;
     public  int currenUsertListId;
-
+    public  String ListName ="";
     SideMenu activity;
 
     View rootView;
 
-    public static UserListTracksFragment newInstance(int defaultTab, int listId) {
+    public static UserListTracksFragment newInstance(int defaultTab, int listId, String listName) {
         UserListTracksFragment f = new UserListTracksFragment();
         // Supply num input as an argument.
         Bundle args = new Bundle();
         args.putInt("DefaultTab", defaultTab);
         args.putInt("CurrenUsertListId", listId);
+        args.putString("ListName", listName);
         f.setArguments(args);
 
         return f;
@@ -54,6 +54,7 @@ public class UserListTracksFragment extends Fragment
         if(getArguments() != null) {
             defaultTab = getArguments().getInt("DefaultTab");
             currenUsertListId = getArguments().getInt("CurrenUsertListId");
+            ListName = getArguments().getString("ListName");
         }
     }
 
@@ -65,21 +66,16 @@ public class UserListTracksFragment extends Fragment
         activity  = (SideMenu)getActivity();
 
         tabs[0] = rootView.findViewById(R.id.btnNewUserListTracks);
-        tabs[1]= rootView.findViewById(R.id.btnTopRatedUserListTracks);
+        tabs[1] = rootView.findViewById(R.id.btnTopRatedUserListTracks);
         tabs[2] = rootView.findViewById(R.id.btnPopularUserListTracks);
-
-        mTracks = new ArrayList<>();
-        mTracks.add(new Track());
-        mTracks.add(new Track());
-        mTracks.add(new Track());
-        mTracks.add(new Track());
-        mTracks.add(new Track());
 
         if(defaultTab < 0 || defaultTab > 2)
         {
             defaultTab =0;
         }
         //defaultTab = 0;
+
+        activity.updateSubTite(ListName);
 
         recyclerViews[defaultTab] = rootView.findViewById(R.id.user_list_tracks_recycler_View);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -106,7 +102,7 @@ public class UserListTracksFragment extends Fragment
 
     public void activateTab(int k)
     {
-        activity.mProgressDialog.setMessage("Loading");
+        activity.mProgressDialog.setMessage(getResources().getString( R.string.loader_msg));
         activity.mProgressDialog.show();
 
         final int kk= k;
@@ -118,11 +114,12 @@ public class UserListTracksFragment extends Fragment
         recyclerViews[k] = rootView.findViewById(R.id.user_list_tracks_recycler_View);
         for(int i=0;i<tabs.length;i++)
         {
-            tabs[i].setBackgroundColor(ContextCompat.getColor(activity,R.color.tevoiBlueSecondary));
-            //tabs[i].refreshDrawableState();
+            tabs[i].setBackgroundColor(ContextCompat.getColor(activity,R.color.tevoiBrownDark));
+            tabs[i].setTextColor(ContextCompat.getColor(activity,R.color.white));
         }
 
-        tabs[k].setBackgroundColor(ContextCompat.getColor(activity,R.color.tevoiBluePrimary));
+        tabs[k].setBackgroundColor(ContextCompat.getColor(activity,R.color.white));
+        tabs[k].setTextColor(ContextCompat.getColor(activity,R.color.tevoiSwitchBlackLight));
         //tabs[k].refreshDrawableState();
         Call<GetUserListTracksResponse> call = Global.client.GetTracksForUserList(currenUsertListId, 0, 10);
         call.enqueue(new Callback<GetUserListTracksResponse>(){
@@ -132,8 +129,8 @@ public class UserListTracksFragment extends Fragment
                 int x=tracks.getLstTrack().size();
                 recyclerViews[kk].setEmptyView(rootView.findViewById(R.id.user_tracks_list_empty));
                 recyclerViews[kk].setAdapter(adapter);
-                adapter = new TracksAdapter(tracks.getLstTrack(),activity, Global.UserListTracksFragment);
-                //recyclerViews[kk].setAdapter(adapter);
+                adapter = new TracksAdapter(tracks.getLstTrack(),activity, Global.UserListTracksFragment,recyclerViews[kk]);
+                recyclerViews[kk].setAdapter(adapter);
 
                 activity.mProgressDialog.dismiss();
                 //Toast.makeText(activity,"tracks:"+x, Toast.LENGTH_SHORT);

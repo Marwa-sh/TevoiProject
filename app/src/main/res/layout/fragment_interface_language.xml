@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/tevoiBluePrimary"
+    android:background="@color/tevoiBrownDark"
     android:orientation="vertical">
 
     <TextView
@@ -146,7 +146,6 @@
             android:buttonTint="@color/fontColor"
             android:layout_gravity="center_vertical"
             android:id="@+id/chk_show_with_default_audio_languae"
-
             />
         <TextView
             android:layout_marginTop="10dp"

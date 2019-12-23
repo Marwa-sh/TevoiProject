@@ -31,19 +31,22 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="List Name"
-                    android:textColor="@color/tevoiBluePrimary"
+                    android:paddingStart="16dp"
+                    android:textColor="@color/tevoiBrownDark"
                     android:textSize="25dp"
                     />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Partner Description"
+                    android:paddingStart="16dp"
                     android:id="@+id/tv_partner_description"
                     />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/tv_number_of_tracks"
+                    android:paddingStart="16dp"
                     android:text="Number of tracks"
                     />
 
@@ -57,14 +60,14 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:weightSum="1"
-                android:background="@color/tevoiBluePrimary"
+                android:background="@color/tevoiBrownDark"
                 >
-                <Button
+                <!--<Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@color/tevoiBluePrimary"
-                    android:drawableTop="@mipmap/white_add_to_filter"
+                    android:background="@color/tevoiBrownDark"
+                    android:drawableTop="@mipmap/addtofilter_normal"
                     android:text="Add To filter"
                     android:clickable="true"
                     android:layout_gravity="center_vertical"
@@ -74,24 +77,42 @@
                     android:scaleY="0.9"
                     android:textColor="@color/fontColor"
                     android:textStyle="bold"
+                    />-->
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:drawableTop="@mipmap/addtofilter_normal_white"
+                    android:text="Add To filter"
+                    android:clickable="true"
+                    android:id="@+id/btn_add_partner_to_filter"
+                    android:textSize="@dimen/txt_size"
+                    android:textColor="@color/fontColor"
+                    android:layout_gravity="center_vertical"
+                    android:textStyle="bold"
+                    android:paddingTop="@dimen/btn_drawer_padding"
+                    android:paddingBottom="@dimen/btn_drawer_padding"
                     />
+
             </LinearLayout>
         </FrameLayout>
     </LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:background="@color/tevoiBrownDark">
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:background="@null"
+            android:background="@color/white"
             android:scaleType="fitCenter"
-            android:src="@drawable/outline_reorder_rotated_24"
+            android:src="@mipmap/right_menu_normal"
             android:clickable="true"
+            android:layout_marginStart="2dp"
             android:layout_weight="1"
             android:id="@+id/btn_partner_drawer"
-            android:rotation="90"
             />
     </LinearLayout>
 </LinearLayout>

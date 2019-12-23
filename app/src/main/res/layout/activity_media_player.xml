@@ -11,8 +11,7 @@
     android:scrollbars="vertical"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MediaPlayerActivity">
+    android:layout_height="match_parent">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -23,7 +22,7 @@
             android:layout_height="wrap_content"
             android:text="TrackName"
             android:layout_centerHorizontal="true"
-            android:textColor="@color/tevoiBlueSecondary"
+            android:textColor="@color/tevoiBrownDark"
             android:textSize="25dp"
             android:layout_marginTop="10dp"
             android:layout_alignParentTop="true"
@@ -41,6 +40,12 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="5dp"
 
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:singleLine="true"
+            android:scrollHorizontally="true"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit ="marquee_forever"
             />
 
         <TextView
@@ -75,7 +80,7 @@
             android:layout_marginTop="10dp"
             tools:layout_editor_absoluteX="63dp"
             tools:layout_editor_absoluteY="149dp"
-            android:progressTint="@color/tevoiStar"
+            android:progressTint="@color/tevoiBrownLight"
             />
 
         <ImageButton
@@ -83,7 +88,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@null"
-            android:src="@drawable/car_icon"
+            android:src="@mipmap/listen_drive_normal"
             tools:layout_editor_absoluteX="122dp"
             tools:layout_editor_absoluteY="206dp"
             android:layout_centerHorizontal="true"
@@ -97,7 +102,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@color/tevoiStar"
+        android:background="@color/tevoiBrownLight"
         android:layout_marginTop="10dp">
 
         <SeekBar
@@ -109,19 +114,21 @@
             tools:layout_editor_absoluteY="295dp"
             android:maxHeight="1000000dp"
             android:max="100000"
+            android:paddingTop="5dp"
             android:maxWidth="100000dp"
+            android:progressDrawable="@drawable/seek_bar"
             android:thumbTint="@color/fontColor"
-            android:thumb="@mipmap/media_thumb_white"
+            android:thumb="@drawable/seek_thumb"
             android:layout_marginTop="3dp"
             />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/currentTime"
-            android:layout_gravity="left"
+            android:layout_gravity="start"
             android:layout_weight="1"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_marginTop="25dp"
 
             />
@@ -129,10 +136,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/fullTime"
-            android:layout_gravity="right"
+            android:layout_gravity="end"
             android:layout_weight="1"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_marginTop="25dp"
 
             />
@@ -142,7 +149,7 @@
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:orientation="horizontal"
-        android:background="@color/tevoiBluePrimary"
+        android:background="@color/tevoiBrownDark"
         android:weightSum="3">
         <ImageButton
             android:id="@+id/imgBtnReplay"
@@ -182,9 +189,8 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:orientation="horizontal"
-        android:background="@color/tevoiBlueSecondary"
+        android:background="@color/tevoiBrownDark"
         android:weightSum="3"
-
         >
         <ImageButton
             android:id="@+id/imgBtnPreviuos"
@@ -228,47 +234,39 @@
             android:id="@+id/imgBtnAddtoList"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@mipmap/add_media"
-            android:tint="@color/tevoiBluePrimary"
             android:layout_weight="1"
-            android:background="@drawable/blue_outline"
+            android:background="@mipmap/addtolist_nowplaying_normal"
             android:onClick="imgBtnAddtoListClick"
-
             />
         <ImageButton
             android:id="@+id/imgBtnGetTrackText"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@mipmap/media_readtext"
-            android:tint="@color/tevoiBluePrimary"
             android:layout_weight="1"
-            android:background="@drawable/blue_outline"
+            android:background="@mipmap/readtext_nowplaying_normal"
             android:onClick="imgBtnGetTrackTextClick"
             />
         <ImageButton
             android:id="@+id/imgBtnLocation"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@mipmap/location"
             android:layout_weight="1"
-            android:background="@drawable/blue_outline"
+            android:background="@mipmap/location_nowplaying_normal"
             android:onClick="imgBtnLocationClick"/>
         <ImageButton
             android:id="@+id/imgBtnShare"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@mipmap/share"
             android:layout_weight="1"
-            android:background="@drawable/blue_outline"
+            android:background="@mipmap/share_nowplaying_normal"
             android:onClick="imgBtnShareClick"/>
 
         <ImageButton
             android:id="@+id/imgBtnComment"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@mipmap/comment"
             android:layout_weight="1"
-            android:background="@drawable/blue_outline"
+            android:background="@mipmap/comment_nowplaying_normal"
             android:onClick="imgBtnCommentClick"/>
 
     </LinearLayout>

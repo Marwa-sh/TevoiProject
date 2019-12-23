@@ -5,7 +5,7 @@ import java.util.List;
 public class TrackResponseList {
     private List<TrackObject> lstTrack;
     private int TotalRowCount;
-
+    private ListBannerResponse Banner;
 
     public int getTotalRowCount() {
         return TotalRowCount;
@@ -14,11 +14,20 @@ public class TrackResponseList {
         TotalRowCount = totalRowCount;
     }
 
-    public void setTrack(List<TrackObject> track) {
-        this.lstTrack = track;
+
+    public void setLstTrack(List<TrackObject> lstTrack) {
+        this.lstTrack = lstTrack;
     }
 
-    public List<TrackObject> getTrack() {
+    public void setBanner(ListBannerResponse banner) {
+        Banner = banner;
+    }
+
+    public List<TrackObject> getLstTrack() {
         return lstTrack;
+    }
+
+    public ListBannerResponse getBanner() {
+        return Banner;
     }
 }

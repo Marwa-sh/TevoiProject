@@ -20,8 +20,8 @@ public class UserSubscriptionInfoResponse extends IResponse
     {
         public int DailyListenMaxUnits ;
         public int DailyReadMaxUnits ;
-        public int MonthlyListenMaxUnits ;
-        public int MonthlyReadMaxUnits;
+        //public int MonthlyListenMaxUnits ;
+        //public int MonthlyReadMaxUnits;
     }
 
 }

@@ -2,26 +2,35 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:layout_height="101dp"
+    android:orientation="vertical"
+    android:background="@color/white"
+    >
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="100dp"
     android:weightSum="10"
-    android:paddingBottom="3dp"
+    android:background="@color/white"
     android:id="@+id/user_list_row_layout"
     >
+
     <ImageButton
         android:id="@+id/btn_play_pause_user_list"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:background="@color/tevoiBlueSecondary"
+        android:background="@color/white"
         android:clickable="true"
         android:layout_weight="1"
         android:onClick="startMediaplayer"
-        android:src="@drawable/baseline_play_arrow_24"
+        android:src="@mipmap/play_normal_list"
         />
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_weight="8">
+        android:layout_weight="8"
+        android:id="@+id/linear_layout_list_name">
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -41,20 +50,22 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="List Name"
-                    android:textColor="@color/tevoiBlueSecondary"
-                    android:textSize="25dp"
+                    android:textColor="@color/tevoiBrownDark"
+                    android:textSize="@dimen/txt_user_list"
                     />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/tv_creation_date"
                     android:text="Creation Date"
+                    android:textSize="@dimen/txt_user_list_medium"
                     />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Duration"
-                    android:id="@+id/tv_duration_user_list"/>
+                    android:id="@+id/tv_duration_user_list"
+                    android:textSize="@dimen/txt_user_list_small"/>
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/hoverButtonsLayoutUserList"
@@ -66,14 +77,14 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:weightSum="2"
-                android:background="@color/tevoiBlueSecondary"
+                android:background="@color/tevoiBrownDark"
                 >
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@color/tevoiBlueSecondary"
-                    android:drawableTop="@mipmap/rename"
+                    android:background="@null"
+                    android:drawableTop="@mipmap/rename_list_normal"
                     android:text="Rename"
                     android:clickable="true"
                     android:layout_gravity="center_vertical"
@@ -82,14 +93,19 @@
                     android:textColor="@color/fontColor"
                     android:textStyle="bold"
                     />
+                <TextView
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
+                    />
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:clickable="true"
                     android:textColor="@color/fontColor"
-                    android:background="@color/tevoiBlueSecondary"
-                    android:drawableTop="@mipmap/remove"
+                    android:background="@null"
+                    android:drawableTop="@mipmap/delete_list_normal"
                     android:id="@+id/btn_delete_user_list"
                     android:text="Delete"
                     android:textSize="@dimen/text_size"
@@ -102,7 +118,13 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/tevoiBrownDark"
+            />
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -114,5 +136,18 @@
             android:id="@+id/btn_user_list_drawer"
             android:rotation="90"
             />
+
     </LinearLayout>
+
+</LinearLayout>
+<LinearLayout
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:orientation="horizontal">
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:background="@color/tevoiOutLine"
+    />
+</LinearLayout>
 </LinearLayout>

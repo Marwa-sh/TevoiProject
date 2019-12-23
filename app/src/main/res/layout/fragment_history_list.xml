@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:layout_alignParentTop="true"
+    android:id="@+id/ll"
     tools:context=".HistoryListFragment">
 
-    <android.support.v7.widget.LinearLayoutCompat
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/tabsLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,31 +23,42 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/tevoiBluePrimary"
+            android:background="@color/tevoiBrownLight"
             android:text="@string/new_track"
+            android:padding="@dimen/btn_padding"
             android:textColor="@color/fontColor"
             android:onClick="changeTabToNewHistory"/>
-
+        <TextView
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/tevoiOutLine"
+            />
         <Button
             android:id="@+id/btnTopRatedListHistory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/tevoiBlueSecondary"
+            android:background="@color/tevoiBrownDark"
             android:text="@string/top_rated"
+            android:padding="@dimen/btn_padding"
             android:textColor="@color/fontColor"
             android:onClick="changeTabToTopRatedHistory"/>
-
+        <TextView
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/tevoiOutLine"
+            />
         <Button
             android:id="@+id/btnPopularListHistory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/tevoiBlueSecondary"
+            android:background="@color/tevoiBrownDark"
             android:text="@string/popular"
+            android:padding="@dimen/btn_padding"
             android:textColor="@color/fontColor"
             android:onClick="changeToPopularHistory"/>
-    </android.support.v7.widget.LinearLayoutCompat>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
     <com.tevoi.tevoi.model.RecyclerViewEmptySupport
         android:id="@+id/history_tracks_recycler_View"
@@ -53,9 +70,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAlignment="center"
-        android:textSize="@dimen/text_size"
+        android:layout_gravity="center"
+        android:textSize="16dp"
         android:paddingTop="@dimen/text_empty_list"
         android:text="@string/empty_list"
+        android:visibility="gone"
         />
     <ProgressBar
         android:id="@+id/main_progress_list_tracks"
@@ -63,42 +82,42 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"/>
 
-    <include layout="@layout/error_layout"/>
+    <include layout="@layout/error_layout_inner"/>
 
-    <LinearLayout
-        android:id="@+id/bottom_panel"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:weightSum="20"
-        android:layout_alignParentBottom="true">
-        <TextView
-            android:id="@+id/txtClearFilter"
-            android:layout_weight="19"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/clear_filter"
-            android:background="@color/tevoiBluePrimary"
-            android:textColor="@color/fontColor"
-            android:paddingVertical="10dp"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:gravity="center_vertical"
-            />
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/cross_blue"
-            android:layout_weight="1"
-            android:background="@drawable/rounded_button"
-            android:id="@+id/btn_clear_history"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="6dp"
-            android:scaleX="0.8"
-            android:scaleY="0.9"
-            android:padding="2dp"
-            />
-    </LinearLayout>
 
 </LinearLayout>
+
+
+<LinearLayout
+    android:id="@+id/bottom_panel"
+    android:layout_width="match_parent"
+    android:layout_height="46dp"
+    android:layout_alignParentBottom="true"
+    android:orientation="horizontal"
+    android:weightSum="6"
+    android:background="@color/tevoiBrownDark">
+
+    <TextView
+        android:id="@+id/txtClearFilter"
+        android:textColor="@color/white"
+        android:gravity="start"
+        android:layout_marginStart="27dp"
+        android:paddingTop="15dp"
+        android:layout_weight="5"
+        android:background="@color/tevoiBrownDark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/clear_selection"
+        android:textSize="14dp"/>
+
+    <ImageButton
+        android:id="@+id/btn_clear_history"
+        android:layout_weight="1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:gravity="end"
+        android:layout_margin="10dp"
+        android:src="@mipmap/close_button_normal" />
+</LinearLayout>
+</RelativeLayout>

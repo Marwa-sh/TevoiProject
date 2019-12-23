@@ -5,10 +5,9 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,13 +21,10 @@ import android.widget.Toast;
 
 import com.tevoi.tevoi.Utils.Global;
 import com.tevoi.tevoi.Utils.HelperFunctions;
-import com.tevoi.tevoi.adapter.TracksAdapter;
 import com.tevoi.tevoi.adapter.UserListAdapter;
 import com.tevoi.tevoi.model.IResponse;
 import com.tevoi.tevoi.model.PaginationScrollListener;
 import com.tevoi.tevoi.model.RecyclerViewEmptySupport;
-import com.tevoi.tevoi.model.TrackObject;
-import com.tevoi.tevoi.model.TrackResponseList;
 import com.tevoi.tevoi.model.UserListObject;
 import com.tevoi.tevoi.model.UserListResponse;
 
@@ -57,13 +53,13 @@ public class UserListFragment extends Fragment
     int PAGE_SIZE = 6;
     // endregion
 
-
     UserListAdapter adapter ;
     //RecyclerView recyclerView;
     RecyclerViewEmptySupport recyclerView;
     SideMenu activity;
     ImageButton btn_clear_user_lists;
     ImageButton imgBtnAddUserList;
+    boolean isFirtsTime = true;
 
     View rootView;
     @Override
@@ -81,20 +77,57 @@ public class UserListFragment extends Fragment
             @Override
             public void onClick(View v)
             {
-                Call<IResponse> call = Global.client.RemoveAllUserLists();
-                call.enqueue(new Callback <IResponse>(){
-                    public void onResponse(Call<IResponse> call, Response<IResponse> response) {
-                        //generateDataList(response.body());
-                        SideMenu activity = (SideMenu) getActivity();
-                        IResponse result = response.body();
-                        Toast.makeText(activity, result.getMessage(), Toast.LENGTH_SHORT).show();
 
-                    }
-                    public void onFailure(Call<IResponse> call, Throwable t)
-                    {
-                        Toast.makeText(getContext(),"something went wrong", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                if(adapter.getUserLists().size() == 0)
+                {
+                    Toast.makeText(activity, R.string.no_lists_to_delete, Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    LayoutInflater layoutInflater = LayoutInflater.from(activity);
+                    View promptView = layoutInflater.inflate(R.layout.layout_user_list_clear_lists, null);
+
+                    final AlertDialog alertD = new AlertDialog.Builder(activity).create();
+
+                    ImageButton btnYes = (ImageButton) promptView.findViewById(R.id.imgBtnYes);
+
+                    ImageButton btnNo = (ImageButton) promptView.findViewById(R.id.imgBtnNo);
+
+                    btnYes.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {
+
+                            alertD.cancel();
+                            activity.mProgressDialog.setMessage(activity.getResources().getString( R.string.loader_msg));
+                            activity.mProgressDialog.show();
+
+                            Call<IResponse> call = Global.client.ClearUserList();
+                            call.enqueue(new Callback<IResponse>() {
+                                public void onResponse(Call<IResponse> call, Response<IResponse> response) {
+                                    //generateDataList(response.body());
+                                    SideMenu activity = (SideMenu) getActivity();
+                                    IResponse result = response.body();
+                                    Toast.makeText(activity, result.getMessage(), Toast.LENGTH_SHORT).show();
+                                    activity.mProgressDialog.dismiss();
+                                    doRefresh();
+                                }
+
+                                public void onFailure(Call<IResponse> call, Throwable t) {
+                                    activity.mProgressDialog.dismiss();
+                                    Toast.makeText(getContext(), "something went wrong", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    });
+                    btnNo.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {
+
+                            // btnAdd2 has been clicked
+                            alertD.cancel();
+                        }
+                    });
+                    alertD.setView(promptView);
+                    alertD.show();
+                }
             }
         });
 
@@ -128,25 +161,25 @@ public class UserListFragment extends Fragment
                                         String listName = userInput.getText().toString();
                                         if (listName.equals(""))
                                         {
-                                            Toast.makeText(getContext(), "Name can;t be empty", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getContext(), R.string.list_name_required, Toast.LENGTH_SHORT).show();
                                         }
                                         else
                                         {
-                                            activity.mProgressDialog.setMessage("Loading");
-                                            activity.mProgressDialog.show();
+                                            //activity.mProgressDialog.setMessage("Loading");
+                                            //activity.mProgressDialog.show();
                                             // add user list
                                             Call<IResponse> call = Global.client.AddUserList(listName);
                                             call.enqueue(new Callback<IResponse>(){
                                                 public void onResponse(Call<IResponse> call, Response<IResponse> response) {
                                                     IResponse result = response.body();
                                                     Toast.makeText(getContext(),result.getMessage(), Toast.LENGTH_LONG).show();
-                                                    activity.mProgressDialog.dismiss();
+                                                    //activity.mProgressDialog.dismiss();
                                                     doRefresh();
                                                 }
                                                 public void onFailure(Call<IResponse> call, Throwable t)
                                                 {
                                                     Toast.makeText(getContext(),"something went wrong", Toast.LENGTH_LONG).show();
-                                                    activity.mProgressDialog.dismiss();
+                                                    //activity.mProgressDialog.dismiss();
                                                 }
                                             });
 
@@ -169,17 +202,22 @@ public class UserListFragment extends Fragment
             }
         });
 
+        View emptyView = rootView.findViewById(R.id.user_lists_empty);
+
         recyclerView = rootView.findViewById(R.id.user_list_recycler_View);
         linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setEmptyView(rootView.findViewById(R.id.user_lists_empty));
+        recyclerView.setEmptyView(emptyView);
+
 
         List<UserListObject> lists = new ArrayList<>();
         adapter = new UserListAdapter(lists, activity);
 
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
+        emptyView.setVisibility(View.GONE);
+
         recyclerView.addOnScrollListener(new PaginationScrollListener(linearLayoutManager)
         {
             @Override
@@ -214,7 +252,7 @@ public class UserListFragment extends Fragment
             }
         }, 1000);
 
-
+        isFirtsTime = false;
        /* activity.mProgressDialog.setMessage("Loading");
         activity.mProgressDialog.show();
 
@@ -245,7 +283,7 @@ public class UserListFragment extends Fragment
 
     public  void GetUserLists()
     {
-        activity.mProgressDialog.setMessage("Loading");
+        activity.mProgressDialog.setMessage(getResources().getString( R.string.loader_msg));
         activity.mProgressDialog.show();
 
         Call<UserListResponse> call = Global.client.getUserLists(0, 10);
@@ -293,9 +331,9 @@ public class UserListFragment extends Fragment
 
     private void loadFirstPage()
     {
-        currentPage = 0;
-        activity.mProgressDialog.setMessage("Loading1");
-        activity.mProgressDialog.show();
+        currentPage = 0; isLoading = false; isLastPage = false;
+        //activity.mProgressDialog.setMessage("Loading1");
+        //activity.mProgressDialog.show();
 
         Call<UserListResponse> call = Global.client.getUserLists(currentPage, PAGE_SIZE);
         call.enqueue(new Callback <UserListResponse>(){
@@ -306,21 +344,25 @@ public class UserListFragment extends Fragment
 
                 TOTAL_PAGES = userLists.getTotalRowCount() / PAGE_SIZE;
 
-                if(userLists.getLstUserList().size() == 0) {
-                    View v = rootView.findViewById(R.id.favourite_list_empty);
+                if(userLists.getLstUserList().size() == 0 && isFirtsTime)
+                {
+                    View v = rootView.findViewById(R.id.user_lists_empty);
                     recyclerView.setEmptyView(v);
+                    v.setVisibility(View.INVISIBLE);
+
                 }
+
                 progressBar.setVisibility(View.GONE);
                 adapter.addAll(userLists.getLstUserList());
 
                 if (currentPage <= TOTAL_PAGES) adapter.addLoadingFooter();
                 else isLastPage = true;
-                activity.mProgressDialog.dismiss();
+                //activity.mProgressDialog.dismiss();
                 adapter.notifyDataSetChanged();
             }
             public void onFailure(Call<UserListResponse> call, Throwable t)
             {
-                activity.mProgressDialog.dismiss();
+                //activity.mProgressDialog.dismiss();
                 t.printStackTrace();
                 showErrorView(t);
                 Toast.makeText(getContext(),"something went wrong", Toast.LENGTH_SHORT).show();
@@ -329,9 +371,8 @@ public class UserListFragment extends Fragment
     }
 
     private void loadNextPage() {
-
-        activity.mProgressDialog.setMessage("Loading");
-        activity.mProgressDialog.show();
+        //activity.mProgressDialog.setMessage("Loading");
+        //activity.mProgressDialog.show();
 
         Call<UserListResponse> call = Global.client.getUserLists(currentPage, PAGE_SIZE);
         call.enqueue(new Callback <UserListResponse>(){
@@ -357,7 +398,7 @@ public class UserListFragment extends Fragment
             }
             public void onFailure(Call<UserListResponse> call, Throwable t)
             {
-                activity.mProgressDialog.dismiss(); currentPage --;
+                //activity.mProgressDialog.dismiss(); currentPage --;
                 t.printStackTrace();
                 showErrorView(t);
                 Toast.makeText(getContext(),"something went wrong", Toast.LENGTH_SHORT).show();
@@ -387,11 +428,15 @@ public class UserListFragment extends Fragment
         return errorMsg;
     }
 
-    private void doRefresh() {
+    private void doRefresh()
+    {
         progressBar.setVisibility(View.VISIBLE);
         //  Execute network request if cache is expired; otherwise do not update data.
         adapter.getUserLists().clear();
         adapter.notifyDataSetChanged();
+        View v = rootView.findViewById(R.id.user_lists_empty);
+        recyclerView.setEmptyView(v);
+        v.setVisibility(View.INVISIBLE);
         loadFirstPage();
     }
 }

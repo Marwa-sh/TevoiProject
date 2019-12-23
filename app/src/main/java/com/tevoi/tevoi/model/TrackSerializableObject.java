@@ -49,6 +49,10 @@ public class TrackSerializableObject implements Serializable {
     @SerializedName("ActivityId")
     private int ActivityId;
 
+    @Expose
+    @SerializedName("FileNameExtention")
+    private String FileNameExtention;
+
 
     public void setFavourite(boolean favourite) {
         IsFavourite = favourite;

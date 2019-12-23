@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    android:background="@color/tevoiBluePrimary"
+    android:background="@color/tevoiBrownDark"
     >
 
     <TextView
@@ -20,7 +20,7 @@
         />
 
     <SeekBar
-
+        android:id="@+id/seekbar_download_limits"
         style="@style/Widget.AppCompat.SeekBar.Discrete"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -28,7 +28,7 @@
         android:max="6"
         android:layout_marginTop="30dp"
         android:progress="5"
-        android:progressBackgroundTint="@color/tevoiBrown"
+        android:progressBackgroundTint="@color/tevoiBrownDark"
         android:progressTint="@color/fontColor"
         android:thumbTint="@color/fontColor"
         android:scaleX="0.87"
@@ -49,6 +49,7 @@
             android:layout_height="match_parent">
 
             <TextView
+                android:id="@+id/txt_zero"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_column="0"
@@ -120,7 +121,7 @@
             android:layout_height="22dp"
             android:background="@null"
             android:scaleType="fitXY"
-            android:src="@mipmap/tick_blue"
+            android:src="@mipmap/accept_button_normal"
             android:layout_gravity="center_vertical"
 
             />
@@ -138,7 +139,7 @@
             android:layout_width="22dp"
             android:layout_height="22dp"
             android:scaleType="fitXY"
-            android:src="@mipmap/close_blue"
+            android:src="@mipmap/close_button_normal"
             android:background="@null"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="40dp"

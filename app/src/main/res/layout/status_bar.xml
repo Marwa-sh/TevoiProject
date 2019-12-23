@@ -14,7 +14,7 @@
         android:id="@+id/status_bar_icon"
         android:layout_width="@dimen/status_bar_album_art"
         android:layout_height="@dimen/status_bar_album_art"
-        android:background="@drawable/status_bg"
+        android:background="@color/tevoiBrownLight"
         android:scaleType="center"
         android:src="@drawable/ic_launcher"
         android:visibility="gone" />
@@ -48,7 +48,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/cd_play"
-        android:background="@color/tevoiBluePrimary"
+        android:background="@color/tevoiBrownDark"
         android:layout_gravity="center_vertical"
         />
 
@@ -58,7 +58,7 @@
         android:layout_height="wrap_content"
         android:contentDescription="@string/cd_next"
         android:src="@drawable/apollo_holo_dark_next"
-        android:background="@color/tevoiBluePrimary"
+        android:background="@color/tevoiBrownDark"
         android:layout_gravity="center_vertical"
         />
 
@@ -67,7 +67,7 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:src="@mipmap/cross_white_null_background"
-        android:background="@color/tevoiBluePrimary"
+        android:background="@color/tevoiBrownDark"
         android:scaleType="fitXY"
         />
 

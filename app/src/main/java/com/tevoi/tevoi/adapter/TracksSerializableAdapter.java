@@ -3,9 +3,9 @@ package com.tevoi.tevoi.adapter;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.tevoi.tevoi.R;
 import com.tevoi.tevoi.SideMenu;
 import com.tevoi.tevoi.TrackText;
+import com.tevoi.tevoi.Utils.FileHelper;
 import com.tevoi.tevoi.Utils.Global;
 import com.tevoi.tevoi.Utils.HelperFunctions;
 import com.tevoi.tevoi.model.IResponse;
@@ -30,6 +31,7 @@ import com.tevoi.tevoi.model.TrackSerializableObject;
 import com.tevoi.tevoi.model.UserListObject;
 import com.tevoi.tevoi.model.UserListResponse;
 
+import java.io.File;
 import java.util.List;
 
 import retrofit2.Call;
@@ -46,7 +48,8 @@ public class TracksSerializableAdapter extends RecyclerView.Adapter<TracksSerial
         this.tracks = tracks;
         this.activity = activity;
     }
-    public TrackViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public TrackViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i)
+    {
         View row= LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.track_row_instance_without_play_next,viewGroup,false);
         TrackViewHolder holder = new TrackViewHolder(row);
 
@@ -83,7 +86,8 @@ public class TracksSerializableAdapter extends RecyclerView.Adapter<TracksSerial
         LinearLayout hoverLayout;
         LinearLayout trackDetailsLayout;
         boolean hoverVisisble = false;
-        public TrackViewHolder(@NonNull final View itemView) {
+        public TrackViewHolder(@NonNull final View itemView)
+        {
             super(itemView);
             //this.view=itemView.findViewWithTag(R.id.track_row_layout);
             tvTrackName = itemView.findViewById(R.id.tv_track_name);
@@ -120,10 +124,23 @@ public class TracksSerializableAdapter extends RecyclerView.Adapter<TracksSerial
                     activity.mediaPlayerFragment.currentTrackId = track.getId();
                     activity.mediaPlayerFragment.currentTrack = track;
                     activity.CurrentTrackInPlayer = track;
+                    activity.CurrentFragmentName = Global.MediaPlayerFragmentName;
+
                     ft.replace(R.id.content_frame, activity.mediaPlayerFragment);
                     ft.addToBackStack( "mediaPlayerFragment" );
                     ft.commit();
-                    activity.playAudio(Global.GetStreamURL +activity.CurrentTrackInPlayer.getId(),
+
+                    String pathTrack = activity.getFilesDir().getAbsolutePath() + Global.PlayNowListDirectory + File.separator + track.getId() + ".mp3";
+                    //HelperFunctions.deleteDirectory(activity.getFilesDir().getAbsolutePath() + Global.PlayNowListDirectory);
+                    boolean isFound = FileHelper.isFileExist(pathTrack);
+                    if(isFound)
+                    {
+                        Log.d("Marwa", "deleted = " + pathTrack);
+                    }
+
+                    //HelperFunctions.readFromDisk(activity);
+                    String audioPath = activity.getFilesDir().getAbsolutePath() + Global.PlayNowListDirectory + File.separator + activity.CurrentTrackInPlayer.getId() + ".mp3";
+                    activity.playAudio(audioPath,
                             activity.CurrentTrackInPlayer.getName(),
                             activity.CurrentTrackInPlayer.getAuthors(),
                             activity.CurrentTrackInPlayer.getId());
@@ -146,15 +163,7 @@ public class TracksSerializableAdapter extends RecyclerView.Adapter<TracksSerial
                         btnLike.setText("Like");
                         btnLike.refreshDrawableState();
                     }
-
-                    if(hoverLayout.getVisibility()==View.VISIBLE)
-                    {
-                        hoverLayout.setVisibility(View.INVISIBLE);
-                    }
-                    else
-                    {
-                        hoverLayout.setVisibility(View.VISIBLE);
-                    }
+                    refreshHoverLayoutVisibility();
                 }
             });
 
@@ -177,6 +186,7 @@ public class TracksSerializableAdapter extends RecyclerView.Adapter<TracksSerial
                     {
                         Toast.makeText(activity, R.string.track_has_no_text, Toast.LENGTH_LONG).show();
                     }
+                    refreshHoverLayoutVisibility();
                 }
             });
 
@@ -191,6 +201,8 @@ public class TracksSerializableAdapter extends RecyclerView.Adapter<TracksSerial
                     activity.playNowListTracks = activity.storageManager.loadPlayNowTracks(activity);
                     tracks.remove(selectedTrack);
                     activity.notifyPlayNextListAdapter();
+                    String pathTrack =  activity.getFilesDir().getAbsolutePath() + Global.PlayNowListDirectory + File.separator + selectedTrack.getId() + ".mp3";
+                    FileHelper.deleteFile(pathTrack);
                     Toast.makeText(activity, "Track Removed from list successfully", Toast.LENGTH_SHORT).show();
                 }
             });
@@ -333,6 +345,24 @@ public class TracksSerializableAdapter extends RecyclerView.Adapter<TracksSerial
                 }
             });
         }
+
+        public void refreshHoverLayoutVisibility()
+        {
+            if(hoverLayout.getVisibility()== View.VISIBLE)
+            {
+                hoverLayout.setVisibility(View.INVISIBLE);
+            }
+            else
+            {
+                hoverLayout.setVisibility(View.VISIBLE);
+            }
+        }
+
+        public void closeOtherDrawers(int i)
+        {
+
+        }
+
     }
 
 

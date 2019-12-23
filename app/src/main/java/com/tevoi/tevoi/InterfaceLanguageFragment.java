@@ -2,15 +2,14 @@
 package com.tevoi.tevoi;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.telephony.gsm.GsmCellLocation;
+import androidx.fragment.app.Fragment;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 
 import com.tevoi.tevoi.Utils.Global;
-import com.tevoi.tevoi.model.AboutUsResponse;
 import com.tevoi.tevoi.model.IResponse;
 
 import retrofit2.Call;
@@ -65,21 +64,26 @@ public class InterfaceLanguageFragment extends Fragment {
         chkEnglish.setOnClickListener(new View.OnClickListener(){
 
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 // you might keep a reference to the CheckBox to avoid this class cast
                 boolean checked = ((CheckBox)v).isChecked();
                 chkArabic.setChecked(!checked);
+                chkTrackArabic.setChecked(!checked);
+                chkTrackEnglish.setChecked(checked);
                 int LanguageId;
 
                 SideMenu activity = (SideMenu) getActivity();
                 if(checked)
                 {
                     activity.storageManager.storeLanguageUIPreference(activity, "en");
+                    activity.storageManager.storeLanguageTrackPreference(activity, "en");
                     LanguageId = Global.English;
                 }
                 else
                 {
                     activity.storageManager.storeLanguageUIPreference(activity, "ar");
+                    activity.storageManager.storeLanguageTrackPreference(activity, "ar");
                     LanguageId = Global.Arabic;
                 }
                 Call<IResponse> call = Global.client.UpdateUIDefaultLanguage(LanguageId);
@@ -105,16 +109,20 @@ public class InterfaceLanguageFragment extends Fragment {
                 // you might keep a reference to the CheckBox to avoid this class cast
                 boolean checked = ((CheckBox)v).isChecked();
                 chkEnglish.setChecked(!checked);
+                chkTrackArabic.setChecked(checked);
+                chkTrackEnglish.setChecked(!checked);
                 int LanguageId;
                 SideMenu activity = (SideMenu) getActivity();
                 if(checked)
                 {
                     activity.storageManager.storeLanguageUIPreference(activity, "ar");
+                    activity.storageManager.storeLanguageTrackPreference(activity, "ar");
                     LanguageId = Global.Arabic;
                 }
                 else
                 {
                     activity.storageManager.storeLanguageUIPreference(activity, "en");
+                    activity.storageManager.storeLanguageTrackPreference(activity, "en");
                     LanguageId = Global.English;
                 }
 
@@ -142,16 +150,19 @@ public class InterfaceLanguageFragment extends Fragment {
                 boolean checked = ((CheckBox)v).isChecked();
                 int LanguageId;
                 chkTrackArabic.setChecked(!checked);
-
+                chkArabic.setChecked(!checked);
+                chkEnglish.setChecked(checked);
                 SideMenu activity = (SideMenu) getActivity();
                 if(checked)
                 {
                     activity.storageManager.storeLanguageTrackPreference(activity, "en");
+                    activity.storageManager.storeLanguageUIPreference(activity, "en");
                     LanguageId = Global.English;
                 }
                 else
                 {
                     activity.storageManager.storeLanguageTrackPreference(activity, "ar");
+                    activity.storageManager.storeLanguageUIPreference(activity, "ar");
                     LanguageId = Global.Arabic;
                 }
 
@@ -178,16 +189,20 @@ public class InterfaceLanguageFragment extends Fragment {
                 // you might keep a reference to the CheckBox to avoid this class cast
                 boolean checked = ((CheckBox)v).isChecked();
                 chkTrackEnglish.setChecked(!checked);
+                chkArabic.setChecked(checked);
+                chkEnglish.setChecked(!checked);
                 int LanguageId;
                 SideMenu activity = (SideMenu) getActivity();
                 if(checked)
                 {
                     activity.storageManager.storeLanguageTrackPreference(activity, "ar");
+                    activity.storageManager.storeLanguageUIPreference(activity, "ar");
                     LanguageId = Global.Arabic;
                 }
                 else
                 {
                     activity.storageManager.storeLanguageTrackPreference(activity, "en");
+                    activity.storageManager.storeLanguageUIPreference(activity, "en");
                     LanguageId = Global.English;
                 }
 

@@ -1,7 +1,7 @@
 package com.tevoi.tevoi.adapter;
 
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public abstract class PaginationScrollListenerOld extends RecyclerView.OnScrollListener {
 

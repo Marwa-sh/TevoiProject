@@ -1,16 +1,19 @@
 package com.tevoi.tevoi.adapter;
 
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SwitchCompat;
+import android.content.Intent;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tevoi.tevoi.R;
+import com.tevoi.tevoi.RegisterActivity;
 import com.tevoi.tevoi.SideMenu;
 import com.tevoi.tevoi.Utils.Global;
 import com.tevoi.tevoi.model.IResponse;
@@ -44,25 +47,81 @@ public class SubscripedPartnersAdapter extends RecyclerView.Adapter<SubscripedPa
     public void onBindViewHolder(@NonNull SubscripedPartnersAdapter.SubscripedPartnersViewHolder partnerViewHolder, int i) {
         SubscipedPartnersObject partner =  partners.get(i);
         partnerViewHolder.tvPartnerName.setText(partner.getName());
-        partnerViewHolder.checkBoxFilterState.setChecked(partner.isFilterValue());
+        //partnerViewHolder.checkBoxFilterState.setChecked(partner.isFilterValue());
+        partnerViewHolder.isChecked = partner.isFilterValue();
+        if(partnerViewHolder.isChecked)
+        {
+            partnerViewHolder.checkBoxFilterState.setImageResource(R.mipmap.golden_button_on);
+        }
+        else
+        {
+            partnerViewHolder.checkBoxFilterState.setImageResource(R.mipmap.grey_button_off);
+        }
     }
     @Override
     public int getItemCount() {
         return partners.size();
     }
+
     public class SubscripedPartnersViewHolder extends RecyclerView.ViewHolder
     {
         public  View view;
         public TextView tvPartnerName;
         public int Id;
-        public SwitchCompat checkBoxFilterState;
+        public  boolean isChecked;
+        //public SwitchCompat checkBoxFilterState;
+        public ImageView checkBoxFilterState;
 
         public SubscripedPartnersViewHolder(@NonNull final View itemView) {
             super(itemView);
             this.tvPartnerName=itemView.findViewById(R.id.tv_filter_name);
             this.checkBoxFilterState=itemView.findViewById(R.id.checkbox_filter_state);
 
-            this.checkBoxFilterState.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            checkBoxFilterState.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v) {
+                    //change filtering state
+                    activity.mProgressDialog.setMessage(activity.getResources().getString( R.string.loader_msg));
+                    activity.mProgressDialog.show();
+
+                    int i = getPosition();
+                    final SubscipedPartnersObject partner = partners.get(i);
+
+                    Call<IResponse> call = Global.client.UpdateFollowshipToPartner(partner.getId());
+                    call.enqueue(new Callback<IResponse>() {
+                        @Override
+                        public void onResponse(Call<IResponse> call, Response<IResponse> response) {
+                            IResponse res = response.body();
+                            if(res.getNumber()==0)
+                            {
+                                isChecked = !isChecked;
+                                partner.setFilterValue(isChecked);
+                                Toast.makeText(activity, res.getMessage(),Toast.LENGTH_LONG).show();
+                            }
+                            else
+                            {
+                                Toast.makeText(activity,res.getMessage(),Toast.LENGTH_LONG).show();
+                            }
+                            if(isChecked)
+                            {
+                                checkBoxFilterState.setImageResource(R.mipmap.golden_button_on);
+                            }
+                            else
+                            {
+                                checkBoxFilterState.setImageResource(R.mipmap.grey_button_off);
+                            }
+                            activity.mProgressDialog.dismiss();
+                        }
+                        @Override
+                        public void onFailure(Call<IResponse> call, Throwable t) {
+                            activity.mProgressDialog.dismiss();
+                        }
+                    });
+                }
+            });
+
+            /*this.checkBoxFilterState.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, final boolean isChecked)
                 {
@@ -91,7 +150,7 @@ public class SubscripedPartnersAdapter extends RecyclerView.Adapter<SubscripedPa
                         }
                     });
                 }
-            });
+            });*/
 
         }
     }

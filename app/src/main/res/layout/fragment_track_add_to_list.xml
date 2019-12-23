@@ -4,13 +4,13 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="115dp"
-    android:background="@color/tevoiBluePrimary"
+    android:background="@color/tevoiBrownDark"
     tools:context=".TrackAddToList">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/tevoiBluePrimary"
+        android:background="@color/tevoiBrownDark"
         android:orientation="vertical">
         <TextView
             android:layout_width="wrap_content"
@@ -26,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:background="@color/tevoiBluePrimary"
+            android:background="@color/tevoiBrownDark"
             android:orientation="horizontal"
             android:layout_marginStart="32dp"
             >
@@ -35,7 +35,8 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:background="@null"
-                android:src="@mipmap/tick_blue"
+                android:layout_gravity="start"
+                android:src="@mipmap/accept_button_normal"
                 android:scaleType="fitXY"
                 android:clickable="true"
                 android:onClick="addTrackToListClick"
@@ -45,7 +46,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="AddTrack"
+                android:text="@string/add_track_to_list"
                 android:layout_marginStart="4dp"
                 android:textColor="@color/fontColor"
                 />
@@ -53,19 +54,21 @@
                 android:id="@+id/imgBtnCloseAddToList"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:layout_marginStart="42dp"
+                android:layout_marginStart="10dp"
                 android:background="@null"
+                android:layout_gravity="end"
                 android:scaleType="fitXY"
-                android:src="@mipmap/close_blue"
+                android:src="@mipmap/close_button_normal"
 
                 />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="4dp"
+                android:layout_marginStart="10dp"
+                android:gravity="end"
                 android:textColor="@color/fontColor"
-                android:text="Cancel"
+                android:text="@string/cancel"
                 />
 
 

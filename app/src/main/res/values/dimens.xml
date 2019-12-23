@@ -45,4 +45,27 @@
     <dimen name="list_item_left_margin">72dp</dimen>
 
 
+    <!--  Button Padding -->
+    <dimen name="btn_padding">8dp</dimen>
+    <dimen name="btn_txt_size">12dp</dimen>
+
+    <!-- Buttons in drawer padding top and bottom -->
+    <dimen name="btn_drawer_padding">8dp</dimen>
+    <dimen name="txt_size">8sp</dimen>
+
+
+    <!-- Seek Bar -->
+    <dimen name="seek_bar_thickness">5dp</dimen>
+    <dimen name="seek_bar_thumb_size">20dp</dimen>
+
+
+    <dimen name="padding_list_tracks">10dp</dimen>
+
+    <dimen name="txt_track_row">20sp</dimen>
+    <dimen name="txt_track_row_medium">16sp</dimen>
+    <dimen name="txt_track_row_small">12sp</dimen>
+
+    <dimen name="txt_user_list">20sp</dimen>
+    <dimen name="txt_user_list_medium">16sp</dimen>
+    <dimen name="txt_user_list_small">12sp</dimen>
 </resources>

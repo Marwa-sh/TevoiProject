@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/tevoiBluePrimary"
+    android:background="@color/tevoiBrownDark"
     android:orientation="vertical">
 <LinearLayout
     android:layout_width="match_parent"
@@ -28,25 +28,47 @@
         >
 
 
-        <ImageButton
+       <!-- <ImageButton
             android:id="@+id/imgBtnShareFB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/crcile_53_"
-            android:src="@drawable/facebook" />
+            android:src="@drawable/facebook" />-->
 
-
+        <ImageButton
+            android:id="@+id/imgBtnShareFB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/tevoiBrownDark"
+            android:src="@mipmap/facebook"
+            android:onClick="shareClick" />
 
         <ImageButton
             android:id="@+id/imgBtnShareIN"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="22dp"
-            android:background="@drawable/crcile_53_"
-            android:src="@drawable/instagram"
+            android:background="@color/tevoiBrownDark"
+            android:src="@mipmap/instagram"
             android:onClick="shareClick"
             />
+
         <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="22dp"
+            android:background="@color/tevoiBrownDark"
+            android:src="@mipmap/whatsapp"
+            />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="22dp"
+            android:background="@color/tevoiBrownDark"
+            android:src="@mipmap/youtube"
+            />
+       <!-- <ImageButton
             android:id="@+id/imgBtnShareGP"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -55,8 +77,8 @@
             android:src="@drawable/google_plus"
             android:onClick="shareClick"
             />
-
-        <ImageButton
+-->
+      <!--  <ImageButton
             android:id="@+id/imgBtnShareTW"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -64,7 +86,7 @@
             android:background="@drawable/crcile_53_"
             android:src="@drawable/twitter"
             android:onClick="shareClick"
-            />
+            />-->
 
     </LinearLayout>
     <LinearLayout
@@ -76,15 +98,11 @@
         >
 
 
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/crcile_53_"
-            android:src="@drawable/whatsapp" />
 
 
 
-        <ImageButton
+
+       <!-- <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="22dp"
@@ -108,10 +126,10 @@
             android:background="@drawable/crcile_53_"
             android:src="@drawable/vk"
             android:onClick="shareClick"
-            />
+            />-->
 
     </LinearLayout>
-    <LinearLayout
+   <!-- <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -250,6 +268,6 @@
 
             />
 
-    </LinearLayout>
+    </LinearLayout>-->
 </LinearLayout>
 </ScrollView>

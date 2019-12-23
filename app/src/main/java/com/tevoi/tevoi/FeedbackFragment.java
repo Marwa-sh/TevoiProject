@@ -2,12 +2,13 @@
 package com.tevoi.tevoi;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tevoi.tevoi.Utils.Global;
@@ -18,16 +19,16 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class FeedbackFragment extends Fragment {
-
+public class FeedbackFragment extends Fragment
+{
     View rootView;
     EditText txtEmail;
     EditText txtName;
     EditText txtContent;
     ImageButton btnSendFeedback;
     ImageButton btnCancel;
+    TextView txtSend;
     SideMenu activity;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,17 +38,20 @@ public class FeedbackFragment extends Fragment {
         activity = (SideMenu)getActivity();
 
         txtName = rootView.findViewById(R.id.txt_username);
-        txtEmail = rootView.findViewById(R.id.txt_email);
+        //txtEmail = rootView.findViewById(R.id.txt_email);
         txtContent = rootView.findViewById(R.id.txt_message);
+
+        txtSend = rootView.findViewById(R.id.txt_send);
 
         btnSendFeedback = rootView.findViewById(R.id.btn_send_feedback);
         btnCancel = rootView.findViewById(R.id.btn_cancel);
 
         btnSendFeedback.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 String username = txtName.getText().toString();
-                String email = txtEmail.getText().toString();
+                //String email = txtEmail.getText().toString();
                 String message = txtContent.getText().toString();
 
                 //TODO:  validate email
@@ -57,11 +61,11 @@ public class FeedbackFragment extends Fragment {
                     txtName.setError("user name can't be empty!");
                     txtName.requestFocus();
                 }
-                else if(email.equals(""))
+                /*else if(email.equals(""))
                 {
                     txtEmail.setError("email can't be empty!");
                     txtEmail.requestFocus();
-                }
+                }*/
                 else if(message.equals(""))
                 {
                     txtContent.setError("message can't be empty!");
@@ -70,8 +74,71 @@ public class FeedbackFragment extends Fragment {
                 else
                 {
                     FeedbackRequest request = new FeedbackRequest();
-                    request.setEmail(email); request.setMessage(message); request.setName(username);
-                    activity.mProgressDialog.setMessage("Loading"); activity.mProgressDialog.show();
+                    //request.setEmail(email);
+                    request.setMessage(message);
+                    request.setName(username);
+                    activity.mProgressDialog.setMessage(getResources().getString( R.string.loader_msg)); activity.mProgressDialog.show();
+
+                    Call<IResponse> call = Global.client.SendFeedback(request);
+                    call.enqueue(new Callback<IResponse>(){
+                        public void onResponse(Call<IResponse> call, Response<IResponse> response) {
+                            IResponse result = response.body();
+
+                            if(result.Number == 0)
+                            {
+                                activity.mProgressDialog.dismiss();
+                                Toast.makeText(activity, result.getMessage(), Toast.LENGTH_SHORT).show();
+                                txtName.setText("");
+                                txtContent.setText("");
+                            }
+                            else
+                            {
+                                activity.mProgressDialog.dismiss();
+                                Toast.makeText(activity,result.getMessage(), Toast.LENGTH_LONG).show();
+                            }
+                        }
+                        public void onFailure(Call<IResponse> call, Throwable t)
+                        {
+                            Toast.makeText(activity,"something went wrong", Toast.LENGTH_LONG).show();
+                            activity.mProgressDialog.dismiss();
+                        }
+                    });
+                }
+
+            }
+        });
+
+        txtSend.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                String username = txtName.getText().toString();
+                //String email = txtEmail.getText().toString();
+                String message = txtContent.getText().toString();
+
+                //TODO:  validate email
+
+                if(username.equals(""))
+                {
+                    txtName.setError("user name can't be empty!");
+                    txtName.requestFocus();
+                }
+                /*else if(email.equals(""))
+                {
+                    txtEmail.setError("email can't be empty!");
+                    txtEmail.requestFocus();
+                }*/
+                else if(message.equals(""))
+                {
+                    txtContent.setError("message can't be empty!");
+                    txtContent.requestFocus();
+                }
+                else
+                {
+                    FeedbackRequest request = new FeedbackRequest();
+                    //request.setEmail(email);
+                    request.setMessage(message);
+                    request.setName(username);
+                    activity.mProgressDialog.setMessage(getResources().getString( R.string.loader_msg)); activity.mProgressDialog.show();
 
                     Call<IResponse> call = Global.client.SendFeedback(request);
                     call.enqueue(new Callback<IResponse>(){

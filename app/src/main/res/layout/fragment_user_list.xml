@@ -1,38 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         tools:context=".UserListFragment">
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="42dp"
-        android:background="@color/tevoiBluePrimary"
-        android:weightSum="5"
-        >
-        <TextView
-            android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Add New List"
-            android:textColor="@color/fontColor"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_weight="4"
-            android:gravity="center_vertical"
-            />
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/addnewlist_868"
-            android:background="@null"
-            android:id="@+id/imgBtnAddUserList"
-            android:layout_marginTop="4dp"
-            />
-    </LinearLayout>
+            android:background="@color/tevoiBrownDark"
+            android:weightSum="5"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/add_new_list"
+                android:textColor="@color/fontColor"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="4"
+                android:gravity="center_vertical"
+                />
+
+            <ImageButton
+                android:id="@+id/imgBtnAddUserList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/tevoiBrownDark"
+                android:paddingBottom="4dp"
+                android:paddingTop="4dp"
+                android:src="@mipmap/addnew_list_normal_white" />
+        </LinearLayout>
         <com.tevoi.tevoi.model.RecyclerViewEmptySupport
             android:id="@+id/user_list_recycler_View"
             android:layout_width="match_parent"
@@ -43,8 +47,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAlignment="center"
-            android:textSize="@dimen/text_size"
+            android:layout_gravity="center"
+            android:textSize="16dp"
             android:paddingTop="@dimen/text_empty_list"
+            android:visibility="gone"
             android:text="@string/empty_list"
             />
         <ProgressBar
@@ -52,40 +58,40 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"/>
-        <include layout="@layout/error_layout"/>
+        <include layout="@layout/error_layout_inner"/>
+
+    </LinearLayout>
+
     <LinearLayout
         android:id="@+id/bottom_panel"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:weightSum="20"
-        android:layout_alignParentBottom="true">
+        android:layout_height="46dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:weightSum="6"
+        android:background="@color/tevoiBrownDark">
+
         <TextView
             android:id="@+id/txtClearFilter"
-            android:layout_weight="19"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/clear_filter"
-            android:background="@color/tevoiBluePrimary"
-            android:textColor="@color/fontColor"
-            android:paddingVertical="10dp"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:gravity="center_vertical"
-            />
-
-        <ImageButton
+            android:textColor="@color/white"
+            android:gravity="start"
+            android:layout_marginStart="27dp"
+            android:paddingTop="15dp"
+            android:layout_weight="5"
+            android:background="@color/tevoiBrownDark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/cross_blue"
-            android:layout_weight="1"
-            android:background="@drawable/rounded_button"
+            android:text="@string/clear_selection"
+            android:textSize="14dp"/>
+
+        <ImageButton
             android:id="@+id/btn_clear_user_lists"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="6dp"
-            android:scaleX="0.8"
-            android:scaleY="0.9"
-            android:padding="2dp"
-            />
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:gravity="end"
+            android:layout_margin="10dp"
+            android:src="@mipmap/close_button_normal" />
     </LinearLayout>
-</LinearLayout>
+</RelativeLayout>

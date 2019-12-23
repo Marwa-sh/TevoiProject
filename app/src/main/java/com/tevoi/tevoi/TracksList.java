@@ -1,16 +1,14 @@
 package com.tevoi.tevoi;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,19 +20,17 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.ScrollView;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
 import com.tevoi.tevoi.Utils.Global;
 import com.tevoi.tevoi.Utils.HelperFunctions;
-import com.tevoi.tevoi.adapter.PaginationAdapter;
-import com.tevoi.tevoi.adapter.Track;
 import com.tevoi.tevoi.adapter.TracksAdapter;
 import com.tevoi.tevoi.model.CustomApp;
-import com.tevoi.tevoi.model.InternetConnectionListener;
 import com.tevoi.tevoi.model.PaginationScrollListener;
 import com.tevoi.tevoi.model.RecyclerViewEmptySupport;
 import com.tevoi.tevoi.model.TrackFilter;
@@ -68,10 +64,7 @@ public class TracksList extends Fragment
     int PAGE_SIZE = Global.PAGE_SIZE;;
     // endregion
 
-
-
-    ArrayList<Track> mTracks = new ArrayList<>();
-    TracksAdapter adapter ;
+    public TracksAdapter adapter ;
     RecyclerViewEmptySupport[] recyclerViews= new RecyclerViewEmptySupport[3];
     //RecyclerView[] recyclerViews= new RecyclerView[3];
     int active_tab=0;
@@ -83,18 +76,32 @@ public class TracksList extends Fragment
     //public ScrollView scrollViewListTracks;
     public LinearLayout linearLayoutListTracks;
 
+
+
     View rootView;
-    public void initMediaPlayerLayout(View rootView)
+    public void initiateMediaPlayerLayout(View rootView)
     {
         activity.mainPlayerLayout = rootView.findViewById(R.id.layout_main_player_include);
-
         //activity.mainPlayerLayout = rootView.findViewById(R.id.linearLayout_media_player_main);
         activity.seekBarMainPlayer = rootView.findViewById(R.id.seekBar_main_player);
-        activity.txtCurrentTime= rootView.findViewById(R.id.currentTime_main_player);
-        activity.txtFinishTime= rootView.findViewById(R.id.fullTime_main_player);
-        activity.txtTrackName= rootView.findViewById(R.id.txt_track_name_main_player);
+        activity.txtCurrentTime = rootView.findViewById(R.id.currentTime_main_player);
+        activity.txtFinishTime = rootView.findViewById(R.id.fullTime_main_player);
+        activity.txtTrackName = rootView.findViewById(R.id.txt_track_name_main_player);
         activity.btnPausePlayMainMediaPlayer = rootView.findViewById(R.id.img_btn_pause_main_player);
+        activity.playerLoader = rootView.findViewById(R.id.load_more_player);
 
+        String lang = activity.storageManager.getLanguageUIPreference(activity);
+        if(lang.equals("ar"))
+            activity.btnPausePlayMainMediaPlayer.setScaleX(-1);
+
+
+    }
+
+    public void initiatetBanner(View rootView)
+    {
+        activity.linearLayoutBanner = rootView.findViewById(R.id.layout_banner_in_list_tracks);
+        activity.imgBanner = rootView.findViewById(R.id.img_banner);
+        activity.txtLink = rootView.findViewById(R.id.txt_link);
     }
 
     public  void initiatePagination()
@@ -117,7 +124,6 @@ public class TracksList extends Fragment
             }
         });
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -133,11 +139,22 @@ public class TracksList extends Fragment
         btnSearch = rootView.findViewById(R.id.btn_search);
         fm = getActivity().getSupportFragmentManager();
         //scrollViewListTracks = rootView.findViewById(R.id.scrollViewListTracks);
-        linearLayoutListTracks  = rootView.findViewById(R.id.linearLayoutListTracks);
+        linearLayoutListTracks = rootView.findViewById(R.id.linearLayoutListTracks);
 
-        initMediaPlayerLayout(rootView);
+        initiateMediaPlayerLayout(rootView);
 
         initiatePagination();
+        initiatetBanner(rootView);
+
+        activity.imgBanner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                // todo: open the link
+                Toast.makeText(activity, "", Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
         activity.mainPlayerLayout.setOnTouchListener(new View.OnTouchListener() {
             public boolean onTouch(View v, MotionEvent event) {
@@ -185,7 +202,8 @@ public class TracksList extends Fragment
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 SideMenu activity = (SideMenu)getActivity();
                 if(activity != null) {
-                    if (activity.serviceBound && fromUser) {
+                    if (activity.serviceBound && fromUser)
+                    {
                         // TODO  : check user quota
 
                         activity.player.mMediaPlayer.seekTo(progress * 1000);
@@ -193,8 +211,13 @@ public class TracksList extends Fragment
                         activity.txtCurrentTime.setText(timeFormat);
                         int numberofMovedSeconds = progress - activity.numberOfCurrentSecondsInTrack;
                         activity.numberOfCurrentSecondsInTrack = progress;
-                        activity.numberOfListenedSeconds += numberofMovedSeconds;
-                        activity.player.numberOfListenedSeconds += numberofMovedSeconds;
+                        if(numberofMovedSeconds > 0)
+                        {
+                            activity.numberOfListenedSeconds += numberofMovedSeconds;
+                            activity.player.numberOfListenedSeconds += numberofMovedSeconds;
+                        }
+                        //activity.numberOfListenedSeconds += numberofMovedSeconds;
+                        //activity.player.numberOfListenedSeconds += numberofMovedSeconds;
                         //Toast.makeText(activity, "numberofMovedSeconds=" + numberofMovedSeconds, Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -213,17 +236,24 @@ public class TracksList extends Fragment
             {
                 if(activity.serviceBound)
                 {
-                    if(activity.player.mMediaPlayer.isPlaying())
+                    if(activity.IsListenDailyLimitsExceeded)
                     {
-                        activity.player.mMediaPlayer.pause();
-                        activity.player.buildNotification(CustomMediaPlayerService.PlaybackStatus.PAUSED);
-                        activity.btnPausePlayMainMediaPlayer.setImageResource(R.drawable.baseline_play_arrow_24);
+                        Toast.makeText(activity, R.string.no_quota_for_today, Toast.LENGTH_SHORT).show();
                     }
                     else
                     {
-                        activity.player.mMediaPlayer.start();
-                        activity.player.buildNotification(CustomMediaPlayerService.PlaybackStatus.PLAYING);
-                        activity.btnPausePlayMainMediaPlayer.setImageResource(R.drawable.baseline_pause_24);
+                        if(activity.player.mMediaPlayer.isPlaying())
+                        {
+                            activity.player.mMediaPlayer.pause();
+                            activity.player.buildNotification(CustomMediaPlayerService.PlaybackStatus.PAUSED);
+                            activity.btnPausePlayMainMediaPlayer.setImageResource(R.mipmap.play_white_normal);
+                        }
+                        else
+                        {
+                            activity.player.mMediaPlayer.start();
+                            activity.player.buildNotification(CustomMediaPlayerService.PlaybackStatus.PLAYING);
+                            activity.btnPausePlayMainMediaPlayer.setImageResource(R.mipmap.pause_normal_white);
+                        }
                     }
                 }
                 else
@@ -237,26 +267,32 @@ public class TracksList extends Fragment
         {
             btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
+                activateTab(active_tab);
+
                 EditText txtFilter = rootView.findViewById(R.id.txt_search_filter_value);
                 CheckBox chkIsLocationEnabled = rootView.findViewById(R.id.checkBoxLocationEnable);
                 //activity.player.removeNotification();
                 if(!txtFilter.getText().equals(""))
                 {
-                    activity.mProgressDialog.setMessage("Loading"); activity.mProgressDialog.show();
+                   /* activity.mProgressDialog.setMessage(getResources().getString( R.string.loader_msg));
+                    activity.mProgressDialog.show();
 
                     TrackFilter filter =  new TrackFilter();
-                    filter.SearchKey = txtFilter.getText().toString(); filter.IsLocationEnabled = chkIsLocationEnabled.isChecked();
-                    filter.ListTypeEnum = defaultTab; filter.Index = 0; filter.Size = 10;
+                    filter.SearchKey = txtFilter.getText().toString();
+                    filter.IsLocationEnabled = chkIsLocationEnabled.isChecked();
+                    filter.ListTypeEnum = defaultTab; filter.TrackTypeId = 1;
+                    filter.Index = 0; filter.Size = PAGE_SIZE;
                     Call<TrackResponseList> call = Global.client.ListMainTrackWithFilter(filter);
                     call.enqueue(new Callback<TrackResponseList>(){
                         public void onResponse(Call<TrackResponseList> call, Response<TrackResponseList> response) {
                             TrackResponseList tracks=response.body();
-                            int x=tracks.getTrack().size();
+                            int x=tracks.getLstTrack().size();
                             View v = rootView.findViewById(R.id.tracks_list_empty);
                             recyclerViews[active_tab].setEmptyView(v);
 
-                            adapter = new TracksAdapter(tracks.getTrack(),activity, Global.ListTracksFragmentName);
+                            adapter = new TracksAdapter(tracks.getLstTrack(),activity, Global.ListTracksFragmentName, recyclerViews[active_tab]);
                             //recyclerViews[active_tab].setAdapter(adapter);
                             recyclerViews[active_tab].setAdapter(adapter);
                             activity.mProgressDialog.dismiss();
@@ -266,7 +302,7 @@ public class TracksList extends Fragment
                             Toast.makeText(activity,"something went wrong", Toast.LENGTH_LONG).show();
                             activity.mProgressDialog.dismiss();
                         }
-                    });
+                    });*/
                 }
 
             }
@@ -315,7 +351,8 @@ public class TracksList extends Fragment
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         //getActivity().setContentView(R.layout.activity_tracks_list);
         //defaultTab = 0;
@@ -347,10 +384,12 @@ public class TracksList extends Fragment
         recyclerViews[k] = rootView.findViewById(R.id.tracks_recycler_View);
         for(int i=0;i<tabs.length;i++)
         {
-            tabs[i].setBackgroundColor(ContextCompat.getColor(activity,R.color.tevoiBlueSecondary));
+            tabs[i].setBackgroundColor(ContextCompat.getColor(activity,R.color.tevoiBrownDark));
+            tabs[i].setTextColor(ContextCompat.getColor(activity,R.color.white));
         }
 
-        tabs[k].setBackgroundColor(ContextCompat.getColor(activity,R.color.tevoiBluePrimary));
+        tabs[k].setBackgroundColor(ContextCompat.getColor(activity,R.color.white));
+        tabs[k].setTextColor(ContextCompat.getColor(activity,R.color.tevoiSwitchBlackLight));
 
         linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -360,7 +399,7 @@ public class TracksList extends Fragment
         recyclerViews[k].setEmptyView(v);*/
 
         List<TrackObject> trs = new ArrayList<>();
-        adapter = new TracksAdapter(trs, activity, Global.ListTracksFragmentName);
+        adapter = new TracksAdapter(trs, activity, Global.ListTracksFragmentName, recyclerViews[active_tab]);
 
         recyclerViews[k].setItemAnimator(new DefaultItemAnimator());
 
@@ -397,7 +436,7 @@ public class TracksList extends Fragment
             public void run() {
                 loadFirstPage(k);
             }
-        }, 1000);
+        }, 100);
 
         /*TrackFilter filter =  new TrackFilter();
         filter.SearchKey = ""; filter.IsLocationEnabled = false;
@@ -430,85 +469,140 @@ public class TracksList extends Fragment
 
     private void loadFirstPage(final int tabId)
     {
-        currentPage = 0;
+        EditText txtFilter = rootView.findViewById(R.id.txt_search_filter_value);
+        CheckBox chkIsLocationEnabled = rootView.findViewById(R.id.checkBoxLocationEnable);
 
-        activity.mProgressDialog.setMessage("Loading1");
+        currentPage = 0;
+        isLastPage = false;
+        isLoading = false;
+        activity.mProgressDialog.setMessage(getResources().getString( R.string.loader_msg));
         activity.mProgressDialog.show();
 
         TrackFilter filter =  new TrackFilter();
-        filter.SearchKey = ""; filter.IsLocationEnabled = false;
+        LinearLayout layout = activity.findViewById(R.id.test_linear);
+        if (layout != null)
+        {
+            if (layout.getVisibility() == View.GONE) {
+                filter.SearchKey = "";
+                filter.IsLocationEnabled = false;
+            }
+            else {
+                filter.SearchKey = txtFilter.getText().toString();
+                filter.IsLocationEnabled = chkIsLocationEnabled.isChecked();
+            }
+        }
+        else {
+            filter.SearchKey = "";
+            filter.IsLocationEnabled = false;
+        }
         filter.TrackTypeId = 1;
         filter.ListTypeEnum = tabId;
         filter.Index = currentPage; filter.Size = PAGE_SIZE;
+        Log.d("ResultTracks Fisrt ", filter.getStringFilter());
 
-
-        Call<TrackResponseList> call = ((CustomApp) activity.getApplication()).getApiService().getListMainTrack(filter);
-        //Call<TrackResponseList> call = Global.client.getListMainTrack(filter);
+        //Call<TrackResponseList> call = ((CustomApp) activity.getApplication()).getApiService().getListMainTrack(filter);
+        Call<TrackResponseList> call = Global.client.getListMainTrack(filter);
         call.enqueue(new Callback<TrackResponseList>() {
             public void onResponse(Call<TrackResponseList> call, Response<TrackResponseList> response)
             {
                 TrackResponseList tracks = response.body();
+                Log.d("ResultTracks First", "tracksNum=" +tracks.getTotalRowCount());
+
                 TOTAL_PAGES = tracks.getTotalRowCount() / PAGE_SIZE;
 
-                if(tracks.getTrack().size() == 0) {
+                if(tracks.getLstTrack().size() == 0) {
                     View v = rootView.findViewById(R.id.tracks_list_empty);
                     recyclerViews[tabId].setEmptyView(v);
                 }
                 progressBar.setVisibility(View.GONE);
-                adapter.addAll(tracks.getTrack());
+                adapter.addAll(tracks.getLstTrack());
 
                 if (currentPage <= TOTAL_PAGES) adapter.addLoadingFooter();
                 else isLastPage = true;
+
+                // todo : show banner
+                showListBanner(tracks.getBanner().BannerImagePath, tracks.getBanner().BannerLink);
+
+                // add these tracks to the  list in Side Menu
+                activity.lstTracks = new ArrayList<>();
+                activity.lstTracks.addAll(tracks.getLstTrack());
+
                 activity.mProgressDialog.dismiss();
             }
 
             public void onFailure(Call<TrackResponseList> call, Throwable t)
             {
+                Log.d("ResultTracks", "Faaaail=");
                 activity.mProgressDialog.dismiss();
-                t.printStackTrace();
-                showErrorView(t);
+                //t.printStackTrace();
+                //showErrorView(t);
             }
         });
     }
 
-    private void loadNextPage(int tabId) {
+    private void loadNextPage(int tabId)
+    {
+        EditText txtFilter = rootView.findViewById(R.id.txt_search_filter_value);
+        CheckBox chkIsLocationEnabled = rootView.findViewById(R.id.checkBoxLocationEnable);
 
-        activity.mProgressDialog.setMessage("Loading");
+        activity.mProgressDialog.setMessage(getResources().getString( R.string.loader_msg));
         activity.mProgressDialog.show();
 
         TrackFilter filter =  new TrackFilter();
-        filter.SearchKey = ""; filter.IsLocationEnabled = false;
-        filter.TrackTypeId =1;
-        filter.ListTypeEnum = tabId; filter.Index = currentPage; filter.Size = PAGE_SIZE;
-        Call<TrackResponseList> call = ((CustomApp) activity.getApplication()).getApiService().getListMainTrack(filter);
-        //Call<TrackResponseList> call = Global.client.getListMainTrack(filter);
+        LinearLayout layout = activity.findViewById(R.id.test_linear);
+        if (layout != null)
+        {
+            if (layout.getVisibility() == View.GONE) {
+                filter.SearchKey = "";
+                filter.IsLocationEnabled = false;
+            }
+            else {
+                filter.SearchKey = txtFilter.getText().toString();
+                filter.IsLocationEnabled = chkIsLocationEnabled.isChecked();
+            }
+        }
+        else {
+            filter.SearchKey = "";
+            filter.IsLocationEnabled = false;
+        }
+        filter.TrackTypeId =1; filter.ListTypeEnum = tabId;
+        filter.Index = currentPage; filter.Size = PAGE_SIZE;
+        Log.d("ResultTracks Next ", filter.getStringFilter());
+
+        //Call<TrackResponseList> call = ((CustomApp) activity.getApplication()).getApiService().getListMainTrack(filter);
+        Call<TrackResponseList> call = Global.client.getListMainTrack(filter);
         call.enqueue(new Callback<TrackResponseList>() {
-            public void onResponse(Call<TrackResponseList> call, Response<TrackResponseList> response) {
+            public void onResponse(Call<TrackResponseList> call, Response<TrackResponseList> response)
+            {
                 //generateDataList(response.body());
                 TrackResponseList tracks = response.body();
                 TOTAL_PAGES = tracks.getTotalRowCount() / PAGE_SIZE;
                 adapter.removeLoadingFooter();
                 isLoading = false;
+                Log.d("ResultTracks Next ", "tracksNum=" +tracks.getTotalRowCount());
 
                /* if(tracks.getTrack().size() == 0 && currentPage != 0)
                     currentPage --;*/
-
-                adapter.addAll(tracks.getTrack());
+                adapter.addAll(tracks.getLstTrack());
 
                 if (TOTAL_PAGES != 0 && currentPage != TOTAL_PAGES) adapter.addLoadingFooter();
                 else isLastPage = true;
 
+                // todo : show banner
+                showListBanner(tracks.getBanner().BannerImagePath, tracks.getBanner().BannerLink);
+
+                // add these tracks to the  list in Side Menu
+                activity.lstTracks.addAll(tracks.getLstTrack());
+
                 activity.mProgressDialog.dismiss();
             }
-
-            public void onFailure(Call<TrackResponseList> call, Throwable t) {
+            public void onFailure(Call<TrackResponseList> call, Throwable t)
+            {
                 activity.mProgressDialog.dismiss();currentPage --;
-                t.printStackTrace();
-                showErrorView(t);
+                //t.printStackTrace();
+                //showErrorView(t);
             }
         });
-
-
 
     }
 
@@ -558,4 +652,23 @@ public class TracksList extends Fragment
        // Toast.makeText(activity, "Hi there I'm Marwa", Toast.LENGTH_SHORT).show();
         // show No Internet Connection UI
     }*/
+
+    public void showListBanner(String bannerLogoPath, String link )
+    {
+        if(!bannerLogoPath.equals("") && !link.equals(""))
+        {
+            activity.linearLayoutBanner.setVisibility(View.VISIBLE);
+            activity.txtLink.setText(link);
+            try
+            {
+                Picasso.with(activity)  //Here, this is context.
+                        .load(Global.IMAGE_BASE_URL + bannerLogoPath)  //Url of the image to load.
+                        .into(activity.imgBanner);
+            } catch (Exception exc) {
+
+            }
+        }
+    }
+
+
 }

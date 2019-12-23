@@ -18,7 +18,8 @@ import okhttp3.Request;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class CustomApp extends Application {
+public class CustomApp extends Application
+{
     private ApiInterface apiService;
     private InternetConnectionListener mInternetConnectionListener;
 
@@ -35,7 +36,8 @@ public class CustomApp extends Application {
         mInternetConnectionListener = null;
     }
 
-    public ApiInterface getApiService() {
+    public ApiInterface getApiService()
+    {
         if (apiService == null) {
             apiService = provideRetrofit(Global.BASE_URL).create(ApiInterface.class);
         }

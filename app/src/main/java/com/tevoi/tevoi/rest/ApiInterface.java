@@ -3,17 +3,14 @@ package com.tevoi.tevoi.rest;
 
 
 import com.tevoi.tevoi.model.AboutUsResponse;
-import com.tevoi.tevoi.model.AddCommentResponse;
 import com.tevoi.tevoi.model.CategoryResponseList;
 import com.tevoi.tevoi.model.FeedbackRequest;
+import com.tevoi.tevoi.model.GetDownloadLimitResponse;
 import com.tevoi.tevoi.model.GetPartnerTracksResponse;
 import com.tevoi.tevoi.model.GetSubscripedPartnersResponse;
-import com.tevoi.tevoi.model.GetTrackFavouriteResponse;
 import com.tevoi.tevoi.model.GetUserListTracksResponse;
 import com.tevoi.tevoi.model.IResponse;
 import com.tevoi.tevoi.model.ListNotificationTypesResponse;
-import com.tevoi.tevoi.model.LoginRequest;
-import com.tevoi.tevoi.model.LoginResponse;
 import com.tevoi.tevoi.model.MainSponsoreLogoResponse;
 import com.tevoi.tevoi.model.PartnerListResponse;
 import com.tevoi.tevoi.model.RatingResponse;
@@ -31,13 +28,18 @@ import com.tevoi.tevoi.model.UserListResponse;
 import com.tevoi.tevoi.model.UserSubscriptionInfoResponse;
 
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
-import retrofit2.http.Headers;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
+import retrofit2.http.Streaming;
+import retrofit2.http.Url;
 
 public interface ApiInterface {
     /*@Headers({"Content-Type:application/json","Authorization:TevoiTokenSample", "LicenseTevoiMobileApp:"})*/
@@ -76,7 +78,7 @@ public interface ApiInterface {
     Call<TrackTextResponse> GetTrackText(@Query("TrackId") int TrackId);
 
     @GET("api/Services/AddComment")
-    Call<AddCommentResponse> AddComment(@Query("TrackId") int TrackId, @Query("CommentText") String CommentText);
+    Call<IResponse> AddComment(@Query("TrackId") int TrackId, @Query("CommentText") String CommentText);
 
     @GET("api/Services/RemoveFromHistory")
     Call<IResponse> RemoveFromHistory(@Query("TrackId") int TrackId);
@@ -114,6 +116,9 @@ public interface ApiInterface {
     @GET("api/Services/UpdateCategoryPreference")
     Call<IResponse> UpdateCategoryPreference(@Query("CategoryId") int CategoryId);
 
+    @GET("api/Services/UpdateShowHeardTracks")
+    Call<IResponse> UpdateShowHeardTracks();
+
     @GET("api/Services/GetCategoriesFilters")
     Call<CategoryResponseList> GetCategoriesFilters();
 
@@ -121,7 +126,7 @@ public interface ApiInterface {
     Call<GetSubscripedPartnersResponse> GetSubscripedPartners();
 
     @GET("api/Services/AddUnitUsageForUser")
-    Call<UserSubscriptionInfoResponse> AddUnitUsageForUser(@Query("TrackId") int TrackId,@Query("NumberOfSeconds") int NumberOfSeconds);
+    Call<UserSubscriptionInfoResponse> AddUnitUsageForUser(@Query("TrackId") int TrackId, @Query("numberOfUnits") int numberOfUnits, @Query("NumberOfSeconds") int NumberOfSeconds);
 
     @GET("api/Services/GetPartnerTracks")
     Call<GetPartnerTracksResponse> GetPartnerTracks(@Query("PartnerId") int PartnerId,@Query("ListTypeEnum") int ListTypeEnum, @Query("index") int index, @Query("size") int size);
@@ -144,6 +149,12 @@ public interface ApiInterface {
     @GET("api/Services/GetNotificationTypesList")
     Call<ListNotificationTypesResponse> GetNotificationTypesList();
 
+    @GET("api/Services/UpdateNotificationType")
+    Call<IResponse> UpdateNotificationType(@Query("notificationFilterId") int notificationFilterId);
+
+    @GET("api/Services/UpdateAllNotificationType")
+    Call<ListNotificationTypesResponse> UpdateAllNotificationType();
+
     @GET("api/User/GetRegisterInformation")
     Call<RegisterDataResponse> GetRegisterInformation();
 
@@ -159,8 +170,14 @@ public interface ApiInterface {
     @GET("api/Services/GetUserFilters")
     Call<UserFiltersResponse> GetUserFilters();
 
-    @GET("api/Services/RemoveAllUserLists")
-    Call<IResponse> RemoveAllUserLists();
+    @GET("api/Services/ClearAndLoadUserFilters")
+    Call<UserFiltersResponse> ClearAndLoadUserFilters();
+
+    @GET("api/Services/ClearUserList")
+    Call<IResponse> ClearUserList();
+
+    @GET("api/Services/RemoveAllHistory")
+    Call<IResponse> RemoveAllHistory();
 
     @GET("api/Services/UpdateUIDefaultLanguage")
     Call<IResponse> UpdateUIDefaultLanguage(@Query("LanguageId") int LanguageId);
@@ -172,5 +189,24 @@ public interface ApiInterface {
     @GET("api/User/RequestNewPassword")
     Call<IResponse> RequestNewPassword(@Query("Email") String Email);
 
+
+    @Multipart
+    @POST("/upload")
+    Call<ResponseBody> uploadImage(@Part MultipartBody.Part file, @Part("name") RequestBody requestBody);
+
+
+    @Streaming
+    @GET("api/Services/GetAudioDownload")
+    Call<ResponseBody> downloadFileByUrl(@Query("id") int id);
+
+    @GET("api/Services/AddListenTrackWithQuota")
+    Call<UserSubscriptionInfoResponse> AddListenTrackWithQuota(@Query("TrackId") int TrackId);
+
+
+    @GET("api/Services/UpdateDownloadLimit")
+    Call<IResponse> UpdateDownloadLimit(@Query("numberOfMinutes") int numberOfMinutes);
+
+    @GET("api/Services/GetDownloadLimit")
+    Call<GetDownloadLimitResponse> GetDownloadLimit();
 
 }

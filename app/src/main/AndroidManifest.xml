@@ -3,7 +3,8 @@
     package="com.tevoi.tevoi">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <permission android:name="android.permission.MEDIA_CONTENT_CONTROL" />
@@ -31,9 +32,6 @@
         </activity>
         <activity android:name=".TracksList" />
         <activity
-            android:name=".MediaPlayerActivity"
-            android:label="@string/title_activity_media_player" />
-        <activity
             android:name=".MediaPlayerBrowserActivity"
             android:label="@string/title_activity_media_player_browser" />
 
@@ -49,7 +47,14 @@
 
         </activity>
 
+        <activity android:name=".ForgetPasswordActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait">
+
+        </activity>
+
         <activity android:name=".SideMenu"
+            android:launchMode="singleTask"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait">
             <!--<intent-filter>

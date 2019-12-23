@@ -1,6 +1,8 @@
 package com.tevoi.tevoi.rest;
 
 
+import com.tevoi.tevoi.model.LoginRequest;
+import com.tevoi.tevoi.model.LoginRequestModel;
 import com.tevoi.tevoi.model.LoginResponse;
 import com.tevoi.tevoi.model.RegisterRequest;
 import com.tevoi.tevoi.model.RegisterResponse;
@@ -16,7 +18,7 @@ public interface ApiInterfaceDnn {
 
 
     @POST("API/Services/Login")
-    Call<LoginResponse> Login(@Query("UserName") String UserName, @Query("Password") String Password);
+    Call<LoginResponse> Login(@Body LoginRequestModel model);
 
     @POST("API/Services/Register")
     Call<RegisterResponse> Register(@Body RegisterRequest model);

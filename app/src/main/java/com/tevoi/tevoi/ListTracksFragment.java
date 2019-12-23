@@ -4,14 +4,12 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -23,7 +21,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -33,8 +30,6 @@ import com.tevoi.tevoi.Utils.Global;
 import com.tevoi.tevoi.Utils.HelperFunctions;
 import com.tevoi.tevoi.adapter.PaginationAdapter;
 import com.tevoi.tevoi.adapter.PaginationAdapterCallback;
-import com.tevoi.tevoi.adapter.Track;
-import com.tevoi.tevoi.adapter.TracksAdapter;
 import com.tevoi.tevoi.model.PaginationScrollListener;
 import com.tevoi.tevoi.model.RecyclerViewEmptySupport;
 import com.tevoi.tevoi.model.TrackFilter;
@@ -186,11 +181,11 @@ public class ListTracksFragment extends Fragment
                     if (activity.player.mMediaPlayer.isPlaying()) {
                         activity.player.mMediaPlayer.pause();
                         activity.player.buildNotification(CustomMediaPlayerService.PlaybackStatus.PAUSED);
-                        activity.btnPausePlayMainMediaPlayer.setImageResource(R.drawable.baseline_play_arrow_24);
+                        activity.btnPausePlayMainMediaPlayer.setImageResource(R.mipmap.play_white_normal);
                     } else {
                         activity.player.mMediaPlayer.start();
                         activity.player.buildNotification(CustomMediaPlayerService.PlaybackStatus.PLAYING);
-                        activity.btnPausePlayMainMediaPlayer.setImageResource(R.drawable.baseline_pause_24);
+                        activity.btnPausePlayMainMediaPlayer.setImageResource(R.mipmap.pause_normal_white);
                     }
                 } else {
                     //activity.playAudio(url);
@@ -207,7 +202,7 @@ public class ListTracksFragment extends Fragment
                     CheckBox chkIsLocationEnabled = rootView.findViewById(R.id.checkBoxLocationEnable);
                     //activity.player.removeNotification();
                     if (!txtFilter.getText().equals("")) {
-                        activity.mProgressDialog.setMessage("Loading");
+                        activity.mProgressDialog.setMessage(getResources().getString( R.string.loader_msg));
                         activity.mProgressDialog.show();
 
                         TrackFilter filter =  new TrackFilter();
@@ -217,11 +212,11 @@ public class ListTracksFragment extends Fragment
                         call.enqueue(new Callback<TrackResponseList>() {
                             public void onResponse(Call<TrackResponseList> call, Response<TrackResponseList> response) {
                                 TrackResponseList tracks = response.body();
-                                int x = tracks.getTrack().size();
+                                int x = tracks.getLstTrack().size();
                                 View v = rootView.findViewById(R.id.tracks_list_empty);
                                 recyclerViews[active_tab].setEmptyView(v);
 
-                                adapter = new PaginationAdapter(tracks.getTrack(), activity, Global.ListTracksFragmentName);
+                                adapter = new PaginationAdapter(tracks.getLstTrack(), activity, Global.ListTracksFragmentName);
                                 adapter.setmCallback((PaginationAdapterCallback) getContext());
 
                                 //recyclerViews[active_tab].setAdapter(adapter);
@@ -466,7 +461,7 @@ public class ListTracksFragment extends Fragment
                 recyclerViews[tabId].setAdapter(adapter);*/
 
                 progressBar.setVisibility(View.GONE);
-                adapter.addAll(tracks.getTrack());
+                adapter.addAll(tracks.getLstTrack());
 
                 if (currentPage <= TOTAL_PAGES) adapter.addLoadingFooter();
                 else isLastPage = true;
@@ -484,7 +479,7 @@ public class ListTracksFragment extends Fragment
 
     private void loadNextPage(int tabId) {
 
-        activity.mProgressDialog.setMessage("Loading");
+        activity.mProgressDialog.setMessage(getResources().getString( R.string.loader_msg));
         activity.mProgressDialog.show();
 
         TrackFilter filter =  new TrackFilter();
@@ -500,10 +495,10 @@ public class ListTracksFragment extends Fragment
                 adapter.removeLoadingFooter();
                 isLoading = false;
 
-                if(tracks.getTrack().size() == 0 && currentPage != 0)
+                if(tracks.getLstTrack().size() == 0 && currentPage != 0)
                     currentPage --;
 
-                adapter.addAll(tracks.getTrack());
+                adapter.addAll(tracks.getLstTrack());
 
                 if (currentPage != TOTAL_PAGES) adapter.addLoadingFooter();
                 else isLastPage = true;

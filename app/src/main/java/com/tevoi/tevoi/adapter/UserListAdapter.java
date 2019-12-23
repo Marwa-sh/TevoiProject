@@ -3,8 +3,8 @@ package com.tevoi.tevoi.adapter;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +21,6 @@ import com.tevoi.tevoi.UserListTracksFragment;
 import com.tevoi.tevoi.Utils.Global;
 import com.tevoi.tevoi.model.IResponse;
 import com.tevoi.tevoi.model.LoadingVH;
-import com.tevoi.tevoi.model.TrackObject;
 import com.tevoi.tevoi.model.UserListObject;
 
 import java.util.List;
@@ -165,11 +164,16 @@ public class UserListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             hoverLayout = itemView.findViewById(R.id.hoverButtonsLayoutUserList);
             userListDetailsLayout = itemView.findViewById(R.id.layout_user_list_details);
 
+
             btnPlay = itemView.findViewById(R.id.btn_play_pause_user_list);
             btnDrawer= itemView.findViewById(R.id.btn_user_list_drawer);
 
             btnRename = itemView.findViewById(R.id.btn_rename_user_list);
             btnRemove= itemView.findViewById(R.id.btn_delete_user_list);
+
+            String lang = activity.storageManager.getLanguageUIPreference(activity);
+            if(lang.equals("ar"))
+                btnPlay.setScaleX(-1);
 
             btnPlay.setOnClickListener(new View.OnClickListener()
             {
@@ -212,42 +216,124 @@ public class UserListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             btnRemove.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    final int i = getAdapterPosition();
 
-                    Call<IResponse> call = Global.client.DeleteUserList(userLists.get(i).getId());
-                    call.enqueue(new Callback<IResponse>(){
-                        public void onResponse(Call<IResponse> call, Response<IResponse> response) {
-                            IResponse result = response.body();
-                            userLists.remove(i);
-                            activity.notifyUserListAdapter();
-                            if(result.Number == 0)
-                            {
-                                Toast.makeText(activity, result.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                            else
-                            {
-                                Toast.makeText(activity,result.getMessage(), Toast.LENGTH_LONG).show();
-                            }
-                            hoverLayout.setVisibility(View.INVISIBLE);
-                            //mProgressDialog.dismiss();
-                        }
-                        public void onFailure(Call<IResponse> call, Throwable t)
-                        {
-                            Toast.makeText(activity,"something went wrong", Toast.LENGTH_LONG).show();
-                            //mProgressDialog.dismiss();
+                    // get prompts.xml view
+
+                    // region old way to remove list
+                    /*LayoutInflater li = LayoutInflater.from(activity);
+                    View promptsView = li.inflate(R.layout.layout_user_list_remove, null);
+
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);//, R.style.AlertDialogCustom);
+                    // set prompts.xml to alertdialog builder
+                    alertDialogBuilder.setView(promptsView);
+                    // set dialog message
+                    alertDialogBuilder
+                            .setCancelable(false)
+                            .setPositiveButton("OK",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog,int id) {
+                                            // to do remove list
+                                        }
+                                    })
+                            .setNegativeButton("Cancel",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog,int id) {
+                                            dialog.cancel();
+                                        }
+                                    });
+
+                    // create alert dialog
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    // show it
+
+                    alertDialog.show();*/
+                    //endregion
+
+
+                    LayoutInflater layoutInflater = LayoutInflater.from(activity);
+                    View promptView = layoutInflater.inflate(R.layout.layout_user_list_remove, null);
+
+                    final AlertDialog alertD = new AlertDialog.Builder(activity).create();
+
+                    ImageButton btnYes = (ImageButton) promptView.findViewById(R.id.imgBtnYes);
+
+                    ImageButton btnNo = (ImageButton) promptView.findViewById(R.id.imgBtnNo);
+
+                    btnYes.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {
+
+                            alertD.cancel();
+                            activity.mProgressDialog.setMessage(activity.getResources().getString( R.string.loader_msg));
+                            activity.mProgressDialog.show();
+                            // btnAdd1 has been clicked
+                            final int i = getAdapterPosition();
+
+                            Call<IResponse> call = Global.client.DeleteUserList(userLists.get(i).getId());
+                            call.enqueue(new Callback<IResponse>(){
+                                public void onResponse(Call<IResponse> call, Response<IResponse> response) {
+                                    IResponse result = response.body();
+
+                                    if(result.Number == 0)
+                                    {
+                                        Toast.makeText(activity, result.getMessage(), Toast.LENGTH_SHORT).show();
+                                        userLists.remove(i);
+                                        activity.notifyUserListAdapter();
+                                    }
+                                    else
+                                    {
+                                        Toast.makeText(activity,result.getMessage(), Toast.LENGTH_LONG).show();
+                                    }
+                                    activity.mProgressDialog.dismiss();
+                                    hoverLayout.setVisibility(View.INVISIBLE);
+                                }
+                                public void onFailure(Call<IResponse> call, Throwable t)
+                                {
+                                    Toast.makeText(activity,"something went wrong", Toast.LENGTH_LONG).show();
+                                    //mProgressDialog.dismiss();
+                                    hoverLayout.setVisibility(View.INVISIBLE);
+                                    activity.mProgressDialog.dismiss();
+                                }
+                            });
                         }
                     });
+
+                    btnNo.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {
+
+                            // btnAdd2 has been clicked
+                            alertD.cancel();
+                            hoverLayout.setVisibility(View.INVISIBLE);
+                        }
+                    });
+
+                    alertD.setView(promptView);
+
+                    alertD.show();
+
+
                 }
             });
 
+            userListDetailsLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int i  = getPosition();
+                    UserListObject p = userLists.get(i);
+                    activity.userListTracksFragment = UserListTracksFragment.newInstance(0, p.getId(), p.getName());
+                    //UserListTracksFragment fragment = UserListTracksFragment.newInstance(0, p.getId());
+                    androidx.fragment.app.FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.content_frame, activity.userListTracksFragment);
+                    fragmentTransaction.commit();
+                }
+            });
             tvUserListName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int i  = getPosition();
                     UserListObject p = userLists.get(i);
-                    activity.userListTracksFragment = UserListTracksFragment.newInstance(0, p.getId());
+                    activity.userListTracksFragment = UserListTracksFragment.newInstance(0, p.getId(), p.getName());
                     //UserListTracksFragment fragment = UserListTracksFragment.newInstance(0, p.getId());
-                    android.support.v4.app.FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
+                    androidx.fragment.app.FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
                     fragmentTransaction.replace(R.id.content_frame, activity.userListTracksFragment);
                     fragmentTransaction.commit();
                     //Toast.makeText(activity, "tvUserListName", Toast.LENGTH_SHORT).show();

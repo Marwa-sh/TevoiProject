@@ -4,8 +4,9 @@ package com.tevoi.tevoi;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -23,7 +24,7 @@ import retrofit2.Response;
 
 public class ForgetPasswordActivity extends AppCompatActivity
 {
-    TextView txtRequestPassword;
+    Button btnRequestNewPassword;
     EditText etEmail;
 
     public ProgressDialog mProgressDialog;
@@ -37,10 +38,9 @@ public class ForgetPasswordActivity extends AppCompatActivity
         mProgressDialog.setCancelable(false);
 
         etEmail = findViewById(R.id.et_enter_email);
-        txtRequestPassword = findViewById(R.id.txt_requst_new_password);
+        btnRequestNewPassword = findViewById(R.id.btn_Request_new_password);
 
-
-        txtRequestPassword.setOnClickListener(new View.OnClickListener() {
+        btnRequestNewPassword.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
                  if(isUserEmailFieldEmpty())
@@ -49,7 +49,7 @@ public class ForgetPasswordActivity extends AppCompatActivity
                  }
                  else
                  {
-                     mProgressDialog.setMessage("Loading"); mProgressDialog.show();
+                     mProgressDialog.setMessage(getResources().getString( R.string.loader_msg)); mProgressDialog.show();
 
                      //Login and get token then save it in shared preference
                      Call<IResponse> call =Global.client.RequestNewPassword(etEmail.getText().toString());
@@ -77,7 +77,6 @@ public class ForgetPasswordActivity extends AppCompatActivity
         });
 
     }
-
     //Region Helping Checkers
     boolean isUserEmailFieldEmpty()
     {

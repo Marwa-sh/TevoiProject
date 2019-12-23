@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context=".UserListTracksFragment">
 
-    <android.support.v7.widget.LinearLayoutCompat
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/tabsLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,31 +18,43 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/tevoiBluePrimary"
-            android:text="New"
+            android:background="@color/tevoiBrownDark"
+            android:text="@string/new_track"
+            android:padding="@dimen/btn_padding"
             android:textColor="@color/fontColor"
             android:onClick="changeTabToNewUserListTracks"/>
-
+        <TextView
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/tevoiOutLine"
+            />
         <Button
             android:id="@+id/btnTopRatedUserListTracks"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/tevoiBlueSecondary"
-            android:text="Top Rated"
+            android:background="@color/tevoiBrownDark"
+            android:text="@string/top_rated"
+            android:padding="@dimen/btn_padding"
             android:textColor="@color/fontColor"
             android:onClick="changeTabToTopRatedUserListTracks"/>
-
+        <TextView
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/tevoiOutLine"
+            />
         <Button
             android:id="@+id/btnPopularUserListTracks"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/tevoiBlueSecondary"
-            android:text="Popular"
+            android:background="@color/tevoiBrownDark"
+            android:text="@string/popular"
+            android:padding="@dimen/btn_padding"
             android:textColor="@color/fontColor"
             android:onClick="changeToPopularUserListTracks"/>
-    </android.support.v7.widget.LinearLayoutCompat>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
 
     <com.tevoi.tevoi.model.RecyclerViewEmptySupport
         android:id="@+id/user_list_tracks_recycler_View"

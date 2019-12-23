@@ -22,27 +22,42 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient
 {
+    private static InternetConnectionListener mInternetConnectionListener;
+
+    public static void setmInternetConnectionListener(InternetConnectionListener mInternetConnectionListener) {
+        mInternetConnectionListener = mInternetConnectionListener;
+    }
+
     private static Retrofit retrofit = null;
 
-    public static Retrofit getClient()
+    public static Retrofit getClient(InternetConnectionListener listener)
     {
+        if(listener != null)
+            mInternetConnectionListener = listener;
         OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
-                /*.addInterceptor(new NetworkConnectionInterceptor() {
+                .addInterceptor(new NetworkConnectionInterceptor()
+                {
                     @Override
-                    public boolean isInternetAvailable() {
-                        return isInternetAvailableV();
+                    public boolean isInternetAvailable()
+                    {
+                        if(mInternetConnectionListener!= null)
+                            return mInternetConnectionListener.isInternetAvailable();
+                        else
+                            return true;
                     }
 
                     @Override
-                    public void onInternetUnavailable() {
+                    public void onInternetUnavailable()
+                    {
                         // we can broadcast this event to activity/fragment/service
                         // through LocalBroadcastReceiver or
                         // RxBus/EventBus
                         // also we can call our own interface method
                         // like this.
-                        mInternetConnectionListener.onInternetUnavailable();
+                        if(mInternetConnectionListener!= null)
+                            mInternetConnectionListener.onInternetUnavailable();
                     }
-                })*/
+                })
                 //.addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
                 .addInterceptor(new Interceptor() {
                     @Override
@@ -50,7 +65,7 @@ public class ApiClient
                         Request originalRequest = chain.request();
 
                         Request.Builder builder = originalRequest.newBuilder().header("Authorization",
-                                Global.UserToken).addHeader("Content-Language", Global.DefaultUILanguage)
+                                Global.UserToken).addHeader("Content-Language", Global.UserUILanguage)
                                 .addHeader("License", "TevoiMobileApp");
 
                         Request newRequest = builder.build();

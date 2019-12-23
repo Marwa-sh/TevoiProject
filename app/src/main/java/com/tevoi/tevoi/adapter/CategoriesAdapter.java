@@ -1,8 +1,8 @@
 package com.tevoi.tevoi.accordion;
 
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SwitchCompat;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,6 +66,10 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
             this.checkBoxFilterState.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView,final boolean isChecked) {
+                    activity.mProgressDialog.setMessage(activity.getResources().getString( R.string.loader_msg));
+                    activity.mProgressDialog.show();
+                    activity.mProgressDialog.setCancelable(false);
+
                     int i = getPosition();
                     final CategoryObject category = categories.get(i);
 
@@ -83,10 +87,11 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
                             {
                                 Toast.makeText(activity,res.getMessage(),Toast.LENGTH_LONG).show();
                             }
+                            activity.mProgressDialog.dismiss();
                         }
                         @Override
                         public void onFailure(Call<IResponse> call, Throwable t) {
-
+                            activity.mProgressDialog.dismiss();
                         }
                     });
                 }

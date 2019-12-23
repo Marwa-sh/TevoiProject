@@ -21,13 +21,14 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteException;
-import android.support.v4.app.NotificationManagerCompat;
+import androidx.core.app.NotificationManagerCompat;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.media.app.NotificationCompat.MediaStyle;
+import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
+//import android.support.v4.media.app.NotificationCompat.MediaStyle;
+import androidx.media.app.NotificationCompat.MediaStyle;
 
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
@@ -39,12 +40,9 @@ import java.util.HashMap;
 import java.util.Map;
 //import android.support.v7.app.NotificationCompat;
 
-import android.view.View;
-import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import com.tevoi.tevoi.Utils.Global;
-import com.tevoi.tevoi.model.IResponse;
 import com.tevoi.tevoi.model.TrackObject;
 import com.tevoi.tevoi.model.UserSubscriptionInfoResponse;
 
@@ -75,7 +73,6 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
 
     public static int FOREGROUND_SERVICE = 101;
 
-
     MediaPlayer mMediaPlayer;
 
     //MediaSession
@@ -100,12 +97,10 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
     private int audioIndex = -1;
     private TrackObject activeAudio; //an object on the currently playing audio
 
-
     //Handle incoming phone calls
     private boolean ongoingCall = false;
     private PhoneStateListener phoneStateListener;
     private TelephonyManager telephonyManager;
-
 
     String currentAudioUrl = Global.BASE_AUDIO_URL;
     //public TrackObject CurrentTrackInServicePlayer;
@@ -154,8 +149,8 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
         @Override
         public void run ()
         {
-
-            if (mMediaPlayer != null) {
+            if (mMediaPlayer != null)
+            {
                 resumePosition = mMediaPlayer.getCurrentPosition();
 
                 if (mMediaPlayer.isPlaying())
@@ -164,34 +159,67 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
                     numberOfCurrentSecondsInTrack += 1;
                     //activity.numberOfTotalSeconds += activity.numberOfCurrentSeconds;
                 }
+                if(serviceCallbacks.isDemoUser())
+                {
+                    if(serviceCallbacks.getUnitsForDemoUser() <= Global.NumberOfAllowedUnits)
+                    {
+                        int n = serviceCallbacks.getUnitsForDemoUser() * Global.ListenUnitInSeconds + Global.ListenUnitInSeconds;
+                        if (numberOfListenedSeconds >= Global.ListenUnitInSeconds)
+                        {
+                            int numOfUnits = numberOfListenedSeconds / Global.ListenUnitInSeconds;
+                            numberOfListenedSeconds = numberOfListenedSeconds - numOfUnits * Global.ListenUnitInSeconds;
+                            // update his quota
+                            serviceCallbacks.addUnitsForDemoUser(numOfUnits);
+                            Toast.makeText(getBaseContext(), "" + numOfUnits + " Unit consumed from your demo quota", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    else
+                    {
+                        mMediaPlayer.stop();
+                        serviceCallbacks.setFlagUserExceedsDailyUsageListen();
+                        //Toast.makeText(getBaseContext(), R.string.no_quota_for_today, Toast.LENGTH_SHORT).show();
+                        Log.d("Finished Quota", "You finished for today");
+                    }
+                }
+                else
+                {
                 int n = numberOfUnitsSendToServer * Global.ListenUnitInSeconds + Global.ListenUnitInSeconds;
+                Log.d("Service Log", "numberOfUnitsSendToServer=" + numberOfUnitsSendToServer + ", numberOfListenedSeconds=" + numberOfListenedSeconds);
                 if (numberOfListenedSeconds >= n)
                 {
                     int numberOfUnRegisteredSeconds = numberOfListenedSeconds - numberOfUnitsSendToServer * Global.ListenUnitInSeconds;
                     final int numberOfConsumedUnits = numberOfUnRegisteredSeconds / Global.ListenUnitInSeconds;
-                    // send to server that we used 1 unit
-                    Call<UserSubscriptionInfoResponse> call = Global.client.AddUnitUsageForUser(TrackId, numberOfConsumedUnits * Global.ListenUnitInSeconds);
-                    call.enqueue(new Callback<UserSubscriptionInfoResponse>()
-                    {
-                        public void onResponse(Call<UserSubscriptionInfoResponse> call, Response<UserSubscriptionInfoResponse> response) {
-                            //generateDataList(response.body());
-                            UserSubscriptionInfoResponse updatedUserUsage = response.body();
-                            numberOfUnitsSendToServer += numberOfConsumedUnits;
-                            Toast.makeText(getBaseContext(), "" + numberOfConsumedUnits + " Unit consumed from your quota", Toast.LENGTH_SHORT).show();
-                            serviceCallbacks.updateUserUsage(updatedUserUsage);
-                            if(updatedUserUsage.IsFreeSubscription)
-                            {
-                                /*if(updatedUserUsage.numberOfListenUnitsConsumed >= updatedUserUsage.FreeSubscriptionLimit.DailyListenMaxUnits)
-                                {
-                                    mMediaPlayer.stop();
-                                    serviceCallbacks.setFlagUserExceedsDailyUsageListen();
-                                }*/
-                            }
-                        }
-                        public void onFailure(Call<UserSubscriptionInfoResponse> call, Throwable t) {
+                    numberOfUnitsSendToServer += numberOfConsumedUnits;
 
-                        }
-                    });
+
+                        // send to server that we used 1 unit
+                        Call<UserSubscriptionInfoResponse> call = Global.client.AddUnitUsageForUser(TrackId, numberOfConsumedUnits, numberOfCurrentSecondsInTrack);
+                        call.enqueue(new Callback<UserSubscriptionInfoResponse>() {
+                            public void onResponse(Call<UserSubscriptionInfoResponse> call, Response<UserSubscriptionInfoResponse> response) {
+                                //generateDataList(response.body());
+                                UserSubscriptionInfoResponse updatedUserUsage = response.body();
+                                //numberOfUnitsSendToServer += numberOfConsumedUnits;
+                                Log.d("Cs", "numberOfConsumedUnits=" + numberOfConsumedUnits);
+
+                                Toast.makeText(getBaseContext(), "" + numberOfConsumedUnits + " Unit consumed from your quota", Toast.LENGTH_SHORT).show();
+                                serviceCallbacks.updateUserUsage(updatedUserUsage);
+                                numberOfCurrentSecondsInTrack = 0;
+                                if (updatedUserUsage.IsFreeSubscription)
+                                {
+                                    if (updatedUserUsage.numberOfListenUnitsConsumed >= updatedUserUsage.FreeSubscriptionLimit.DailyListenMaxUnits) {
+                                        mMediaPlayer.stop();
+                                        serviceCallbacks.setFlagUserExceedsDailyUsageListen();
+                                        Toast.makeText(getBaseContext(), R.string.no_quota_for_today, Toast.LENGTH_SHORT).show();
+                                        Log.d("Finished Quota", "You finished for today");
+                                    }
+                                }
+                            }
+
+                            public void onFailure(Call<UserSubscriptionInfoResponse> call, Throwable t) {
+                                numberOfUnitsSendToServer -= numberOfConsumedUnits;
+                            }
+                        });
+                    }
                 }
             }
             mHandler.postDelayed(this, 1000);
@@ -210,17 +238,17 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
             TrackName = intent.getExtras().getString("TrackName");
             TrackAuthors = intent.getExtras().getString("TrackAuthors");
             TrackId =  intent.getExtras().getInt("TrackId");
-
-        } catch (NullPointerException e) {
+        }
+        catch (NullPointerException e) {
             stopSelf();
         }
 
         //Request audio focus
-        if (requestAudioFocus() == false) {
+        if (requestAudioFocus() == false)
+        {
             //Could not gain focus
             stopSelf();
         }
-
 
         if (mediaSessionManager == null)
         {
@@ -232,7 +260,6 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
                     initMediaPlayer();
                     mHandler.postDelayed(mRunnable, 1000);
                     //AddListenActiityOnTrack();
-
                 }
             } catch (RemoteException e) {
                 e.printStackTrace();
@@ -255,7 +282,8 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
 */
 
     @Override
-    public void onDestroy() {
+    public void onDestroy()
+    {
         super.onDestroy();
         if (mMediaPlayer != null) {
             stopMedia();
@@ -282,6 +310,8 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
     public class LocalBinder extends Binder
     {
         public CustomMediaPlayerService getService() {
+            if(serviceCallbacks != null)
+                serviceCallbacks.showLoaderMediaPlayer();
             // Return this instance of LocalService so clients can call public methods
             return CustomMediaPlayerService.this;
         }
@@ -295,10 +325,16 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
     public void onBufferingUpdate(MediaPlayer mp, int percent) {
         //Invoked indicating buffering status of
         //a media resource being streamed over the network.
+
+        Log.d("PlayerService", "onBufferingUpdate, percent=" + percent );
+
     }
 
     @Override
-    public void onCompletion(MediaPlayer mp) {
+    public void onCompletion(MediaPlayer mp)
+    {
+
+        Log.d("PlayerService", "onCompletion" );
         //Invoked when playback of a media source has completed.
         stopMedia();
 
@@ -327,18 +363,27 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
     @Override
     public boolean onInfo(MediaPlayer mp, int what, int extra) {
         //Invoked to communicate some info
+        Log.d("PlayerService", "onInfo" + ",what=" + what + ",extra=" + extra);
         return false;
     }
 
     @Override
-    public void onPrepared(MediaPlayer mp) {
+    public void onPrepared(MediaPlayer mp)
+    {
         //Invoked when the media source is ready for playback.
+        Log.d("PlayerService", "onPrepared" );
+        if(serviceCallbacks != null)
+        {
+            serviceCallbacks.hideLoaderMediaPlayer();
+        }
         playMedia();
     }
 
     @Override
-    public void onSeekComplete(MediaPlayer mp) {
+    public void onSeekComplete(MediaPlayer mp)
+    {
         //Invoked indicating the completion of a seek operation.
+        Log.d("PlayerService", "onSeekComplete" );
     }
 
     @Override
@@ -384,7 +429,8 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
     /**
      * AudioFocus
      */
-    private boolean requestAudioFocus() {
+    private boolean requestAudioFocus()
+    {
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         int result = audioManager.requestAudioFocus(this, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
         if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
@@ -419,7 +465,8 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
         mMediaPlayer.reset();
 
         mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        try {
+        try
+        {
             // Set the data source to the mediaFile location
             //mediaPlayer.setDataSource(activeAudio.getData());
             Map<String,String> headers = new HashMap<>();
@@ -436,8 +483,10 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
         mMediaPlayer.prepareAsync();
     }
 
-    private void playMedia() {
-        if (!mMediaPlayer.isPlaying()) {
+    private void playMedia()
+    {
+        if (!mMediaPlayer.isPlaying())
+        {
             mMediaPlayer.start();
         }
     }
@@ -659,7 +708,7 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
         }
 
         Bitmap largeIcon = BitmapFactory.decodeResource(getResources(),
-                R.drawable.ic_launcher); //replace with your own image
+                R.drawable.logo_small); //replace with your own image
 
 /*        // Using RemoteViews to bind custom layouts into Notification
         RemoteViews views = new RemoteViews(getPackageName(),
@@ -747,8 +796,17 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
         builder.addAction( generateAction( android.R.drawable.ic_media_next, "Next", ACTION_NEXT ) );
         (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).notify(NOTIFICATION_ID, status);*/
         // Create a new Notification
+
+        Intent intent = new Intent(this, SideMenu.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT|
+                Intent.FLAG_ACTIVITY_SINGLE_TOP);;
+        intent.setPackage(null);
+        intent.setAction("OPEN_TAB_1");
+        //PendingIntent pending_intent = PendingIntent.getService(this, 0, intent, 0);
+
         String NOTIFICATION_CHANNEL_ID = "com.tevoi.tevoi";
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+        {
 
             String channelName = "My Background Service";
             NotificationChannel chan = new NotificationChannel(NOTIFICATION_CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_LOW);
@@ -759,8 +817,14 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
             manager.createNotificationChannel(chan);
         }
             NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
+            PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
+                    intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+
+            notificationBuilder.setContentIntent(contentIntent);
+
             Notification notification = notificationBuilder.setOngoing(true)
-                    .setSmallIcon(R.drawable.ic_launcher)
+                    .setSmallIcon(R.drawable.tevoi_logo)
                     // Hide the timestamp
                     .setShowWhen(false)
                     .setAutoCancel(true)
@@ -768,18 +832,18 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
                     //.setContentTitle("App is running in background")
                     .setPriority(NotificationManager.IMPORTANCE_LOW)
                     .setCategory(Notification.CATEGORY_SERVICE)
-                    .setContentText(TrackAuthors)
+                    .setContentText(TrackName)
                     .setContentTitle("")
-                    .setContentInfo(TrackName)
+                    .setContentInfo(TrackAuthors)
                     .setOnlyAlertOnce(true)
                     .setStyle(new MediaStyle()
                             // Attach our MediaSession token
                             .setMediaSession(mediaSession.getSessionToken())
                             // Show our playback controls in the compat view
                             .setShowActionsInCompactView(0, 1, 2))
-                    .setColor(ContextCompat.getColor(this,R.color.tevoiBlueSecondary))
+                    .setColor(ContextCompat.getColor(this,R.color.tevoiBrownLight))
                     // Set the large and small icons
-                    .setLargeIcon(largeIcon)
+                    //.setLargeIcon(largeIcon)
                     .setSmallIcon(android.R.drawable.stat_sys_headset)
                     // Add playback actions
                     .addAction(android.R.drawable.ic_menu_close_clear_cancel, "close", playbackAction(4))
@@ -788,6 +852,8 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
                     .addAction(android.R.drawable.ic_media_next, "next", playbackAction(2))
                     .build();
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
+
 
             // notificationId is a unique int for each notification that you must define
             notificationManager.notify(NOTIFICATION_ID, notification);
@@ -907,6 +973,7 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
 
             stopMedia();
             mMediaPlayer.reset();
+            AddListenActivityOnTrack();
             try
             {
                 //An audio file is passed to the service through putExtra();
@@ -921,7 +988,6 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
                 stopSelf();
             }
             initMediaPlayer();
-            AddListenActivityOnTrack();
             updateMetaData();
             buildNotification(PlaybackStatus.PLAYING);
         }
@@ -941,31 +1007,56 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
 
     public void AddListenActivityOnTrack()
     {
-        int numOfUnits = numberOfCurrentSecondsInTrack / Global.ListenUnitInSeconds;
-        int remainingSeconds = numberOfListenedSeconds - numOfUnits * Global.ListenUnitInSeconds;
-        if(remainingSeconds > 0)
+        if(serviceCallbacks.isDemoUser())
         {
-            Call<UserSubscriptionInfoResponse> call = Global.client.AddUnitUsageForUser(TrackId, remainingSeconds);
-            call.enqueue(new Callback<UserSubscriptionInfoResponse>()
+            if(serviceCallbacks.getUnitsForDemoUser() <= Global.NumberOfAllowedUnits)
             {
-                public void onResponse(Call<UserSubscriptionInfoResponse> call, Response<UserSubscriptionInfoResponse> response) {
-                    //generateDataList(response.body());
-                    UserSubscriptionInfoResponse updatedUserUsage = response.body();
-                    serviceCallbacks.updateUserUsage(updatedUserUsage);
-                    Toast.makeText(CustomMediaPlayerService.this, "Doooooone", Toast.LENGTH_SHORT).show();
-                    if(updatedUserUsage.IsFreeSubscription)
-                    {
+                if (numberOfListenedSeconds >= Global.ListenUnitInSeconds)
+                {
+                    int numOfUnits = numberOfListenedSeconds / Global.ListenUnitInSeconds;
+                    numberOfListenedSeconds = numberOfListenedSeconds - numOfUnits * Global.ListenUnitInSeconds;
+                    // update his quota
+                    serviceCallbacks.addUnitsForDemoUser(numOfUnits);
+                    Toast.makeText(getBaseContext(), "" + numOfUnits + " Unit consumed from your demo quota", Toast.LENGTH_SHORT).show();
+                }
+            }
+            else
+            {
+                mMediaPlayer.stop();
+                serviceCallbacks.setFlagUserExceedsDailyUsageListen();
+                Toast.makeText(getBaseContext(), R.string.no_quota_for_today, Toast.LENGTH_SHORT).show();
+                Log.d("Finished Quota", "You finished for today");
+            }
+        }
+        else
+        {
+            int numOfUnits = numberOfCurrentSecondsInTrack / Global.ListenUnitInSeconds;
+            int remainingSeconds = numberOfListenedSeconds - numOfUnits * Global.ListenUnitInSeconds;
+
+            if (remainingSeconds > 0) {
+                Call<UserSubscriptionInfoResponse> call = Global.client.AddUnitUsageForUser(TrackId, 0, numberOfCurrentSecondsInTrack);
+                call.enqueue(new Callback<UserSubscriptionInfoResponse>() {
+                    public void onResponse(Call<UserSubscriptionInfoResponse> call, Response<UserSubscriptionInfoResponse> response) {
+                        //generateDataList(response.body());
+                        UserSubscriptionInfoResponse updatedUserUsage = response.body();
+                        serviceCallbacks.updateUserUsage(updatedUserUsage);
+                        numberOfCurrentSecondsInTrack = 0;
+                        //Toast.makeText(CustomMediaPlayerService.this, "Doooooone", Toast.LENGTH_SHORT).show();
+                        if (updatedUserUsage != null) {
+                            if (updatedUserUsage.IsFreeSubscription) {
                                 /*if(updatedUserUsage.numberOfListenUnitsConsumed >= updatedUserUsage.FreeSubscriptionLimit.DailyListenMaxUnits)
                                 {
                                     mMediaPlayer.stop();
                                     serviceCallbacks.setFlagUserExceedsDailyUsageListen();
                                 }*/
+                            }
+                        }
                     }
-                }
-                public void onFailure(Call<UserSubscriptionInfoResponse> call, Throwable t) {
-                    Toast.makeText(CustomMediaPlayerService.this, "errrrrrro", Toast.LENGTH_SHORT).show();
-                }
-            });
+                    public void onFailure(Call<UserSubscriptionInfoResponse> call, Throwable t) {
+                        Toast.makeText(CustomMediaPlayerService.this, "errrrrrro", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
         }
 
     }

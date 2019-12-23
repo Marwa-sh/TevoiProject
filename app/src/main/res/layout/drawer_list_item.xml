@@ -25,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@mipmap/more_arrow_light_grey"
-        android:backgroundTint="@color/tevoiBlueSecondary"
+        android:backgroundTint="@color/tevoiBrownLight"
         android:background="@null"
         android:rotation="-90"
         android:gravity="right"

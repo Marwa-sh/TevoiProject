@@ -1,19 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="131dp"
+    android:weightSum="10"
+    android:orientation="vertical"
+    android:background="@color/white">
+
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="130dp"
     android:weightSum="10"
-    android:paddingBottom="3dp"
+    android:background="@color/white"
     android:id="@+id/track_row_layout"
     >
     <ImageButton
         android:id="@+id/btn_play_pause"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:background="@color/tevoiBlueSecondary"
+        android:background="@color/white"
         android:clickable="true"
-        android:src="@drawable/baseline_play_arrow_24"
+        android:padding="@dimen/padding_list_tracks"
+        android:scaleType="fitCenter"
+        android:src="@mipmap/play_normal_list"
         android:layout_weight="1"
         />
     <LinearLayout
@@ -43,8 +51,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Track Name"
-                    android:textColor="@color/tevoiBlueSecondary"
-                    android:textSize="20dp"
+                    android:textColor="@color/tevoiBrownDark"
+                    android:textSize="@dimen/txt_track_row"
                     android:layout_marginTop="15dp"
                     />
                 <TextView
@@ -52,17 +60,32 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/tv_categories"
                     android:text="categories"
+                    android:focusable="true"
+                    android:textSize="@dimen/txt_track_row_medium"
+                    android:focusableInTouchMode="true"
+                    android:singleLine="true"
+                    android:scrollHorizontally="true"
+                    android:ellipsize="marquee"
+                    android:marqueeRepeatLimit ="marquee_forever"
                     />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/tv_author"
                     android:text="Author"
+                    android:focusable="true"
+                    android:textSize="@dimen/txt_track_row_small"
+                    android:focusableInTouchMode="true"
+                    android:singleLine="true"
+                    android:scrollHorizontally="true"
+                    android:ellipsize="marquee"
+                    android:marqueeRepeatLimit ="marquee_forever"
                     />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Duration"
+                    android:textSize="@dimen/txt_track_row_small"
                     android:id="@+id/tv_duration"/>
                 <RatingBar
                     android:layout_width="wrap_content"
@@ -72,7 +95,7 @@
                     android:stepSize="1.0"
                     android:isIndicator="true"
                     android:id="@+id/rbTrack"
-                    android:progressTint="@color/tevoiStar"
+                    android:progressTint="@color/tevoiBrownDark"
                     android:layout_marginTop="6dp"
                     />
             </LinearLayout>
@@ -84,21 +107,28 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:visibility="invisible"
-                android:background="@color/tevoiBlueSecondary"
+                android:background="@color/tevoiBrownDark"
                 >
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@color/tevoiBlueSecondary"
-                    android:drawableTop="@mipmap/playnext"
-                    android:text="Play next"
+                    android:background="@null"
+                    android:drawableTop="@mipmap/addnext_normal_white"
+                    android:text="@string/add_to_play_next"
                     android:clickable="true"
                     android:id="@+id/btn_add_play_next"
-                    android:textSize="11dp"
+                    android:textSize="@dimen/txt_size"
                     android:textColor="@color/fontColor"
                     android:layout_gravity="center_vertical"
                     android:textStyle="bold"
+                    android:paddingTop="@dimen/btn_drawer_padding"
+                    android:paddingBottom="@dimen/btn_drawer_padding"
+                    />
+                <TextView
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
                     />
                 <Button
                     android:layout_width="wrap_content"
@@ -106,14 +136,21 @@
                     android:layout_weight="1"
                     android:clickable="true"
                     android:textColor="@color/fontColor"
-                    android:background="@color/tevoiBlueSecondary"
-                    android:drawableTop="@mipmap/add"
+                    android:background="@null"
+                    android:drawableTop="@mipmap/addtolist_normal_white"
                     android:id="@+id/btn_add_to_list"
-                    android:text="Add to List"
-                    android:textSize="11dp"
+                    android:text="@string/add_to_list_txt"
+                    android:textSize="@dimen/txt_size"
                     android:textStyle="bold"
+                    android:paddingTop="@dimen/btn_drawer_padding"
+                    android:paddingBottom="@dimen/btn_drawer_padding"
                     android:drawableTint="@color/fontColor"
                     android:layout_gravity="center_vertical"
+                    />
+                <TextView
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
                     />
                 <Button
                     android:layout_width="wrap_content"
@@ -121,16 +158,22 @@
                     android:layout_weight="1"
                     android:clickable="true"
                     android:id="@+id/btn_read_text"
-                    android:drawableTop="@mipmap/readtext"
-                    android:background="@color/tevoiBlueSecondary"
-                    android:textSize="11dp"
+                    android:drawableTop="@mipmap/readtext_normal_white"
+                    android:background="@null"
+                    android:textSize="@dimen/txt_size"
                     android:textColor="@color/fontColor"
-                    android:text="Read Text"
+                    android:text="@string/read_track_text"
                     android:layout_gravity="center_vertical"
                     android:textStyle="bold"
                     android:drawableTint="@color/White"
                     android:foregroundTint="@color/White"
-
+                    android:paddingTop="@dimen/btn_drawer_padding"
+                    android:paddingBottom="@dimen/btn_drawer_padding"
+                    />
+                <TextView
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
                     />
                 <Button
                     android:layout_width="wrap_content"
@@ -138,16 +181,158 @@
                     android:layout_weight="1"
                     android:id="@+id/imgBtnLike"
                     android:clickable="true"
-                    android:background="@color/tevoiBlueSecondary"
-                    android:drawableTop="@mipmap/hart"
-                    android:text="Like"
+                    android:background="@null"
+                    android:drawableTop="@mipmap/like_normal_white"
+                    android:text="@string/like_track"
                     android:textColor="@color/fontColor"
-                    android:textSize="11dp"
+                    android:textSize="@dimen/txt_size"
                     android:textStyle="bold"
                     android:layout_gravity="center_vertical"
-
+                    android:paddingTop="@dimen/btn_drawer_padding"
+                    android:paddingBottom="@dimen/btn_drawer_padding"
                     />
             </LinearLayout>
+            <LinearLayout
+                android:id="@+id/test_hoverButtonsLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:weightSum="4"
+                android:clickable="true"
+                android:focusable="true"
+                android:visibility="invisible"
+                android:orientation="horizontal"
+                android:background="@color/tevoiBrownDark"
+                >
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@color/tevoiBrownDark"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:weightSum="5">
+
+                    <ImageView
+                        android:layout_weight="4"
+                        android:id="@+id/img_h1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:src="@mipmap/addnext_normal_white"/>
+                    <TextView
+                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Like This"
+                        android:textSize="11dp"
+                        android:layout_centerInParent="true"
+                        android:layout_alignParentBottom="true"
+                        android:textColor="@color/white"/>
+
+                </LinearLayout>
+                <TextView
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
+                    />
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@color/tevoiBrownDark"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:weightSum="5">
+
+                    <ImageView
+                        android:layout_weight="4"
+                        android:id="@+id/img_h2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:src="@mipmap/hart"/>
+                    <TextView
+                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Like This"
+                        android:textSize="11dp"
+                        android:layout_centerInParent="true"
+                        android:layout_alignParentBottom="true"
+                        android:textColor="@color/white"/>
+
+                </LinearLayout>
+                <TextView
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
+                    />
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@color/tevoiBrownDark"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:weightSum="5">
+
+                    <ImageView
+                        android:layout_weight="4"
+                        android:id="@+id/img_h3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:src="@mipmap/hart"/>
+                    <TextView
+                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Like This"
+                        android:textSize="11dp"
+                        android:layout_centerInParent="true"
+                        android:layout_alignParentBottom="true"
+                        android:textColor="@color/white"/>
+
+                </LinearLayout>
+                <TextView
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
+                    />
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@color/tevoiBrownDark"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:weightSum="5">
+
+                    <ImageView
+                        android:layout_weight="4"
+                        android:id="@+id/img_h4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:src="@mipmap/hart"/>
+                    <TextView
+                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Like This"
+                        android:textSize="11dp"
+                        android:layout_centerInParent="true"
+                        android:layout_alignParentBottom="true"
+                        android:textColor="@color/white"/>
+
+                </LinearLayout>
+                <TextView
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
+                    />
+            </LinearLayout>
+
 
         </FrameLayout>
 
@@ -157,16 +342,44 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_weight="1">
-        <ImageButton
+        <TextView
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/tevoiBrownDark"
+            />
+       <!-- <ImageButton
             android:layout_width="30dp"
             android:layout_height="match_parent"
             android:background="@null"
             android:scaleType="fitCenter"
-            android:src="@drawable/outline_reorder_rotated_24"
+            android:src="@mipmap/right_menu_normal"
             android:clickable="true"
             android:layout_weight="1"
             android:id="@+id/btn_track_drawer"
-            android:rotation="90"
+            />-->
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:scaleType="fitCenter"
+            android:src="@mipmap/right_menu_normal"
+            android:clickable="true"
+            android:layout_weight="1"
+            android:padding="@dimen/padding_list_tracks"
+            android:id="@+id/btn_track_drawer"
             />
     </LinearLayout>
+
+</LinearLayout>
+<LinearLayout
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:orientation="horizontal">
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:background="@color/tevoiOutLine"
+    />
+</LinearLayout>
+
 </LinearLayout>

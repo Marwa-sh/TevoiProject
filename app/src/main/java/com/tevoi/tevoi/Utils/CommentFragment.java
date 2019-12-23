@@ -1,28 +1,27 @@
 package com.tevoi.tevoi.Utils;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tevoi.tevoi.R;
 import com.tevoi.tevoi.SideMenu;
 import com.tevoi.tevoi.adapter.CommentsAdapter;
-import com.tevoi.tevoi.model.AddCommentResponse;
 import com.tevoi.tevoi.model.CommentObject;
+import com.tevoi.tevoi.model.IResponse;
 import com.tevoi.tevoi.model.TrackCommentRequest;
 import com.tevoi.tevoi.model.TrackCommentResponse;
-import com.tevoi.tevoi.rest.ApiClient;
-import com.tevoi.tevoi.rest.ApiInterface;
 
 import java.util.ArrayList;
 
@@ -38,6 +37,7 @@ public class CommentFragment extends Fragment
     CommentsAdapter adapter ;
     RecyclerView recyclerView;
     View rootView;
+    ProgressBar progressBar;
 
       public static CommentFragment newInstance(int trackId) {
           CommentFragment f = new CommentFragment();
@@ -62,6 +62,9 @@ public class CommentFragment extends Fragment
     {
         rootView = inflater.inflate(R.layout.fragment_comment, container,
                 false);
+        progressBar = rootView.findViewById(R.id.loader_comments);
+        progressBar.setVisibility(View.VISIBLE);
+
         ImageView iv =  rootView.findViewById(R.id.imageView_close);
         iv.setOnClickListener(new View.OnClickListener()
         {
@@ -99,18 +102,17 @@ public class CommentFragment extends Fragment
                 else
                 {
                     // call method in api to add comment then dimiss
-                    ApiInterface client = ApiClient.getClient().create(ApiInterface.class);
-                    Call<AddCommentResponse> call = client.AddComment(TrackId, comment);
-                    call.enqueue(new Callback<AddCommentResponse>(){
-                        public void onResponse(Call<AddCommentResponse> call, Response<AddCommentResponse> response)
+                    Call<IResponse> call = Global.client.AddComment(TrackId, comment);
+                    call.enqueue(new Callback<IResponse>(){
+                        public void onResponse(Call<IResponse> call, Response<IResponse> response)
                         {
-                            AddCommentResponse result = response.body();
+                            IResponse result = response.body();
                            //getDialog().dismiss();
                             Toast.makeText( getContext(), "Comment Added", Toast.LENGTH_SHORT).show();
                             ImageView iv = rootView.findViewById(R.id.imageView_close);
                             iv.callOnClick();
                         }
-                        public void onFailure(Call<AddCommentResponse> call, Throwable t)
+                        public void onFailure(Call<IResponse> call, Throwable t)
                         {
                             Toast.makeText( getContext(), "Error in comment add", Toast.LENGTH_SHORT).show();
                         }
@@ -133,8 +135,8 @@ public class CommentFragment extends Fragment
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
 
-        ApiInterface client = ApiClient.getClient().create(ApiInterface.class);
-        Call<TrackCommentResponse> call = client.GetTrackComments(TrackId);
+
+        Call<TrackCommentResponse> call = Global.client.GetTrackComments(TrackId);
         call.enqueue(new Callback<TrackCommentResponse>(){
             public void onResponse(Call<TrackCommentResponse> call, Response<TrackCommentResponse> response)
             {
@@ -147,11 +149,12 @@ public class CommentFragment extends Fragment
                     recyclerView = rootView.findViewById(R.id.comments_recycler_View);
                     recyclerView.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
+                    progressBar.setVisibility(View.GONE);
                 }
             }
             public void onFailure(Call<TrackCommentResponse> call, Throwable t)
             {
-
+                progressBar.setVisibility(View.GONE);
             }
         });
 
