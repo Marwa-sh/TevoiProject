@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="120dp">
+    <!--
+        <LinearLayout
+            android:id="@+id/hoverButtonsLayoutUserList"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:weightSum="2"
+            android:clickable="true"
+            android:focusable="true"
+            android:visibility="invisible"
+            android:layout_alignParentRight="true">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/tevoiBlueSecondary"
+                android:drawableTop="@drawable/outline_playlist_next_play_24"
+                android:text="Rename"
+                android:clickable="true"
+                android:id="@+id/btn_rename_user_list"
+                android:textSize="@dimen/text_size"
+                android:textColor="@color/fontColor"
+                />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:textColor="@color/fontColor"
+                android:background="@color/tevoiBlueSecondary"
+                android:drawableTop="@drawable/outline_playlist_add_white_64"
+                android:id="@+id/btn_delete_user_list"
+                android:text="Delete"
+                android:textSize="@dimen/text_size"
+
+                />
+
+        </LinearLayout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+        android:id="@+id/user_list_row_layout"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="10"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:layout_marginVertical="1dp"
+        android:visibility="visible"
+        >
+
+        <ImageButton
+            android:id="@+id/btn_play_pause_user_list"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@color/tevoiBlueSecondary"
+            android:clickable="true"
+            android:onClick="startMediaplayer"
+            android:scaleType="fitXY"
+            android:src="@drawable/baseline_play_arrow_24"
+            />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="8"
+            android:id="@+id/layout_user_list_details"
+            android:layout_marginHorizontal="5dp"
+            android:background="@android:color/white"
+            >
+
+            <TextView
+                android:id="@+id/tv_user_list_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="List Name"
+                android:textColor="@color/tevoiBlueSecondary"
+                android:textSize="25dp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_creation_date"
+                android:text="Creation Date"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Duration"
+                android:id="@+id/tv_duration_user_list"/>
+
+        </LinearLayout>
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="131dp"
+            android:background="@color/fontColor"
+            android:scaleType="fitCenter"
+            android:src="@drawable/outline_reorder_rotated_24"
+            android:clickable="true"
+            android:layout_weight="1"
+            android:id="@+id/btn_user_list_drawer"
+            />
+
+    </LinearLayout>-->
+</RelativeLayout>

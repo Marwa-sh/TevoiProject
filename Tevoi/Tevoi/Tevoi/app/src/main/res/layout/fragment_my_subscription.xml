@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/tevoiBrownDark">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/tevoiBrownDark"
+    android:orientation="vertical"
+    >
+    <!--<ImageButton
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="end"
+        android:background="@null"
+        android:scaleType="fitXY"
+        android:src="@mipmap/cross_white_null_background"
+        />-->
+         <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/offer_coupon"
+        android:textColor="@color/fontColor"
+        android:layout_marginStart="25dp"
+        android:paddingTop="20dp"
+        />
+
+        <EditText
+            android:id="@+id/txtCoupon"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="7dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/rounded_edittext"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/choose_subscription_period"
+        android:textColor="@color/fontColor"
+        android:layout_marginTop="29dp"
+        android:layout_marginStart="25dp"
+        android:textSize="17dp"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <CheckBox
+
+            android:layout_marginStart="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:buttonTint="@color/fontColor"
+            android:layout_gravity="center_vertical"
+
+            />
+        <TextView
+
+            android:layout_marginStart="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/month_12"
+            android:textColor="@color/fontColor"
+            android:layout_gravity="center_vertical"
+            />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <CheckBox
+
+            android:layout_marginStart="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:buttonTint="@color/fontColor"
+            android:layout_gravity="center_vertical"
+
+            />
+        <TextView
+
+            android:layout_marginStart="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/month_6"
+            android:textColor="@color/fontColor"
+            android:layout_gravity="center_vertical"
+            />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <CheckBox
+
+            android:layout_marginStart="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:buttonTint="@color/fontColor"
+            android:layout_gravity="center_vertical"
+
+            />
+        <TextView
+
+            android:layout_marginStart="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/month_3"
+            android:textColor="@color/fontColor"
+            android:layout_gravity="center_vertical"
+            />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <CheckBox
+            android:layout_marginStart="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:buttonTint="@color/fontColor"
+            android:layout_gravity="center_vertical"
+            />
+        <TextView
+            android:layout_marginStart="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/month_1"
+            android:textColor="@color/fontColor"
+            android:layout_gravity="center_vertical"
+            />
+
+    </LinearLayout>
+<!--    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="payment Method"
+        android:textColor="@color/fontColor"
+        android:layout_marginTop="29dp"
+        android:layout_marginLeft="25dp"
+        android:textSize="17dp"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <CheckBox
+
+            android:layout_marginLeft="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:buttonTint="@color/fontColor"
+            android:layout_gravity="center_vertical"
+
+            />
+        <TextView
+
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Apple Store/google play"
+            android:textColor="@color/fontColor"
+            android:layout_gravity="center_vertical"
+            />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <CheckBox
+
+            android:layout_marginLeft="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:buttonTint="@color/fontColor"
+            android:layout_gravity="center_vertical"
+
+            />
+        <TextView
+
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="phone Bill"
+            android:textColor="@color/fontColor"
+            android:layout_gravity="center_vertical"
+            />
+
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Auto Renew"
+
+            android:textColor="@color/fontColor"
+            android:layout_centerVertical="true"
+
+            android:layout_marginLeft="25dp"
+            android:textSize="20dp"
+
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="16dp"
+            android:text="your sbscription will end in 31"
+            android:textColor="@color/fontColor"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="25dp"
+
+            />
+        <androidx.appcompat.widget.SwitchCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:theme="@style/SCBSwitch"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+
+
+            />
+
+    </RelativeLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="Price calculator"
+        android:textColor="@color/fontColor"
+        android:layout_marginLeft="25dp"
+
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:layout_marginLeft="25dp"
+        android:paddingVertical="10dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginEnd="30dp"
+        android:background="@drawable/rounded_edittext"
+        android:text="premium Subscription for 12 months"
+        />-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+        <ImageButton
+            android:layout_marginStart="30dp"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:checked="true"
+            android:src="@mipmap/accept_button_hover"
+            android:layout_gravity="center_vertical"
+            android:id="@+id/btn_accept_coupon"
+            />
+        <TextView
+
+            android:layout_marginStart="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/proceed_to_payment"
+            android:textColor="@color/fontColor"
+            android:layout_gravity="center_vertical"
+            />
+
+        <ImageButton
+            android:layout_marginStart="30dp"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:checked="true"
+            android:background="@null"
+            android:src="@mipmap/close_button_hover"
+            android:layout_gravity="center_vertical"
+            />
+        <TextView
+            android:layout_marginStart="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel"
+            android:textColor="@color/fontColor"
+            android:layout_gravity="center_vertical"
+            />
+    </LinearLayout>
+
+</LinearLayout>
+
+</ScrollView>

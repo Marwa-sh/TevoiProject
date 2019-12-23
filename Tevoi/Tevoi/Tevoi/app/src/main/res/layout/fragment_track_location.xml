@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="115dp"
+    android:background="@color/tevoiBrownDark"
+    tools:context=".TrackLocation">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/tevoiBrownDark"
+        android:orientation="vertical"
+
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/location_header_fragement"
+            android:textColor="@color/fontColor"
+            android:layout_marginLeft="32dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="20dp"
+            android:textSize="18dp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/location_body_fragement"
+            android:layout_marginLeft="32dp"
+            android:layout_marginStart="32dp"
+            android:textColor="@color/fontColor"
+            android:textSize="11dp"
+
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10.78dp"
+            android:layout_marginLeft="32.25dp"
+            android:layout_marginStart="32.25dp"
+            >
+
+            <ImageButton
+                android:id="@+id/imgBtnOpenMapsApp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:background="@null"
+                android:src="@mipmap/accept_button_normal"
+                android:scaleType="fitXY"
+                android:onClick="locationClick"
+
+
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Yes"
+                android:textColor="@color/fontColor"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="4dp"
+                android:layout_marginLeft="4dp"
+                />
+            <ImageButton
+                android:id="@+id/imgBtnCloseLocationFragment"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:background="@null"
+                android:scaleType="fitXY"
+                android:src="@mipmap/close_button_normal"
+                android:onClick="locationClick"
+                android:layout_marginLeft="69dp"
+                android:layout_marginStart="69dp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/No"
+                android:textColor="@color/fontColor"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="4dp"
+                android:layout_marginStart="4dp"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>
