@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".PartnersFragment">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/tabsLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="4">
+
+        <Button
+            android:id="@+id/btnAlphabetOrder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:background="@color/tevoiBrownLight"
+            android:text="A-Z"
+            android:padding="@dimen/btn_padding"
+            android:textColor="@color/fontColor"
+            android:onClick="changeToAlphabetOrder"/>
+
+        <Button
+            android:id="@+id/btnNewListPartners"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:background="@color/tevoiBrownDark"
+            android:text="@string/new_track"
+            android:padding="@dimen/btn_padding"
+            android:textColor="@color/fontColor"
+            android:onClick="changeTabToNewListPartners"/>
+
+        <!--<Button
+            android:id="@+id/btnTopRatedListPartners"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/tevoiBlueSecondary"
+            android:text="@string/top_rated"
+            android:textColor="@color/fontColor"
+            android:onClick="changeTabToTopRatedPartners"/>
+
+        <Button
+        android:id="@+id/btnPopularListPartners"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@color/tevoiBlueSecondary"
+        android:text="@string/popular"
+        android:textColor="@color/fontColor"
+        android:onClick="changeToPopularPartners"/>-->
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <com.tevoi.tevoi.model.RecyclerViewEmptySupport
+        android:id="@+id/partners_recycler_View"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+    </com.tevoi.tevoi.model.RecyclerViewEmptySupport>
+    <TextView android:id="@+id/partners_list_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="@dimen/text_size"
+        android:paddingTop="@dimen/text_empty_list"
+        android:text="@string/empty_list"
+        />
+    <ProgressBar
+        android:id="@+id/progress_list_partners"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
+</LinearLayout>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:weightSum="5"
+    >
+    <!--<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/txtListItemName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        android:gravity="left"
+        android:layout_weight="1"
+        android:text="Marwa"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:textColor="#000000"
+        android:background="#FFFFFF"
+        android:minHeight="?android:attr/listPreferredItemHeightSmall"/>-->
+
+
+    <ImageButton
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@mipmap/more_arrow_light_grey"
+        android:backgroundTint="@color/tevoiBrownLight"
+        android:background="@null"
+        android:rotation="-90"
+        android:gravity="right"
+        android:id="@+id/btnGoTo"
+        android:layout_weight="4"
+        />
+
+</LinearLayout>

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/scrollViewListTracks">-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/linearLayoutListTracks"
+    android:orientation="vertical"
+    android:isScrollContainer="true"
+    android:scrollbars="vertical"
+    tools:context=".TracksList">
+
+    <include layout="@layout/layout_searchbar"
+        android:id="@+id/layout_search_include"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        />
+
+    <include layout="@layout/error_layout_inner"/>
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/tabsLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="3">
+
+        <Button
+            android:id="@+id/btnNewList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/tevoiBrownDark"
+            android:text="@string/new_track"
+            android:padding="@dimen/btn_padding"
+            android:textColor="@color/fontColor"
+            android:onClick="changeTabToNew"/>
+        <TextView
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/tevoiOutLine"
+            />
+        <Button
+            android:id="@+id/btnTopRatedList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/tevoiBrownDark"
+            android:text="@string/top_rated"
+            android:padding="@dimen/btn_padding"
+            android:textColor="@color/fontColor"
+            android:onClick="changeTabToTopRated"/>
+        <TextView
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/tevoiOutLine"
+            />
+        <Button
+            android:id="@+id/btnPopularList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/tevoiBrownDark"
+            android:text="@string/popular"
+            android:padding="@dimen/btn_padding"
+            android:textColor="@color/fontColor"
+            android:onClick="changeToPopular"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/tevoiOutLine"
+        />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <include layout="@layout/layout_main_player"
+            android:id="@+id/layout_main_player_include"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            />
+    </LinearLayout>
+   <!-- <include layout="@layout/layout_main_player"
+        android:id="@+id/layout_main_player_include"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        />-->
+    <com.tevoi.tevoi.model.RecyclerViewEmptySupport
+        android:id="@+id/tracks_recycler_View"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+    </com.tevoi.tevoi.model.RecyclerViewEmptySupport>
+    <TextView android:id="@+id/tracks_list_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:layout_gravity="center"
+        android:textSize="16dp"
+        android:paddingTop="@dimen/text_empty_list"
+        android:text="@string/empty_list"
+        />
+    <ProgressBar
+        android:id="@+id/main_progress_list_tracks"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
+
+
+</LinearLayout>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true">
+
+        <include layout="@layout/layout_banner"
+            android:id="@+id/layout_banner_in_list_tracks"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            />
+
+</LinearLayout>
+</RelativeLayout>
+<!--
+</ScrollView>-->

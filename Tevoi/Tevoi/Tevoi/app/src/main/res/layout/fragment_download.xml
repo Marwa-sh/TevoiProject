@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@color/tevoiBrownDark"
+    >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Control the time tracks are kept available offline in the play next list"
+        android:textSize="15dp"
+        android:layout_marginStart="40dp"
+        android:textColor="@color/fontColor"
+        android:layout_marginTop="50dp"
+
+        android:gravity="start"
+        />
+
+    <SeekBar
+        android:id="@+id/seekbar_download_limits"
+        style="@style/Widget.AppCompat.SeekBar.Discrete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:max="6"
+        android:layout_marginTop="30dp"
+        android:progress="5"
+        android:progressBackgroundTint="@color/tevoiBrownDark"
+        android:progressTint="@color/fontColor"
+        android:thumbTint="@color/fontColor"
+        android:scaleX="0.87"
+        android:scaleY="0.87"
+        />
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:stretchColumns="*"
+        android:scaleX="0.87"
+        android:scaleY="0.87"
+        >
+
+        <TableRow
+            android:id="@+id/statusRow"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/txt_zero"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_weight="1"
+                android:text="   0"
+                android:textColor="@android:color/white"
+                android:textSize="20dp" />
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_column="1"
+                android:textSize="18dp"
+                android:textColor="@android:color/white"
+                android:text="30 M"/>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_column="2"
+                android:textSize="18dp"
+                android:textColor="@android:color/white"
+                android:text="  1 H"/>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_column="3"
+                android:textSize="18dp"
+                android:textColor="@android:color/white"
+                android:text="  2 H"/>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_column="4"
+                android:textSize="18dp"
+                android:textColor="@android:color/white"
+                android:text="   5 H"/>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_column="4"
+                android:textSize="18dp"
+                android:textColor="@android:color/white"
+                android:text="     8 H"/>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_column="4"
+                android:textSize="18dp"
+                android:textColor="@android:color/white"
+                android:text="   10 H"/>
+        </TableRow>
+
+    </TableLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="54dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginLeft="40dp">
+
+        <ImageButton
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:background="@null"
+            android:scaleType="fitXY"
+            android:src="@mipmap/accept_button_normal"
+            android:layout_gravity="center_vertical"
+
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save"
+            android:textColor="@color/fontColor"
+            android:layout_marginStart="7dp"
+            android:layout_gravity="center_vertical"
+            />
+
+        <ImageButton
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:scaleType="fitXY"
+            android:src="@mipmap/close_button_normal"
+            android:background="@null"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="40dp"
+
+
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            android:layout_gravity="center_vertical"
+            android:textColor="@color/fontColor"
+            android:layout_marginStart="7dp"/>
+    </LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Note: The more you keep tracks the more cache the app will use on your mobile"
+        android:textSize="15dp"
+        android:layout_marginStart="40dp"
+        android:textColor="@color/fontColor"
+        android:layout_marginTop="50dp"
+        android:gravity="start"
+        />
+
+
+</LinearLayout>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/hoverButtonsLayoutWithoutRemove"
+android:layout_width="wrap_content"
+android:layout_height="match_parent"
+android:weightSum="5"
+android:clickable="true"
+android:focusable="true"
+android:visibility="invisible">
+<Button
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_weight="1"
+    android:background="@color/tevoiBlueSecondary"
+    android:drawableTop="@drawable/outline_playlist_next_play_24"
+    android:text="Play next"
+    android:clickable="true"
+    android:id="@+id/btn_add_play_next"
+    android:textSize="@dimen/text_size"
+    android:textColor="@color/fontColor"
+    />
+<Button
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_weight="1"
+    android:clickable="true"
+    android:textColor="@color/fontColor"
+    android:background="@color/tevoiBlueSecondary"
+    android:drawableTop="@drawable/outline_playlist_add_white_64"
+    android:id="@+id/btn_add_to_list"
+    android:text="Add to List"
+    android:textSize="@dimen/text_size"
+
+    />
+<Button
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_weight="1"
+    android:clickable="true"
+    android:id="@+id/btn_read_text"
+    android:drawableTop="@drawable/outline_readtext_white_24"
+    android:background="@color/tevoiBlueSecondary"
+    android:textSize="@dimen/text_size"
+    android:textColor="@color/fontColor"
+    android:text="Read Text"
+    />
+<Button
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_weight="1"
+    android:id="@+id/imgBtnLike"
+    android:clickable="true"
+    android:background="@color/tevoiBlueSecondary"
+    android:drawableTop="@drawable/outlined_heart_64"
+    android:text="Like"
+    android:textColor="@color/fontColor"
+    android:textSize="@dimen/text_size"
+    />
+</LinearLayout>
