@@ -23,25 +23,29 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:weightSum="5">
+                <!--
+                    android:layout_marginEnd="10dp"
+                    android:paddingStart="20dp"-->
                 <ImageView
+                    android:id="@+id/img_home"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingTop="5dp"
-                    android:paddingStart="20dp"
-                    android:layout_gravity="start"
-                    android:src="@mipmap/filter_normal"
-                    android:layout_marginEnd="10dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:paddingTop="15dp"
+                    android:src="@mipmap/home"
                     />
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:layout_weight="3">
                     <ImageView
                         android:id="@+id/tevoi_logo_img"
                         android:layout_width="40dp"
                         android:layout_height="20dp"
-                        android:paddingTop="5dp"
                         android:layout_gravity="center_horizontal"
                         android:src="@drawable/logo" />
 
@@ -57,7 +61,7 @@
                         android:id="@+id/toolbar_subtitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="10dp"
+                        android:textSize="12dp"
                         style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
                         android:layout_gravity="center_horizontal" />
                 </LinearLayout>
@@ -67,11 +71,10 @@
                     android:id="@+id/tevoi_filter_img"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingTop="5dp"
-                    android:paddingEnd="20dp"
-                    android:layout_gravity="end"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:paddingTop="15dp"
                     android:src="@mipmap/filter_normal"
-                    android:layout_marginEnd="10dp"
                     />
             </LinearLayout>
 
