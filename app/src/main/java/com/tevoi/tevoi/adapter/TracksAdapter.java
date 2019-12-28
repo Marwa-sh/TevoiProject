@@ -234,6 +234,7 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             trackDetailsLayout = itemView.findViewById(R.id.layout_track_details);
 
             tvCategories.setSelected(true);
+            tvTrackName.setSelected(true);
             //Hover Buttons
             btnAddPlayNext = itemView.findViewById(R.id.btn_add_play_next);
             btnAddToList = itemView.findViewById(R.id.btn_add_to_list);

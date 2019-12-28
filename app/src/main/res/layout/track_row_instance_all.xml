@@ -61,6 +61,12 @@
                     android:text="Track Name"
                     android:textColor="@color/tevoiBrownDark"
                     android:textSize="@dimen/txt_track_row"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:singleLine="true"
+                    android:scrollHorizontally="true"
+                    android:ellipsize="marquee"
+                    android:marqueeRepeatLimit ="marquee_forever"
                     />
                 <TextView
                     android:layout_width="wrap_content"

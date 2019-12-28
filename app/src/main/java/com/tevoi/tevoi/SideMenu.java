@@ -283,7 +283,7 @@ public class SideMenu extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         final TextView mSubTitle = (TextView) toolbar.findViewById(R.id.toolbar_subtitle);
         ImageView btnTevoiLogo = toolbar.findViewById(R.id.tevoi_logo_img);
-        btnTevoiLogo.setOnClickListener(new View.OnClickListener()
+        /*btnTevoiLogo.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
@@ -308,7 +308,7 @@ public class SideMenu extends AppCompatActivity
                     }
                 }
             }
-        });
+        });*/
 
         ImageView imgHome = toolbar.findViewById(R.id.img_home);
 
@@ -1765,6 +1765,8 @@ public class SideMenu extends AppCompatActivity
         follow_us.setActionView(view);list_history.setActionView(view);
         play_next.setActionView(view); list_favourite.setActionView(view);
         my_list.setActionView(view); logout.setActionView(view);
+
+
     }
 
     private  void setActionLayout(MenuItem m)
