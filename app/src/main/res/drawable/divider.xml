@@ -2,8 +2,11 @@
 <layer-list
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
+
         <shape
             android:shape="rectangle">
+            <size
+                android:width="10dp"/>
             <solid
                 android:color="#ffffff" />
         </shape>
@@ -14,6 +17,7 @@
         android:right="-2dp"
         android:left="-2dp">
         <shape>
+
             <solid
                 android:color="@android:color/transparent" />
             <stroke
