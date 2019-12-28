@@ -32,6 +32,7 @@ import com.tevoi.tevoi.model.UserFiltersResponse;
 import com.tevoi.tevoi.model.UserProfileRequest;
 import com.tevoi.tevoi.model.UserProfileResponse;
 
+import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Call;
@@ -150,8 +151,26 @@ public class MyProfileFragment extends Fragment {
                 spnrGender.setAdapter(spnrGendersAdapter);
 
                /// int posiotion = spnrCountriesAdapter.getPosition(profile.Country);
-                spnrCountries.setSelection(profile.Country);
-                spnrGender.setSelection(profile.Gender);
+                int indexOfCountry = 0;
+                for (int i =0; i< countries.size(); i++)
+                {
+                    if(countries.get(i).getId() == profile.getCountry())
+                    {
+                        indexOfCountry = i;
+                        break;
+                    }
+                }
+                int indexOfGender = 0;
+                for (int i =0; i< genders.size(); i++)
+                {
+                    if(genders.get(i).getId() == profile.getGender())
+                    {
+                        indexOfGender = i;
+                        break;
+                    }
+                }
+                spnrCountries.setSelection(indexOfCountry);
+                spnrGender.setSelection(indexOfGender);
 
                 activity.mProgressDialog.dismiss();
             }

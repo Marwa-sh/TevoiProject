@@ -283,7 +283,6 @@ public class SideMenu extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         final TextView mSubTitle = (TextView) toolbar.findViewById(R.id.toolbar_subtitle);
         ImageView btnTevoiLogo = toolbar.findViewById(R.id.tevoi_logo_img);
-
         btnTevoiLogo.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -310,6 +309,36 @@ public class SideMenu extends AppCompatActivity
                 }
             }
         });
+
+        ImageView imgHome = toolbar.findViewById(R.id.img_home);
+
+        imgHome.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                if(!CurrentFragmentName.equals(Global.ListTracksFragmentName))
+                {
+                    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                    if (drawer.isDrawerOpen(GravityCompat.START))
+                    {
+                        drawer.closeDrawer(GravityCompat.START);
+                    }
+                    mSubTitle.setText(R.string.title_list_tracks);
+                    fragmentTransaction.replace(R.id.content_frame, lisTracksFragment);
+                    fragmentTransaction.addToBackStack(getResources().getString(R.string.title_list_tracks));
+                    CurrentFragmentName = Global.ListTracksFragmentName;
+                    try
+                    {
+                        fragmentTransaction.commit();
+                    }
+                    catch (Exception exc)
+                    {
+                    }
+                }
+            }
+        });
+
 
 
         ImageView imgFilter = findViewById(R.id.tevoi_filter_img);
