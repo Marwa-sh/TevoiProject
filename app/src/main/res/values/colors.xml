@@ -15,7 +15,7 @@
     <color name="red">#D81B60</color>
     <color name="thumbgrey">#535353</color>
     <color name="placeholder_grey">#AAADC4</color>
-
+    <color name="dark_grey">#080808</color>
     <!-- Tevoi New Colors -->
     <color name="tevoiBlack">#37393F</color>
     <color name="tevoiBrownDark">#84754B</color>

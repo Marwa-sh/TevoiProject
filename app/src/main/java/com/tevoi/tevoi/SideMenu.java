@@ -457,7 +457,7 @@ public class SideMenu extends AppCompatActivity
         //region code for changing menu item text style
         Menu menuNav = navigationView.getMenu();
         MenuItem menuUpgradeToPremium = menuNav.findItem(R.id.upgrade_to_premium);
-        MenuItem menuLists = menuNav.findItem((R.id.lists));
+        MenuItem menuLists = menuNav.findItem((R.id.list_tracks));
 
         menuUpgradeToPremium.setTitle(Html.fromHtml("<b><font color='#84754B'>" + getResources().getString(R.string.title_upgrade_to_premium) +  "</font></b>"));
         menuLists.setTitle(Html.fromHtml("<b><font color='#535353'>" + getResources().getString(R.string.title_lists) +  "</font></b>"));
