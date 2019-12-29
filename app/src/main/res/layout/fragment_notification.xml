@@ -20,7 +20,7 @@
     </LinearLayout>
 
 
-    <RelativeLayout
+   <!-- <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="44dp"
         >
@@ -46,5 +46,5 @@
             android:id="@+id/switch_notification_type_all"
             />
 
-    </RelativeLayout>
+    </RelativeLayout>-->
 </LinearLayout>
