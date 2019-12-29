@@ -142,7 +142,9 @@
     <string name="No" translatable="false">No</string>
 
     <string name="clear_selection">Clear Selections</string>
+    <string name="clear_all_tracks">Clear All Tracks</string>
     <string name="loader_msg"></string>
+    <string name="clear_all_history">Clear All History</string>
     <string name="add_track_to_list">Add Track</string>
     <string name="offer_coupon">offer coupon</string>
     <string name="choose_subscription_period">choose subscription period</string>

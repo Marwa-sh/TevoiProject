@@ -39,7 +39,7 @@ public class NotificationFragment extends Fragment {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
 
-        switchCompatAll = rootView.findViewById(R.id.switch_notification_type_all);
+      /*  switchCompatAll = rootView.findViewById(R.id.switch_notification_type_all);
         switchCompatAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
@@ -69,7 +69,7 @@ public class NotificationFragment extends Fragment {
                     });
                 }
             }
-        });
+        });*/
 
         activity.mProgressDialog.setMessage(getResources().getString( R.string.loader_msg));
         activity.mProgressDialog.show();
