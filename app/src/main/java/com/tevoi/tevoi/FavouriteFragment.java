@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 import com.tevoi.tevoi.Utils.Global;
 import com.tevoi.tevoi.Utils.HelperFunctions;
 import com.tevoi.tevoi.adapter.TracksAdapter;
+import com.tevoi.tevoi.model.IResponse;
 import com.tevoi.tevoi.model.PaginationScrollListener;
 import com.tevoi.tevoi.model.RecyclerViewEmptySupport;
 import com.tevoi.tevoi.model.TrackObject;
@@ -52,6 +54,7 @@ public class FavouriteFragment extends Fragment {
     RecyclerViewEmptySupport recyclerView;
     SideMenu activity;
     View rootView;
+    ImageButton btnClearFavourite;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,6 +66,37 @@ public class FavouriteFragment extends Fragment {
 
         recyclerView = rootView.findViewById(R.id.favourite_tracks_recycler_View);
         initiatePagination();
+
+        btnClearFavourite =rootView.findViewById(R.id.btn_clear_favourite);
+
+        //abd
+        btnClearFavourite.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                activity.mProgressDialog.setMessage(getResources().getString( R.string.loader_msg)); activity.mProgressDialog.show();
+
+                Call<IResponse> call = Global.client.RemoveAllFavourite();
+                call.enqueue(new Callback <IResponse>(){
+                    public void onResponse(Call<IResponse> call, Response<IResponse> response) {
+                        //generateDataList(response.body());
+                        SideMenu activity = (SideMenu) getActivity();
+                        IResponse result = response.body();
+                        Toast.makeText(activity, result.getMessage(), Toast.LENGTH_SHORT).show();
+                        activity.mProgressDialog.dismiss();
+                        doRefresh();
+                    }
+                    public void onFailure(Call<IResponse> call, Throwable t)
+                    {
+                        activity.mProgressDialog.dismiss();
+                        Toast.makeText(getContext(),"something went wrong", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+
+        //abd
 
         linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);

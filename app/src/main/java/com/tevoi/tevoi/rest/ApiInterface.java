@@ -182,6 +182,12 @@ public interface ApiInterface {
     @GET("api/Services/RemoveAllHistory")
     Call<IResponse> RemoveAllHistory();
 
+    //abd
+    @GET("api/Services/RemoveAllFavourite")
+    Call<IResponse> RemoveAllFavourite();
+    //abd
+
+
     @GET("api/Services/UpdateUIDefaultLanguage")
     Call<IResponse> UpdateUIDefaultLanguage(@Query("LanguageId") int LanguageId);
 
