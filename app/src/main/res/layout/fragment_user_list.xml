@@ -35,7 +35,7 @@
                 android:background="@color/tevoiBrownDark"
                 android:paddingBottom="4dp"
                 android:paddingTop="4dp"
-                android:src="@mipmap/addnew_list_normal_white" />
+                android:src="@mipmap/white_add_to_filter" />
         </LinearLayout>
         <com.tevoi.tevoi.model.RecyclerViewEmptySupport
             android:id="@+id/user_list_recycler_View"
@@ -81,7 +81,7 @@
             android:background="@color/tevoiBrownDark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/clear_all_tracks"
+            android:text="@string/clear_all_lists"
             android:textSize="14dp"/>
 
         <ImageButton
