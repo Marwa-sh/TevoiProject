@@ -137,10 +137,10 @@
         <item name="android:background">@color/tevoiBrownDark</item>
     </style>
 
-    <style name="NavigationView" >
+<!--    <style name="NavigationView" >
         <item name="android:listDivider">@color/dark_grey</item>
 
-    </style>
+    </style>-->
     <!--
         <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
             <item name="windowActionBar">false</item>
