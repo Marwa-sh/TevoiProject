@@ -41,7 +41,7 @@
 </menu>
  </item>
 
- <item android:title="Lsits">
+ <item android:title="Lists">
 <menu>
    <group android:checkableBehavior="single"
        android:id="@+id/group2">
