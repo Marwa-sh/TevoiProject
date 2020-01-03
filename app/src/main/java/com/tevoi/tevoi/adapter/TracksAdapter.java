@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -213,6 +214,8 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         RatingBar ratingBar;
         ImageButton imgBtnPlay;
         ImageButton imgBtnDrawer;
+        //abd
+//        RelativeLayout layoutHistory;
         int id;
         LinearLayout hoverLayout;
         LinearLayout trackDetailsLayout;
@@ -228,6 +231,10 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             tvCategories = itemView.findViewById(R.id.tv_categories);
             ratingBar = itemView.findViewById(R.id.rbTrack);
             imgBtnPlay = itemView.findViewById(R.id.btn_play_pause);
+
+            //abd
+            //layoutHistory = itemView.findViewById(R.id.history_page);
+
             imgBtnDrawer= itemView.findViewById(R.id.btn_track_drawer);
             //imgBtnPlay.setOnClickListener();
             hoverLayout = itemView.findViewById(R.id.hoverButtonsLayout);
@@ -261,6 +268,20 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
             //--------//
             String lang = activity.storageManager.getLanguageUIPreference(activity);
+
+            //abd
+  /*          layoutHistory.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+
+                    hoverLayout.setVisibility(View.INVISIBLE);
+                }
+
+            });
+
+*/
+
             if(lang.equals("ar"))
                 imgBtnPlay.setScaleX(-1);
 
@@ -431,6 +452,8 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     }
                 }
             });
+
+
 
             btnReadText.setOnClickListener(new View.OnClickListener() {
                 @Override
