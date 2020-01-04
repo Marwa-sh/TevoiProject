@@ -138,6 +138,17 @@
         android:layout_marginTop="15dp"
         >
 
+
+        <CheckBox
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:buttonTint="@color/fontColor"
+            android:layout_gravity="center_vertical"
+            android:id="@+id/chk_show_with_default_audio_languae"
+            />
         <TextView
             android:layout_marginTop="10dp"
             android:layout_marginStart="27dp"
@@ -146,17 +157,6 @@
             android:text="@string/show_default_audio_language"
             android:textColor="@color/fontColor"
             android:layout_gravity="center_vertical"
-            />
-        <CheckBox
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginLeft="30dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:buttonTint="@color/fontColor"
-            android:layout_gravity="center_vertical"
-            android:id="@+id/chk_show_with_default_audio_languae"
             />
 
     </LinearLayout>
