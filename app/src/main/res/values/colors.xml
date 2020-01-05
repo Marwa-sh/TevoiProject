@@ -20,6 +20,7 @@
     <!-- Tevoi New Colors -->
     <color name="tevoiBlack">#37393F</color>
     <color name="tevoiBrownDark">#84754B</color>
+    <color name="tevoiBrownDarktransparnt">#3384754B</color>
     <color name="tevoiBrownLight">#AD9960</color>
     <color name="tevoiOutLine">#C7C7CC</color>
     <color name="tevoiSwitchBlackLight">#535353</color>

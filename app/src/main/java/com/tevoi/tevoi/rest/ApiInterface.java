@@ -185,6 +185,9 @@ public interface ApiInterface {
     //abd
     @GET("api/Services/RemoveAllFavourite")
     Call<IResponse> RemoveAllFavourite();
+
+    @GET("api/Services/ClearUserListTrack")
+    Call<IResponse> ClearUserListTrack();
     //abd
 
 

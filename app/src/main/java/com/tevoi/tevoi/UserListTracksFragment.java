@@ -8,12 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.tevoi.tevoi.Utils.Global;
 import com.tevoi.tevoi.adapter.Track;
 import com.tevoi.tevoi.adapter.TracksAdapter;
 import com.tevoi.tevoi.model.GetUserListTracksResponse;
+import com.tevoi.tevoi.model.IResponse;
 import com.tevoi.tevoi.model.RecyclerViewEmptySupport;
 
 import java.util.ArrayList;
@@ -34,7 +36,7 @@ public class UserListTracksFragment extends Fragment
     public  int currenUsertListId;
     public  String ListName ="";
     SideMenu activity;
-
+    ImageButton btnClearUserListTrack;
     View rootView;
 
     public static UserListTracksFragment newInstance(int defaultTab, int listId, String listName) {
@@ -64,6 +66,34 @@ public class UserListTracksFragment extends Fragment
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_user_list_track, container, false);
         activity  = (SideMenu)getActivity();
+        btnClearUserListTrack = rootView.findViewById(R.id.btn_clear_user_list_track);
+
+        btnClearUserListTrack.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                activity.mProgressDialog.setMessage(getResources().getString( R.string.loader_msg)); activity.mProgressDialog.show();
+
+                Call<IResponse> call = Global.client.ClearUserListTrack();
+                call.enqueue(new Callback <IResponse>(){
+                    public void onResponse(Call<IResponse> call, Response<IResponse> response) {
+                        //generateDataList(response.body());
+                        SideMenu activity = (SideMenu) getActivity();
+                        IResponse result = response.body();
+                        Toast.makeText(activity, result.getMessage(), Toast.LENGTH_SHORT).show();
+                        activity.mProgressDialog.dismiss();
+                        // TODO doRefrech error ask marwa
+//                        doRefrech();
+                    }
+                    public void onFailure(Call<IResponse> call, Throwable t)
+                    {
+                        activity.mProgressDialog.dismiss();
+                        Toast.makeText(getContext(),"something went wrong", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
 
         tabs[0] = rootView.findViewById(R.id.btnNewUserListTracks);
         tabs[1] = rootView.findViewById(R.id.btnTopRatedUserListTracks);
