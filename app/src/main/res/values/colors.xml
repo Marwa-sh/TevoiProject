@@ -12,6 +12,7 @@
     <color name="tevoiComment">#EBEBEB</color>
     <color name="White"></color>
     <color name="grey">#EBEBEB</color>
+    <color name="lightgrey">#EEEEEE</color>
     <color name="red">#D81B60</color>
     <color name="thumbgrey">#535353</color>
     <color name="placeholder_grey">#AAADC4</color>
