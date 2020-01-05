@@ -560,7 +560,6 @@ public class SideMenu extends AppCompatActivity
                     if (serviceBound && player != null && player.mMediaPlayer != null)
                     {
                         txtTrackName.setText(CurrentTrackInPlayer.getName().toString());
-                        mainPlayerLayout.setVisibility(View.VISIBLE);
 
                         if(IsListenDailyLimitsExceeded)
                         {
@@ -578,6 +577,8 @@ public class SideMenu extends AppCompatActivity
                             mProgressDialog.dismiss();
                         }
                         if (player.mMediaPlayer.isPlaying()) {
+                            mainPlayerLayout.setVisibility(View.VISIBLE);
+
                             if (btnPausePlayMainMediaPlayer != null)
                                 btnPausePlayMainMediaPlayer.setImageResource(R.mipmap.pause_normal_white);
                             numberOfListenedSeconds += 1;

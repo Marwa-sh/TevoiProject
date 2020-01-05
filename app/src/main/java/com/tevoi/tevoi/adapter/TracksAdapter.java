@@ -11,6 +11,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.TranslateAnimation;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,6 +30,7 @@ import com.tevoi.tevoi.SideMenu;
 import com.tevoi.tevoi.TrackText;
 import com.tevoi.tevoi.Utils.FileHelper;
 import com.tevoi.tevoi.Utils.Global;
+import com.tevoi.tevoi.listener.OnSwipeTouchListener;
 import com.tevoi.tevoi.model.IResponse;
 import com.tevoi.tevoi.model.LoadingVH;
 import com.tevoi.tevoi.model.RecyclerViewEmptySupport;
@@ -447,6 +451,10 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                             //trackDetailsLayout.setVisibility(View.VISIBLE);
                         } else {
                             hoverLayout.setVisibility(View.VISIBLE);
+
+                            //Animation slide = AnimationUtils.loadAnimation(activity, R.anim.slide_out_left);
+                            //hoverLayout.startAnimation(slide);
+
                             //imgBtnPlay.setVisibility(View.INVISIBLE);
                             //trackDetailsLayout.setVisibility(View.INVISIBLE);
                         }
