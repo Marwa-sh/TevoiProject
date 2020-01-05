@@ -30,6 +30,7 @@ import com.tevoi.tevoi.Utils.Global;
 import com.tevoi.tevoi.Utils.HelperFunctions;
 import com.tevoi.tevoi.adapter.PaginationAdapter;
 import com.tevoi.tevoi.adapter.PaginationAdapterCallback;
+import com.tevoi.tevoi.listener.OnSwipeTouchListener;
 import com.tevoi.tevoi.model.PaginationScrollListener;
 import com.tevoi.tevoi.model.RecyclerViewEmptySupport;
 import com.tevoi.tevoi.model.TrackFilter;
@@ -86,6 +87,22 @@ public class ListTracksFragment extends Fragment
         activity.txtTrackName = rootView.findViewById(R.id.txt_track_name_main_player);
         activity.btnPausePlayMainMediaPlayer = rootView.findViewById(R.id.img_btn_pause_main_player);
 
+        /*activity.mainPlayerLayout.setOnTouchListener(new OnSwipeTouchListener(activity) {
+                public void onSwipeTop() {
+                    Toast.makeText(activity, "top", Toast.LENGTH_SHORT).show();
+                }
+                public void onSwipeRight() {
+                    Toast.makeText(activity, "right", Toast.LENGTH_SHORT).show();
+                }
+                public void onSwipeLeft() {
+                    Toast.makeText(activity, "left", Toast.LENGTH_SHORT).show();
+                }
+                public void onSwipeBottom() {
+                    Toast.makeText(activity, "bottom", Toast.LENGTH_SHORT).show();
+                }
+
+            });*/
+
     }
 
     @Override
@@ -112,7 +129,41 @@ public class ListTracksFragment extends Fragment
         progressBar = (ProgressBar) rootView.findViewById(R.id.main_progress);
 
 
-        activity.mainPlayerLayout.setOnTouchListener(new View.OnTouchListener() {
+        activity.mainPlayerLayout.setOnTouchListener(new OnSwipeTouchListener(activity) {
+            public void onSwipeTop() {
+                Toast.makeText(activity, "top", Toast.LENGTH_SHORT).show();
+            }
+            public void onSwipeRight() {
+                Toast.makeText(activity, "right", Toast.LENGTH_SHORT).show();
+            }
+            public void onSwipeLeft() {
+                Toast.makeText(activity, "left", Toast.LENGTH_SHORT).show();
+                /*if (activity.CurrentTrackInPlayer != null) {
+                    FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
+                    // Replace the contents of the container with the new fragment
+                    //TrackAddToList frag = new TrackAddToList();
+
+                    activity.mediaPlayerFragment.currentTrackId = activity.CurrentTrackInPlayer.getId();
+
+                    activity.mediaPlayerFragment.currentTrack = activity.CurrentTrackInPlayer;
+
+                    ft.replace(R.id.content_frame, activity.mediaPlayerFragment);
+                    ft.addToBackStack("mediaPlayerFragment");
+                    // or ft.add(R.id.your_placeholder, new FooFragment());
+                    // Complete the changes added above
+                    ft.commit();
+
+                } else {
+                    Toast.makeText(activity, "You didn't choose a track", Toast.LENGTH_SHORT).show();
+                }*/
+            }
+            public void onSwipeBottom() {
+                Toast.makeText(activity, "bottom", Toast.LENGTH_SHORT).show();
+            }
+
+        });
+
+        /*activity.mainPlayerLayout.setOnTouchListener(new View.OnTouchListener() {
             public boolean onTouch(View v, MotionEvent event) {
 
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {
@@ -138,7 +189,7 @@ public class ListTracksFragment extends Fragment
                 }
                 return true;
             }
-        });
+        });*/
         activity.seekBarMainPlayer.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override

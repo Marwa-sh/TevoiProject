@@ -11,8 +11,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.TranslateAnimation;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -26,6 +30,7 @@ import com.tevoi.tevoi.SideMenu;
 import com.tevoi.tevoi.TrackText;
 import com.tevoi.tevoi.Utils.FileHelper;
 import com.tevoi.tevoi.Utils.Global;
+import com.tevoi.tevoi.listener.OnSwipeTouchListener;
 import com.tevoi.tevoi.model.IResponse;
 import com.tevoi.tevoi.model.LoadingVH;
 import com.tevoi.tevoi.model.RecyclerViewEmptySupport;
@@ -446,6 +451,10 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                             //trackDetailsLayout.setVisibility(View.VISIBLE);
                         } else {
                             hoverLayout.setVisibility(View.VISIBLE);
+
+                            //Animation slide = AnimationUtils.loadAnimation(activity, R.anim.slide_out_left);
+                            //hoverLayout.startAnimation(slide);
+
                             //imgBtnPlay.setVisibility(View.INVISIBLE);
                             //trackDetailsLayout.setVisibility(View.INVISIBLE);
                         }
@@ -714,6 +723,71 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                                                     public void onClick(DialogInterface dialog, int id) {
                                                         Toast.makeText(activity, "No Select", Toast.LENGTH_SHORT).show();
                                                         dialog.cancel();
+                                                    }
+                                                })
+                                        .setNeutralButton(R.string.create_list,
+                                                new DialogInterface.OnClickListener() {
+                                                    public void onClick(DialogInterface dialog, int id) {
+
+                                                        dialog.cancel();
+                                                        // get prompts.xml view
+                                                        LayoutInflater li = LayoutInflater.from(activity);
+                                                        View promptsView = li.inflate(R.layout.layout_user_list_edittext, null);
+
+                                                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                                                                activity);
+
+                                                        // set prompts.xml to alertdialog builder
+                                                        alertDialogBuilder.setView(promptsView);
+
+                                                        final EditText userInput = promptsView
+                                                                .findViewById(R.id.edittxtUserListName);
+
+                                                        // set dialog message
+                                                        alertDialogBuilder
+                                                                .setCancelable(false)
+                                                                .setPositiveButton("OK",
+                                                                        new DialogInterface.OnClickListener() {
+                                                                            public void onClick(DialogInterface dialog,int id) {
+                                                                                // get user input and set it to result
+                                                                                // edit text
+                                                                                String listName = userInput.getText().toString();
+                                                                                if (listName.equals(""))
+                                                                                {
+                                                                                    Toast.makeText(activity, R.string.list_name_required, Toast.LENGTH_SHORT).show();
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    //activity.mProgressDialog.setMessage("Loading");
+                                                                                    //activity.mProgressDialog.show();
+                                                                                    // add user list
+                                                                                    Call<IResponse> call = Global.client.AddTrackToNewUserList(trackSelected.getId(), listName);
+                                                                                    call.enqueue(new Callback<IResponse>(){
+                                                                                        public void onResponse(Call<IResponse> call, Response<IResponse> response) {
+                                                                                            IResponse result = response.body();
+                                                                                            Toast.makeText(activity,result.getMessage(), Toast.LENGTH_LONG).show();
+                                                                                        }
+                                                                                        public void onFailure(Call<IResponse> call, Throwable t)
+                                                                                        {
+                                                                                            Toast.makeText(activity,"something went wrong", Toast.LENGTH_LONG).show();
+                                                                                            //activity.mProgressDialog.dismiss();
+                                                                                        }
+                                                                                    });
+                                                                                }
+                                                                            }
+                                                                        })
+                                                                .setNegativeButton("Cancel",
+                                                                        new DialogInterface.OnClickListener() {
+                                                                            public void onClick(DialogInterface dialog,int id) {
+                                                                                dialog.cancel();
+                                                                            }
+                                                                        });
+
+                                                        // create alert dialog
+                                                        AlertDialog alertDialog = alertDialogBuilder.create();
+                                                        // show it
+                                                        alertDialog.show();
+
                                                     }
                                                 });
 

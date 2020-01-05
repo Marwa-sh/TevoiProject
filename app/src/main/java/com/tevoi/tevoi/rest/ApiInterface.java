@@ -98,6 +98,10 @@ public interface ApiInterface {
     @GET("api/Services/AddTrackToUserList")
     Call<IResponse> AddTrackToUserList(@Query("TrackId") int TrackId, @Query("ListId") int ListId);
 
+    @GET("api/Services/AddTrackToNewUserList")
+    Call<IResponse> AddTrackToNewUserList(@Query("TrackId") int TrackId, @Query("ListName") String ListName);
+
+
     @GET("api/Services/AddUserList")
     Call<IResponse> AddUserList(@Query("ListName") String ListName);
 

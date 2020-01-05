@@ -15,6 +15,18 @@ public class CategoryFilter implements Parcelable {
         this.isFavorite = isFavorite;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
+    }
+
     protected CategoryFilter(Parcel in) {
         name = in.readString();
     }

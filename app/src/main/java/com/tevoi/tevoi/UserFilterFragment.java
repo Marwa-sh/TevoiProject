@@ -10,8 +10,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.tevoi.tevoi.Utils.Global;
 import com.tevoi.tevoi.accordion.MultiCheckMainTopic;
@@ -83,8 +86,13 @@ public class UserFilterFragment extends Fragment
                     public void onResponse(Call<IResponse> call, Response<IResponse> response)
                     {
                         IResponse result = response.body();
-                        isShowHeardTracks = !isShowHeardTracks;
-                        activateDeatcivateShowHeardTracks(isShowHeardTracks);
+                        if(result.getNumber() ==0) {
+                            isShowHeardTracks = !isShowHeardTracks;
+                            activateDeatcivateShowHeardTracks(isShowHeardTracks);
+                        }else
+                        {
+                            Toast.makeText(activity, result.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
                         activity.mProgressDialog.dismiss();
                     }
 
@@ -168,8 +176,18 @@ public class UserFilterFragment extends Fragment
                 activity.mProgressDialog.dismiss();
             }
         });
+
+        //Animation slide = AnimationUtils.loadAnimation(activity, R.anim.slide_down_from_top);
+        //rootView.startAnimation(slide);
         return rootView;
     }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState){
+        Animation slide = AnimationUtils.loadAnimation(activity, R.anim.slide_down_from_top);
+        view.startAnimation(slide);
+    }
+
 
     public void clearFilters()
     {
