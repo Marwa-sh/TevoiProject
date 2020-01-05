@@ -149,12 +149,27 @@
     <string name="add_track_to_list">Add Track</string>
     <string name="offer_coupon">offer coupon</string>
     <string name="choose_subscription_period">choose subscription period</string>
+    <string name="payment_method">Payment Method</string>
     <string name="proceed_to_payment">Proceed to Payment</string>
     <string name="month_1">1 Month</string>
     <string name="month_3">3 Months</string>
     <string name="month_6">6 Months</string>
     <string name="month_12">12 Months</string>
 
+    <string name="apple_store_google_play">Apple Store/google Play</string>
+    <string name="phone_bill">Phone Bill</string>
+    <string name="credit_debit_card">Credit/Debit Card</string>
+    <string name="paypal">Paypal</string>
+
+    <string name="price">Price</string>
+
+    <string name="premium_subscription_for_12_months">Premium Subscription for 12 Months</string>
+    <string name="tax">Tax</string>
+    <string name="total">Total</string>
+    <string name="dollar_120">$120</string>
+    <string name="dollar_12">$1.2</string>
+    <string name="dollar_121">$121.2</string>
+    <string name="play_now">Play Now</string>
 
     <string name="track_will_download">Track will be downloaded ... </string>
     <string name="no_lists_to_delete">No Lists to delete.</string>
