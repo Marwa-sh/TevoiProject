@@ -15,6 +15,7 @@ import com.tevoi.tevoi.RegisterActivity;
 import com.tevoi.tevoi.SideMenu;
 import com.tevoi.tevoi.Utils.Global;
 import com.tevoi.tevoi.accordion.MultiCheckMainTopic;
+import com.tevoi.tevoi.model.CategoryFilter;
 import com.tevoi.tevoi.model.IResponse;
 import com.tevoi.tevoi.model.MainTopic;
 import com.tevoi.tevoi.model.MainTopicFilter;
@@ -73,10 +74,23 @@ public class MainTopicViewHolder extends GroupViewHolder
                           sw.setImageResource(R.mipmap.grey_button_off);
                       }
                       Log.println(Log.DEBUG, "Result i = ", "Done");
+
+                      /*if(!isChecked)
+                      {
+                          for (int i = 0; i < mainTopic.getItems().size(); i++)
+                          {
+                              CategoryFilter t = (CategoryFilter) mainTopic.getItems().get(i);
+                              t.setFavorite(false);
+
+                          }
+
+                      }*/
+
                       if(activity != null)
                       {
                           activity.userFilterFragment.reloadFilter();
                           Log.println(Log.DEBUG, "Refresh ", "Refresh");
+
                       }
                       activity.mProgressDialog.dismiss();
                   }
@@ -183,7 +197,8 @@ public class MainTopicViewHolder extends GroupViewHolder
         new RotateAnimation(360, 180, RELATIVE_TO_SELF, 0.5f, RELATIVE_TO_SELF, 0.5f);
     rotate.setDuration(300);
     rotate.setFillAfter(true);
-    arrow.setAnimation(rotate);
+    arrow.startAnimation(rotate);
+
   }
 
   private void animateCollapse() {
@@ -191,6 +206,6 @@ public class MainTopicViewHolder extends GroupViewHolder
         new RotateAnimation(180, 360, RELATIVE_TO_SELF, 0.5f, RELATIVE_TO_SELF, 0.5f);
     rotate.setDuration(300);
     rotate.setFillAfter(true);
-    arrow.setAnimation(rotate);
+    arrow.startAnimation(rotate);
   }
 }

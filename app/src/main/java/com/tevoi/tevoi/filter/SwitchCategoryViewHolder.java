@@ -13,6 +13,7 @@ import com.tevoi.tevoi.R;
 import com.tevoi.tevoi.SideMenu;
 import com.tevoi.tevoi.Utils.Global;
 import com.tevoi.tevoi.accordion.MultiCheckMainTopic;
+import com.tevoi.tevoi.model.CategoryFilter;
 import com.tevoi.tevoi.model.IResponse;
 import com.thoughtbot.expandablecheckrecyclerview.viewholders.CheckableChildViewHolder;
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup;
@@ -64,6 +65,16 @@ public class SwitchCategoryViewHolder extends CheckableChildViewHolder
                         {
                             childCheckedSwitch.setImageResource(R.mipmap.grey_button_off);
                         }
+
+                        /*if(isChecked)
+                        {
+                            for (int i = 0; i < mainTopic.getItems().size(); i++)
+                            {
+                                CategoryFilter t = (CategoryFilter) mainTopic.getItems().get(i);
+                                t.setFavorite(false);
+                            }
+                            mainTopic.notifyAll();
+                        }*/
                         if(activity != null)
                         {
                             activity.userFilterFragment.reloadFilter();

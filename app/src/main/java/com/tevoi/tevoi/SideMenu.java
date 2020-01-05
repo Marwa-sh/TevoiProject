@@ -243,6 +243,7 @@ public class SideMenu extends AppCompatActivity
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         DrawerLayout.LayoutParams params = (DrawerLayout.LayoutParams) navigationView.getLayoutParams();
+        int width = (displayMetrics.widthPixels * 70)/100;
         params.width = displayMetrics.widthPixels;
         navigationView.setLayoutParams(params);
     }
@@ -317,6 +318,8 @@ public class SideMenu extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
+                androidx.fragment.app.FragmentTransaction fragTransaction = getSupportFragmentManager().beginTransaction();
+
                 if(!CurrentFragmentName.equals(Global.ListTracksFragmentName))
                 {
                     DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -325,15 +328,16 @@ public class SideMenu extends AppCompatActivity
                         drawer.closeDrawer(GravityCompat.START);
                     }
                     mSubTitle.setText(R.string.title_list_tracks);
-                    fragmentTransaction.replace(R.id.content_frame, lisTracksFragment);
-                    fragmentTransaction.addToBackStack(getResources().getString(R.string.title_list_tracks));
+                    fragTransaction.replace(R.id.content_frame, lisTracksFragment);
+                    fragTransaction.addToBackStack(getResources().getString(R.string.title_list_tracks));
                     CurrentFragmentName = Global.ListTracksFragmentName;
                     try
                     {
-                        fragmentTransaction.commit();
+                        fragTransaction.commit();
                     }
                     catch (Exception exc)
                     {
+                        Log.d("Marwa-test", exc.getMessage());
                     }
                 }
             }
@@ -367,13 +371,14 @@ public class SideMenu extends AppCompatActivity
                 vf.startAnimation(slide_down);*/
                     androidx.fragment.app.FragmentTransaction fragTransaction = getSupportFragmentManager().beginTransaction();
 
-                    if (!CurrentFragmentName.equals(Global.FilterFragmentName)) {
+                    if (!CurrentFragmentName.equals(Global.FilterFragmentName))
+                    {
                         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
                         if (drawer.isDrawerOpen(GravityCompat.START)) {
                             drawer.closeDrawer(GravityCompat.START);
                         }
                         CurrentFragmentName = Global.FilterFragmentName;
-                        fragTransaction.setCustomAnimations(R.anim.slide_in_up, R.anim.slide_out_up);
+                        //fragTransaction.setCustomAnimations(R.anim.slide_in_up, R.anim.slide_out_up);
                         fragTransaction.replace(R.id.content_frame, userFilterFragment);
                         fragTransaction.addToBackStack(mSubTitle.getText().toString());
                         try {

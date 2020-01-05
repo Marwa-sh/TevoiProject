@@ -96,4 +96,7 @@
     <string name="title_upgrade_to_premium">Upgrade to premium</string>
     <string name="add_To_list">إضافة المقطع لقوائمي</string>
     <string name="sign_in">تسجيل الدخول</string>
+
+    <string name="create_list"> إضافة قائمة</string>
+
 </resources>
