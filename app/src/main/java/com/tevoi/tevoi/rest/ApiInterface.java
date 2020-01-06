@@ -190,8 +190,8 @@ public interface ApiInterface {
     @GET("api/Services/RemoveAllFavourite")
     Call<IResponse> RemoveAllFavourite();
 
-    @GET("api/Services/ClearUserListTrack")
-    Call<IResponse> ClearUserListTrack();
+    @GET("api/Services/ClearUserListTracks")
+    Call<IResponse> ClearUserListTracks(@Query("UserListId") int UserListId);
     //abd
 
 

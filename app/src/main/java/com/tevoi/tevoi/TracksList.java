@@ -84,8 +84,6 @@ public class TracksList extends Fragment
     //public ScrollView scrollViewListTracks;
     public LinearLayout linearLayoutListTracks;
 
-
-
     View rootView;
     public void initiateMediaPlayerLayout(View rootView)
     {
