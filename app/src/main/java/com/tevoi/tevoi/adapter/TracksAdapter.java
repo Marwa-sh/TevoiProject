@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +39,11 @@ import com.tevoi.tevoi.model.TrackObject;
 import com.tevoi.tevoi.model.TrackSerializableObject;
 import com.tevoi.tevoi.model.UserListObject;
 import com.tevoi.tevoi.model.UserListResponse;
+import androidx.transition.Slide;
+import androidx.transition.TransitionManager;
+import androidx.transition.Transition;
+import androidx.transition.Fade;
+
 
 import java.io.File;
 import java.util.List;
@@ -446,10 +452,20 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                         }
                         if (hoverLayout.getVisibility() == View.VISIBLE)
                         {
+                            Transition transition = new Slide(Gravity.RIGHT);
+                            transition.setDuration(600);
+                            transition.addTarget(hoverLayout);
+                            TransitionManager.beginDelayedTransition(hoverLayout, transition);
                             hoverLayout.setVisibility(View.INVISIBLE);
+//                            hoverLayout.setVisibility(View.INVISIBLE);
                             //imgBtnPlay.setVisibility(View.VISIBLE);
                             //trackDetailsLayout.setVisibility(View.VISIBLE);
                         } else {
+//                            hoverLayout.setVisibility(View.VISIBLE);
+                            Transition transition = new Slide(Gravity.LEFT);
+                            transition.setDuration(600);
+                            transition.addTarget(hoverLayout);
+                            TransitionManager.beginDelayedTransition(hoverLayout, transition);
                             hoverLayout.setVisibility(View.VISIBLE);
 
                             //Animation slide = AnimationUtils.loadAnimation(activity, R.anim.slide_out_left);
