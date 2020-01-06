@@ -39,6 +39,11 @@ import com.tevoi.tevoi.model.RecyclerViewEmptySupport;
 import com.tevoi.tevoi.model.TrackFilter;
 import com.tevoi.tevoi.model.TrackObject;
 import com.tevoi.tevoi.model.TrackResponseList;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.Animator;
+
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -211,7 +216,20 @@ public class TracksList extends Fragment
                 if (activity.mainPlayerLayout.getVisibility() == View.VISIBLE) {
                     //Animation slide = AnimationUtils.loadAnimation(activity, R.anim.slide_in_left);
                     //activity.mainPlayerLayout.startAnimation(slide);
-                    activity.mainPlayerLayout.setVisibility(View.GONE);
+                    // Prepare the View for the animation
+                    activity.mainPlayerLayout.animate()
+                            .translationX(0)
+                            .alpha(0.0f)
+                            .setDuration(1000)
+                            .setListener(new AnimatorListenerAdapter() {
+                                @Override
+                                public void onAnimationEnd(Animator animation) {
+                                    super.onAnimationEnd(animation);
+                                    activity.mainPlayerLayout.setVisibility(View.INVISIBLE);
+                                }
+                            });
+
+                   // activity.mainPlayerLayout.setVisibility(View.GONE);
                 }
 
             }
