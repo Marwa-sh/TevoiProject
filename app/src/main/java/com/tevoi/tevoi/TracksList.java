@@ -223,7 +223,7 @@ public class TracksList extends Fragment
                                 @Override
                                 public void onAnimationEnd(Animator animation) {
                                     super.onAnimationEnd(animation);
-                                    activity.mainPlayerLayout.setVisibility(View.INVISIBLE);
+                                    activity.mainPlayerLayout.setVisibility(View.GONE);
                                 }
                             });
 
