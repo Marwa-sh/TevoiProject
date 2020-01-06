@@ -56,6 +56,8 @@ dependencies {
     // add the Firebase SDK for Google Analytics
     implementation 'com.google.firebase:firebase-analytics:17.2.0'
 
+    implementation 'com.sothree.slidinguppanel:library:3.4.0'
+
     // add SDKs for any other desired Firebase products
     // https://firebase.google.com/docs/android/setup#available-libraries
 

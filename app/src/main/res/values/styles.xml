@@ -115,6 +115,7 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar" >
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+
         <item name="colorPrimary">@color/tevoiBlack</item>
         <item name="colorPrimaryDark">@color/tevoiBlack</item>
         <item name="colorAccent">@color/tevoiBrownDark</item>

@@ -14,6 +14,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import com.google.android.material.navigation.NavigationView;
+
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.core.view.GravityCompat;
@@ -33,6 +35,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.tevoi.tevoi.Utils.Global;
 import com.tevoi.tevoi.Utils.HelperFunctions;
 import com.tevoi.tevoi.Utils.MyStorage;
@@ -193,7 +196,7 @@ public class SideMenu extends AppCompatActivity
     public MediaPlayerFragment mediaPlayerFragment;
     ErrorFragment errorFragment = ErrorFragment.newInstance(Global.ListTracksFragmentName);
     public String CurrentFragmentName = Global.ListTracksFragmentName;
-
+    public String PreviousFragmentName = "";
     // endregion
 
     // region handle List of track for next and previous buttons
@@ -203,7 +206,7 @@ public class SideMenu extends AppCompatActivity
 
     // endregion
 
-
+    SlidingUpPanelLayout mLayout;
 
     //ListTracksFragment listTracksFragment = new ListTracksFragment();
 
@@ -354,8 +357,9 @@ public class SideMenu extends AppCompatActivity
                 {
                     Toast.makeText(getApplicationContext(), R.string.demo_user_need_to_register, Toast.LENGTH_SHORT).show();
                 }
-                else {
-                    mSubTitle.setText(R.string.title_filter);
+                else
+                {
+
                 /*//Load animation
                 Animation slide_down = AnimationUtils.loadAnimation(getApplicationContext(),
                         R.anim.slide_down);
@@ -373,14 +377,31 @@ public class SideMenu extends AppCompatActivity
 
                     if (!CurrentFragmentName.equals(Global.FilterFragmentName))
                     {
+                        PreviousFragmentName = CurrentFragmentName;
+                        mSubTitle.setText(R.string.title_filter);
                         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-                        if (drawer.isDrawerOpen(GravityCompat.START)) {
+                        if (drawer.isDrawerOpen(GravityCompat.START))
+                        {
                             drawer.closeDrawer(GravityCompat.START);
                         }
                         CurrentFragmentName = Global.FilterFragmentName;
                         //fragTransaction.setCustomAnimations(R.anim.slide_in_up, R.anim.slide_out_up);
-                        fragTransaction.replace(R.id.content_frame, userFilterFragment);
-                        fragTransaction.addToBackStack(mSubTitle.getText().toString());
+
+                        mLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+                        fragTransaction.replace(R.id.frameLayoutFilter, userFilterFragment);
+                        //fragTransaction.addToBackStack(mSubTitle.getText().toString());
+                        try {
+                            fragTransaction.commit();
+                        } catch (Exception exc) {
+                        }
+                    }
+                    else
+                    {
+                        mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                        CurrentFragmentName = PreviousFragmentName;
+                        mSubTitle.setText(CurrentFragmentName);
+                        fragTransaction.replace(R.id.frameLayoutFilter, new Fragment());
+                        //fragTransaction.addToBackStack(mSubTitle.getText().toString());
                         try {
                             fragTransaction.commit();
                         } catch (Exception exc) {
@@ -546,6 +567,35 @@ public class SideMenu extends AppCompatActivity
 
         //endregion
 
+
+        //region section for silde panel
+
+        mLayout =(SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
+        mLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
+            @Override
+            public void onPanelSlide(View panel, float slideOffset) {
+                Log.i("LogPanel", "onPanelSlide, offset " + slideOffset);
+            }
+
+            @Override
+            public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
+                Log.i("LogPanel", "onPanelStateChanged " + newState);
+                if(newState == SlidingUpPanelLayout.PanelState.COLLAPSED)
+                {
+                    CurrentFragmentName = PreviousFragmentName;
+                    mSubTitle.setText(CurrentFragmentName);
+                }
+            }
+        });
+        mLayout.setFadeOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                Log.i("LogPanel", "setFadeOnClickListener " );
+            }
+        });
+
+        //endregion
 
 
 

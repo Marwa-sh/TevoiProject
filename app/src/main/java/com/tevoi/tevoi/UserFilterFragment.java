@@ -184,8 +184,8 @@ public class UserFilterFragment extends Fragment
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState){
-        Animation slide = AnimationUtils.loadAnimation(activity, R.anim.slide_down_from_top);
-        view.startAnimation(slide);
+        //Animation slide = AnimationUtils.loadAnimation(activity, R.anim.slide_down_from_top);
+        //view.startAnimation(slide);
     }
 
 
