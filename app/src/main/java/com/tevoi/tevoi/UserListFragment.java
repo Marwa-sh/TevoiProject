@@ -50,7 +50,7 @@ public class UserListFragment extends Fragment
     private boolean isLastPage = false;
     private int TOTAL_PAGES = 0;
     private int currentPage = 0;
-    int PAGE_SIZE = 6;
+    int PAGE_SIZE = Global.PAGE_SIZE;
     // endregion
 
     UserListAdapter adapter ;
