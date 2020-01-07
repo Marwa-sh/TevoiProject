@@ -5,13 +5,6 @@
     android:layout_height="50dp"
     android:orientation="horizontal"
     android:id="@+id/testLis"
-    android:background="@color/tevoiBrownLight"
+    android:background="@color/white"
     >
-<TextView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/hhhhhh"
-    android:layout_gravity="start"
-    android:textColor="@color/white"
-    android:text="Marwaaaa"/>
 </LinearLayout>
