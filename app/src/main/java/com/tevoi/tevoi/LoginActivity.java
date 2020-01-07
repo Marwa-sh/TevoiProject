@@ -209,7 +209,7 @@ public class LoginActivity extends AppCompatActivity
         });
 
 
-        etUserName.setText("tr");
+        etUserName.setText("marosh");
         etPassword.setText("Host123");
        // btnLogin.performClick();
 
