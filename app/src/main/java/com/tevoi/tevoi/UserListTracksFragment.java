@@ -96,6 +96,8 @@ public class UserListTracksFragment extends Fragment
         activity  = (SideMenu)getActivity();
         btnClearUserListTrack = rootView.findViewById(R.id.btn_clear_user_list_track);
 
+        progressBar = (ProgressBar) rootView.findViewById(R.id.progress_user_list_tracks);
+
         btnClearUserListTrack.setOnClickListener(new View.OnClickListener()
         {
             @Override
