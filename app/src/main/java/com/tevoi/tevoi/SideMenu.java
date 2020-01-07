@@ -484,9 +484,45 @@ public class SideMenu extends AppCompatActivity
         Menu menuNav = navigationView.getMenu();
         MenuItem menuUpgradeToPremium = menuNav.findItem(R.id.upgrade_to_premium);
         MenuItem menuLists = menuNav.findItem((R.id.list_tracks));
+        MenuItem menuInterfaceLanguage = menuNav.findItem(R.id.interface_language);
+        MenuItem menuNotifications = menuNav.findItem(R.id.notifications);
+        MenuItem menuDownloadLimits = menuNav.findItem(R.id.download_limits);
+        MenuItem menuMyProfile = menuNav.findItem(R.id.my_profile);
+        MenuItem menuHistory = menuNav.findItem(R.id.list_history);
+        MenuItem menuPlayNext = menuNav.findItem(R.id.play_next);
+        MenuItem menuFavourite = menuNav.findItem(R.id.list_favourite);
+        MenuItem menuMyList = menuNav.findItem(R.id.my_list);
+        MenuItem menuPartners = menuNav.findItem(R.id.list_partners);
+        MenuItem menuAboutUs = menuNav.findItem(R.id.about_us);
+        MenuItem menuContactUS = menuNav.findItem(R.id.feedback_contact);
+        MenuItem menuFollowUS = menuNav.findItem(R.id.follow_us);
+        MenuItem menuLogOut = menuNav.findItem(R.id.logout);
+        MenuItem menuMyAccount = menuNav.findItem(R.id.my_account);
+        MenuItem menuGeneral = menuNav.findItem(R.id.general);
+        MenuItem menuListsTitle = menuNav.findItem(R.id.lists);
+
 
         menuUpgradeToPremium.setTitle(Html.fromHtml("<b><font color='#84754B'>" + getResources().getString(R.string.title_upgrade_to_premium) +  "</font></b>"));
         menuLists.setTitle(Html.fromHtml("<b><font color='#535353'>" + getResources().getString(R.string.title_lists) +  "</font></b>"));
+        menuInterfaceLanguage.setTitle(Html.fromHtml("<b><font color='#535353'>" + getResources().getString(R.string.title_interface_language) +  "</font></b>"));
+        menuNotifications.setTitle(Html.fromHtml("<b><font color='#535353'>" + getResources().getString(R.string.title_notifications) +  "</font></b>"));
+        menuDownloadLimits.setTitle(Html.fromHtml("<b><font color='#535353'>" + getResources().getString(R.string.title_donwload_limits) +  "</font></b>"));
+        menuMyProfile.setTitle(Html.fromHtml("<b><font color='#535353'>" + getResources().getString(R.string.title_my_profile) +  "</font></b>"));
+        menuHistory.setTitle(Html.fromHtml("<b><font color='#535353'>" + getResources().getString(R.string.title_history) +  "</font></b>"));
+        menuPlayNext.setTitle(Html.fromHtml("<b><font color='#535353'>" + getResources().getString(R.string.title_play_next) +  "</font></b>"));
+        menuFavourite.setTitle(Html.fromHtml("<b><font color='#535353'>" + getResources().getString(R.string.title_favourite) +  "</font></b>"));
+        menuMyList.setTitle(Html.fromHtml("<b><font color='#535353'>" + getResources().getString(R.string.title_my_list) +  "</font></b>"));
+        menuPartners.setTitle(Html.fromHtml("<b><font color='#535353'>" + getResources().getString(R.string.title_partners) +  "</font></b>"));
+        menuAboutUs.setTitle(Html.fromHtml("<b><font color='#535353'>" + getResources().getString(R.string.title_about_us) +  "</font></b>"));
+        menuContactUS.setTitle(Html.fromHtml("<b><font color='#535353'>" + getResources().getString(R.string.title_contact_us) +  "</font></b>"));
+        menuFollowUS.setTitle(Html.fromHtml("<b><font color='#535353'>" + getResources().getString(R.string.title_follow_us) +  "</font></b>"));
+        menuLogOut.setTitle(Html.fromHtml("<b><font color='#535353'>" + getResources().getString(R.string.logout) +  "</font></b>"));
+        menuMyAccount.setTitle(Html.fromHtml("<b><font color='#535353'><big>" + getResources().getString(R.string.title_my_account) + "</big></font></b>"));
+        menuGeneral.setTitle(Html.fromHtml("<b><font color='#535353'><big>" + getResources().getString(R.string.title_general) + "</big></font></b>"));
+        menuListsTitle.setTitle(Html.fromHtml("<b><font color='#535353'><big>" + getResources().getString(R.string.title_lists) + "</big></font></b>"));
+
+
+
 
 
         // CHANGE ACTION VIEW FOR MENU ITEMS

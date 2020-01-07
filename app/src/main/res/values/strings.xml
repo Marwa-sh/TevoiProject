@@ -116,6 +116,9 @@
     <string name="title_notifications">Notifications</string>
     <string name="title_donwload_limits">Donwload Limits</string>
     <string name="title_about_us">About Us</string>
+    <string name="title_my_profile">My Profile</string>
+    <string name="title_my_account">My Account</string>
+    <string name="title_general">General</string>
     <string name="title_contact_us">Contact Us</string>
     <string name="title_follow_us">Follow Us</string>
     <string name="title_history">History</string>

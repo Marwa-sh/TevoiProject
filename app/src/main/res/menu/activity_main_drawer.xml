@@ -4,7 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:showIn="navigation_view">
     <group android:checkableBehavior="single">
- <item android:title="My Account">
+ <item
+     android:id="@+id/my_account"
+     android:title="My Account">
 <menu>
 
 
@@ -31,7 +33,7 @@
 
      <item android:id="@+id/my_profile"
          app:actionLayout="@layout/drawer_list_item"
-         android:title="My Profile" />
+         android:title="@string/title_my_profile" />
 
 
 
@@ -39,7 +41,9 @@
 </menu>
  </item>
 
- <item android:title="Lists">
+ <item
+     android:id="@+id/lists"
+     android:title="Lists">
 <menu>
 
 
@@ -84,7 +88,9 @@
 
 
 
- <item android:title="General">
+ <item
+     android:id="@+id/general"
+     android:title="General">
 <menu>
 
 
