@@ -261,13 +261,14 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp">
         <ImageButton
-            android:layout_marginStart="30dp"
+            android:layout_marginStart="25dp"
             android:layout_width="22dp"
             android:layout_height="22dp"
-            android:checked="true"
-            android:src="@mipmap/accept_button_hover"
+            android:scaleType="fitXY"
+            android:src="@mipmap/accept_button_normal"
             android:layout_gravity="center_vertical"
             android:id="@+id/btn_accept_coupon"
+            android:background="@color/tevoiBrownDark"
             />
         <TextView
 
@@ -283,9 +284,9 @@
             android:layout_marginStart="30dp"
             android:layout_width="22dp"
             android:layout_height="22dp"
-            android:checked="true"
+            android:scaleType="fitXY"
             android:background="@null"
-            android:src="@mipmap/close_button_hover"
+            android:src="@mipmap/close_button_normal"
             android:layout_gravity="center_vertical"
             />
         <TextView
