@@ -355,19 +355,27 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                             }
                             //endregion
 
-                            imgBtnPlay.setImageResource(R.mipmap.pause_normal_list);
-                            activity.playAudio(Global.GetStreamURL + activity.CurrentTrackInPlayer.getId(),
-                                    activity.CurrentTrackInPlayer.getName(),
-                                    activity.CurrentTrackInPlayer.getAuthors(),
-                                    activity.CurrentTrackInPlayer.getId());
 
-                            activity.txtTrackName.setText(selectedTrack.getName().toString());
-
-                            if (activity.mainPlayerLayout.getVisibility() == View.INVISIBLE) {
-                                activity.mainPlayerLayout.setVisibility(View.VISIBLE);
+                            if(activity.serviceBound && activity.isPlay())
+                            {
+                                imgBtnPlay.setImageResource(R.mipmap.play_normal_list);
+                                activity.pausePlayer();
                             }
-                            activity.lisTracksFragment.fm.executePendingTransactions();
+                            else {
+                                imgBtnPlay.setImageResource(R.mipmap.pause_normal_list);
+                                activity.playAudio(Global.GetStreamURL + activity.CurrentTrackInPlayer.getId(),
+                                        activity.CurrentTrackInPlayer.getName(),
+                                        activity.CurrentTrackInPlayer.getAuthors(),
+                                        activity.CurrentTrackInPlayer.getId());
 
+                                activity.txtTrackName.setText(selectedTrack.getName().toString());
+
+                                if (activity.mainPlayerLayout.getVisibility() == View.INVISIBLE ||
+                                        activity.mainPlayerLayout.getVisibility() == View.GONE) {
+                                    activity.mainPlayerLayout.setVisibility(View.VISIBLE);
+                                }
+                                activity.lisTracksFragment.fm.executePendingTransactions();
+                            }
                         }
                         else
                         {

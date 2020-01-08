@@ -217,7 +217,7 @@ public class TracksList extends Fragment
                     // Prepare the View for the animation
                     activity.mainPlayerLayout.animate()
                             .translationX(0)
-                            .alpha(0.0f)
+                            //.alpha(0.0f)
                             .setDuration(1000)
                             .setListener(new AnimatorListenerAdapter() {
                                 @Override

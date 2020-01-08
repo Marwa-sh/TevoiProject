@@ -1866,4 +1866,13 @@ public class SideMenu extends AppCompatActivity
         View view = View.inflate(this, R.layout.drawer_list_item_ar, null);
         m.setActionView(view);
     }
+
+    public  boolean isPlay()
+    {
+        return player.mMediaPlayer.isPlaying();
+    }
+    public void pausePlayer()
+    {
+        player.mMediaPlayer.pause();
+    }
 }

@@ -149,15 +149,16 @@ public class UserListTracksFragment extends Fragment
     }
 
     public void changeTabToNewUserListTracks(View view) {
+        active_tab = 0;
         activateTab(0);
     }
 
     public void changeTabToTopRatedUserListTracks(View view) {
-        activateTab(1);
+        active_tab = 1;activateTab(1);
     }
 
     public void changeToPopularUserListTracks(View view) {
-        activateTab(2);
+        active_tab = 2;activateTab(2);
     }
 
     public void activateTab(final int k)
