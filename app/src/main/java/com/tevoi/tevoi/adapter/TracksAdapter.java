@@ -585,7 +585,8 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                                 activity.mProgressDialog.show();
 
                                 Call<IResponse> call = Global.client.DeleteTrackFromUserList(activity.userListTracksFragment.currenUsertListId, selectedTrack.getId());
-                                call.enqueue(new Callback<IResponse>() {
+                                call.enqueue(new Callback<IResponse>()
+                                {
                                     @Override
                                     public void onResponse(Call<IResponse> call, Response<IResponse> response) {
                                         IResponse res = response.body();
