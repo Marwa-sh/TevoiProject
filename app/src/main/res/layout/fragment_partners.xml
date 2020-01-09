@@ -56,7 +56,11 @@
 
 
     </androidx.appcompat.widget.LinearLayoutCompat>
-
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/tevoiOutLine"
+        />
     <com.tevoi.tevoi.model.RecyclerViewEmptySupport
         android:id="@+id/partners_recycler_View"
         android:layout_width="match_parent"
