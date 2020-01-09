@@ -6,6 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -493,7 +495,6 @@ public class PaginationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                                     t.setFavourite(true);
                                     btnLike.setText("Dislike");
                                     btnLike.refreshDrawableState();
-
                                     Log.d("Favourite :", "onResponse: track liked ");
                                     Toast.makeText(activity, "Like", Toast.LENGTH_LONG).show();
                                 } else {

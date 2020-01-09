@@ -445,9 +445,12 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                         }
                         if (tracks.get(i).isFavourite()) {
                             btnLike.setText("Dislike");
+                            btnLike.setCompoundDrawablesWithIntrinsicBounds(null,activity.getResources().getDrawable(R.mipmap.dislike_hover),null,null);
                             btnLike.refreshDrawableState();
                         } else {
                             btnLike.setText("Like");
+                            btnLike.setCompoundDrawablesWithIntrinsicBounds(null,activity.getResources().getDrawable(R.mipmap.like_normal_white),null,null);
+
                             btnLike.refreshDrawableState();
                         }
                         if (hoverLayout.getVisibility() == View.VISIBLE)
@@ -462,7 +465,7 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                             //trackDetailsLayout.setVisibility(View.VISIBLE);
                         } else {
 //                            hoverLayout.setVisibility(View.VISIBLE);
-                            Transition transition = new Slide(Gravity.LEFT);
+                            Transition transition = new Slide(Gravity.RIGHT);
                             transition.setDuration(600);
                             transition.addTarget(hoverLayout);
                             TransitionManager.beginDelayedTransition(hoverLayout, transition);
@@ -622,6 +625,7 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                                 {
                                     t.setFavourite(true);
                                     btnLike.setText("Dislike");
+                                    btnLike.setCompoundDrawablesWithIntrinsicBounds(null,activity.getResources().getDrawable(R.mipmap.dislike_hover),null,null);
                                     btnLike.refreshDrawableState();
 
                                     Log.d("Favourite :", "onResponse: track liked ");
@@ -649,6 +653,7 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                                 {
                                     t.setFavourite(false);
                                     btnLike.setText("Like");
+                                    btnLike.setCompoundDrawablesWithIntrinsicBounds(null,activity.getResources().getDrawable(R.mipmap.like_normal_white),null,null);
                                     btnLike.refreshDrawableState();
 
                                     Log.d("Favourite :", "onResponse: track liked ");
