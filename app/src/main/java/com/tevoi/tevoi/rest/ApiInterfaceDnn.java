@@ -1,11 +1,13 @@
 package com.tevoi.tevoi.rest;
 
 
+import com.tevoi.tevoi.model.IResponse;
 import com.tevoi.tevoi.model.LoginRequest;
 import com.tevoi.tevoi.model.LoginRequestModel;
 import com.tevoi.tevoi.model.LoginResponse;
 import com.tevoi.tevoi.model.RegisterRequest;
 import com.tevoi.tevoi.model.RegisterResponse;
+import com.tevoi.tevoi.model.ResetPasswordRequest;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -23,4 +25,6 @@ public interface ApiInterfaceDnn {
     @POST("API/Services/Register")
     Call<RegisterResponse> Register(@Body RegisterRequest model);
 
+    @POST("API/Services/ResetPassword")
+    Call<IResponse> ResetPassword(@Body ResetPasswordRequest model);
 }

@@ -231,6 +231,5 @@ public interface ApiInterface {
     @POST("api/Services/UpdateUserProfile")
     Call<IResponse> UpdateUserProfile(@Body UserProfileRequest model);
 
-    @POST("api/Services/ResetPassword")
-    Call<IResponse> ResetPassword(@Body ResetPasswordRequest model);
+
 }

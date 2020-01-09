@@ -361,7 +361,8 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                                 imgBtnPlay.setImageResource(R.mipmap.play_normal_list);
                                 activity.pausePlayer();
                             }
-                            else {
+                            else
+                            {
                                 imgBtnPlay.setImageResource(R.mipmap.pause_normal_list);
                                 activity.playAudio(Global.GetStreamURL + activity.CurrentTrackInPlayer.getId(),
                                         activity.CurrentTrackInPlayer.getName(),

@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:showIn="navigation_view">
+
+    <!-- this section  for delete -->
+        <group android:checkableBehavior="single"
+            android:id="@+id/f">
+        <item android:id="@+id/d"
+            android:title="My Account"  >
+
+        </item>
+            <item android:id="@+id/ddd"
+                app:actionLayout="@layout/drawer_list_item"
+                android:title="@string/title_upgrade_to_premium"
+                app:itemIconTint="@color/tevoiBluePrimary"/>
+        </group>
+    <!--  for delete -->
+
+    <group android:checkableBehavior="single"
+        android:id="@+id/ff">
+ <item
+     android:id="@+id/my_account"
+     android:title="My Account">
+<menu>
+
+
+       <!-- <item android:id="@+id/test_pagination"
+            app:actionLayout="@layout/drawer_list_item"
+            android:title="Test Pagination" />-->
+
+        <item android:id="@+id/upgrade_to_premium"
+            app:actionLayout="@layout/drawer_list_item"
+            android:title="@string/title_upgrade_to_premium"
+            app:itemIconTint="@color/tevoiBluePrimary"/>
+
+     <item android:id="@+id/interface_language"
+         app:actionLayout="@layout/drawer_list_item"
+         android:title="@string/title_interface_language" />
+
+     <item android:id="@+id/notifications"
+         app:actionLayout="@layout/drawer_list_item"
+         android:title="@string/title_notifications" />
+
+     <item android:id="@+id/download_limits"
+         app:actionLayout="@layout/drawer_list_item"
+         android:title="@string/title_donwload_limits" />
+
+     <item android:id="@+id/my_profile"
+         app:actionLayout="@layout/drawer_list_item"
+         android:title="@string/title_my_profile" />
+
+
+
+
+</menu>
+ </item>
+
+ <item
+     android:id="@+id/lists"
+     android:title="Lists">
+<menu>
+
+
+    <item android:id="@+id/list_tracks"
+        app:actionLayout="@layout/drawer_list_item"
+        android:title="@string/title_list_tracks" />
+
+    <item android:id="@+id/list_history"
+        app:actionLayout="@layout/drawer_list_item"
+        android:title="@string/title_history" />
+
+    <item android:id="@+id/play_next"
+        app:actionLayout="@layout/drawer_list_item"
+        android:title="@string/title_play_next" />
+
+    <item android:id="@+id/list_favourite"
+        app:actionLayout="@layout/drawer_list_item"
+        android:title="@string/title_favourite" />
+
+    <item android:id="@+id/my_list"
+        app:actionLayout="@layout/drawer_list_item"
+        android:title="@string/title_my_list" />
+
+
+</menu>
+ </item>
+
+        <!--<item android:id="@+id/filters"
+            app:actionLayout="@layout/drawer_list_item"
+            android:title="Filter" />
+
+     <item android:id="@+id/user_filters"
+         app:actionLayout="@layout/drawer_list_item"
+         android:title="User Filter" />-->
+       <!-- <item
+            android:id="@+id/nav_gallery"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Gallery"
+            android:drawable="@color/tevoiBlueSecondary"
+            app:itemBackground="@color/tevoiBlueSecondary"/>-->
+
+
+
+
+ <item
+     android:id="@+id/general"
+     android:title="General">
+<menu>
+
+
+
+  <item android:id="@+id/list_partners"
+      app:actionLayout="@layout/drawer_list_item"
+      android:title="@string/title_partners" />
+
+  <!--<group android:checkableBehavior="single" android:id="@+id/g1">
+      <item android:id="@+id/list_tracks"
+          app:actionLayout="@layout/drawer_list_item"
+          android:title="List Tracks" />
+  </group>
+  <group android:checkableBehavior="single" android:id="@+id/g2">
+      <item android:id="@+id/interface_language"
+              app:actionLayout="@layout/drawer_list_item"
+              android:title="Interface Language" />
+  </group>
+  <group android:checkableBehavior="single" android:id="@+id/g3">
+      <item android:id="@+id/list_partners"
+          app:actionLayout="@layout/drawer_list_item"
+          android:title="Partners" />
+  </group>-->
+
+  <item android:id="@+id/about_us"
+      app:actionLayout="@layout/drawer_list_item"
+      android:title="@string/title_about_us" />
+
+  <item android:id="@+id/feedback_contact"
+      app:actionLayout="@layout/drawer_list_item"
+      android:title="@string/title_contact_us" />
+
+  <item android:id="@+id/follow_us"
+      app:actionLayout="@layout/drawer_list_item"
+      android:title="@string/title_follow_us" />
+
+  <item android:id="@+id/logout"
+      app:actionLayout="@layout/drawer_list_item"
+      android:title="@string/logout" />
+
+
+
+</menu>
+ </item>
+    </group>
+
+
+    <!--<item android:title="Lists"
+         >
+        <menu>
+
+                <item android:id="@+id/list_history"
+                    app:actionLayout="@layout/drawer_list_item"
+                    android:title="History" />
+
+                <item android:id="@+id/play_next"
+                    app:actionLayout="@layout/drawer_list_item"
+                    android:title="Play Next" />
+
+                <item android:id="@+id/list_favourite"
+                    app:actionLayout="@layout/drawer_list_item"
+                    android:title="Favourite" />
+
+                <item android:id="@+id/my_list"
+                    app:actionLayout="@layout/drawer_list_item"
+                    android:title="My Lists" />
+
+        </menu>
+    </item>-->
+
+
+</menu>

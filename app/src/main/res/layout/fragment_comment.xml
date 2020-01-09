@@ -68,6 +68,7 @@
                 android:background="@drawable/rounded_button"
                 android:backgroundTint="@color/grey"
                 android:focusedByDefault="false"
+                android:textColor="@color/black"
                 android:layout_gravity="center_vertical"
 
                 />

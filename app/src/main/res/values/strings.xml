@@ -191,6 +191,6 @@
     <string name="dialog_title_clear_user_list">Are you sure you want to delete all lists? This will delete the tracks related to them also.</string>
 
     <string name="create_list"> Create List</string>
-
+    <string name="restart_app_for_apply_language">You need to reopen the app to change the language</string>
 
 </resources>

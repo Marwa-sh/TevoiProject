@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.Toast;
 
 import com.tevoi.tevoi.Utils.Global;
 import com.tevoi.tevoi.model.IResponse;
@@ -97,7 +98,7 @@ public class InterfaceLanguageFragment extends Fragment {
 
                     }
                 });
-
+                Toast.makeText(activity, R.string.restart_app_for_apply_language, Toast.LENGTH_SHORT).show();
             }
 
         });

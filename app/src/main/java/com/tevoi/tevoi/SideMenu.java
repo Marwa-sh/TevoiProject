@@ -246,8 +246,8 @@ public class SideMenu extends AppCompatActivity
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         DrawerLayout.LayoutParams params = (DrawerLayout.LayoutParams) navigationView.getLayoutParams();
-        int width = (displayMetrics.widthPixels * 70)/100;
-        params.width = displayMetrics.widthPixels;
+        int width = (displayMetrics.widthPixels * 80)/100;
+        params.width = width;//displayMetrics.widthPixels;
         navigationView.setLayoutParams(params);
     }
 

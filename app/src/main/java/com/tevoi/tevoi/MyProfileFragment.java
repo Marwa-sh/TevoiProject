@@ -243,7 +243,7 @@ public class MyProfileFragment extends Fragment {
                      activity.mProgressDialog.setCancelable(false);
                      activity.mProgressDialog.show();
 
-                     Call<IResponse> call = Global.client.ResetPassword(resetpassword);
+                     Call<IResponse> call = Global.clientDnn.ResetPassword(resetpassword);
                      call.enqueue(new Callback<IResponse>() {
                          @Override
                          public void onResponse(Call<IResponse> call, Response<IResponse> response) {
