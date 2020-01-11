@@ -91,7 +91,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:background="@null"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="30dp"
         android:weightSum="3">
         <ImageButton
             android:id="@+id/imgBtnReplay"
@@ -179,7 +179,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:background="@color/tevoiBrownLight"
-        android:layout_marginTop="60dp">
+        android:layout_marginTop="30dp">
 
         <SeekBar
             android:id="@+id/seekBar"

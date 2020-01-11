@@ -1308,6 +1308,7 @@ public class SideMenu extends AppCompatActivity
                 break;
             }
         }
+        mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
     }
 
 
@@ -1322,7 +1323,6 @@ public class SideMenu extends AppCompatActivity
         menu.findItem(R.id.action_search).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
     }*/
-
 
     // region List Tracks actions
     public void changeTabToNew(View view) {
