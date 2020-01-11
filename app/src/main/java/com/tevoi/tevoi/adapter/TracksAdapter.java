@@ -80,7 +80,7 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private String fragmentName = "";
 
     int indexLastOpenDrawer = 0;
-    int indexLastPlayedTrack = 0;
+    public int indexLastPlayedTrack = 0;
 
     private int previousPosition = 0;
     private boolean flagFirstItemSelected = false;
