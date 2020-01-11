@@ -89,6 +89,7 @@ public class MediaPlayerFragment extends Fragment {
     ImageButton imgBtnNext;
     ImageButton imgBtnPrev;
     ImageButton imgBtnShuffle;
+    ImageButton imgBtnForword,imgBtnBackword;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -105,16 +106,20 @@ public class MediaPlayerFragment extends Fragment {
         imgBtnNext = rootView.findViewById(R.id.imgBtnNext);
         imgBtnPrev = rootView.findViewById(R.id.imgBtnPreviuos);
         imgBtnShuffle = rootView.findViewById(R.id.imgBtnShuffle);
+        imgBtnBackword = rootView.findViewById(R.id.imgBtnReplay);
+        imgBtnForword = rootView.findViewById(R.id.imgBtnForword);
+        playButton = rootView.findViewById(R.id.imageButtonPlay);
 
-        if(Global.DefaultUILanguage.equals("ar"))
+
+        if(activity.storageManager.getLanguageUIPreference(activity).equals("ar"))
         {
             imgBtnNext.setScaleX(-1);
             imgBtnPrev.setScaleX(-1);
             playButton.setScaleX(-1);
             imgBtnShuffle.setScaleX(-1);
+            imgBtnBackword.setImageResource(R.mipmap.next_10);
+            imgBtnForword.setImageResource(R.mipmap.back_10);
         }
-
-        playButton = rootView.findViewById(R.id.imageButtonPlay);
         seekBar = rootView.findViewById(R.id.seekBar);
         currentTime = rootView.findViewById(R.id.currentTime);
         fullTime = rootView.findViewById(R.id.fullTime);

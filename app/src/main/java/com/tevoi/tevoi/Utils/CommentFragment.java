@@ -55,6 +55,8 @@ public class CommentFragment extends Fragment
             TrackId = getArguments().getInt("TrackId");
         else
             TrackId = 0;
+
+
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -62,8 +64,14 @@ public class CommentFragment extends Fragment
     {
         rootView = inflater.inflate(R.layout.fragment_comment, container,
                 false);
+        final SideMenu activity = (SideMenu)getActivity();
         progressBar = rootView.findViewById(R.id.loader_comments);
         progressBar.setVisibility(View.VISIBLE);
+        ImageButton ib =  rootView.findViewById(R.id.addCommentBtn);
+        if(activity.storageManager.getLanguageUIPreference(activity).equals("ar"))
+        {
+            ib.setScaleX(-1);
+        }
 
         ImageView iv =  rootView.findViewById(R.id.imageView_close);
         iv.setOnClickListener(new View.OnClickListener()
@@ -85,7 +93,7 @@ public class CommentFragment extends Fragment
             }
         });
 
-        ImageButton ib =  rootView.findViewById(R.id.addCommentBtn);
+
         ib.setOnClickListener(new View.OnClickListener()
         {
             @Override

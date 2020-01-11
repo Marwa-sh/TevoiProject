@@ -18,6 +18,8 @@ import retrofit2.Response;
 
 public class AboutUsFragment extends Fragment {
 
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -25,6 +27,12 @@ public class AboutUsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_about_us, container, false);
 
         final TextView txt = rootView.findViewById(R.id.txtAboutUs);
+        final SideMenu activity = (SideMenu) getActivity();
+
+        activity.mProgressDialog.setMessage(getResources().getString(R.string.loader_msg));
+        activity.mProgressDialog.setCancelable(false);
+        activity.mProgressDialog.show();
+
 
         Call<AboutUsResponse> call = Global.client.GetAboutUs();
         call.enqueue(new Callback<AboutUsResponse>() {
@@ -32,10 +40,13 @@ public class AboutUsFragment extends Fragment {
             public void onResponse(Call<AboutUsResponse> call, Response<AboutUsResponse> response) {
                 AboutUsResponse txtResonse = response.body();
                 txt.setText(txtResonse.getText());
+                activity.mProgressDialog.dismiss();
             }
             @Override
             public void onFailure(Call<AboutUsResponse> call, Throwable t) {
+
                 txt.setText(R.string.visit_website);
+                activity.mProgressDialog.dismiss();
             }
         });
 
