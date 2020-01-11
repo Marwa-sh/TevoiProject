@@ -80,7 +80,7 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private String fragmentName = "";
 
     int indexLastOpenDrawer = 0;
-    int indexLastPlayedTrack = 0;
+    public int indexLastPlayedTrack = 0;
 
     private int previousPosition = 0;
     private boolean flagFirstItemSelected = false;
@@ -464,21 +464,44 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                         }
                         if (hoverLayout.getVisibility() == View.VISIBLE)
                         {
-                            Transition transition = new Slide(Gravity.RIGHT);
-                            transition.setDuration(600);
-                            transition.addTarget(hoverLayout);
-                            TransitionManager.beginDelayedTransition(hoverLayout, transition);
-                            hoverLayout.setVisibility(View.INVISIBLE);
+                            if((lang.equals("ar"))) {
+                                Transition transition = new Slide(Gravity.LEFT);
+                                transition.setDuration(600);
+                                transition.addTarget(hoverLayout);
+                                TransitionManager.beginDelayedTransition(hoverLayout, transition);
+                                hoverLayout.setVisibility(View.INVISIBLE);
+                            }
+                            else
+                            {
+                                Transition transition = new Slide(Gravity.RIGHT);
+                                transition.setDuration(600);
+                                transition.addTarget(hoverLayout);
+                                TransitionManager.beginDelayedTransition(hoverLayout, transition);
+                                hoverLayout.setVisibility(View.INVISIBLE);
+                            }
+
 //                            hoverLayout.setVisibility(View.INVISIBLE);
                             //imgBtnPlay.setVisibility(View.VISIBLE);
                             //trackDetailsLayout.setVisibility(View.VISIBLE);
                         } else {
 //                            hoverLayout.setVisibility(View.VISIBLE);
-                            Transition transition = new Slide(Gravity.RIGHT);
-                            transition.setDuration(600);
-                            transition.addTarget(hoverLayout);
-                            TransitionManager.beginDelayedTransition(hoverLayout, transition);
-                            hoverLayout.setVisibility(View.VISIBLE);
+                            if((lang.equals("ar"))) {
+                                Transition transition = new Slide(Gravity.LEFT);
+                                transition.setDuration(600);
+                                transition.addTarget(hoverLayout);
+                                TransitionManager.beginDelayedTransition(hoverLayout, transition);
+                                hoverLayout.setVisibility(View.VISIBLE);
+                            }
+                            else
+                            {
+                                Transition transition = new Slide(Gravity.RIGHT);
+                                transition.setDuration(600);
+                                transition.addTarget(hoverLayout);
+                                TransitionManager.beginDelayedTransition(hoverLayout, transition);
+                                hoverLayout.setVisibility(View.VISIBLE);
+                            }
+
+
 
                             //Animation slide = AnimationUtils.loadAnimation(activity, R.anim.slide_out_left);
                             //hoverLayout.startAnimation(slide);

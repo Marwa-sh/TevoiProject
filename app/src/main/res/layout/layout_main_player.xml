@@ -7,7 +7,7 @@
         android:layout_height="match_parent"
         android:id="@+id/linearLayout_media_player_main"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -22,8 +22,8 @@
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingStart="18dp"
-                    android:paddingTop="19dp"
+                    android:layout_marginStart="18dp"
+                    android:layout_marginTop="15dp"
                     android:src="@mipmap/pause_normal_white"
                     android:background="@null"
                     android:visibility="visible"

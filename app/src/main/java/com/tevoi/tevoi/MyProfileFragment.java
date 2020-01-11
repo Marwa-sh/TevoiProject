@@ -128,6 +128,8 @@ public class MyProfileFragment extends Fragment {
         imgbtnSaveChanges = rootView.findViewById(R.id.imgbtn_myprofile_save_changes);
         imgbtnResetPassword = rootView.findViewById(R.id.imgbtn_myprofile_reset_password);
 
+        activity.mProgressDialog.setMessage(getResources().getString( R.string.loader_msg));
+        activity.mProgressDialog.show();
 
         Call<UserProfileResponse> call = Global.client.GetUserProfile();
         call.enqueue(new Callback<UserProfileResponse>() {
