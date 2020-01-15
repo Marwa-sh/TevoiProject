@@ -93,10 +93,32 @@
     <string name="add_to_list_txt">إضافة للقائمة</string>
     <string name="add_to_play_next">إضافة لقائمة الoffline</string>
     <string name="no_lists_to_delete">القائمة فارغة</string>
-    <string name="title_upgrade_to_premium">Upgrade to premium</string>
+    <string name="title_upgrade_to_premium">الترقية إلى الاشتراك المميز</string>
     <string name="add_To_list">إضافة المقطع لقوائمي</string>
     <string name="sign_in">تسجيل الدخول</string>
 
     <string name="create_list"> إضافة قائمة</string>
     <string name="restart_app_for_apply_language">يجب إعادة تشغلي التطبيق لتفعيل اللغة المختارة</string>
+
+    <string name="control_the_time_tracks">التحكم في الوقت الذي يتم فيه إتاحة المقالات في وضع عدم الاتصال في قائمة التشغيل التالية</string>
+    <string name="Note_The_more_you_keep_tracks">ملاحظة: كلما قمت بإبقاء المقالات كلما زاد استخدام ذاكرة التخزين المؤقت للتطبيق على هاتفك المحمول</string>
+    <string name="clear_all_lists">مسح جميع القوائم</string>
+    <string name="clear_all_tracks">مسح جميع المقالات</string>
+    <string name="title_my_profile">ملفي الشخصي</string>
+    <string name="title_my_account">حسابي</string>
+    <string name="title_general">عام</string>
+    <string name="reset_password">إعادة تعيين كلمة المرور</string>
+    <string name="clear_all_history">مسح سجل المقلالت المسموعة</string>
+
+
+    <string name="like">إعجاب</string>
+    <string name="dilike">إلغاء الإعجاب</string>
+    <string name="save_changes">حفظ التغييرات</string>
+    <string name="change_password">تغيير كلمة المرور</string>
+    <string name="listen_our_story">استمع إلى قصتنا</string>
+
+    <string name="show_default_audio_language">إظهار المقالات الصوتية باللغة المحددة فقط.</string>
+
+
+
 </resources>

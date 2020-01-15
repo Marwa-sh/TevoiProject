@@ -4,8 +4,15 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
     <color name="fontColor">#ffffff</color>
-    <color name="tevoiBluePrimary">#00BFC6</color>
+<!--
     <color name="tevoiBlueSecondary">#75d5b6</color>
+    <color name="tevoiBluePrimary">#00BFC6</color>
+-->
+
+    <color name="tevoiBlueSecondary">#84754B</color>
+    <color name="tevoiBluePrimary">#84754B</color>
+
+
     <color name="tevoiSeperator">#707070</color>
     <color name="tevoiFontColor">#535353</color>
     <color name="tevoiStar">#FFE0A1</color>

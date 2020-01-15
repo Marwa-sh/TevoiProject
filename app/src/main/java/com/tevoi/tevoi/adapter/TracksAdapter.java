@@ -453,11 +453,11 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                             indexLastOpenDrawer = i;
                         }
                         if (tracks.get(i).isFavourite()) {
-                            btnLike.setText("Dislike");
+                            btnLike.setText(activity.getResources().getText(R.string.dilike));
                             btnLike.setCompoundDrawablesWithIntrinsicBounds(null,activity.getResources().getDrawable(R.mipmap.dislike_hover),null,null);
                             btnLike.refreshDrawableState();
                         } else {
-                            btnLike.setText("Like");
+                            btnLike.setText(activity.getResources().getText(R.string.like));
                             btnLike.setCompoundDrawablesWithIntrinsicBounds(null,activity.getResources().getDrawable(R.mipmap.like_normal_white),null,null);
 
                             btnLike.refreshDrawableState();
@@ -657,7 +657,7 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                                 if (res.getNumber() == 0)
                                 {
                                     t.setFavourite(true);
-                                    btnLike.setText("Dislike");
+                                    btnLike.setText(activity.getResources().getText(R.string.dilike));
                                     btnLike.setCompoundDrawablesWithIntrinsicBounds(null,activity.getResources().getDrawable(R.mipmap.dislike_hover),null,null);
                                     btnLike.refreshDrawableState();
 
@@ -685,7 +685,7 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                                 if (res.getNumber() == 0)
                                 {
                                     t.setFavourite(false);
-                                    btnLike.setText("Like");
+                                    btnLike.setText(activity.getResources().getText(R.string.like));
                                     btnLike.setCompoundDrawablesWithIntrinsicBounds(null,activity.getResources().getDrawable(R.mipmap.like_normal_white),null,null);
                                     btnLike.refreshDrawableState();
 

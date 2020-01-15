@@ -66,7 +66,7 @@
     <string name="user_Name">User Name*</string>
     <string name="email">Email*</string>
     <string name="password">Password*</string>
-    <string name="change_password">Change Password*</string>
+    <string name="change_password">Change Password</string>
     <string name="confirm_password">Confirm Password*</string>
     <string name="we_need_info">We need the following information to better guess your preferences</string>
     <string name="age">Age</string>
@@ -135,6 +135,9 @@
     <string name="dont_show_heard_tracks">Don\'t Show heard tracks</string>
     <string name="msg_play_now_deleted_successfully">Play now deleted successfully</string>
 
+    <string name="control_the_time_tracks">Control the time tracks are kept available offline in the play next list</string>
+    <string name="Note_The_more_you_keep_tracks">"Note: The more you keep tracks the more cache the app will use on your mobile"</string>
+
 
     <string name="list_name_required">Name can\'t be empty</string>
 
@@ -186,6 +189,11 @@
     <string name="remove_track">Remove</string>
 
     <string name="sign_in">Sign in</string>
+
+    <string name="like">Like</string>
+    <string name="dilike">Dislike</string>
+
+    <string name="reset_password">Reset Password</string>
 
 
     <string name="dialog_title_clear_user_list">Are you sure you want to delete all lists? This will delete the tracks related to them also.</string>

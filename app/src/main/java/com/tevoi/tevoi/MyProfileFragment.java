@@ -119,12 +119,12 @@ public class MyProfileFragment extends Fragment {
         spnrCountries = rootView.findViewById(R.id.spnr_myprofile_countries);
         spnrGender = rootView.findViewById(R.id.spnr_myprofile_Gender);
 
-        imgbtnEditUserName = rootView.findViewById(R.id.imgbtn_myprofile_edit_username);
-        imgbtnEditEmail = rootView.findViewById(R.id.imgbtn_myprofile_edit_email);
-        imgbtnEditAge = rootView.findViewById(R.id.imgbtn_myprofile_edit_age);
-        imgbtnEditGender = rootView.findViewById(R.id.imgbtn_myprofile_edit_gender);
-        imgbtnEditOccupation = rootView.findViewById(R.id.imgbtn_myprofile_edit_occupation);
-        imgbtnEditCountry = rootView.findViewById(R.id.imgbtn_myprofile_edit_country);
+//        imgbtnEditUserName = rootView.findViewById(R.id.imgbtn_myprofile_edit_username);
+//        imgbtnEditEmail = rootView.findViewById(R.id.imgbtn_myprofile_edit_email);
+//        imgbtnEditAge = rootView.findViewById(R.id.imgbtn_myprofile_edit_age);
+//        imgbtnEditGender = rootView.findViewById(R.id.imgbtn_myprofile_edit_gender);
+//        imgbtnEditOccupation = rootView.findViewById(R.id.imgbtn_myprofile_edit_occupation);
+//        imgbtnEditCountry = rootView.findViewById(R.id.imgbtn_myprofile_edit_country);
         imgbtnSaveChanges = rootView.findViewById(R.id.imgbtn_myprofile_save_changes);
         imgbtnResetPassword = rootView.findViewById(R.id.imgbtn_myprofile_reset_password);
 

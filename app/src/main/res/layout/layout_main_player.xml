@@ -44,7 +44,7 @@
                     android:paddingTop="15dp"
                     android:layout_gravity="center_vertical"
                     android:textColor="@color/fontColor"
-                    android:layout_marginLeft="27dp"
+                    android:layout_marginStart="27dp"
                     android:id="@+id/txt_track_name_main_player"
                     />
                <!-- <ImageButton

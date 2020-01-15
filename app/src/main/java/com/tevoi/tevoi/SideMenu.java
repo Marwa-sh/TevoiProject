@@ -711,7 +711,7 @@ public class SideMenu extends AppCompatActivity
 
         trackIdPlayedNow = -1;
         searchBtn = findViewById(R.id.action_search);
-        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog = new ProgressDialog(this,R.style.AppCompatAlertDialogStyle);
         mProgressDialog.setCancelable(false);
 
 
