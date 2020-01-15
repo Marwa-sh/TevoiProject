@@ -40,11 +40,13 @@ public class NotificationFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         switchCompatAll = rootView.findViewById(R.id.switch_notification_type_all);
-        switchCompatAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
+        switchCompatAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+            {
+                if (isChecked)
+                {
                     // set all types to true and refresh adapter
-
                     activity.mProgressDialog.setMessage(getResources().getString( R.string.loader_msg));
                     activity.mProgressDialog.show();
 
@@ -59,7 +61,6 @@ public class NotificationFragment extends Fragment {
                             adapter = new NotificationTypeAdapter(notificationTypes.getLstNotiicationTypes(),activity);
                             recyclerView.setAdapter(adapter);
                             activity.mProgressDialog.dismiss();
-
                         }
                         public void onFailure(Call<ListNotificationTypesResponse> call, Throwable t)
                         {
@@ -67,6 +68,9 @@ public class NotificationFragment extends Fragment {
                             Toast.makeText(getContext(),"something went wrong", Toast.LENGTH_SHORT);
                         }
                     });
+                }
+                else {
+
                 }
             }
         });
