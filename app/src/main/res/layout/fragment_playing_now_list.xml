@@ -88,7 +88,7 @@
             android:background="@color/tevoiBrownDark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="clear selections"
+            android:text="@string/clear_selection"
             android:textSize="14dp"/>
 
         <ImageButton

@@ -162,6 +162,12 @@ public class TracksList extends Fragment
         });
 
         activity.mainPlayerLayout.setOnTouchListener(new OnSwipeTouchListener(activity) {
+            public boolean onTouch(View v, MotionEvent event) {
+                Log.d("test", "ontouch");
+
+                return false;
+
+            }
             public void onSwipeTop() {
                 Toast.makeText(activity, "top", Toast.LENGTH_SHORT).show();
             }
@@ -235,8 +241,10 @@ public class TracksList extends Fragment
                 Toast.makeText(activity, "bottom", Toast.LENGTH_SHORT).show();
             }
 
+
         });
-        /*activity.mainPlayerLayout.setOnTouchListener(new View.OnTouchListener() {
+
+    /*    activity.mainPlayerLayout.setOnTouchListener(new View.OnTouchListener() {
             public boolean onTouch(View v, MotionEvent event) {
 
                 if(event.getAction() == MotionEvent.ACTION_MOVE){
@@ -264,6 +272,44 @@ public class TracksList extends Fragment
                 return true;
             }
         });*/
+
+        activity.mainPlayerLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //do something
+                if (activity.CurrentTrackInPlayer != null) {
+                    FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
+                    // Replace the contents of the container with the new fragment
+                    //TrackAddToList frag = new TrackAddToList();
+
+                    activity.mediaPlayerFragment.currentTrackId = activity.CurrentTrackInPlayer.getId();
+
+                    activity.mediaPlayerFragment.currentTrack = activity.CurrentTrackInPlayer;
+
+                    ft.replace(R.id.content_frame, activity.mediaPlayerFragment);
+                    ft.addToBackStack("mediaPlayerFragment");
+                    // or ft.add(R.id.your_placeholder, new FooFragment());
+                    // Complete the changes added above
+                    ft.commit();
+
+                    activity.CurrentFragmentName = Global.MediaPlayerFragmentName;
+                    //fragTransaction.setCustomAnimations(R.anim.slide_in_up, R.anim.slide_out_up);
+                    ft.replace(R.id.content_frame, activity.mediaPlayerFragment);
+                    ft.addToBackStack(activity.CurrentFragmentName);
+
+                    try {
+                        ft.commit();
+                    } catch (Exception exc) {
+                    }
+
+
+                } else {
+                    Toast.makeText(activity, "You didn't choose a track", Toast.LENGTH_SHORT).show();
+                }
+
+
+            }
+        });
         activity.seekBarMainPlayer.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override

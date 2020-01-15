@@ -138,7 +138,7 @@ public class ListTracksFragment extends Fragment
             }
             public void onSwipeLeft() {
                 Toast.makeText(activity, "left", Toast.LENGTH_SHORT).show();
-                /*if (activity.CurrentTrackInPlayer != null) {
+                if (activity.CurrentTrackInPlayer != null) {
                     FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
                     // Replace the contents of the container with the new fragment
                     //TrackAddToList frag = new TrackAddToList();
@@ -155,7 +155,7 @@ public class ListTracksFragment extends Fragment
 
                 } else {
                     Toast.makeText(activity, "You didn't choose a track", Toast.LENGTH_SHORT).show();
-                }*/
+                }
             }
             public void onSwipeBottom() {
                 Toast.makeText(activity, "bottom", Toast.LENGTH_SHORT).show();
@@ -163,7 +163,34 @@ public class ListTracksFragment extends Fragment
 
         });
 
-        /*activity.mainPlayerLayout.setOnTouchListener(new View.OnTouchListener() {
+    /*    activity.mainPlayerLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                    //do something
+                    if (activity.CurrentTrackInPlayer != null) {
+                        FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
+                        // Replace the contents of the container with the new fragment
+                        //TrackAddToList frag = new TrackAddToList();
+
+                        activity.mediaPlayerFragment.currentTrackId = activity.CurrentTrackInPlayer.getId();
+
+                        activity.mediaPlayerFragment.currentTrack = activity.CurrentTrackInPlayer;
+
+                        ft.replace(R.id.content_frame, activity.mediaPlayerFragment);
+                        ft.addToBackStack("mediaPlayerFragment");
+                        // or ft.add(R.id.your_placeholder, new FooFragment());
+                        // Complete the changes added above
+                        ft.commit();
+
+                    } else {
+                        Toast.makeText(activity, "You didn't choose a track", Toast.LENGTH_SHORT).show();
+                    }
+
+
+            }
+        });*/
+
+      /*  activity.mainPlayerLayout.setOnTouchListener(new View.OnTouchListener() {
             public boolean onTouch(View v, MotionEvent event) {
 
                 if (event.getAction() == MotionEvent.ACTION_MOVE) {

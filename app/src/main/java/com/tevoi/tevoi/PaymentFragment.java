@@ -6,10 +6,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import com.tevoi.tevoi.Utils.Global;
+import com.tevoi.tevoi.model.IResponse;
+
 import org.w3c.dom.Text;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class PaymentFragment extends Fragment {
 
@@ -40,6 +48,45 @@ public class PaymentFragment extends Fragment {
         chkCredit = rootView.findViewById(R.id.chk_credit_debit_card);
         chkPaypal =rootView.findViewById(R.id.chk_paypal);
 
+        chk12Month.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v)
+            {
+                // you might keep a reference to the CheckBox to avoid this class cast
+                boolean checked = ((CheckBox)v).isChecked();
+                chk1Month.setChecked(!checked);
+                chk3Month.setChecked(!checked);
+            }
+
+        });
+        chk3Month.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v)
+            {
+                // you might keep a reference to the CheckBox to avoid this class cast
+                boolean checked = ((CheckBox)v).isChecked();
+                chk1Month.setChecked(!checked);
+                chk12Month.setChecked(!checked);
+            }
+
+        });
+
+        chk1Month.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v)
+            {
+                // you might keep a reference to the CheckBox to avoid this class cast
+                boolean checked = ((CheckBox)v).isChecked();
+                chk12Month.setChecked(!checked);
+                chk3Month.setChecked(!checked);
+            }
+
+        });
+
+        
 
         return rootView;
     }
