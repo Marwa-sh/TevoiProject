@@ -175,7 +175,7 @@
     <string name="dollar_120">$120</string>
     <string name="dollar_12">$1.2</string>
     <string name="dollar_121">$121.2</string>
-    <string name="play_now">Play Now</string>
+    <string name="pay_now">Pay Now</string>
 
     <string name="track_will_download">Track will be downloaded ... </string>
     <string name="no_lists_to_delete">No Lists to delete.</string>
@@ -195,10 +195,25 @@
 
     <string name="reset_password">Reset Password</string>
 
+    <string name="type_your_list_name">Type Your List Name: </string>
 
     <string name="dialog_title_clear_user_list">Are you sure you want to delete all lists? This will delete the tracks related to them also.</string>
 
     <string name="create_list"> Create List</string>
     <string name="restart_app_for_apply_language">You need to reopen the app to change the language</string>
+
+    <string name="download_limit_update_sucessfully">Download Limit Updated Sucessfully</string>
+    <string name="select_list">Select a List :</string>
+
+    <string name="partner_add_to_filter">Partner Added To Filter Successfully</string>
+
+
+    <string name="user_name_cant_be_empty">User Name Can\'t Be Empty!</string>
+    <string name="message_name_cant_be_empty">Message Name Can\'t Be Empty!</string>
+
+    <string name="message_send_successfully">Message send Successfully</string>
+
+    <string name="enable_location_for_nearby_tracks">Enable Location for Nearby Tracks</string>
+    <string name="search">Search</string>
 
 </resources>

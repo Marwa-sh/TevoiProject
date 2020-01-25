@@ -39,11 +39,13 @@ public class DownloadFragment extends Fragment
                 GetDownloadLimitResponse result = response.body();
                 if(result != null)
                 {
+                    activity.mProgressDialog.dismiss();
                     int progress = result.NumberOfMinutes / 60;
                     seekbar.setProgress(progress);
                 }
                 else
                 {
+                    activity.mProgressDialog.dismiss();
                     seekbar.setProgress(0);
                 }
             }
@@ -116,7 +118,7 @@ public class DownloadFragment extends Fragment
                         if(result.Number == 0)
                         {
                             activity.mProgressDialog.dismiss();
-                            Toast.makeText(activity, result.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(activity, getResources().getString( R.string.download_limit_update_sucessfully), Toast.LENGTH_SHORT).show();
                         }
                         else
                         {

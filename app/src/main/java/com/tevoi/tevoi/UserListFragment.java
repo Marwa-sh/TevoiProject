@@ -153,7 +153,7 @@ public class UserListFragment extends Fragment
                 // set dialog message
                 alertDialogBuilder
                         .setCancelable(false)
-                        .setPositiveButton("OK",
+                        .setPositiveButton(activity.getResources().getText(R.string.Yes),
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog,int id) {
                                         // get user input and set it to result
@@ -188,7 +188,7 @@ public class UserListFragment extends Fragment
                                         }
                                     }
                                 })
-                        .setNegativeButton("Cancel",
+                        .setNegativeButton(activity.getResources().getText(R.string.cancel),
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog,int id) {
                                         dialog.cancel();

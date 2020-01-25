@@ -119,6 +119,47 @@
 
     <string name="show_default_audio_language">إظهار المقالات الصوتية باللغة المحددة فقط.</string>
 
+    <string name="continue_as_guest">المتابعة كضيف</string>
+    <string name="continue_as_guest_text">إذا قمت بالمتابعة كضيف فإن بعض الخواص لت تكون متاحة</string>
 
+    <string name="error_msg">عذراً! لم يتم تحميل هذه الصفحة.</string>
+    <string name="tap_to_reload">إضغط لإعادة التحميل</string>
+    <string name="error_msg_timeout">لقد استغرق الخادم وقتا طويلاً للإستجابة</string>
+    <string name="error_msg_unknown">لقد جدث خطأ غير متوقع</string>
+
+    <string name="quick_tour">جولة سريعة</string>
+    <string name="play_now_list_isempty">قائمة التشغيل التالي فارغة</string>
+    <string name="no_track_to_play">لايوجد مقالات للتشغيل</string>
+    <string name="track_has_no_text">هذه المقالة لاتحتوي على نص</string>
+    <string name="menu_settings">الإعدادات</string>
+
+    <string name="success_update_profile">لقد تم تعديل ملفك الشخصي بنجاح</string>
+    <string name="success_reset_password">لقد تم إعادة تعيين كلمة المرور بنجاح</string>
+    <string name="payment_method">طريقة الدفع</string>
+
+    <string name="track_will_download">سوف يتم تحميل المقالة... </string>
+    <string name="no_lists_for_user">ليس لديك قوائم بعد.</string>
+
+    <string name="dialog_title_clear_user_list">هل أنت متأكد من أنك ترغب بحذف جميع القوائم؟ هذا سيؤدي إلى حذف جميع المقالات المرتبطة بهم أيضا.</string>
+
+    <string name="dialog_message">حذف القائمة</string>
+
+    <string name="price">السعر</string>
+    <string name="tax">الضرائب</string>
+    <string name="total">الإجمالي</string>
+    <string name="pay_now">شغل الآن</string>
+
+    <string name="type_your_list_name">ادخل اسم القائمة : </string>
+    <string name="download_limit_update_sucessfully">لقد تم تعديل حدود التحميل بنجاح</string>
+    <string name="select_list">اختر قائمة</string>
+
+    <string name="partner_add_to_filter">تمت إضافة الشريك إلى خيارات البحث بشكل صحيح</string>
+    <string name="user_name_cant_be_empty">لايمكن لاسم المستخدم أن يكون فارغ</string>
+
+    <string name="message_name_cant_be_empty">لايمكن للرسالة أن تكون فارغة</string>
+    <string name="message_send_successfully">تم إرسال رسالتك بنجاح</string>
+
+    <string name="enable_location_for_nearby_tracks">تمكين الموقع لإيجاد المقالات القريبة</string>
+    <string name="search">بحث</string>
 
 </resources>

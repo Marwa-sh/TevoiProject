@@ -179,7 +179,7 @@ public class PartnerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                             IResponse res = response.body();
                             if(res.getNumber()==0)
                             {
-                                Toast.makeText(activity,res.getMessage(),Toast.LENGTH_LONG).show();
+                                Toast.makeText(activity,activity.getResources().getString( R.string.partner_add_to_filter),Toast.LENGTH_LONG).show();
                             }
                             else
                             {

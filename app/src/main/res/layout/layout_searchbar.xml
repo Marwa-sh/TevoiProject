@@ -24,7 +24,7 @@
             android:layout_centerInParent="true"
             android:background="@drawable/rounded_edittext"
             android:alpha="0.3"
-            android:hint="Search"
+            android:hint="@string/search"
             android:textColorHint="@color/tevoiBlack"
             android:layout_marginEnd="10dp"
             android:layout_marginStart="10dp"
@@ -72,7 +72,7 @@
             android:layout_width="wrap_content"
             android:layout_height="80dp"
             android:id="@+id/checkBoxLocationEnable"
-            android:text="Enable Location for Nearby Tracks"
+            android:text="@string/enable_location_for_nearby_tracks"
             />
     </LinearLayout>
 
