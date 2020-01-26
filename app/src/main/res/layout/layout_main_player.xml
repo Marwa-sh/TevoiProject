@@ -7,7 +7,7 @@
         android:layout_height="match_parent"
         android:id="@+id/linearLayout_media_player_main"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -209,8 +209,8 @@ public class LoginActivity extends AppCompatActivity
         });
 
 
-        etUserName.setText("marosh");
-        etPassword.setText("Host123");
+        //etUserName.setText("marosh");
+        //etPassword.setText("Host123");
        // btnLogin.performClick();
 
     }
