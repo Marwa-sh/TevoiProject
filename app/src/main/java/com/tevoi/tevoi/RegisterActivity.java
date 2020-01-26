@@ -113,7 +113,7 @@ public class RegisterActivity extends AppCompatActivity implements SpinnerAdapte
         //mSubTitle.setText("First Page");
         //getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog = new ProgressDialog(this,R.style.AppCompatAlertDialogStyle);
         mProgressDialog.setCancelable(false);
 
         txtErrorMessage = findViewById(R.id.txt_register_error_message);

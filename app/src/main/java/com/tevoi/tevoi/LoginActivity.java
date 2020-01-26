@@ -90,7 +90,7 @@ public class LoginActivity extends AppCompatActivity
         //mSubTitle.setText("First Page");
         //getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog = new ProgressDialog(this,R.style.AppCompatAlertDialogStyle);
         mProgressDialog.setCancelable(false);
 
         txtRegister = findViewById(R.id.txtRegister);

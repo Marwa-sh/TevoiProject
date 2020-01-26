@@ -14,7 +14,6 @@
         android:textColor="@color/fontColor"
         android:textSize="20dp"
         android:layout_marginTop="27dp"
-        android:layout_marginLeft="20dp"
         android:layout_marginStart="27dp"
         />
     <LinearLayout
@@ -23,7 +22,6 @@
         <CheckBox
             android:layout_marginTop="10dp"
             android:layout_marginStart="30dp"
-            android:layout_marginLeft="30dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
@@ -34,7 +32,7 @@
             />
         <TextView
             android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/arabic"
@@ -49,7 +47,6 @@
         <CheckBox
             android:layout_marginTop="10dp"
             android:layout_marginStart="30dp"
-            android:layout_marginLeft="30dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="false"
@@ -60,7 +57,7 @@
             />
         <TextView
             android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/english"
@@ -85,7 +82,6 @@
         <CheckBox
             android:layout_marginTop="10dp"
             android:layout_marginStart="30dp"
-            android:layout_marginLeft="30dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
@@ -96,7 +92,7 @@
             />
         <TextView
             android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/arabic"
@@ -111,7 +107,6 @@
         <CheckBox
             android:layout_marginTop="10dp"
             android:layout_marginStart="30dp"
-            android:layout_marginLeft="30dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="false"

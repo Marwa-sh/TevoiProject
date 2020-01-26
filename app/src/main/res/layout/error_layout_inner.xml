@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/activity_margin_quarter"
-            tools:text="The server took too long to respond."/>
+            tools:text="@string/the_server_took_too_long"/>
 
         <Button
             android:id="@+id/error_btn_retry"
