@@ -58,7 +58,7 @@ public class FeedbackFragment extends Fragment
 
                 if(username.equals(""))
                 {
-                    txtName.setError("user name can't be empty!");
+                    txtName.setError(activity.getResources().getText(R.string.user_name_cant_be_empty));
                     txtName.requestFocus();
                 }
                 /*else if(email.equals(""))
@@ -68,7 +68,7 @@ public class FeedbackFragment extends Fragment
                 }*/
                 else if(message.equals(""))
                 {
-                    txtContent.setError("message can't be empty!");
+                    txtContent.setError(activity.getResources().getText(R.string.message_name_cant_be_empty));
                     txtContent.requestFocus();
                 }
                 else
@@ -87,7 +87,7 @@ public class FeedbackFragment extends Fragment
                             if(result.Number == 0)
                             {
                                 activity.mProgressDialog.dismiss();
-                                Toast.makeText(activity, result.getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(activity,getResources().getText(R.string.message_send_successfully), Toast.LENGTH_SHORT).show();
                                 txtName.setText("");
                                 txtContent.setText("");
                             }
