@@ -2,6 +2,7 @@
 package com.tevoi.tevoi;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -28,6 +29,7 @@ import com.tevoi.tevoi.model.RecyclerViewEmptySupport;
 import com.tevoi.tevoi.model.UserListObject;
 import com.tevoi.tevoi.model.UserListResponse;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
@@ -197,7 +199,14 @@ public class UserListFragment extends Fragment
 
                 // create alert dialog
                 AlertDialog alertDialog = alertDialogBuilder.create();
+
                 // show it
+                alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(DialogInterface arg0) {
+                        alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(activity.getResources().getColor(R.color.tevoiBrownDark));
+                    }
+                });
                 alertDialog.show();
             }
         });
