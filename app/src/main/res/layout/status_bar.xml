@@ -26,7 +26,7 @@
         android:layout_weight="1"
 
         android:orientation="vertical"
-        android:paddingLeft="@dimen/status_bar_button_info_container_padding_left" >
+        android:paddingStart="@dimen/status_bar_button_info_container_padding_left" >
 
         <TextView
             android:id="@+id/status_bar_track_name"

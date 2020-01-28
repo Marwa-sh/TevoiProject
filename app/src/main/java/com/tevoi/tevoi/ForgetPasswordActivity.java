@@ -34,7 +34,7 @@ public class ForgetPasswordActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forget_password);
 
-        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog = new ProgressDialog(this,R.style.AppCompatAlertDialogStyle);
         mProgressDialog.setCancelable(false);
 
         etEmail = findViewById(R.id.et_enter_email);

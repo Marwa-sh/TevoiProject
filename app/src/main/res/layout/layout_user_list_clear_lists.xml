@@ -13,15 +13,17 @@
         android:textColor="@color/white"
         android:text="@string/dialog_title_clear_user_list"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="18dp"
+        android:textSize="16dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         />
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:orientation="horizontal"
-        android:layout_marginStart="32dp"
+        android:layout_gravity="center_horizontal"
         >
         <ImageButton
             android:id="@+id/imgBtnYes"
@@ -37,7 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:text="@string/Yes"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="14dp"
             android:textColor="@color/fontColor"
             />
         <ImageButton
@@ -53,7 +55,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="14dp"
             android:textColor="@color/fontColor"
             android:text="@string/No"
             />

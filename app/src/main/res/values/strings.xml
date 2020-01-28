@@ -216,4 +216,22 @@
     <string name="enable_location_for_nearby_tracks">Enable Location for Nearby Tracks</string>
     <string name="search">Search</string>
 
+    <string name="submit">Submit</string>
+
+    <string name="please_check_internet">Please check your internet connection, and try again.</string>
+    <string name="the_server_took_too_long">The server took too long to respond.</string>
+
+    <string name="login">Login</string>
+
+    <string name="a_z">A-Z</string>
+    <string name="share_track_on_social_media">Share track on social media</string>
+
+    <string name="delete">Delete</string>
+    <string name="rename">Rename</string>
+
+    <string name="add_to_filter">Add To filter</string>
+
+    <string name="number_of_tracks">Number of tracks</string>
+
+
 </resources>

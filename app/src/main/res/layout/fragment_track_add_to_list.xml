@@ -18,7 +18,6 @@
             android:text="@string/add_To_list"
             android:layout_marginTop="21dp"
             android:layout_marginStart="32dp"
-            android:layout_marginLeft="32dp"
             android:textColor="@color/fontColor"
             />
     </LinearLayout>
@@ -47,14 +46,14 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="@string/add_track_to_list"
-                android:layout_marginStart="4dp"
+                android:layout_marginStart="14dp"
                 android:textColor="@color/fontColor"
                 />
             <ImageButton
                 android:id="@+id/imgBtnCloseAddToList"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="20dp"
                 android:background="@null"
                 android:layout_gravity="end"
                 android:scaleType="fitXY"
@@ -65,7 +64,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="14dp"
                 android:gravity="end"
                 android:textColor="@color/fontColor"
                 android:text="@string/cancel"
