@@ -26,8 +26,10 @@ import com.tevoi.tevoi.Utils.MyStorage;
 import com.tevoi.tevoi.model.InternetConnectionListener;
 import com.tevoi.tevoi.model.LoginRequestModel;
 import com.tevoi.tevoi.model.LoginResponse;
+import com.tevoi.tevoi.model.TrackObject;
 import com.tevoi.tevoi.rest.ApiClient;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeoutException;
 
@@ -159,6 +161,8 @@ public class LoginActivity extends AppCompatActivity
                                 Global.UserToken = storageManager.getTokenPreference(LoginActivity.this);
                                 Global.UserUILanguage = storageManager.getLanguageUIPreference(LoginActivity.this);
                                 //storageManager.storeRememberMePreference(LoginActivity.this, isRememberMe);
+                                storageManager.storeListTracks(LoginActivity.this, login.getLstTracks());
+
 
                                 Intent i = new Intent(getApplicationContext(),SideMenu.class);
                                 startActivity(i);
