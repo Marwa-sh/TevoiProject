@@ -49,8 +49,8 @@
     <string name="No">لا</string>
     <string name="dialog_title_remove_from_list">هل أنت متأكد من حذف القائمة؟</string>
     <string name="list_name_required">اسم القائمة مطلوب</string>
-    <string name="no_quota_for_today">عذراً ,, لقد انتهت باقتك اليومية</string>
-    <string name="no_quota_for_offline">"عذراً ,, باقتك اليومية لا تكفي لتحميل الملف "</string>
+    <string name="no_quota_for_today">عذراً, لقد انتهت باقتك اليومية</string>
+    <string name="no_quota_for_offline">"عذراً, باقتك اليومية لا تكفي لتحميل الملف "</string>
     <string name="title_setting">الإعدادات</string>
     <string name="title_list_tracks">المقالات</string>
     <string name="title_interface_language">اللغة</string>
@@ -66,7 +66,7 @@
     <string name="title_my_list">قوائمي</string>
     <string name="title_lists">القوائم</string>
     <string name="location_header_fragement">هذه المقالة لها موقع</string>
-    <string name="location_body_fragement">سيتم نقلك لتطبيق الخرائط ,,, هل أنت متأكد أنك ترغب بالانتقال خارج تطبيق تيفوي ؟</string>
+    <string name="location_body_fragement">سيتم نقلك لتطبيق الخرائط, هل أنت متأكد أنك ترغب بالانتقال خارج تطبيق تيفوي ؟</string>
     <string name="month_12">12 شهر</string>
     <string name="month_6">6 أشهر</string>
     <string name="month_3">3 أشهر</string>
@@ -83,10 +83,10 @@
     <string name="track_added_to_list_successfully">تم إضافة المقالة للقائمة بنجاح</string>
     <string name="general_error">حدث خطأ ما</string>
     <string name="logout">تسجيل الخروج</string>
-    <string name="demo_user_need_to_register">عذراً ,, عليك التسجيل لروية المحتوى</string>
+    <string name="demo_user_need_to_register">عذراً, عليك التسجيل لروية المحتوى</string>
     <string name="track_language">لغة المقالات الافتراضية</string>
     <string name="btn_retry">إعادة المحاولة</string>
-    <string name="error_msg_no_internet">أنت غير متصل بالإنترنت ,, يرجى التحقق من الاتصال والمحاولة مرة ثانية</string>
+    <string name="error_msg_no_internet">أنت غير متصل بالإنترنت , يرجى التحقق من الاتصال والمحاولة مرة ثانية</string>
     <string name="like_track">إعجاب</string>
     <string name="remove_track">حذف</string>
     <string name="read_track_text">النص</string>
@@ -108,7 +108,7 @@
     <string name="title_my_account">حسابي</string>
     <string name="title_general">عام</string>
     <string name="reset_password">إعادة تعيين كلمة المرور</string>
-    <string name="clear_all_history">مسح سجل المقلالت المسموعة</string>
+    <string name="clear_all_history">مسح سجل المقالات المسموعة</string>
 
 
     <string name="like">إعجاب</string>
