@@ -10,6 +10,7 @@ import com.tevoi.tevoi.model.TrackObject;
 import com.tevoi.tevoi.model.TrackSerializableObject;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.tevoi.tevoi.model.UserListObject;
 
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -35,6 +36,7 @@ public class MyStorage
 
     public static final String ArrayListTrack = "ArrayListTrack";
     public static final String ArrayListPartners = "ArrayListPartners";
+    public static final String ArrayUserList = "ArrayUserList";
 
 
     private  String Suffix =  "_" + USER_ID;
@@ -506,6 +508,7 @@ public class MyStorage
             return new ArrayList<>();
         return listTracks;
     }
+    //endregion
 
    /* public String addTrack(Context context, TrackSerializableObject myModel)
     {
@@ -683,5 +686,44 @@ public class MyStorage
         storePlayNowTracks(context, playNowTracks);
     }*/
     //endregion
+    // region shared preference for List Tracks
 
+    public void storeUsetList(Context context, List userList)
+    {
+        // used for store arrayList in json format
+        SharedPreferences settings;
+        Editor editor;
+        settings = context.getSharedPreferences(PREFS_NAME + Suffix, Context.MODE_PRIVATE);
+        editor = settings.edit();
+
+        GsonBuilder builder = new GsonBuilder();
+        builder.excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC);
+        builder.excludeFieldsWithoutExposeAnnotation();
+        Gson sExposeGson = builder.create();
+        String jsonFavorites = sExposeGson.toJson(userList);
+        editor.putString(ArrayUserList + Suffix, jsonFavorites);
+        editor.commit();
+    }
+
+    public ArrayList<UserListObject> loadUserList(Context context)
+    {
+        // used for retrieving arraylist from json formatted string
+        SharedPreferences settings;
+        ArrayList<UserListObject> userList;
+        settings = context.getSharedPreferences(PREFS_NAME + Suffix, Context.MODE_PRIVATE);
+        if (settings.contains(ArrayUserList + Suffix)) {
+            String jsonPlayNowTracks = settings.getString(ArrayUserList + Suffix, null);
+
+            GsonBuilder builder = new GsonBuilder();
+            builder.excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC);
+            builder.excludeFieldsWithoutExposeAnnotation();
+            Gson sExposeGson = builder.create();
+            UserListObject[] userlistItems = sExposeGson.fromJson(jsonPlayNowTracks, UserListObject[].class);
+
+            userList = new ArrayList( Arrays.asList(userlistItems));
+        } else
+            return new ArrayList<>();
+        return userList;
+    }
+    //endregion
 }

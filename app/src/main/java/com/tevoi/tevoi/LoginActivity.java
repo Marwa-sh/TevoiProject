@@ -163,6 +163,9 @@ public class LoginActivity extends AppCompatActivity
                                 //storageManager.storeRememberMePreference(LoginActivity.this, isRememberMe);
                                 storageManager.storeListTracks(LoginActivity.this, login.getLstTracks());
                                 storageManager.storeListPartners(LoginActivity.this, login.getLstPartners());
+                                storageManager.storeUsetList(LoginActivity.this, login.getUserlst());
+
+
 
                                 Intent i = new Intent(getApplicationContext(),SideMenu.class);
                                 startActivity(i);

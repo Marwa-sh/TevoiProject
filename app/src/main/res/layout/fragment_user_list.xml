@@ -36,12 +36,18 @@
                 android:paddingTop="4dp"
                 android:src="@mipmap/white_add_to_filter" />
         </LinearLayout>
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/main_swiperefresh_userlist"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
         <com.tevoi.tevoi.model.RecyclerViewEmptySupport
             android:id="@+id/user_list_recycler_View"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             >
         </com.tevoi.tevoi.model.RecyclerViewEmptySupport>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
         <TextView android:id="@+id/user_lists_empty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

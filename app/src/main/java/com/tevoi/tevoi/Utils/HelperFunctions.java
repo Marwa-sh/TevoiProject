@@ -10,6 +10,7 @@ import com.tevoi.tevoi.SideMenu;
 import com.tevoi.tevoi.model.PartnerObject;
 import com.tevoi.tevoi.model.TrackObject;
 import com.tevoi.tevoi.model.TrackSerializableObject;
+import com.tevoi.tevoi.model.UserListObject;
 
 import java.util.List;
 
@@ -31,6 +32,17 @@ public class HelperFunctions
         else
             return lst.subList(currentIndex, currentIndex + size);
     }
+
+    public static List<UserListObject> getPageUserList(List<UserListObject> lst , int index, int size)
+    {
+        int currentIndex = (index * size);
+        if( currentIndex + size > lst.size())
+            return lst.subList(index, lst.size()-1);
+        else
+            return lst.subList(currentIndex, currentIndex + size);
+    }
+
+
     public  static String GetTimeFormat(int pTime)
     {
         String result ="" ;

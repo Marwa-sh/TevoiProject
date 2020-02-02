@@ -14,7 +14,8 @@ public class LoginResponse  extends IResponse{
     private List<TrackObject> lstTracks;
     @SerializedName("lstPartners")
     private List<PartnerObject> lstPartners;
-
+    @SerializedName("Userlst")
+    private List<PartnerObject> Userlst;
 
 
     public int getUserId() {
@@ -47,4 +48,12 @@ public class LoginResponse  extends IResponse{
     public List<PartnerObject> getLstPartners() {
         return lstPartners;
     }
+    public List<PartnerObject> getUserlst() {
+        return Userlst;
+    }
+
+    public void setUserlst(List<PartnerObject> userlst) {
+        Userlst = userlst;
+    }
+
 }
