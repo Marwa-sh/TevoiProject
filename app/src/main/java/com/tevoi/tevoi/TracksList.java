@@ -900,8 +900,8 @@ public class TracksList extends Fragment
 
     private boolean isLoading = false;
     private boolean isLastPage = false;
-    private int TOTAL_PAGES = 0;
-    private int currentPage = 0;
+    private int TOTAL_PAGES = 1;
+    private int currentPage = 1;
     int PAGE_SIZE = Global.PAGE_SIZE;;
     // endregion
 
@@ -954,7 +954,7 @@ public class TracksList extends Fragment
 
         isLastPage = false;
         progressBar = (ProgressBar) rootView.findViewById(R.id.main_progress_list_tracks);
-        currentPage = 0;
+        currentPage = 1;
 
         btnRetry.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1328,12 +1328,12 @@ public class TracksList extends Fragment
 
     public void changeTabToNew(View view) {
         active_tab = 0;
-        /*Collections.sort(lstTracks, new Comparator<TrackObject>() {
+        Collections.sort(lstTracks, new Comparator<TrackObject>() {
             @Override
             public int compare(TrackObject o1, TrackObject o2) {
-                return o1.getStartDate().compareTo(o2.getStartDate());
+                return Integer.compare((int)o1.getRate(), (int)o2.getRate());
             }
-        });*/
+        });
         activateTab(0);
     }
 
@@ -1455,13 +1455,20 @@ public class TracksList extends Fragment
 
     private void loadFirstPage(final int tabId)
     {
-        currentPage = 0;
+        currentPage = 1;
         isLastPage = false;
         isLoading = false;
         /*List<TrackObject> lstTracks = Collections.sort(lstTracks,
                 (o1, o2) -> ((int)o1.getRate()).compareTo((int)o2.getRate()));;
         */
-        TOTAL_PAGES = lstTracks.size() / PAGE_SIZE;
+        if(lstTracks.size() <= PAGE_SIZE)
+        {
+            TOTAL_PAGES = 1;
+        }
+        else
+        {
+            TOTAL_PAGES = lstTracks.size() / PAGE_SIZE;
+        }
 
         if(lstTracks.size() == 0)
         {
@@ -1470,10 +1477,10 @@ public class TracksList extends Fragment
         }
         progressBar.setVisibility(View.GONE);
 
-        List<TrackObject> lstFirstPage = getPage(lstTracks, currentPage , PAGE_SIZE );
+        List<TrackObject> lstFirstPage = getPage(lstTracks, 0 , PAGE_SIZE );
         adapter.addAll(lstFirstPage);
 
-        if (currentPage <= TOTAL_PAGES) adapter.addLoadingFooter();
+        if ( currentPage <= TOTAL_PAGES) adapter.addLoadingFooter();
         else isLastPage = true;
 
         // todo : show banner
@@ -1495,13 +1502,14 @@ public class TracksList extends Fragment
         }
         else
         {
-            getPage(lstTracks, currentPage , PAGE_SIZE );
+            lstNextPage = getPage(lstTracks, currentPage , PAGE_SIZE );
         }
         adapter.addAll(lstNextPage);
 
-        if (TOTAL_PAGES != 0 && currentPage != TOTAL_PAGES) adapter.addLoadingFooter();
+        if ( currentPage !=  TOTAL_PAGES) adapter.addLoadingFooter();
         else isLastPage = true;
 
+        //adapter.notifyDataSetChanged();
         // todo : show banner
         //showListBanner(tracks.getBanner().BannerImagePath, tracks.getBanner().BannerLink);
 
@@ -1509,10 +1517,11 @@ public class TracksList extends Fragment
 
     private List<TrackObject> getPage(List<TrackObject> lst , int index, int size)
     {
-        if((index * PAGE_SIZE) + size > lst.size())
+        int currentIndex = (index * PAGE_SIZE);
+        if( currentIndex + size > lst.size())
             return lst.subList(index, lst.size()-1);
         else
-            return lst.subList(index, index+size);
+            return lst.subList(currentIndex, currentIndex + size);
     }
 
     private void showErrorView(Throwable throwable)
@@ -1592,7 +1601,8 @@ public class TracksList extends Fragment
         LinearLayout layout = activity.findViewById(R.id.test_linear);
         if (layout != null)
         {
-            if (layout.getVisibility() == View.GONE) {
+            if (layout.getVisibility() == View.GONE)
+            {
                 filter.SearchKey = "";
                 filter.IsLocationEnabled = false;
             }
@@ -1622,12 +1632,11 @@ public class TracksList extends Fragment
                 lstTracks = tracks.getLstTrack();
                 activity.storageManager.storeListTracks(activity, lstTracks);
                 // TODO order by active tab
-                //adapter.addAll(lstTracks);
                 loadFirstPage(active_tab);
             }
             public void onFailure(Call<TrackResponseList> call, Throwable t)
             {
-                activity.mProgressDialog.dismiss();
+                //activity.mProgressDialog.dismiss();
             }
         });
     }
