@@ -1,33 +1,47 @@
 package com.tevoi.tevoi.model;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class TrackObject
 {
+    @Expose
     @SerializedName("Id")
     private  int Id;
+    @Expose
     @SerializedName("Name")
     private  String Name;
+    @Expose
     @SerializedName("Duration")
     private  String Duration;
+    @Expose
     @SerializedName("Rate")
     private int Rate;
+    @Expose
     @SerializedName("Authors")
     private  String Authors;
+    @Expose
     @SerializedName("Categories")
     private String Categories;
+    @Expose
     @SerializedName("HasLocation")
     private  boolean HasLocation;
+    @Expose
     @SerializedName("HasText")
     private  boolean  HasText;
+    @Expose
     @SerializedName("PartnerName")
     private String PartnerName;
+    @Expose
     @SerializedName("PartnerId")
     private int PartnerId;
+    @Expose
     @SerializedName("PartnerLogo")
     private String PartnerLogo;
+    @Expose
     @SerializedName("ActivityId")
     private int ActivityId;
+    @Expose
     @SerializedName("IsFavourite")
     private boolean IsFavourite;
 
