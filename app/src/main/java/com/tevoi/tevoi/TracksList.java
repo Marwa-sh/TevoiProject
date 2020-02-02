@@ -833,6 +833,10 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -874,19 +878,13 @@ import android.animation.Animator;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-
-
-
 public class TracksList extends Fragment
-        implements AdapterView.OnItemSelectedListener
+        implements AdapterView.OnItemSelectedListener, SwipeRefreshLayout.OnRefreshListener
         //, InternetConnectionListener
 {
     // region pagination properties
@@ -902,8 +900,8 @@ public class TracksList extends Fragment
 
     private boolean isLoading = false;
     private boolean isLastPage = false;
-    private int TOTAL_PAGES = 0;
-    private int currentPage = 0;
+    private int TOTAL_PAGES = 1;
+    private int currentPage = 1;
     int PAGE_SIZE = Global.PAGE_SIZE;;
     // endregion
 
@@ -918,6 +916,9 @@ public class TracksList extends Fragment
     public FragmentManager fm;
     //public ScrollView scrollViewListTracks;
     public LinearLayout linearLayoutListTracks;
+
+    List<TrackObject> lstTracks = new ArrayList<TrackObject>();
+
 
     View rootView;
     public void initiateMediaPlayerLayout(View rootView)
@@ -953,7 +954,7 @@ public class TracksList extends Fragment
 
         isLastPage = false;
         progressBar = (ProgressBar) rootView.findViewById(R.id.main_progress_list_tracks);
-        currentPage = 0;
+        currentPage = 1;
 
         btnRetry.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -973,11 +974,13 @@ public class TracksList extends Fragment
         rootView = inflater.inflate(R.layout.fragment_tracks_list, container, false);
         activity  = (SideMenu)getActivity();
 
+        lstTracks = activity.storageManager.loadListTracks(activity);
+
         /*CustomApp d = ((CustomApp) activity.getApplication());
         d.setInternetConnectionListener(this);*/
 
         swipeRefreshLayout = rootView.findViewById(R.id.main_swiperefresh);
-        swipeRefreshLayout.setOnRefreshListener(this::doRefresh);
+        swipeRefreshLayout.setOnRefreshListener(this);
 
 
         active_tab = defaultTab;
@@ -1276,7 +1279,7 @@ public class TracksList extends Fragment
             spinner.setOnItemSelectedListener(this);
 
         tabs[0] = rootView.findViewById(R.id.btnNewList);
-        tabs[1]= rootView.findViewById(R.id.btnTopRatedList);
+        tabs[1] = rootView.findViewById(R.id.btnTopRatedList);
         tabs[2] = rootView.findViewById(R.id.btnPopularList);
 
         if(defaultTab < 0 || defaultTab > 2)
@@ -1325,6 +1328,12 @@ public class TracksList extends Fragment
 
     public void changeTabToNew(View view) {
         active_tab = 0;
+        Collections.sort(lstTracks, new Comparator<TrackObject>() {
+            @Override
+            public int compare(TrackObject o1, TrackObject o2) {
+                return Integer.compare((int)o1.getRate(), (int)o2.getRate());
+            }
+        });
         activateTab(0);
     }
 
@@ -1429,9 +1438,11 @@ public class TracksList extends Fragment
         });*/
 
     }
-    private void doRefresh() {
+    @Override
+    public void onRefresh() {
         progressBar.setVisibility(View.VISIBLE);
 
+        getRefreshListTrack();
 
         // TODO: Check if data is stale.
         //  Execute network request if cache is expired; otherwise do not update data.
@@ -1444,141 +1455,73 @@ public class TracksList extends Fragment
 
     private void loadFirstPage(final int tabId)
     {
-        EditText txtFilter = rootView.findViewById(R.id.txt_search_filter_value);
-        CheckBox chkIsLocationEnabled = rootView.findViewById(R.id.checkBoxLocationEnable);
-
-        currentPage = 0;
+        currentPage = 1;
         isLastPage = false;
         isLoading = false;
-        activity.mProgressDialog.setMessage(getResources().getString( R.string.loader_msg));
-        activity.mProgressDialog.show();
-
-        TrackFilter filter =  new TrackFilter();
-        LinearLayout layout = activity.findViewById(R.id.test_linear);
-        if (layout != null)
+        /*List<TrackObject> lstTracks = Collections.sort(lstTracks,
+                (o1, o2) -> ((int)o1.getRate()).compareTo((int)o2.getRate()));;
+        */
+        if(lstTracks.size() <= PAGE_SIZE)
         {
-            if (layout.getVisibility() == View.GONE) {
-                filter.SearchKey = "";
-                filter.IsLocationEnabled = false;
-            }
-            else {
-                filter.SearchKey = txtFilter.getText().toString();
-                filter.IsLocationEnabled = chkIsLocationEnabled.isChecked();
-            }
+            TOTAL_PAGES = 1;
         }
-        else {
-            filter.SearchKey = "";
-            filter.IsLocationEnabled = false;
+        else
+        {
+            TOTAL_PAGES = lstTracks.size() / PAGE_SIZE;
         }
-        filter.TrackTypeId = 1;
-        filter.ListTypeEnum = tabId;
-        filter.Index = currentPage; filter.Size = PAGE_SIZE;
-        Log.d("ResultTracks Fisrt ", filter.getStringFilter());
 
-        //Call<TrackResponseList> call = ((CustomApp) activity.getApplication()).getApiService().getListMainTrack(filter);
-        Call<TrackResponseList> call = Global.client.getListMainTrack(filter);
-        call.enqueue(new Callback<TrackResponseList>() {
-            public void onResponse(Call<TrackResponseList> call, Response<TrackResponseList> response)
-            {
-                TrackResponseList tracks = response.body();
-                Log.d("ResultTracks First", "tracksNum=" +tracks.getTotalRowCount());
+        if(lstTracks.size() == 0)
+        {
+            View v = rootView.findViewById(R.id.tracks_list_empty);
+            recyclerViews[tabId].setEmptyView(v);
+        }
+        progressBar.setVisibility(View.GONE);
 
-                TOTAL_PAGES = tracks.getTotalRowCount() / PAGE_SIZE;
+        List<TrackObject> lstFirstPage = getPage(lstTracks, 0 , PAGE_SIZE );
+        adapter.addAll(lstFirstPage);
 
-                if(tracks.getLstTrack().size() == 0) {
-                    View v = rootView.findViewById(R.id.tracks_list_empty);
-                    recyclerViews[tabId].setEmptyView(v);
-                }
-                progressBar.setVisibility(View.GONE);
-                adapter.addAll(tracks.getLstTrack());
+        if ( currentPage <= TOTAL_PAGES) adapter.addLoadingFooter();
+        else isLastPage = true;
 
-                if (currentPage <= TOTAL_PAGES) adapter.addLoadingFooter();
-                else isLastPage = true;
+        // todo : show banner
+        // showListBanner(tracks.getBanner().BannerImagePath, tracks.getBanner().BannerLink);
 
-                // todo : show banner
-                showListBanner(tracks.getBanner().BannerImagePath, tracks.getBanner().BannerLink);
-
-                // add these tracks to the  list in Side Menu
-                activity.lstTracks = new ArrayList<>();
-                activity.lstTracks.addAll(tracks.getLstTrack());
-
-                activity.mProgressDialog.dismiss();
-            }
-
-            public void onFailure(Call<TrackResponseList> call, Throwable t)
-            {
-                Log.d("ResultTracks", "Faaaail=");
-                activity.mProgressDialog.dismiss();
-                //t.printStackTrace();
-                //showErrorView(t);
-            }
-        });
     }
 
     private void loadNextPage(int tabId)
     {
-        EditText txtFilter = rootView.findViewById(R.id.txt_search_filter_value);
-        CheckBox chkIsLocationEnabled = rootView.findViewById(R.id.checkBoxLocationEnable);
+        adapter.removeLoadingFooter();
+        isLoading = false;
+        List<TrackObject> lstNextPage = new ArrayList<>();
 
-        activity.mProgressDialog.setMessage(getResources().getString( R.string.loader_msg));
-        activity.mProgressDialog.show();
-
-        TrackFilter filter =  new TrackFilter();
-        LinearLayout layout = activity.findViewById(R.id.test_linear);
-        if (layout != null)
+        // this means that all data in list is already exists
+        // because the the array list size is less than one page size
+        if(lstTracks.size() < PAGE_SIZE)
         {
-            if (layout.getVisibility() == View.GONE) {
-                filter.SearchKey = "";
-                filter.IsLocationEnabled = false;
-            }
-            else {
-                filter.SearchKey = txtFilter.getText().toString();
-                filter.IsLocationEnabled = chkIsLocationEnabled.isChecked();
-            }
+
         }
-        else {
-            filter.SearchKey = "";
-            filter.IsLocationEnabled = false;
+        else
+        {
+            lstNextPage = getPage(lstTracks, currentPage , PAGE_SIZE );
         }
-        filter.TrackTypeId =1; filter.ListTypeEnum = tabId;
-        filter.Index = currentPage; filter.Size = PAGE_SIZE;
-        Log.d("ResultTracks Next ", filter.getStringFilter());
+        adapter.addAll(lstNextPage);
 
-        //Call<TrackResponseList> call = ((CustomApp) activity.getApplication()).getApiService().getListMainTrack(filter);
-        Call<TrackResponseList> call = Global.client.getListMainTrack(filter);
-        call.enqueue(new Callback<TrackResponseList>() {
-            public void onResponse(Call<TrackResponseList> call, Response<TrackResponseList> response)
-            {
-                //generateDataList(response.body());
-                TrackResponseList tracks = response.body();
-                TOTAL_PAGES = tracks.getTotalRowCount() / PAGE_SIZE;
-                adapter.removeLoadingFooter();
-                isLoading = false;
-                Log.d("ResultTracks Next ", "tracksNum=" +tracks.getTotalRowCount());
+        if ( currentPage !=  TOTAL_PAGES) adapter.addLoadingFooter();
+        else isLastPage = true;
 
-               /* if(tracks.getTrack().size() == 0 && currentPage != 0)
-                    currentPage --;*/
-                adapter.addAll(tracks.getLstTrack());
+        //adapter.notifyDataSetChanged();
+        // todo : show banner
+        //showListBanner(tracks.getBanner().BannerImagePath, tracks.getBanner().BannerLink);
 
-                if (TOTAL_PAGES != 0 && currentPage != TOTAL_PAGES) adapter.addLoadingFooter();
-                else isLastPage = true;
+    }
 
-                // todo : show banner
-                showListBanner(tracks.getBanner().BannerImagePath, tracks.getBanner().BannerLink);
-
-                // add these tracks to the  list in Side Menu
-                activity.lstTracks.addAll(tracks.getLstTrack());
-
-                activity.mProgressDialog.dismiss();
-            }
-            public void onFailure(Call<TrackResponseList> call, Throwable t)
-            {
-                activity.mProgressDialog.dismiss();currentPage --;
-                //t.printStackTrace();
-                //showErrorView(t);
-            }
-        });
-
+    private List<TrackObject> getPage(List<TrackObject> lst , int index, int size)
+    {
+        int currentIndex = (index * PAGE_SIZE);
+        if( currentIndex + size > lst.size())
+            return lst.subList(index, lst.size()-1);
+        else
+            return lst.subList(currentIndex, currentIndex + size);
     }
 
     private void showErrorView(Throwable throwable)
@@ -1645,5 +1588,57 @@ public class TracksList extends Fragment
         }
     }
 
+
+    private void getRefreshListTrack()
+    {
+        EditText txtFilter = rootView.findViewById(R.id.txt_search_filter_value);
+        CheckBox chkIsLocationEnabled = rootView.findViewById(R.id.checkBoxLocationEnable);
+
+        /*activity.mProgressDialog.setMessage(getResources().getString( R.string.loader_msg));
+        activity.mProgressDialog.show();
+        */
+        TrackFilter filter =  new TrackFilter();
+        LinearLayout layout = activity.findViewById(R.id.test_linear);
+        if (layout != null)
+        {
+            if (layout.getVisibility() == View.GONE)
+            {
+                filter.SearchKey = "";
+                filter.IsLocationEnabled = false;
+            }
+            else {
+                filter.SearchKey = txtFilter.getText().toString();
+                filter.IsLocationEnabled = chkIsLocationEnabled.isChecked();
+            }
+        }
+        else {
+            filter.SearchKey = "";
+            filter.IsLocationEnabled = false;
+        }
+        filter.TrackTypeId =1; filter.ListTypeEnum = active_tab;
+        filter.Index = 0; filter.Size = 0;
+        Log.d("ResultTracks Next ", filter.getStringFilter());
+
+        //Call<TrackResponseList> call = ((CustomApp) activity.getApplication()).getApiService().getListMainTrack(filter);
+        Call<TrackResponseList> call = Global.client.getListMainTrack(filter);
+        call.enqueue(new Callback<TrackResponseList>() {
+            public void onResponse(Call<TrackResponseList> call, Response<TrackResponseList> response)
+            {
+                // replace old list tracks with new one from server
+                TrackResponseList tracks = response.body();
+
+                adapter.clear();
+                adapter.notifyDataSetChanged();
+                lstTracks = tracks.getLstTrack();
+                activity.storageManager.storeListTracks(activity, lstTracks);
+                // TODO order by active tab
+                loadFirstPage(active_tab);
+            }
+            public void onFailure(Call<TrackResponseList> call, Throwable t)
+            {
+                //activity.mProgressDialog.dismiss();
+            }
+        });
+    }
 
 }

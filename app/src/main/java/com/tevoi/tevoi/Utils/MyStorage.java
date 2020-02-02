@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.text.BoringLayout;
 
+import com.tevoi.tevoi.model.TrackObject;
 import com.tevoi.tevoi.model.TrackSerializableObject;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -29,6 +30,9 @@ public class MyStorage
     public static final String ShowArticlesTracks="ShowArticlesTracks";
     public static final String IsFirstTime = "IsFirstTime";
     public static final String DemoUsageUnits = "DemoUsageUnits";
+
+
+    public static final String ArrayListTrack = "ArrayListTrack";
 
 
     private  String Suffix =  "_" + USER_ID;
@@ -460,4 +464,114 @@ public class MyStorage
         return demoUsageUnits;
     }
     //endregion
+
+    // region shared preference for List Tracks
+
+    public void storeListTracks(Context context, List listTracks)
+    {
+        // used for store arrayList in json format
+        SharedPreferences settings;
+        Editor editor;
+        settings = context.getSharedPreferences(PREFS_NAME + Suffix, Context.MODE_PRIVATE);
+        editor = settings.edit();
+
+        GsonBuilder builder = new GsonBuilder();
+        builder.excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC);
+        builder.excludeFieldsWithoutExposeAnnotation();
+        Gson sExposeGson = builder.create();
+        String jsonFavorites = sExposeGson.toJson(listTracks);
+        editor.putString(ArrayListTrack + Suffix, jsonFavorites);
+        editor.commit();
+    }
+
+    public ArrayList<TrackObject> loadListTracks(Context context)
+    {
+        // used for retrieving arraylist from json formatted string
+        SharedPreferences settings;
+        ArrayList<TrackObject> listTracks;
+        settings = context.getSharedPreferences(PREFS_NAME + Suffix, Context.MODE_PRIVATE);
+        if (settings.contains(ArrayListTrack + Suffix)) {
+            String jsonPlayNowTracks = settings.getString(ArrayListTrack + Suffix, null);
+
+            GsonBuilder builder = new GsonBuilder();
+            builder.excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC);
+            builder.excludeFieldsWithoutExposeAnnotation();
+            Gson sExposeGson = builder.create();
+            TrackObject[] trackItems = sExposeGson.fromJson(jsonPlayNowTracks, TrackObject[].class);
+
+            listTracks = new ArrayList( Arrays.asList(trackItems));
+        } else
+            return new ArrayList<>();
+        return listTracks;
+    }
+
+   /* public String addTrack(Context context, TrackSerializableObject myModel)
+    {
+        String result = "";
+        ArrayList<TrackSerializableObject> playNowTracks = loadPlayNowTracks(context);
+        if (playNowTracks == null)
+            playNowTracks = new ArrayList();
+        Boolean isTrackExists = false;
+        // check if this track already exists or not
+        for (int i=0; i< playNowTracks.size(); i++ )
+        {
+            if(playNowTracks.get(i).getId()== myModel.getId())
+            {
+                result = "Track Already Exists";
+                isTrackExists = true;
+            }
+        }
+        if(!isTrackExists)
+        {result = "Track added successfully";
+            playNowTracks.add(myModel);
+            storePlayNowTracks(context, playNowTracks);}
+        return result;
+    }
+    public void removeTrack(Context context, TrackSerializableObject myModel)
+    {
+        ArrayList<TrackSerializableObject> playNowTracks = loadPlayNowTracks(context);
+        if (playNowTracks != null)
+        {
+            for ( int i =0; i< playNowTracks.size(); i++)
+            {
+                if(playNowTracks.get(i).getId() == myModel.getId())
+                {
+                    playNowTracks.remove(i);
+                    break;
+                }
+            }
+            //playNowTracks.remove(myModel);
+            storePlayNowTracks(context, playNowTracks);
+        }
+    }
+
+    public void removeTrackById(Context context, int trackId)
+    {
+        ArrayList<TrackSerializableObject> playNowTracks = loadPlayNowTracks(context);
+        if (playNowTracks != null)
+        {
+            for ( int i =0; i< playNowTracks.size(); i++)
+            {
+                if(playNowTracks.get(i).getId() == trackId)
+                {
+                    playNowTracks.remove(i);
+                    break;
+                }
+            }
+            //playNowTracks.remove(myModel);
+            storePlayNowTracks(context, playNowTracks);
+        }
+    }
+    public void deletePlayNowList(Context context)
+    {
+        ArrayList<TrackSerializableObject> playNowTracks = loadPlayNowTracks(context);
+        for ( int i =0; i< playNowTracks.size(); i++)
+        {
+            playNowTracks.remove(i);
+        }
+        storePlayNowTracks(context, playNowTracks);
+    }*/
+    //endregion
+
+
 }
