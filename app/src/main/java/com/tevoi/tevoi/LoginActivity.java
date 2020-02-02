@@ -162,7 +162,7 @@ public class LoginActivity extends AppCompatActivity
                                 Global.UserUILanguage = storageManager.getLanguageUIPreference(LoginActivity.this);
                                 //storageManager.storeRememberMePreference(LoginActivity.this, isRememberMe);
                                 storageManager.storeListTracks(LoginActivity.this, login.getLstTracks());
-
+                                storageManager.storeListPartners(LoginActivity.this, login.getLstPartners());
 
                                 Intent i = new Intent(getApplicationContext(),SideMenu.class);
                                 startActivity(i);

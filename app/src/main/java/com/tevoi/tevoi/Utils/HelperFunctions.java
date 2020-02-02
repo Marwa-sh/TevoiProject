@@ -7,11 +7,30 @@ import android.widget.Toast;
 
 import com.tevoi.tevoi.R;
 import com.tevoi.tevoi.SideMenu;
+import com.tevoi.tevoi.model.PartnerObject;
 import com.tevoi.tevoi.model.TrackObject;
 import com.tevoi.tevoi.model.TrackSerializableObject;
 
+import java.util.List;
+
 public class HelperFunctions
 {
+    public static List<TrackObject> getPage(List<TrackObject> lst , int index, int size)
+    {
+        int currentIndex = (index * size);
+        if( currentIndex + size > lst.size())
+            return lst.subList(index, lst.size()-1);
+        else
+            return lst.subList(currentIndex, currentIndex + size);
+    }
+    public static List<PartnerObject> getPagePartners(List<PartnerObject> lst , int index, int size)
+    {
+        int currentIndex = (index * size);
+        if( currentIndex + size > lst.size())
+            return lst.subList(index, lst.size()-1);
+        else
+            return lst.subList(currentIndex, currentIndex + size);
+    }
     public  static String GetTimeFormat(int pTime)
     {
         String result ="" ;

@@ -7,21 +7,33 @@ import androidx.fragment.app.Fragment;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.tevoi.tevoi.Utils.Global;
+import com.tevoi.tevoi.Utils.HelperFunctions;
 import com.tevoi.tevoi.adapter.PartnerAdapter;
 import com.tevoi.tevoi.model.PaginationScrollListener;
 import com.tevoi.tevoi.model.PartnerListResponse;
 import com.tevoi.tevoi.model.PartnerObject;
 import com.tevoi.tevoi.model.RecyclerViewEmptySupport;
+import com.tevoi.tevoi.model.TrackFilter;
+import com.tevoi.tevoi.model.TrackObject;
+import com.tevoi.tevoi.model.TrackResponseList;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import retrofit2.Call;
@@ -29,10 +41,14 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class PartnersFragment extends Fragment
+        implements SwipeRefreshLayout.OnRefreshListener
+
 {
     // region pagination properties
     LinearLayoutManager linearLayoutManager;
     ProgressBar progressBar;
+    SwipeRefreshLayout swipeRefreshLayout;
+
 
     private boolean isLoading = false;
     private boolean isLastPage = false;
@@ -41,10 +57,17 @@ public class PartnersFragment extends Fragment
     int PAGE_SIZE = Global.PAGE_SIZE;;
     // endregion
 
+    List<PartnerObject> lstPartners = new ArrayList<PartnerObject>();
+
     PartnerAdapter adapter ;
     SideMenu activity;
     View rootView;
-    ArrayList<PartnerObject> lstPartners = new ArrayList<>();
+
+//    abd edit
+//    ArrayList<PartnerObject> lstPartners = new ArrayList<>();
+
+
+
     RecyclerViewEmptySupport[] recyclerViews= new RecyclerViewEmptySupport[4];
 
     int active_tab=0;
@@ -57,6 +80,11 @@ public class PartnersFragment extends Fragment
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_partners, container, false);
         activity = (SideMenu) getActivity();
+
+        lstPartners = activity.storageManager.loadListPartners(activity);
+
+        swipeRefreshLayout = rootView.findViewById(R.id.main_swiperefresh_partners);
+        swipeRefreshLayout.setOnRefreshListener(this);
 
         tabs[0] = rootView.findViewById(R.id.btnAlphabetOrder);
         tabs[1]= rootView.findViewById(R.id.btnNewListPartners);
@@ -86,6 +114,12 @@ public class PartnersFragment extends Fragment
 
     public  void changeToAlphabetOrder(View view)
     {
+        Collections.sort(lstPartners, new Comparator<PartnerObject>() {
+        @Override
+        public int compare(PartnerObject o1, PartnerObject o2) {
+            return o1.getName().compareToIgnoreCase(o2.getName());
+        }
+    });
         activateTab(0);
     }
     public void changeTabToNewListPartners(View view) {
@@ -102,7 +136,7 @@ public class PartnersFragment extends Fragment
 
     public void activateTab(final int k)
     {
-        activity.mProgressDialog.setMessage(getResources().getString( R.string.loader_msg)); activity.mProgressDialog.show();
+//        activity.mProgressDialog.setMessage(getResources().getString( R.string.loader_msg)); activity.mProgressDialog.show();
 
         for(int i=0;i<recyclerViews.length;i++)
         {
@@ -174,12 +208,27 @@ public class PartnersFragment extends Fragment
         currentPage = 0;
     }
 
+    @Override
+    public void onRefresh() {
+        progressBar.setVisibility(View.VISIBLE);
+
+        getRefreshListPartners();
+
+        // TODO: Check if data is stale.
+        //  Execute network request if cache is expired; otherwise do not update data.
+        adapter.clear();
+        adapter.notifyDataSetChanged();
+        //TODO loadfirstpage
+//        loadFirstPage(k);
+        swipeRefreshLayout.setRefreshing(false);
+    }
+
     private void loadFirstPage(final int tabId)
     {
-        currentPage = 0;
+        currentPage = 1;
         isLastPage = false;
         isLoading = false;
-        activity.mProgressDialog.setMessage(getResources().getString( R.string.loader_msg));
+       /* activity.mProgressDialog.setMessage(getResources().getString( R.string.loader_msg));
         activity.mProgressDialog.show();
 
         Call<PartnerListResponse> call = Global.client.GetPartnersList(tabId, currentPage, PAGE_SIZE);
@@ -187,21 +236,37 @@ public class PartnersFragment extends Fragment
             public void onResponse(Call<PartnerListResponse> call, Response<PartnerListResponse> response) {
 
                 PartnerListResponse partners=response.body();
-                TOTAL_PAGES = partners.getTotalRowCount() / PAGE_SIZE;
+                TOTAL_PAGES = partners.getTotalRowCount() / PAGE_SIZE;*/
 
-                if(partners.getPartners().size() == 0)
+
+
+        /*List<TrackObject> lstTracks = Collections.sort(lstTracks,
+                (o1, o2) -> ((int)o1.getRate()).compareTo((int)o2.getRate()));;
+        */
+        if(lstPartners.size() <= PAGE_SIZE)
+        {
+            TOTAL_PAGES = 1;
+        }
+        else
+        {
+            TOTAL_PAGES = lstPartners.size() / PAGE_SIZE;
+        }
+
+        if(lstPartners.size() == 0)
                 {
-                    View v = rootView.findViewById(R.id.tracks_list_empty);
+                    View v = rootView.findViewById(R.id.partners_list_empty);
                     recyclerViews[tabId].setEmptyView(v);
                 }
                 progressBar.setVisibility(View.GONE);
-                adapter.addAll(partners.getPartners());
+
+                List<PartnerObject> lstFirstPage = HelperFunctions.getPagePartners(lstPartners, 0 , PAGE_SIZE );
+                adapter.addAll(lstFirstPage);
 
                 if (currentPage <= TOTAL_PAGES) adapter.addLoadingFooter();
                 else isLastPage = true;
 
-                activity.mProgressDialog.dismiss();
-                adapter.notifyDataSetChanged();
+//                activity.mProgressDialog.dismiss();
+                //adapter.notifyDataSetChanged();
                 /*int x=partners.getPartners().size();
                 //recyclerViews[kk].setAdapter(adapter);
                 SideMenu activity = (SideMenu)getActivity();
@@ -211,19 +276,19 @@ public class PartnersFragment extends Fragment
                 recyclerViews[kk].setAdapter(adapter);
                 activity.mProgressDialog.dismiss();
                 Toast.makeText(getContext(),"partners:"+x, Toast.LENGTH_SHORT);*/
-            }
-            public void onFailure(Call<PartnerListResponse> call, Throwable t)
+
+         /*   public void onFailure(Call<PartnerListResponse> call, Throwable t)
             {
                 Log.d("ResultTracks", "Faaaail=");
                 activity.mProgressDialog.dismiss();
                 t.printStackTrace();
             }
-        });
+        });*/
 
     }
 
     private void loadNextPage(int tabId)
-    {
+    {/*
         activity.mProgressDialog.setMessage(getResources().getString( R.string.loader_msg));
         activity.mProgressDialog.show();
 
@@ -235,8 +300,8 @@ public class PartnersFragment extends Fragment
                 TOTAL_PAGES = partners.getTotalRowCount() / PAGE_SIZE;
                 adapter.removeLoadingFooter();
                 isLoading = false;
-               /* if(tracks.getTrack().size() == 0 && currentPage != 0)
-                    currentPage --;*/
+               *//* if(tracks.getTrack().size() == 0 && currentPage != 0)
+                    currentPage --;*//*
                 adapter.addAll(partners.getPartners());
 
                 if (TOTAL_PAGES != 0 && currentPage != TOTAL_PAGES) adapter.addLoadingFooter();
@@ -250,11 +315,81 @@ public class PartnersFragment extends Fragment
                 activity.mProgressDialog.dismiss();currentPage --;
                 t.printStackTrace();
             }
-        });
+        });*/
+
+        adapter.removeLoadingFooter();
+        isLoading = false;
+        List<PartnerObject> lstNextPage = new ArrayList<>();
+
+        // this means that all data in list is already exists
+        // because the the array list size is less than one page size
+        if(lstPartners.size() < PAGE_SIZE)
+        {
+
+        }
+        else
+        {
+            lstNextPage = HelperFunctions.getPagePartners(lstPartners, currentPage , PAGE_SIZE );
+        }
+        adapter.addAll(lstNextPage);
+
+        if ( currentPage !=  TOTAL_PAGES) adapter.addLoadingFooter();
+        else isLastPage = true;
+
 
     }
 
+    private void getRefreshListPartners()
+    {
+    /*    EditText txtFilter = rootView.findViewById(R.id.txt_search_filter_value);
+        CheckBox chkIsLocationEnabled = rootView.findViewById(R.id.checkBoxLocationEnable);
 
+        *//*activity.mProgressDialog.setMessage(getResources().getString( R.string.loader_msg));
+        activity.mProgressDialog.show();
+        *//*
+        TrackFilter filter =  new TrackFilter();
+        LinearLayout layout = activity.findViewById(R.id.test_linear);
+        if (layout != null)
+        {
+            if (layout.getVisibility() == View.GONE)
+            {
+                filter.SearchKey = "";
+                filter.IsLocationEnabled = false;
+            }
+            else {
+                filter.SearchKey = txtFilter.getText().toString();
+                filter.IsLocationEnabled = chkIsLocationEnabled.isChecked();
+            }
+        }
+        else {
+            filter.SearchKey = "";
+            filter.IsLocationEnabled = false;
+        }
+        filter.TrackTypeId =1; filter.ListTypeEnum = active_tab;
+        filter.Index = 0; filter.Size = 0;
+        Log.d("ResultTracks Next ", filter.getStringFilter());*/
+
+        //Call<TrackResponseList> call = ((CustomApp) activity.getApplication()).getApiService().getListMainTrack(filter);
+        Call<PartnerListResponse> call = Global.client.GetPartnersList(active_tab,0,0 );
+        call.enqueue(new Callback<PartnerListResponse>() {
+            public void onResponse(Call<PartnerListResponse> call, Response<PartnerListResponse> response)
+            {
+                // replace old list tracks with new one from server
+               PartnerListResponse partners = response.body();
+
+                adapter.clear();
+                adapter.notifyDataSetChanged();
+                lstPartners = partners.getPartners();
+                activity.storageManager.storeListPartners(activity, lstPartners);
+                // TODO order by active tab
+                loadFirstPage(active_tab);
+            }
+            public void onFailure(Call<PartnerListResponse> call, Throwable t)
+            {
+                //activity.mProgressDialog.dismiss();
+            }
+        });
+    }
 
 
 }

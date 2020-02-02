@@ -1477,7 +1477,7 @@ public class TracksList extends Fragment
         }
         progressBar.setVisibility(View.GONE);
 
-        List<TrackObject> lstFirstPage = getPage(lstTracks, 0 , PAGE_SIZE );
+        List<TrackObject> lstFirstPage = HelperFunctions.getPage(lstTracks, 0 , PAGE_SIZE );
         adapter.addAll(lstFirstPage);
 
         if ( currentPage <= TOTAL_PAGES) adapter.addLoadingFooter();
@@ -1502,7 +1502,7 @@ public class TracksList extends Fragment
         }
         else
         {
-            lstNextPage = getPage(lstTracks, currentPage , PAGE_SIZE );
+            lstNextPage = HelperFunctions.getPage(lstTracks, currentPage , PAGE_SIZE );
         }
         adapter.addAll(lstNextPage);
 
@@ -1515,14 +1515,6 @@ public class TracksList extends Fragment
 
     }
 
-    private List<TrackObject> getPage(List<TrackObject> lst , int index, int size)
-    {
-        int currentIndex = (index * PAGE_SIZE);
-        if( currentIndex + size > lst.size())
-            return lst.subList(index, lst.size()-1);
-        else
-            return lst.subList(currentIndex, currentIndex + size);
-    }
 
     private void showErrorView(Throwable throwable)
     {
