@@ -16,7 +16,17 @@ public class LoginResponse  extends IResponse{
     private List<PartnerObject> lstPartners;
     @SerializedName("lstUserLists")
     private List<PartnerObject> Userlst;
+    @SerializedName("lstNotification")
+    private List<PartnerObject> lstNotification;
 
+
+    public List<PartnerObject> getLstNotification() {
+        return lstNotification;
+    }
+
+    public void setLstNotification(List<PartnerObject> lstNotification) {
+        this.lstNotification = lstNotification;
+    }
 
     public int getUserId() {
         return UserId;

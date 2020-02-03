@@ -564,89 +564,6 @@ public class TracksList extends Fragment
         else isLastPage = true;
 
 
-        /*EditText txtFilter = rootView.findViewById(R.id.txt_search_filter_value);
-        CheckBox chkIsLocationEnabled = rootView.findViewById(R.id.checkBoxLocationEnable);
-
-        currentPage = 0;
-        isLastPage = false;
-        isLoading = false;
-
-        TOTAL_PAGES = lstTracks.size() / PAGE_SIZE;
-
-        if(lstTracks.size() == 0) {
-            View v = rootView.findViewById(R.id.tracks_list_empty);
-            recyclerViews[tabId].setEmptyView(v);
-        }
-        progressBar.setVisibility(View.GONE);
-        List<TrackObject> lstFirstPage = getPage(lstTracks, 0 , PAGE_SIZE );
-        adapter.addAll(lstFirstPage);
-
-        if (currentPage <= TOTAL_PAGES) adapter.addLoadingFooter();
-        else isLastPage = true;
-        // todo : show banner
-        //showListBanner(tracks.getBanner().BannerImagePath, tracks.getBanner().BannerLink);
-
-
-        //activity.mProgressDialog.setMessage(getResources().getString( R.string.loader_msg));
-        //activity.mProgressDialog.show();
-
-        TrackFilter filter =  new TrackFilter();
-        LinearLayout layout = activity.findViewById(R.id.test_linear);
-        if (layout != null)
-        {
-            if (layout.getVisibility() == View.GONE) {
-                filter.SearchKey = "";
-                filter.IsLocationEnabled = false;
-            }
-            else {
-                filter.SearchKey = txtFilter.getText().toString();
-                filter.IsLocationEnabled = chkIsLocationEnabled.isChecked();
-            }
-        }
-        else {
-            filter.SearchKey = "";
-            filter.IsLocationEnabled = false;
-        }
-        filter.TrackTypeId = 1;
-        filter.ListTypeEnum = tabId;
-        filter.Index = currentPage; filter.Size = PAGE_SIZE;
-        Log.d("ResultTracks Fisrt ", filter.getStringFilter());
-*/
-        //Call<TrackResponseList> call = ((CustomApp) activity.getApplication()).getApiService().getListMainTrack(filter);
-       /* Call<TrackResponseList> call = Global.client.getListMainTrack(filter);
-        call.enqueue(new Callback<TrackResponseList>() {
-            public void onResponse(Call<TrackResponseList> call, Response<TrackResponseList> response)
-            {
-                TrackResponseList tracks = response.body();
-                Log.d("ResultTracks First", "tracksNum=" +tracks.getTotalRowCount());
-
-                TOTAL_PAGES = tracks.getLstTrack().size() / PAGE_SIZE;
-
-                if(tracks.getLstTrack().size() == 0) {
-                    View v = rootView.findViewById(R.id.tracks_list_empty);
-                    recyclerViews[tabId].setEmptyView(v);
-                }
-                progressBar.setVisibility(View.GONE);
-                adapter.addAll(tracks.getLstTrack());
-
-                if (currentPage <= TOTAL_PAGES) adapter.addLoadingFooter();
-                else isLastPage = true;
-
-                // add these tracks to the  list in Side Menu
-                activity.lstTracks = new ArrayList<>();
-                activity.lstTracks.addAll(tracks.getLstTrack());
-
-                activity.mProgressDialog.dismiss();
-            }
-
-            public void onFailure(Call<TrackResponseList> call, Throwable t)
-            {
-                Log.d("ResultTracks", "Faaaail=");
-                activity.mProgressDialog.dismiss();
-                //t.printStackTrace();
-                //showErrorView(t);
-            }
-        });*/
     }
     private List<TrackObject> getPage(List<TrackObject> lst , int index, int size)
     {
@@ -671,23 +588,6 @@ public class TracksList extends Fragment
         if (currentPage != TOTAL_PAGES) adapter.addLoadingFooter();
         else isLastPage = true;
 
-        /*EditText txtFilter = rootView.findViewById(R.id.txt_search_filter_value);
-        CheckBox chkIsLocationEnabled = rootView.findViewById(R.id.checkBoxLocationEnable);
-*/
-        //TOTAL_PAGES = tracks.getTotalRowCount() / PAGE_SIZE;
-        /*adapter.removeLoadingFooter();
-        isLoading = false;
-        //Log.d("ResultTracks Next ", "tracksNum=" +tracks.getTotalRowCount());
-        List<TrackObject> lstNextPage = new ArrayList<>();
-
-        // this means that all data in list is already exists
-        // because the the array list size is less than one page size
-
-        lstNextPage = getPage(lstTracks, currentPage , PAGE_SIZE );
-        adapter.addAll(lstNextPage);
-
-        if (TOTAL_PAGES != 0 && currentPage != TOTAL_PAGES) adapter.addLoadingFooter();
-        else isLastPage = true;*/
 
         // todo : show banner
         //showListBanner(tracks.getBanner().BannerImagePath, tracks.getBanner().BannerLink);

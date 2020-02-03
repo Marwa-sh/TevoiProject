@@ -15,6 +15,11 @@ import android.widget.Toast;
 import com.tevoi.tevoi.Utils.Global;
 import com.tevoi.tevoi.adapter.NotificationTypeAdapter;
 import com.tevoi.tevoi.model.ListNotificationTypesResponse;
+import com.tevoi.tevoi.model.NotificationTypeObject;
+import com.tevoi.tevoi.model.TrackObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -26,6 +31,7 @@ public class NotificationFragment extends Fragment {
     View rootView;
     SideMenu activity;
     SwitchCompat switchCompatAll;
+    List<NotificationTypeObject> lstNotification = new ArrayList<NotificationTypeObject>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,6 +39,8 @@ public class NotificationFragment extends Fragment {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_notification, container, false);
         activity = (SideMenu)getActivity();
+
+        lstNotification = activity.storageManager.loadNotificationtList(activity);
 
         recyclerView = rootView.findViewById(R.id.notification_types_recycler);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -75,7 +83,7 @@ public class NotificationFragment extends Fragment {
             }
         });
 
-        activity.mProgressDialog.setMessage(getResources().getString( R.string.loader_msg));
+       /* activity.mProgressDialog.setMessage(getResources().getString( R.string.loader_msg));
         activity.mProgressDialog.show();
 
         Call<ListNotificationTypesResponse> call = Global.client.GetNotificationTypesList();
@@ -96,7 +104,13 @@ public class NotificationFragment extends Fragment {
                 activity.mProgressDialog.dismiss();
                 Toast.makeText(getContext(),"something went wrong", Toast.LENGTH_SHORT);
             }
-        });
+        });*/
+
+        recyclerView.setAdapter(adapter);
+        SideMenu activity = (SideMenu)getActivity();
+        adapter = new NotificationTypeAdapter(lstNotification,activity);
+        recyclerView.setAdapter(adapter);
+
 
         return rootView;
     }

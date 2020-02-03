@@ -30,6 +30,7 @@ import com.tevoi.tevoi.model.PaginationScrollListener;
 import com.tevoi.tevoi.model.PartnerListResponse;
 import com.tevoi.tevoi.model.PartnerObject;
 import com.tevoi.tevoi.model.RecyclerViewEmptySupport;
+import com.tevoi.tevoi.model.TrackObject;
 import com.tevoi.tevoi.model.UserListObject;
 import com.tevoi.tevoi.model.UserListResponse;
 
@@ -82,6 +83,7 @@ public class UserListFragment extends Fragment
         btn_clear_user_lists = rootView.findViewById(R.id.btn_clear_user_lists);
 
         Userlst = activity.storageManager.loadUserList(activity);
+        TOTAL_PAGES = Userlst.size()/ PAGE_SIZE;
 
 
 
@@ -371,7 +373,16 @@ public class UserListFragment extends Fragment
 
     private void loadFirstPage()
     {
-        currentPage = 1;
+        progressBar.setVisibility(View.GONE);
+        List<UserListObject> lstFirstPage =  HelperFunctions.getPageUserList(Userlst, 0 , PAGE_SIZE );
+        adapter.addAll(lstFirstPage);
+        //adapter.addAll(lstTracks);
+
+        if (currentPage <= TOTAL_PAGES) adapter.addLoadingFooter();
+        else isLastPage = true;
+
+
+      /*  currentPage = 1;
         isLastPage = false;
         isLoading = false;
 
@@ -397,47 +408,24 @@ public class UserListFragment extends Fragment
 
         if (currentPage <= TOTAL_PAGES) adapter.addLoadingFooter();
         else isLastPage = true;
-        /*currentPage = 0; isLoading = false; isLastPage = false;
-        //activity.mProgressDialog.setMessage("Loading1");
-        //activity.mProgressDialog.show();
-
-        Call<UserListResponse> call = Global.client.getUserLists(currentPage, PAGE_SIZE);
-        call.enqueue(new Callback <UserListResponse>(){
-            public void onResponse(Call<UserListResponse> call, Response<UserListResponse> response) {
-                //generateDataList(response.body());
-                SideMenu activity = (SideMenu) getActivity();
-                UserListResponse userLists = response.body();
-
-                TOTAL_PAGES = userLists.getTotalRowCount() / PAGE_SIZE;
-
-                if(userLists.getLstUserList().size() == 0 && isFirtsTime)
-                {
-                    View v = rootView.findViewById(R.id.user_lists_empty);
-                    recyclerView.setEmptyView(v);
-                    v.setVisibility(View.INVISIBLE);
-
-                }
-
-                progressBar.setVisibility(View.GONE);
-                adapter.addAll(userLists.getLstUserList());
-
-                if (currentPage <= TOTAL_PAGES) adapter.addLoadingFooter();
-                else isLastPage = true;
-                //activity.mProgressDialog.dismiss();
-                adapter.notifyDataSetChanged();
-            }
-            public void onFailure(Call<UserListResponse> call, Throwable t)
-            {
-                //activity.mProgressDialog.dismiss();
-                t.printStackTrace();
-                showErrorView(t);
-                Toast.makeText(getContext(),"something went wrong", Toast.LENGTH_SHORT).show();
-            }
-        });*/
+     */
     }
 
     private void loadNextPage() {
 
+
+
+        adapter.removeLoadingFooter();
+        isLoading = false;
+
+        List<UserListObject> lstNextPage = HelperFunctions.getPageUserList(Userlst, currentPage , PAGE_SIZE );
+        adapter.addAll(Userlst);
+        //adapter.addAll(lstTracks);
+
+        if (currentPage != TOTAL_PAGES) adapter.addLoadingFooter();
+        else isLastPage = true;
+
+    /*
         adapter.removeLoadingFooter();
         isLoading = false;
         List<UserListObject> lstNextPage = new ArrayList<>();
@@ -455,38 +443,8 @@ public class UserListFragment extends Fragment
         adapter.addAll(lstNextPage);
 
         if ( currentPage !=  TOTAL_PAGES) adapter.addLoadingFooter();
-        else isLastPage = true;
+        else isLastPage = true;*/
 
-      /*  Call<UserListResponse> call = Global.client.getUserLists(currentPage, PAGE_SIZE);
-        call.enqueue(new Callback <UserListResponse>(){
-            public void onResponse(Call<UserListResponse> call, Response<UserListResponse> response) {
-                //generateDataList(response.body());
-                SideMenu activity = (SideMenu) getActivity();
-                UserListResponse userLists =response.body();
-
-                TOTAL_PAGES = userLists.getTotalRowCount() / PAGE_SIZE;
-                adapter.removeLoadingFooter();
-                isLoading = false;
-
-                adapter.addAll(userLists.getLstUserList());
-               *//* if(userLists.getLstUserList().size() == 0)
-                {
-                    currentPage --;
-                }*//*
-                if (TOTAL_PAGES != 0 && currentPage != TOTAL_PAGES) adapter.addLoadingFooter();
-                else isLastPage = true;
-
-                activity.mProgressDialog.dismiss();
-                adapter.notifyDataSetChanged();
-            }
-            public void onFailure(Call<UserListResponse> call, Throwable t)
-            {
-                //activity.mProgressDialog.dismiss(); currentPage --;
-                t.printStackTrace();
-                showErrorView(t);
-                Toast.makeText(getContext(),"something went wrong", Toast.LENGTH_SHORT).show();
-            }
-        });*/
 
     }
 

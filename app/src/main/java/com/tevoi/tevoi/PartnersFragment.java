@@ -82,6 +82,8 @@ public class PartnersFragment extends Fragment
         activity = (SideMenu) getActivity();
 
         lstPartners = activity.storageManager.loadListPartners(activity);
+        TOTAL_PAGES = lstPartners.size()/ PAGE_SIZE;
+
 
         swipeRefreshLayout = rootView.findViewById(R.id.main_swiperefresh_partners);
         swipeRefreshLayout.setOnRefreshListener(this);
@@ -225,24 +227,16 @@ public class PartnersFragment extends Fragment
 
     private void loadFirstPage(final int tabId)
     {
-        currentPage = 1;
+        progressBar.setVisibility(View.GONE);
+        List<PartnerObject> lstFirstPage = HelperFunctions.getPagePartners(lstPartners, 0 , PAGE_SIZE );
+        adapter.addAll(lstFirstPage);
+
+        if (currentPage <= TOTAL_PAGES) adapter.addLoadingFooter();
+        else isLastPage = true;
+
+        /*currentPage = 1;
         isLastPage = false;
         isLoading = false;
-       /* activity.mProgressDialog.setMessage(getResources().getString( R.string.loader_msg));
-        activity.mProgressDialog.show();
-
-        Call<PartnerListResponse> call = Global.client.GetPartnersList(tabId, currentPage, PAGE_SIZE);
-        call.enqueue(new Callback<PartnerListResponse>(){
-            public void onResponse(Call<PartnerListResponse> call, Response<PartnerListResponse> response) {
-
-                PartnerListResponse partners=response.body();
-                TOTAL_PAGES = partners.getTotalRowCount() / PAGE_SIZE;*/
-
-
-
-        /*List<TrackObject> lstTracks = Collections.sort(lstTracks,
-                (o1, o2) -> ((int)o1.getRate()).compareTo((int)o2.getRate()));;
-        */
         if(lstPartners.size() <= PAGE_SIZE)
         {
             TOTAL_PAGES = 1;
@@ -264,60 +258,24 @@ public class PartnersFragment extends Fragment
 
                 if (currentPage <= TOTAL_PAGES) adapter.addLoadingFooter();
                 else isLastPage = true;
-
-//                activity.mProgressDialog.dismiss();
-                //adapter.notifyDataSetChanged();
-                /*int x=partners.getPartners().size();
-                //recyclerViews[kk].setAdapter(adapter);
-                SideMenu activity = (SideMenu)getActivity();
-                adapter = new PartnerAdapter(partners.getPartners(),activity);
-                recyclerViews[kk].setEmptyView(rootView.findViewById(R.id.partners_list_empty));
-
-                recyclerViews[kk].setAdapter(adapter);
-                activity.mProgressDialog.dismiss();
-                Toast.makeText(getContext(),"partners:"+x, Toast.LENGTH_SHORT);*/
-
-         /*   public void onFailure(Call<PartnerListResponse> call, Throwable t)
-            {
-                Log.d("ResultTracks", "Faaaail=");
-                activity.mProgressDialog.dismiss();
-                t.printStackTrace();
-            }
-        });*/
+                */
 
     }
 
     private void loadNextPage(int tabId)
-    {/*
-        activity.mProgressDialog.setMessage(getResources().getString( R.string.loader_msg));
-        activity.mProgressDialog.show();
-
-        Call<PartnerListResponse> call = Global.client.GetPartnersList(tabId, currentPage, PAGE_SIZE);
-        call.enqueue(new Callback<PartnerListResponse>(){
-            public void onResponse(Call<PartnerListResponse> call, Response<PartnerListResponse> response) {
-
-                PartnerListResponse partners=response.body();
-                TOTAL_PAGES = partners.getTotalRowCount() / PAGE_SIZE;
-                adapter.removeLoadingFooter();
-                isLoading = false;
-               *//* if(tracks.getTrack().size() == 0 && currentPage != 0)
-                    currentPage --;*//*
-                adapter.addAll(partners.getPartners());
-
-                if (TOTAL_PAGES != 0 && currentPage != TOTAL_PAGES) adapter.addLoadingFooter();
-                else isLastPage = true;
-
-                activity.mProgressDialog.dismiss();
-
-            }
-            public void onFailure(Call<PartnerListResponse> call, Throwable t)
-            {
-                activity.mProgressDialog.dismiss();currentPage --;
-                t.printStackTrace();
-            }
-        });*/
+    {
 
         adapter.removeLoadingFooter();
+        isLoading = false;
+
+        List<PartnerObject> lstNextPage = HelperFunctions.getPagePartners(lstPartners, currentPage , PAGE_SIZE );
+        adapter.addAll(lstNextPage);
+        //adapter.addAll(lstTracks);
+
+        if (currentPage != TOTAL_PAGES) adapter.addLoadingFooter();
+        else isLastPage = true;
+
+      /*  adapter.removeLoadingFooter();
         isLoading = false;
         List<PartnerObject> lstNextPage = new ArrayList<>();
 
@@ -334,7 +292,7 @@ public class PartnersFragment extends Fragment
         adapter.addAll(lstNextPage);
 
         if ( currentPage !=  TOTAL_PAGES) adapter.addLoadingFooter();
-        else isLastPage = true;
+        else isLastPage = true;*/
 
 
     }

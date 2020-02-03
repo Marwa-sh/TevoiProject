@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.text.BoringLayout;
 
+import com.tevoi.tevoi.model.NotificationTypeObject;
 import com.tevoi.tevoi.model.PartnerObject;
 import com.tevoi.tevoi.model.TrackObject;
 import com.tevoi.tevoi.model.TrackSerializableObject;
@@ -37,6 +38,7 @@ public class MyStorage
     public static final String ArrayListTrack = "ArrayListTrack";
     public static final String ArrayListPartners = "ArrayListPartners";
     public static final String ArrayUserList = "ArrayUserList";
+    public static final String ArrayNotificationList = " ArrayNotificationList";
 
 
     private  String Suffix =  "_" + USER_ID;
@@ -689,21 +691,21 @@ public class MyStorage
     // region shared preference for List Tracks
 
     public void storeUsetList(Context context, List userList)
-    {
-        // used for store arrayList in json format
-        SharedPreferences settings;
-        Editor editor;
-        settings = context.getSharedPreferences(PREFS_NAME + Suffix, Context.MODE_PRIVATE);
-        editor = settings.edit();
+{
+    // used for store arrayList in json format
+    SharedPreferences settings;
+    Editor editor;
+    settings = context.getSharedPreferences(PREFS_NAME + Suffix, Context.MODE_PRIVATE);
+    editor = settings.edit();
 
-        GsonBuilder builder = new GsonBuilder();
-        builder.excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC);
-        builder.excludeFieldsWithoutExposeAnnotation();
-        Gson sExposeGson = builder.create();
-        String jsonFavorites = sExposeGson.toJson(userList);
-        editor.putString(ArrayUserList + Suffix, jsonFavorites);
-        editor.commit();
-    }
+    GsonBuilder builder = new GsonBuilder();
+    builder.excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC);
+    builder.excludeFieldsWithoutExposeAnnotation();
+    Gson sExposeGson = builder.create();
+    String jsonFavorites = sExposeGson.toJson(userList);
+    editor.putString(ArrayUserList + Suffix, jsonFavorites);
+    editor.commit();
+}
 
     public ArrayList<UserListObject> loadUserList(Context context)
     {
@@ -726,4 +728,47 @@ public class MyStorage
         return userList;
     }
     //endregion
+
+    // region shared preference for List Tracks
+
+    public void storeNotificationtList(Context context, List userList)
+    {
+        // used for store arrayList in json format
+        SharedPreferences settings;
+        Editor editor;
+        settings = context.getSharedPreferences(PREFS_NAME + Suffix, Context.MODE_PRIVATE);
+        editor = settings.edit();
+
+        GsonBuilder builder = new GsonBuilder();
+        builder.excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC);
+        builder.excludeFieldsWithoutExposeAnnotation();
+        Gson sExposeGson = builder.create();
+        String jsonFavorites = sExposeGson.toJson(userList);
+        editor.putString(ArrayNotificationList + Suffix, jsonFavorites);
+        editor.commit();
+    }
+
+    public ArrayList<NotificationTypeObject> loadNotificationtList(Context context)
+    {
+        // used for retrieving arraylist from json formatted string
+        SharedPreferences settings;
+        ArrayList<NotificationTypeObject> notificationList;
+        settings = context.getSharedPreferences(PREFS_NAME + Suffix, Context.MODE_PRIVATE);
+        if (settings.contains(ArrayNotificationList + Suffix)) {
+            String jsonPlayNowTracks = settings.getString(ArrayNotificationList + Suffix, null);
+
+            GsonBuilder builder = new GsonBuilder();
+            builder.excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC);
+            builder.excludeFieldsWithoutExposeAnnotation();
+            Gson sExposeGson = builder.create();
+            NotificationTypeObject[] notificationlistItems = sExposeGson.fromJson(jsonPlayNowTracks, NotificationTypeObject[].class);
+
+            notificationList = new ArrayList( Arrays.asList(notificationlistItems));
+        } else
+            return new ArrayList<>();
+        return notificationList;
+    }
+    //endregion
+
+
 }
