@@ -651,6 +651,9 @@ public class TracksList extends Fragment
     private List<TrackObject> getPage(List<TrackObject> lst , int index, int size)
     {
         int currentIndex = (index * PAGE_SIZE);
+        List<TrackObject> l = new ArrayList<>();
+        if(lst.size() == 0)
+            return l;
         if( currentIndex + size > lst.size())
             return lst.subList(index, lst.size()-1);
         else
