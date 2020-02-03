@@ -1,12 +1,26 @@
 package com.tevoi.tevoi.model;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class PartnerObject
 {
+    @Expose
+    @SerializedName("Id")
     private int Id;
+    @Expose
+    @SerializedName("Name")
     private String Name;
+    @Expose
+    @SerializedName("Descripton")
     private String Descripton;
+    @Expose
+    @SerializedName("NumberOfTracks")
     private int NumberOfTracks;
+    @Expose
+    @SerializedName("Logo")
     private String Logo;
+
 
     public int getNumberOfTracks() {
         return NumberOfTracks;
