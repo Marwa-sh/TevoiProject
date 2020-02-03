@@ -5,10 +5,12 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.text.BoringLayout;
 
+import com.tevoi.tevoi.model.PartnerObject;
 import com.tevoi.tevoi.model.TrackObject;
 import com.tevoi.tevoi.model.TrackSerializableObject;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.tevoi.tevoi.model.UserListObject;
 
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -33,6 +35,8 @@ public class MyStorage
 
 
     public static final String ArrayListTrack = "ArrayListTrack";
+    public static final String ArrayListPartners = "ArrayListPartners";
+    public static final String ArrayUserList = "ArrayUserList";
 
 
     private  String Suffix =  "_" + USER_ID;
@@ -504,6 +508,7 @@ public class MyStorage
             return new ArrayList<>();
         return listTracks;
     }
+    //endregion
 
    /* public String addTrack(Context context, TrackSerializableObject myModel)
     {
@@ -574,4 +579,151 @@ public class MyStorage
     //endregion
 
 
+    // region shared preference for List Partners
+
+    public void storeListPartners(Context context, List listPartners)
+    {
+        // used for store arrayList in json format
+        SharedPreferences settings;
+        Editor editor;
+        settings = context.getSharedPreferences(PREFS_NAME + Suffix, Context.MODE_PRIVATE);
+        editor = settings.edit();
+
+        GsonBuilder builder = new GsonBuilder();
+        builder.excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC);
+        builder.excludeFieldsWithoutExposeAnnotation();
+        Gson sExposeGson = builder.create();
+        String jsonFavorites = sExposeGson.toJson(listPartners);
+        editor.putString(ArrayListPartners + Suffix, jsonFavorites);
+        editor.commit();
+    }
+
+    public ArrayList<PartnerObject> loadListPartners(Context context)
+    {
+        // used for retrieving arraylist from json formatted string
+        SharedPreferences settings;
+        ArrayList<PartnerObject> listPartners;
+        settings = context.getSharedPreferences(PREFS_NAME + Suffix, Context.MODE_PRIVATE); ////ask marwa
+        if (settings.contains(ArrayListPartners + Suffix)) {
+            String jsonPlayNowTracks = settings.getString(ArrayListPartners + Suffix, null);
+
+            GsonBuilder builder = new GsonBuilder();
+            builder.excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC);
+            builder.excludeFieldsWithoutExposeAnnotation();
+            Gson sExposeGson = builder.create();
+            PartnerObject[] partnerItems = sExposeGson.fromJson(jsonPlayNowTracks, PartnerObject[].class);
+
+            listPartners = new ArrayList( Arrays.asList(partnerItems));
+        } else
+            return new ArrayList<>();
+        return listPartners;
+    }
+
+   /* public String addTrack(Context context, TrackSerializableObject myModel)
+    {
+        String result = "";
+        ArrayList<TrackSerializableObject> playNowTracks = loadPlayNowTracks(context);
+        if (playNowTracks == null)
+            playNowTracks = new ArrayList();
+        Boolean isTrackExists = false;
+        // check if this track already exists or not
+        for (int i=0; i< playNowTracks.size(); i++ )
+        {
+            if(playNowTracks.get(i).getId()== myModel.getId())
+            {
+                result = "Track Already Exists";
+                isTrackExists = true;
+            }
+        }
+        if(!isTrackExists)
+        {result = "Track added successfully";
+            playNowTracks.add(myModel);
+            storePlayNowTracks(context, playNowTracks);}
+        return result;
+    }
+    public void removeTrack(Context context, TrackSerializableObject myModel)
+    {
+        ArrayList<TrackSerializableObject> playNowTracks = loadPlayNowTracks(context);
+        if (playNowTracks != null)
+        {
+            for ( int i =0; i< playNowTracks.size(); i++)
+            {
+                if(playNowTracks.get(i).getId() == myModel.getId())
+                {
+                    playNowTracks.remove(i);
+                    break;
+                }
+            }
+            //playNowTracks.remove(myModel);
+            storePlayNowTracks(context, playNowTracks);
+        }
+    }
+
+    public void removeTrackById(Context context, int trackId)
+    {
+        ArrayList<TrackSerializableObject> playNowTracks = loadPlayNowTracks(context);
+        if (playNowTracks != null)
+        {
+            for ( int i =0; i< playNowTracks.size(); i++)
+            {
+                if(playNowTracks.get(i).getId() == trackId)
+                {
+                    playNowTracks.remove(i);
+                    break;
+                }
+            }
+            //playNowTracks.remove(myModel);
+            storePlayNowTracks(context, playNowTracks);
+        }
+    }
+    public void deletePlayNowList(Context context)
+    {
+        ArrayList<TrackSerializableObject> playNowTracks = loadPlayNowTracks(context);
+        for ( int i =0; i< playNowTracks.size(); i++)
+        {
+            playNowTracks.remove(i);
+        }
+        storePlayNowTracks(context, playNowTracks);
+    }*/
+    //endregion
+    // region shared preference for List Tracks
+
+    public void storeUsetList(Context context, List userList)
+    {
+        // used for store arrayList in json format
+        SharedPreferences settings;
+        Editor editor;
+        settings = context.getSharedPreferences(PREFS_NAME + Suffix, Context.MODE_PRIVATE);
+        editor = settings.edit();
+
+        GsonBuilder builder = new GsonBuilder();
+        builder.excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC);
+        builder.excludeFieldsWithoutExposeAnnotation();
+        Gson sExposeGson = builder.create();
+        String jsonFavorites = sExposeGson.toJson(userList);
+        editor.putString(ArrayUserList + Suffix, jsonFavorites);
+        editor.commit();
+    }
+
+    public ArrayList<UserListObject> loadUserList(Context context)
+    {
+        // used for retrieving arraylist from json formatted string
+        SharedPreferences settings;
+        ArrayList<UserListObject> userList;
+        settings = context.getSharedPreferences(PREFS_NAME + Suffix, Context.MODE_PRIVATE);
+        if (settings.contains(ArrayUserList + Suffix)) {
+            String jsonPlayNowTracks = settings.getString(ArrayUserList + Suffix, null);
+
+            GsonBuilder builder = new GsonBuilder();
+            builder.excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC);
+            builder.excludeFieldsWithoutExposeAnnotation();
+            Gson sExposeGson = builder.create();
+            UserListObject[] userlistItems = sExposeGson.fromJson(jsonPlayNowTracks, UserListObject[].class);
+
+            userList = new ArrayList( Arrays.asList(userlistItems));
+        } else
+            return new ArrayList<>();
+        return userList;
+    }
+    //endregion
 }

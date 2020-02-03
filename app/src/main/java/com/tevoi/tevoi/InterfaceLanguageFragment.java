@@ -138,6 +138,8 @@ public class InterfaceLanguageFragment extends Fragment {
 
                     }
                 });
+                Toast.makeText(activity, R.string.restart_app_for_apply_language, Toast.LENGTH_SHORT).show();
+
             }
 
         });
@@ -178,7 +180,7 @@ public class InterfaceLanguageFragment extends Fragment {
 
                     }
                 });
-
+                Toast.makeText(activity, R.string.restart_app_for_apply_language, Toast.LENGTH_SHORT).show();
             }
 
         });
@@ -218,6 +220,7 @@ public class InterfaceLanguageFragment extends Fragment {
 
                     }
                 });
+                Toast.makeText(activity, R.string.restart_app_for_apply_language, Toast.LENGTH_SHORT).show();
             }
 
         });

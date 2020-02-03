@@ -12,6 +12,11 @@ public class LoginResponse  extends IResponse{
     private int UserId;
     @SerializedName("lstTracks")
     private List<TrackObject> lstTracks;
+    @SerializedName("lstPartners")
+    private List<PartnerObject> lstPartners;
+    @SerializedName("Userlst")
+    private List<PartnerObject> Userlst;
+
 
     public int getUserId() {
         return UserId;
@@ -35,4 +40,20 @@ public class LoginResponse  extends IResponse{
     public List<TrackObject> getLstTracks() {
         return lstTracks;
     }
+
+    public void setLstPartners(List<PartnerObject> lstPartners) {
+        this.lstPartners = lstPartners;
+    }
+
+    public List<PartnerObject> getLstPartners() {
+        return lstPartners;
+    }
+    public List<PartnerObject> getUserlst() {
+        return Userlst;
+    }
+
+    public void setUserlst(List<PartnerObject> userlst) {
+        Userlst = userlst;
+    }
+
 }

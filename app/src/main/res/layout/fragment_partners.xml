@@ -61,12 +61,18 @@
         android:layout_height="1dp"
         android:background="@color/tevoiOutLine"
         />
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/main_swiperefresh_partners"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <com.tevoi.tevoi.model.RecyclerViewEmptySupport
         android:id="@+id/partners_recycler_View"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
     </com.tevoi.tevoi.model.RecyclerViewEmptySupport>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
     <TextView android:id="@+id/partners_list_empty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
