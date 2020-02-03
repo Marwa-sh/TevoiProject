@@ -14,7 +14,7 @@ public class LoginResponse  extends IResponse{
     private List<TrackObject> lstTracks;
     @SerializedName("lstPartners")
     private List<PartnerObject> lstPartners;
-    @SerializedName("Userlst")
+    @SerializedName("lstUserLists")
     private List<PartnerObject> Userlst;
 
 

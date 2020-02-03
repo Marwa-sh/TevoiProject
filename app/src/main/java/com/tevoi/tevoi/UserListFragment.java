@@ -85,7 +85,7 @@ public class UserListFragment extends Fragment
 
 
 
-        swipeRefreshLayout = rootView.findViewById(R.id.main_swiperefresh);
+        //swipeRefreshLayout = rootView.findViewById(R.id.main_swiperefresh);
         swipeRefreshLayout.setOnRefreshListener(this);
 
 
