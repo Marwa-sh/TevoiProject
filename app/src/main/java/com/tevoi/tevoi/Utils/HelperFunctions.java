@@ -12,6 +12,7 @@ import com.tevoi.tevoi.model.TrackObject;
 import com.tevoi.tevoi.model.TrackSerializableObject;
 import com.tevoi.tevoi.model.UserListObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HelperFunctions
@@ -27,8 +28,18 @@ public class HelperFunctions
     public static List<PartnerObject> getPagePartners(List<PartnerObject> lst , int index, int size)
     {
         int currentIndex = (index * size);
+        List<PartnerObject> l = new ArrayList<>();
+        if(lst.size() == 0)
+            return l;
+        if(lst.size() == 1)
+            return  lst;
         if( currentIndex + size > lst.size())
-            return lst.subList(index, lst.size()-1);
+        {
+            if(currentIndex > lst.size()-1)
+                return  l;
+            else
+                return lst.subList(currentIndex, lst.size()-1);
+        }
         else
             return lst.subList(currentIndex, currentIndex + size);
     }
@@ -36,6 +47,9 @@ public class HelperFunctions
     public static List<UserListObject> getPageUserList(List<UserListObject> lst , int index, int size)
     {
         int currentIndex = (index * size);
+        List<UserListObject> l = new ArrayList<>();
+        if(lst.size() == 0)
+            return l;
         if( currentIndex + size > lst.size())
             return lst.subList(index, lst.size()-1);
         else

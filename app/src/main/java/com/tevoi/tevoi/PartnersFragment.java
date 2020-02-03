@@ -175,6 +175,12 @@ public class PartnersFragment extends Fragment
                 isLoading = true;
                 currentPage += 1;
                 loadNextPage(k);
+                /*new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        loadNextPage(k);
+                    }
+                }, 1000);*/
             }
 
             @Override

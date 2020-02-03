@@ -515,14 +515,14 @@ public class TracksList extends Fragment
             protected void loadMoreItems() {
                 isLoading = true;
                 currentPage += 1;
-                //loadNextPage(k);
+                loadNextPage(k);
                 // mocking network delay for API call
-                new Handler().postDelayed(new Runnable() {
+                /*new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         loadNextPage(k);
                     }
-                }, 1000);
+                }, 1000);*/
             }
 
             @Override
@@ -560,19 +560,23 @@ public class TracksList extends Fragment
         adapter.addAll(lstFirstPage);
         //adapter.addAll(lstTracks);
 
-        if (currentPage <= TOTAL_PAGES) adapter.addLoadingFooter();
+        if ( currentPage <= TOTAL_PAGES) adapter.addLoadingFooter();
         else isLastPage = true;
 
 
     }
-    private List<TrackObject> getPage(List<TrackObject> lst , int index, int size)
+    private List<TrackObject> getPage(List<TrackObject> lst , int pageIndex, int size)
     {
-        int currentIndex = (index * PAGE_SIZE);
+        int currentIndex = (pageIndex * PAGE_SIZE);
         List<TrackObject> l = new ArrayList<>();
         if(lst.size() == 0)
             return l;
-        if( currentIndex + size > lst.size())
-            return lst.subList(index, lst.size()-1);
+        if( currentIndex + size > lst.size()) {
+            if(currentIndex > lst.size()-1)
+                return  l;
+            else
+                return lst.subList(currentIndex, lst.size() - 1);
+        }
         else
             return lst.subList(currentIndex, currentIndex + size);
     }
