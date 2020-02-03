@@ -715,7 +715,7 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     {
                         activity.notifyTarcksListAdapter();
                     }
-                    hoverLayout.setVisibility(View.INVISIBLE);
+                    //hoverLayout.setVisibility(View.INVISIBLE);
                 }
             });
             btnAddToList.setOnClickListener(new View.OnClickListener() {
