@@ -189,6 +189,25 @@ public class UserListFragment extends Fragment
                                             //activity.mProgressDialog.setMessage("Loading");
                                             //activity.mProgressDialog.show();
                                             // add user list
+//                                            activity.storageManager.addUserList(activity,listName);
+
+                                       /*     ArrayList<UserListObject> userList =  activity.storageManager.loadUserList(activity);
+                                            if (userList == null)
+                                                userList = new ArrayList();
+                                            Boolean isUserListExists = false;
+                                            // check if this track already exists or not
+                                            for (int i=0; i< userList.size(); i++ )
+                                            {
+                                                if(userList.get(i).getName()== listName)
+                                                {
+                                                    isUserListExists = true;
+                                                }
+                                            }
+                                            if(!isUserListExists)
+                                            {
+                                                userList.add(listName);
+                                                activity.storageManager.storeUsetList(activity, userList);}*/
+
                                             Call<IResponse> call = Global.client.AddUserList(listName);
                                             call.enqueue(new Callback<IResponse>(){
                                                 public void onResponse(Call<IResponse> call, Response<IResponse> response) {
