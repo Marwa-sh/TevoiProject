@@ -68,7 +68,7 @@ public class PartnersFragment extends Fragment
 
 
 
-    RecyclerViewEmptySupport[] recyclerViews= new RecyclerViewEmptySupport[4];
+    RecyclerViewEmptySupport[] recyclerViews= new RecyclerViewEmptySupport[2];
 
     int active_tab=0;
     Button[] tabs =  new Button[2];
@@ -158,7 +158,7 @@ public class PartnersFragment extends Fragment
         linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerViews[k].setLayoutManager(linearLayoutManager);
-        recyclerViews[k].setEmptyView(emptyView);
+        //recyclerViews[k].setEmptyView(emptyView);
 
         List<PartnerObject> partners = new ArrayList<>();
         adapter = new PartnerAdapter(partners, activity);
@@ -234,6 +234,7 @@ public class PartnersFragment extends Fragment
     private void loadFirstPage(final int tabId)
     {
         progressBar.setVisibility(View.GONE);
+        currentPage = 0;
         List<PartnerObject> lstFirstPage = HelperFunctions.getPagePartners(lstPartners, 0 , PAGE_SIZE );
         adapter.addAll(lstFirstPage);
 
