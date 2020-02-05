@@ -46,6 +46,8 @@ import android.animation.Animator;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 
@@ -476,16 +478,37 @@ public class TracksList extends Fragment
 
     public void changeTabToNew(View view) {
         active_tab = 0;
+        Collections.sort(lstTracks, new Comparator<TrackObject>() {
+            @Override
+            public int compare(TrackObject o1, TrackObject o2) {
+                return o1.getCreationDate().compareTo(o2.getCreationDate());
+                //Integer.compare((int)o1.getRate(), (int)o2.getRate());
+            }
+        });
         activateTab(0);
     }
 
     public void changeTabToTopRated(View view) {
         active_tab = 1;
+        Collections.sort(lstTracks, new Comparator<TrackObject>() {
+            @Override
+            public int compare(TrackObject o1, TrackObject o2) {
+                return Integer.compare((int)o1.getRate(), (int)o2.getRate());
+                //Integer.compare((int)o1.getRate(), (int)o2.getRate());
+            }
+        });
         activateTab(1);
     }
 
     public void changeToPopular(View view) {
         active_tab = 2;
+        Collections.sort(lstTracks, new Comparator<TrackObject>() {
+            @Override
+            public int compare(TrackObject o1, TrackObject o2) {
+                return Integer.compare((int)o1.getListenCount(), (int)o2.getListenCount());
+                //Integer.compare((int)o1.getRate(), (int)o2.getRate());
+            }
+        });
         activateTab(2);
     }
 
