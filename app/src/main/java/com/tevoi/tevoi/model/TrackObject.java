@@ -51,7 +51,7 @@ public class TrackObject
     private int ListenCount;
     @Expose
     @SerializedName("CreationDate")
-    private Date CreationDate;
+    private String CreationDate;
     @Expose
     @SerializedName("IsListen")
     private boolean IsListen;
@@ -166,7 +166,7 @@ public class TrackObject
         return ListenCount;
     }
 
-    public Date getCreationDate() {
+    public String getCreationDate() {
         return CreationDate;
     }
 
@@ -174,7 +174,7 @@ public class TrackObject
         ListenCount = listenCount;
     }
 
-    public void setCreationDate(Date creationDate) {
+    public void setCreationDate(String creationDate) {
         CreationDate = creationDate;
     }
 

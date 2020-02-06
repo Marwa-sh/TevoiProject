@@ -480,8 +480,12 @@ public class TracksList extends Fragment
         active_tab = 0;
         Collections.sort(lstTracks, new Comparator<TrackObject>() {
             @Override
-            public int compare(TrackObject o1, TrackObject o2) {
-                return o1.getCreationDate().compareTo(o2.getCreationDate());
+            public int compare(TrackObject o1, TrackObject o2)
+            {
+                if(o1.getCreationDate()== null && o2.getCreationDate() == null )
+                    return  0;
+                else
+                    return o1.getCreationDate().compareTo(o2.getCreationDate());
                 //Integer.compare((int)o1.getRate(), (int)o2.getRate());
             }
         });
@@ -590,8 +594,8 @@ public class TracksList extends Fragment
         adapter.addAll(lstFirstPage);
         //adapter.addAll(lstTracks);
 
-        if ( currentPage <= TOTAL_PAGES) adapter.addLoadingFooter();
-        else isLastPage = true;
+        /*if ( currentPage <= TOTAL_PAGES) adapter.addLoadingFooter();
+        else isLastPage = true;*/
 
 
     }
@@ -605,7 +609,7 @@ public class TracksList extends Fragment
             if(currentIndex > lst.size()-1)
                 return  l;
             else
-                return lst.subList(currentIndex, lst.size() - 1);
+                return lst.subList(currentIndex, lst.size());
         }
         else
             return lst.subList(currentIndex, currentIndex + size);
@@ -615,15 +619,15 @@ public class TracksList extends Fragment
     {
         Log.d("Next", "loadNextPage: " + currentPage);
 
-        adapter.removeLoadingFooter();
-        isLoading = false;
+        //adapter.removeLoadingFooter();
+        //isLoading = false;
 
         List<TrackObject> lstNextPage = getPage(lstTracks, currentPage , PAGE_SIZE );
         adapter.addAll(lstNextPage);
         //adapter.addAll(lstTracks);
 
-        if (currentPage != TOTAL_PAGES) adapter.addLoadingFooter();
-        else isLastPage = true;
+        /*if (currentPage != TOTAL_PAGES) adapter.addLoadingFooter();
+        else isLastPage = true;*/
 
 
         // todo : show banner
