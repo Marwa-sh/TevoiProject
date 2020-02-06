@@ -46,6 +46,8 @@ import android.animation.Animator;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 
@@ -476,16 +478,41 @@ public class TracksList extends Fragment
 
     public void changeTabToNew(View view) {
         active_tab = 0;
+        Collections.sort(lstTracks, new Comparator<TrackObject>() {
+            @Override
+            public int compare(TrackObject o1, TrackObject o2)
+            {
+                if(o1.getCreationDate()== null && o2.getCreationDate() == null )
+                    return  0;
+                else
+                    return o1.getCreationDate().compareTo(o2.getCreationDate());
+                //Integer.compare((int)o1.getRate(), (int)o2.getRate());
+            }
+        });
         activateTab(0);
     }
 
     public void changeTabToTopRated(View view) {
         active_tab = 1;
+        Collections.sort(lstTracks, new Comparator<TrackObject>() {
+            @Override
+            public int compare(TrackObject o1, TrackObject o2) {
+                return Integer.compare((int)o1.getRate(), (int)o2.getRate());
+                //Integer.compare((int)o1.getRate(), (int)o2.getRate());
+            }
+        });
         activateTab(1);
     }
 
     public void changeToPopular(View view) {
         active_tab = 2;
+        Collections.sort(lstTracks, new Comparator<TrackObject>() {
+            @Override
+            public int compare(TrackObject o1, TrackObject o2) {
+                return Integer.compare((int)o1.getListenCount(), (int)o2.getListenCount());
+                //Integer.compare((int)o1.getRate(), (int)o2.getRate());
+            }
+        });
         activateTab(2);
     }
 
@@ -547,15 +574,15 @@ public class TracksList extends Fragment
                 return isLoading;
             }
         });
-
-        // mocking network delay for API call
+        loadFirstPage(k);
+        /*// mocking network delay for API call
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 loadFirstPage(k);
             }
         }, 100);
-
+*/
     }
 
     private void loadFirstPage(final int tabId)
@@ -567,8 +594,8 @@ public class TracksList extends Fragment
         adapter.addAll(lstFirstPage);
         //adapter.addAll(lstTracks);
 
-        if ( currentPage <= TOTAL_PAGES) adapter.addLoadingFooter();
-        else isLastPage = true;
+        /*if ( currentPage <= TOTAL_PAGES) adapter.addLoadingFooter();
+        else isLastPage = true;*/
 
 
     }
@@ -582,7 +609,7 @@ public class TracksList extends Fragment
             if(currentIndex > lst.size()-1)
                 return  l;
             else
-                return lst.subList(currentIndex, lst.size() - 1);
+                return lst.subList(currentIndex, lst.size());
         }
         else
             return lst.subList(currentIndex, currentIndex + size);
@@ -592,15 +619,15 @@ public class TracksList extends Fragment
     {
         Log.d("Next", "loadNextPage: " + currentPage);
 
-        adapter.removeLoadingFooter();
-        isLoading = false;
+        //adapter.removeLoadingFooter();
+        //isLoading = false;
 
         List<TrackObject> lstNextPage = getPage(lstTracks, currentPage , PAGE_SIZE );
         adapter.addAll(lstNextPage);
         //adapter.addAll(lstTracks);
 
-        if (currentPage != TOTAL_PAGES) adapter.addLoadingFooter();
-        else isLastPage = true;
+        /*if (currentPage != TOTAL_PAGES) adapter.addLoadingFooter();
+        else isLastPage = true;*/
 
 
         // todo : show banner

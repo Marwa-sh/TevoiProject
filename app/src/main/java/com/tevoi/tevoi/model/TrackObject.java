@@ -3,6 +3,8 @@ package com.tevoi.tevoi.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Date;
+
 public class TrackObject
 {
     @Expose
@@ -44,6 +46,15 @@ public class TrackObject
     @Expose
     @SerializedName("IsFavourite")
     private boolean IsFavourite;
+    @Expose
+    @SerializedName("ListenCount")
+    private int ListenCount;
+    @Expose
+    @SerializedName("CreationDate")
+    private String CreationDate;
+    @Expose
+    @SerializedName("IsListen")
+    private boolean IsListen;
 
     //private int TypeId;
     //private int TypeName;
@@ -151,9 +162,34 @@ public class TrackObject
         return ActivityId;
     }
 
+    public int getListenCount() {
+        return ListenCount;
+    }
+
+    public String getCreationDate() {
+        return CreationDate;
+    }
+
+    public void setListenCount(int listenCount) {
+        ListenCount = listenCount;
+    }
+
+    public void setCreationDate(String creationDate) {
+        CreationDate = creationDate;
+    }
+
+    public boolean isListen() {
+        return IsListen;
+    }
+
+    public void setListen(boolean listen) {
+        IsListen = listen;
+    }
+
     public TrackObject( ) {
 
     }
+
     public TrackObject( String name) {
 
         Name = name;
