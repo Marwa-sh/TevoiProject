@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.text.BoringLayout;
 
+import com.tevoi.tevoi.R;
 import com.tevoi.tevoi.model.NotificationTypeObject;
 import com.tevoi.tevoi.model.PartnerObject;
 import com.tevoi.tevoi.model.TrackObject;
@@ -123,27 +124,27 @@ public class MyStorage
     }
 
     public String addTrack(Context context, TrackSerializableObject myModel)
+{
+    String result = "";
+    ArrayList<TrackSerializableObject> playNowTracks = loadPlayNowTracks(context);
+    if (playNowTracks == null)
+        playNowTracks = new ArrayList();
+    Boolean isTrackExists = false;
+    // check if this track already exists or not
+    for (int i=0; i< playNowTracks.size(); i++ )
     {
-        String result = "";
-        ArrayList<TrackSerializableObject> playNowTracks = loadPlayNowTracks(context);
-        if (playNowTracks == null)
-            playNowTracks = new ArrayList();
-        Boolean isTrackExists = false;
-        // check if this track already exists or not
-        for (int i=0; i< playNowTracks.size(); i++ )
+        if(playNowTracks.get(i).getId()== myModel.getId())
         {
-            if(playNowTracks.get(i).getId()== myModel.getId())
-            {
-                result = "Track Already Exists";
-                isTrackExists = true;
-            }
+            result = "Track Already Exists";
+            isTrackExists = true;
         }
-        if(!isTrackExists)
-        {result = "Track added successfully";
+    }
+    if(!isTrackExists)
+    {result = "Track added successfully";
         playNowTracks.add(myModel);
         storePlayNowTracks(context, playNowTracks);}
-        return result;
-    }
+    return result;
+}
 
     public void removeTrack(Context context, TrackSerializableObject myModel)
     {
@@ -188,6 +189,77 @@ public class MyStorage
             playNowTracks.remove(i);
         }
         storePlayNowTracks(context, playNowTracks);
+    }
+    //endregion
+
+
+    // region shared preference for User list
+    public String addUserList(Context context, UserListObject myModel)
+    {
+        String result = "";
+        ArrayList<UserListObject> userList = loadUserList(context);
+        if (userList == null)
+            userList = new ArrayList();
+        Boolean isUserListExists = false;
+        // check if this track already exists or not
+        for (int i=0; i< userList.size(); i++ )
+        {
+            if(userList.get(i).getName()== myModel.getName())
+            {
+                result = "User List Already Exists";
+                isUserListExists = true;
+            }
+        }
+        if(!isUserListExists)
+        {result = "User List added successfully";
+            userList.add(myModel);
+            storeUsetList(context, userList);}
+        return result;
+    }
+
+    public void removeUserList(Context context, UserListObject myModel)
+    {
+        ArrayList<UserListObject> userList = loadUserList(context);
+        if (userList != null)
+        {
+            for ( int i =0; i< userList.size(); i++)
+            {
+                if(userList.get(i).getId() == myModel.getId())
+                {
+                    userList.remove(i);
+                    break;
+                }
+            }
+            //playNowTracks.remove(myModel);
+            storeUsetList(context, userList);
+        }
+    }
+
+    public void removeUserListById(Context context, int userListId)
+    {
+        ArrayList<UserListObject> userList = loadUserList(context);
+        if (userList != null)
+        {
+            for ( int i =0; i< userList.size(); i++)
+            {
+                if(userList.get(i).getId() == userListId)
+                {
+                    userList.remove(i);
+                    break;
+                }
+            }
+            //playNowTracks.remove(myModel);
+            storeUsetList(context, userList);
+        }
+    }
+    public void deleteUserList(Context context)
+    {
+        ArrayList<UserListObject> userList = loadUserList(context);
+        for ( int i =0; i< userList.size(); i++)
+        {
+            userList.remove(i);
+        }
+        storeUsetList(context, userList);
     }
     //endregion
 
@@ -509,6 +581,60 @@ public class MyStorage
         } else
             return new ArrayList<>();
         return listTracks;
+    }
+
+    public ArrayList<TrackObject> loadFavoriteListTracks(Context context)
+{
+    // used for retrieving arraylist from json formatted string
+    SharedPreferences settings;
+    ArrayList<TrackObject> listTracks;
+    settings = context.getSharedPreferences(PREFS_NAME + Suffix, Context.MODE_PRIVATE);
+    if (settings.contains(ArrayListTrack + Suffix)) {
+        String jsonPlayNowTracks = settings.getString(ArrayListTrack + Suffix, null);
+
+        GsonBuilder builder = new GsonBuilder();
+        builder.excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC);
+        builder.excludeFieldsWithoutExposeAnnotation();
+        Gson sExposeGson = builder.create();
+        TrackObject[] trackItems = sExposeGson.fromJson(jsonPlayNowTracks, TrackObject[].class);
+
+        listTracks = new ArrayList( Arrays.asList(trackItems));
+        ArrayList<TrackObject> lstFavourite = new ArrayList<>();
+        for (int j=0;j<listTracks.size();j++)
+        {
+            if (listTracks.get(j).isFavourite())
+                lstFavourite.add(listTracks.get(j));
+        }
+        return lstFavourite;
+    } else
+        return new ArrayList<>();
+
+}
+    public void clearFavoriteListTracks(Context context)
+    {
+        // used for retrieving arraylist from json formatted string
+        SharedPreferences settings;
+        ArrayList<TrackObject> listTracks = loadListTracks(context);
+
+        for (int j=0;j<listTracks.size();j++)
+        {
+                listTracks.get(j).setFavourite(false);
+        }
+        storeListTracks(context,listTracks);
+    }
+    public void LikeFunction(Context context,int Id)
+    {
+        ArrayList<TrackObject> listTracks = loadListTracks(context);
+
+        for(int j=0 ; j<listTracks.size();j++)
+        {
+            if(listTracks.get(j).getId()== Id)
+            {
+                listTracks.get(j).setFavourite(!listTracks.get(j).isFavourite());
+                break;
+            }
+        }
+        storeListTracks(context,listTracks);
     }
     //endregion
 

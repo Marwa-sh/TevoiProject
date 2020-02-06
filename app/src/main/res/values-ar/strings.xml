@@ -181,4 +181,15 @@
 
     <string name="number_of_tracks">عدد المقالات</string>
 
+    <string name="user_list_added_successfully">تمت إضافة القائمة بنجاح</string>
+
+    <string name="cleared_successfully">تم المسح بنجاح</string>
+    <string name="deleted_successfully">تم الحذف بنجاح</string>
+
+    <string name="list_edit_successfully">تم تعديل القائمة بنجاح</string>
+
+    <string name="track_added_to_favourite">تمت إضافة المقالة إلى قائمة المفضلة بنجاح</string>
+
+    <string name="track_removed_from_favourite">تم حذف المقالة من قائمة المفضلة بنجاح</string>
+
 </resources>

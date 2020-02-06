@@ -275,9 +275,12 @@ public class UserListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
                                     if(result.Number == 0)
                                     {
-                                        Toast.makeText(activity, result.getMessage(), Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(activity,activity.getResources().getString(R.string.deleted_successfully), Toast.LENGTH_SHORT).show();
                                         userLists.remove(i);
+                                        activity.storageManager.storeUsetList(activity,userLists);
+//                                        activity.storageManager.removeUserList(activity,userLists.get(i));
                                         activity.notifyUserListAdapter();
+
                                     }
                                     else
                                     {
@@ -362,7 +365,7 @@ public class UserListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     // set dialog message
                     alertDialogBuilder
                             .setCancelable(false)
-                            .setPositiveButton("OK",
+                            .setPositiveButton(activity.getResources().getString(R.string.Yes),
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog,int id) {
                                             // get user input and set it to result
@@ -385,7 +388,7 @@ public class UserListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
                                                         if(result.Number == 0)
                                                         {
-                                                            Toast.makeText(activity,"List Edit Successfully", Toast.LENGTH_LONG).show();
+                                                            Toast.makeText(activity,activity.getResources().getString(R.string.list_edit_successfully), Toast.LENGTH_LONG).show();
                                                         }
                                                         else
                                                         {
@@ -404,7 +407,7 @@ public class UserListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                                             }
                                         }
                                     })
-                            .setNegativeButton("Cancel",
+                            .setNegativeButton(activity.getResources().getString(R.string.cancel),
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog,int id) {
                                             dialog.cancel();

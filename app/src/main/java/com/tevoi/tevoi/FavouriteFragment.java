@@ -25,6 +25,7 @@ import com.tevoi.tevoi.model.PaginationScrollListener;
 import com.tevoi.tevoi.model.RecyclerViewEmptySupport;
 import com.tevoi.tevoi.model.TrackObject;
 import com.tevoi.tevoi.model.TrackResponseList;
+import com.tevoi.tevoi.model.UserListObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,8 +48,9 @@ public class FavouriteFragment extends Fragment {
     private boolean isLastPage = false;
     private int TOTAL_PAGES = 0;
     private int currentPage = 0;
-    int PAGE_SIZE = Global.PAGE_SIZE;;
+    int PAGE_SIZE = Global.PAGE_SIZE;
     // endregion
+    List<TrackObject> lstFavouriteTracks = new ArrayList<TrackObject>();
 
     TracksAdapter adapter ;
     RecyclerViewEmptySupport recyclerView;
@@ -67,6 +69,9 @@ public class FavouriteFragment extends Fragment {
         recyclerView = rootView.findViewById(R.id.favourite_tracks_recycler_View);
         initiatePagination();
 
+        lstFavouriteTracks = activity.storageManager.loadFavoriteListTracks(activity);
+        TOTAL_PAGES = lstFavouriteTracks.size()/ PAGE_SIZE;
+
         btnClearFavourite =rootView.findViewById(R.id.btn_clear_favourite);
 
         //abd
@@ -75,24 +80,45 @@ public class FavouriteFragment extends Fragment {
             @Override
             public void onClick(View v)
             {
-                activity.mProgressDialog.setMessage(getResources().getString( R.string.loader_msg)); activity.mProgressDialog.show();
+                int size = lstFavouriteTracks.size();
+               //activity.mProgressDialog.setMessage(getResources().getString( R.string.loader_msg)); activity.mProgressDialog.show();
 
-                Call<IResponse> call = Global.client.RemoveAllFavourite();
+                //adapter.notifyDataSetChanged();
+                adapter.getTracksList().clear();
+                View vw = rootView.findViewById(R.id.favourite_list_empty);
+                vw.setVisibility(View.VISIBLE);
+                recyclerView.setEmptyView(vw);
+
+                adapter.notifyDataSetChanged();
+                activity.storageManager.clearFavoriteListTracks(activity);
+/*                adapter.notifyDataSetChanged();
+                adapter.notifyItemRangeRemoved(0, size);*/
+
+               /* Call<IResponse> call = Global.client.RemoveAllFavourite();
                 call.enqueue(new Callback <IResponse>(){
                     public void onResponse(Call<IResponse> call, Response<IResponse> response) {
-                        //generateDataList(response.body());
+//                        generateDataList(response.body());
                         SideMenu activity = (SideMenu) getActivity();
                         IResponse result = response.body();
-                        Toast.makeText(activity, result.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(activity, activity.getResources().getString(R.string.cleared_successfully), Toast.LENGTH_SHORT).show();
                         activity.mProgressDialog.dismiss();
-                        doRefresh();
+                        // TODO ask marwa
+*//*                        adapter.getTracksList().clear();
+                        adapter.clear();
+                        adapter.notifyDataSetChanged();
+                        adapter.notifyItemRangeRemoved(0, size);*//*
+                        //activity.storageManager.clearFavoriteListTracks(activity);
+
+//                        doRefresh();
                     }
                     public void onFailure(Call<IResponse> call, Throwable t)
                     {
                         activity.mProgressDialog.dismiss();
                         Toast.makeText(getContext(),"something went wrong", Toast.LENGTH_SHORT).show();
                     }
-                });
+                });*/
+
+
             }
         });
 
@@ -101,7 +127,7 @@ public class FavouriteFragment extends Fragment {
         linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setEmptyView(emptyView);
+//        recyclerView.setEmptyView(emptyView);
 
         List<TrackObject> trs = new ArrayList<>();
         adapter = new TracksAdapter(trs, activity, Global.FavouriteFragmentName, recyclerView);
@@ -117,7 +143,6 @@ public class FavouriteFragment extends Fragment {
             protected void loadMoreItems() {
                 isLoading = true;
                 currentPage += 1;
-
                 loadNextPage();
             }
 
@@ -237,7 +262,16 @@ public class FavouriteFragment extends Fragment {
 
     private void loadFirstPage()
     {
-        currentPage = 0;
+
+        progressBar.setVisibility(View.GONE);
+        List<TrackObject> lstFirstPage =  HelperFunctions.getPage(lstFavouriteTracks, 0 , PAGE_SIZE );
+        adapter.addAll(lstFirstPage);
+        //adapter.addAll(lstTracks);
+
+        if (currentPage <= TOTAL_PAGES) adapter.addLoadingFooter();
+        else isLastPage = true;
+
+       /* currentPage = 0;
         //activity.mProgressDialog.setMessage("Loading1");
         //activity.mProgressDialog.show();
 
@@ -274,13 +308,25 @@ public class FavouriteFragment extends Fragment {
                 //showErrorView(t);
                 //Toast.makeText(getContext(),"something went wrong", Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
     }
 
     private void loadNextPage()
     {
         //activity.mProgressDialog.setMessage("Loading");
         //activity.mProgressDialog.show();
+
+
+        adapter.removeLoadingFooter();
+        isLoading = false;
+
+        List<TrackObject> lstNextPage = HelperFunctions.getPage(lstFavouriteTracks, currentPage , PAGE_SIZE );
+        adapter.addAll(lstNextPage);
+      /*  adapter.addAll(lstTracks);*/
+        if (currentPage != TOTAL_PAGES) adapter.addLoadingFooter();
+        else isLastPage = true;
+
+/*
 
         Call<TrackResponseList> call = Global.client.getFavouriteList(currentPage, PAGE_SIZE);
         call.enqueue(new Callback <TrackResponseList>(){
@@ -294,10 +340,12 @@ public class FavouriteFragment extends Fragment {
                 isLoading = false;
 
                 adapter.addAll(tracks.getLstTrack());
-               /* if(tracks.getTrack().size() == 0)
+               */
+/* if(tracks.getTrack().size() == 0)
                 {
                     currentPage --;
-                }*/
+                }*//*
+
                 if (TOTAL_PAGES != 0 && currentPage != TOTAL_PAGES) adapter.addLoadingFooter();
                 else isLastPage = true;
 
@@ -315,6 +363,7 @@ public class FavouriteFragment extends Fragment {
                 Toast.makeText(getContext(),"something went wrong", Toast.LENGTH_SHORT).show();
             }
         });
+*/
 
     }
 

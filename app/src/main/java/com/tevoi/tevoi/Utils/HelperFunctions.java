@@ -21,7 +21,7 @@ public class HelperFunctions
     {
         int currentIndex = (index * size);
         if( currentIndex + size > lst.size())
-            return lst.subList(index, lst.size()-1);
+            return lst.subList(index, lst.size());
         else
             return lst.subList(currentIndex, currentIndex + size);
     }
