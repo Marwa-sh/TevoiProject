@@ -233,5 +233,12 @@
 
     <string name="number_of_tracks">Number of tracks</string>
 
+    <string name="cleared_successfully">Cleared Successfully</string>
+    <string name="deleted_successfully">Deleted Successfully</string>
+
+    <string name="user_list_added_successfully">User List added successfully</string>
+    <string name="list_edit_successfully">List Edit Successfully</string>
+    <string name="track_added_to_favourite">Track added to favourite</string>
+    <string name="track_removed_from_favourite">Track removed from favourite</string>
 
 </resources>

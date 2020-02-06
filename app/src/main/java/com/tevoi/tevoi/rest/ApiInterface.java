@@ -3,6 +3,7 @@ package com.tevoi.tevoi.rest;
 
 
 import com.tevoi.tevoi.model.AboutUsResponse;
+import com.tevoi.tevoi.model.AddUserListResponse;
 import com.tevoi.tevoi.model.CategoryResponseList;
 import com.tevoi.tevoi.model.FeedbackRequest;
 import com.tevoi.tevoi.model.GetDownloadLimitResponse;
@@ -105,6 +106,9 @@ public interface ApiInterface {
 
     @GET("api/Services/AddUserList")
     Call<IResponse> AddUserList(@Query("ListName") String ListName);
+
+    @GET("api/Services/AddUserListResponse")
+    Call<AddUserListResponse> AddUserListResponse(@Query("ListName") String ListName);
 
     @GET("api/Services/EditUserList")
     Call<IResponse> EditUserList(@Query("ListId") int ListId, @Query("NewListName") String NewListName);
