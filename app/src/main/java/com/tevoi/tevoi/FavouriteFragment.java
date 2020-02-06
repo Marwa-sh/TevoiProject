@@ -268,8 +268,8 @@ public class FavouriteFragment extends Fragment {
         adapter.addAll(lstFirstPage);
         //adapter.addAll(lstTracks);
 
-        if (currentPage <= TOTAL_PAGES) adapter.addLoadingFooter();
-        else isLastPage = true;
+        /*if (currentPage <= TOTAL_PAGES) adapter.addLoadingFooter();
+        else isLastPage = true;*/
 
        /* currentPage = 0;
         //activity.mProgressDialog.setMessage("Loading1");
@@ -323,8 +323,8 @@ public class FavouriteFragment extends Fragment {
         List<TrackObject> lstNextPage = HelperFunctions.getPage(lstFavouriteTracks, currentPage , PAGE_SIZE );
         adapter.addAll(lstNextPage);
       /*  adapter.addAll(lstTracks);*/
-        if (currentPage != TOTAL_PAGES) adapter.addLoadingFooter();
-        else isLastPage = true;
+        /*if (currentPage != TOTAL_PAGES) adapter.addLoadingFooter();
+        else isLastPage = true;*/
 
 /*
 

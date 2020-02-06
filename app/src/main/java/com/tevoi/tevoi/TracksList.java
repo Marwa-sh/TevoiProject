@@ -574,15 +574,15 @@ public class TracksList extends Fragment
                 return isLoading;
             }
         });
-
-        // mocking network delay for API call
+        loadFirstPage(k);
+        /*// mocking network delay for API call
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 loadFirstPage(k);
             }
         }, 100);
-
+*/
     }
 
     private void loadFirstPage(final int tabId)
