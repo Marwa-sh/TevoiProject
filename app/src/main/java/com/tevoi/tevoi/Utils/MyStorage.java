@@ -40,6 +40,7 @@ public class MyStorage
     public static final String ArrayListPartners = "ArrayListPartners";
     public static final String ArrayUserList = "ArrayUserList";
     public static final String ArrayNotificationList = " ArrayNotificationList";
+    public static final String AboutUs = " AboutUs";
 
 
     private  String Suffix =  "_" + USER_ID;
@@ -896,5 +897,30 @@ public class MyStorage
     }
     //endregion
 
+    public void storeAboutUs(Context context, String aboutUstxt)
+    {
+        SharedPreferences settings;
+        Editor editor;
+        settings = context.getSharedPreferences(AboutUs + Suffix, Context.MODE_PRIVATE);
+        editor = settings.edit();
+
+        editor.putString(AboutUs + Suffix, aboutUstxt);
+        editor.commit();
+    }
+
+    public String loadAboutUs(Context context)
+    {
+        SharedPreferences settings;
+        String aboutUs = "";
+        settings = context.getSharedPreferences(AboutUs, Context.MODE_PRIVATE);
+        if (settings.contains(AboutUs))
+        {
+            aboutUs = settings.getString(AboutUs, null);
+        }
+        else
+            aboutUs = "";
+
+        return aboutUs;
+    }
 
 }
