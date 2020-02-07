@@ -161,15 +161,15 @@ public class FavouriteFragment extends Fragment {
                 return isLoading;
             }
         });
-
-        // mocking network delay for API call
+        loadFirstPage();
+        /*// mocking network delay for API call
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 loadFirstPage();
             }
         }, 1000);
-
+*/
 
         /*activity.mProgressDialog.setMessage("Loading"); activity.mProgressDialog.show();
 
@@ -266,6 +266,12 @@ public class FavouriteFragment extends Fragment {
         progressBar.setVisibility(View.GONE);
         List<TrackObject> lstFirstPage =  HelperFunctions.getPage(lstFavouriteTracks, 0 , PAGE_SIZE );
         adapter.addAll(lstFirstPage);
+
+        if(lstFirstPage.size() == 0) {
+            View v = rootView.findViewById(R.id.favourite_list_empty);
+            v.setVisibility(View.VISIBLE);
+            recyclerView.setEmptyView(v);
+        }
         //adapter.addAll(lstTracks);
 
         /*if (currentPage <= TOTAL_PAGES) adapter.addLoadingFooter();

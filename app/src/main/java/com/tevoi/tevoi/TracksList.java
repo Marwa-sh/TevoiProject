@@ -618,17 +618,15 @@ public class TracksList extends Fragment
     private void loadNextPage(int tabId)
     {
         Log.d("Next", "loadNextPage: " + currentPage);
-
+        progressBar.setVisibility(View.VISIBLE);
         //adapter.removeLoadingFooter();
         //isLoading = false;
-
         List<TrackObject> lstNextPage = getPage(lstTracks, currentPage , PAGE_SIZE );
         adapter.addAll(lstNextPage);
         //adapter.addAll(lstTracks);
-
         /*if (currentPage != TOTAL_PAGES) adapter.addLoadingFooter();
         else isLastPage = true;*/
-
+        progressBar.setVisibility(View.GONE);
 
         // todo : show banner
         //showListBanner(tracks.getBanner().BannerImagePath, tracks.getBanner().BannerLink);

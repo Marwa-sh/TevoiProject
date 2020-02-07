@@ -15,7 +15,7 @@ public class LoginResponse  extends IResponse{
     @SerializedName("lstPartners")
     private List<PartnerObject> lstPartners;
     @SerializedName("lstUserLists")
-    private List<PartnerObject> Userlst;
+    private List<UserListObject> Userlst;
     @SerializedName("lstNotification")
     private List<PartnerObject> lstNotification;
 
@@ -58,11 +58,11 @@ public class LoginResponse  extends IResponse{
     public List<PartnerObject> getLstPartners() {
         return lstPartners;
     }
-    public List<PartnerObject> getUserlst() {
+    public List<UserListObject> getUserlst() {
         return Userlst;
     }
 
-    public void setUserlst(List<PartnerObject> userlst) {
+    public void setUserlst(List<UserListObject> userlst) {
         Userlst = userlst;
     }
 
