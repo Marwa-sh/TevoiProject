@@ -29,11 +29,20 @@ public class AboutUsFragment extends Fragment {
         final TextView txt = rootView.findViewById(R.id.txtAboutUs);
         final SideMenu activity = (SideMenu) getActivity();
 
-        activity.mProgressDialog.setMessage(getResources().getString(R.string.loader_msg));
+/*        activity.mProgressDialog.setMessage(getResources().getString(R.string.loader_msg));
         activity.mProgressDialog.setCancelable(false);
-        activity.mProgressDialog.show();
+        activity.mProgressDialog.show();*/
 
+        String loadtxt;
+        loadtxt = activity.storageManager.loadAboutUs(activity);
 
+        if(loadtxt.equals(""))
+        {
+            txt.setText(R.string.visit_website);
+        }
+        else
+            txt.setText(loadtxt);
+/*
         Call<AboutUsResponse> call = Global.client.GetAboutUs();
         call.enqueue(new Callback<AboutUsResponse>() {
             @Override
@@ -49,6 +58,7 @@ public class AboutUsFragment extends Fragment {
                 activity.mProgressDialog.dismiss();
             }
         });
+*/
 
         return rootView;
     }
