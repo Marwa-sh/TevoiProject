@@ -913,10 +913,10 @@ public class MyStorage
     {
         SharedPreferences settings;
         String aboutUs = "";
-        settings = context.getSharedPreferences(AboutUs, Context.MODE_PRIVATE);
-        if (settings.contains(AboutUs))
+        settings = context.getSharedPreferences(AboutUs+ Suffix, Context.MODE_PRIVATE);
+        if (settings.contains(AboutUs+ Suffix))
         {
-            aboutUs = settings.getString(AboutUs, null);
+            aboutUs = settings.getString(AboutUs+ Suffix, null);
         }
         else
             aboutUs = "";
