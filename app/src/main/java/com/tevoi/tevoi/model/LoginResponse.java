@@ -18,8 +18,13 @@ public class LoginResponse  extends IResponse{
     private List<PartnerObject> lstPartners;
     @SerializedName("lstUserLists")
     private List<UserListObject> Userlst;
-    @SerializedName("lstNotification")
-    private List<PartnerObject> lstNotification;
+    @SerializedName("lstNotificationTypes")
+    private List<PartnerObject> lstNotificationTypes;
+    @SerializedName("lstMainTopic")
+    public List<MainTopic> lstMainTopic;
+    @SerializedName("lstSubscripedPartners")
+    public List<SubscipedPartnersObject> lstSubscripedPartners;
+
 
     public void setAboutUS(String aboutUS) {
         AboutUS = aboutUS;
@@ -27,14 +32,6 @@ public class LoginResponse  extends IResponse{
 
     public String getAboutUS() {
         return AboutUS;
-    }
-
-    public List<PartnerObject> getLstNotification() {
-        return lstNotification;
-    }
-
-    public void setLstNotification(List<PartnerObject> lstNotification) {
-        this.lstNotification = lstNotification;
     }
 
     public int getUserId() {
@@ -75,4 +72,27 @@ public class LoginResponse  extends IResponse{
         Userlst = userlst;
     }
 
+    public List<PartnerObject> getLstNotificationTypes() {
+        return lstNotificationTypes;
+    }
+
+    public List<MainTopic> getLstMainTopic() {
+        return lstMainTopic;
+    }
+
+    public List<SubscipedPartnersObject> getLstSubscripedPartners() {
+        return lstSubscripedPartners;
+    }
+
+    public void setLstNotificationTypes(List<PartnerObject> lstNotificationTypes) {
+        this.lstNotificationTypes = lstNotificationTypes;
+    }
+
+    public void setLstMainTopic(List<MainTopic> lstMainTopic) {
+        this.lstMainTopic = lstMainTopic;
+    }
+
+    public void setLstSubscripedPartners(List<SubscipedPartnersObject> lstSubscripedPartners) {
+        this.lstSubscripedPartners = lstSubscripedPartners;
+    }
 }

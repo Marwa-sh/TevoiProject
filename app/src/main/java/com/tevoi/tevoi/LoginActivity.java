@@ -164,8 +164,8 @@ public class LoginActivity extends AppCompatActivity
                                 storageManager.storeListTracks(LoginActivity.this, login.getLstTracks());
                                 storageManager.storeListPartners(LoginActivity.this, login.getLstPartners());
                                 storageManager.storeUsetList(LoginActivity.this, login.getUserlst());
-                                //storageManager.storeNotificationtList(LoginActivity.this, login.getLstNotification());
-                                //storageManager.storeAboutUs(LoginActivity.this,login.getAboutUS());
+                                storageManager.storeNotificationtList(LoginActivity.this, login.getLstNotificationTypes());
+                                storageManager.storeAboutUs(LoginActivity.this,login.getAboutUS());
 
 
                                 Intent i = new Intent(getApplicationContext(),SideMenu.class);
