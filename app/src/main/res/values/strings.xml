@@ -241,4 +241,16 @@
     <string name="track_added_to_favourite">Track added to favourite</string>
     <string name="track_removed_from_favourite">Track removed from favourite</string>
 
+    <string name="user_name_is_required">User name is required</string>
+    <string name="e_mail_is_required">e-mail is required</string>
+    <string name="password_is_required">Password is required</string>
+    <string name="confirm_your_password">confirm your password</string>
+    <string name="age_is_required">Age is required</string>
+    <string name="occupation_is_required">Occupation is required</string>
+    <string name="passwords_dont_match">Passwords don\'t match</string>
+    <string name="invalide_email_format">Invalide email format</string>
+    <string name="password_should_not_be_empty">Password should not be empty</string>
+
+
+
 </resources>

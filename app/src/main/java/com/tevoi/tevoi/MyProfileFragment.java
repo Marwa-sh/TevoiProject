@@ -57,35 +57,43 @@ public class MyProfileFragment extends Fragment {
     boolean allRequiredFieldsFilled() {
         boolean res = false;
         if (etUserNameMyprofile.getText().toString().equals("")) {
-            etUserNameMyprofile.setError("User name is required");
+            etUserNameMyprofile.setError(getResources().getString(R.string.user_name_is_required));
             etUserNameMyprofile.requestFocus();
             return false;
         }
         if (etEmail.getText().toString().equals("")) {
-            etEmail.setError("e-mail is required");
+            etEmail.setError(getResources().getString(R.string.e_mail_is_required));
             etEmail.requestFocus();
             return false;
 
         }
 
-        if (etAge.getText().toString().equals("")) {
-            etAge.setError("Age is required");
+ /*       if (etAge.getText().toString().equals("")) {
+            etAge.setError(getResources().getString(R.string.age_is_required));
             etAge.requestFocus();
             return false;
         }
         if (etOccupation.getText().toString().equals("")) {
-            etOccupation.setError("Occupation is required");
+            etOccupation.setError(getResources().getString(R.string.occupation_is_required));
             etOccupation.requestFocus();
             return false;
-        }
+        }*/
         return true;
     }
-
+    boolean PasswordFieldFilled() {
+        if (etChangePassword.getText().toString().equals("")) {
+            etChangePassword.setError(getResources().getString(R.string.password_should_not_be_empty));
+            etChangePassword.requestFocus();
+            return false;
+        }
+        else
+        return true;
+    }
     boolean checkPasswordsMatching() {
         if (etChangePassword.getText().toString().equals(etChangePasswordConfirmation.getText().toString()))
             return true;
         else {
-            etChangePasswordConfirmation.setError("passwords don't match");
+            etChangePasswordConfirmation.setError(getResources().getString(R.string.passwords_dont_match));
             etChangePasswordConfirmation.requestFocus();
             return false;
         }
@@ -97,7 +105,7 @@ public class MyProfileFragment extends Fragment {
         if (email.matches(regex))
             return true;
         else {
-            etEmail.setError("Invalide email format");
+            etEmail.setError(getResources().getString(R.string.invalide_email_format));
             etEmail.requestFocus();
             return false;
         }
@@ -238,7 +246,7 @@ public class MyProfileFragment extends Fragment {
              @Override
              public void onClick(View view) {
                  ResetPasswordRequest resetpassword = new ResetPasswordRequest();
-                 if (checkPasswordsMatching()) {
+                 if (checkPasswordsMatching() && PasswordFieldFilled()) {
                      resetpassword.setPassword(etChangePassword.getText().toString());
 
                      activity.mProgressDialog.setMessage(getResources().getString(R.string.loader_msg));
