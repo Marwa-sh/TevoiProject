@@ -20,6 +20,16 @@ public class LoginResponse  extends IResponse{
     private List<PartnerObject> Userlst;
     @SerializedName("lstNotification")
     private List<PartnerObject> lstNotification;
+    @SerializedName("NumberOfMinutes")
+    private int NumberOfMinutes;
+
+    public int getNumberOfMinutes() {
+        return NumberOfMinutes;
+    }
+
+    public void setNumberOfMinutes(int numberOfMinutes) {
+        NumberOfMinutes = numberOfMinutes;
+    }
 
     public void setAboutUS(String aboutUS) {
         AboutUS = aboutUS;

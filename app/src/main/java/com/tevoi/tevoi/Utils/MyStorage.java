@@ -41,6 +41,7 @@ public class MyStorage
     public static final String ArrayUserList = "ArrayUserList";
     public static final String ArrayNotificationList = " ArrayNotificationList";
     public static final String AboutUs = " AboutUs";
+    public static final String NumberOfMinutes = "NumberOfMinutes";
 
 
     private  String Suffix =  "_" + USER_ID;
@@ -922,5 +923,33 @@ public class MyStorage
 
         return aboutUs;
     }
+    // region number of minutes storage
+
+    public void storenumberOfMinutes(Context context, int numberOfMinutes)
+    {
+        SharedPreferences settings;
+        Editor editor;
+        settings = context.getSharedPreferences(NumberOfMinutes, Context.MODE_PRIVATE);
+        editor = settings.edit();
+
+        editor.putInt(NumberOfMinutes, numberOfMinutes);
+        editor.commit();
+    }
+
+    public int getnumberOfMinutes(Context context)
+    {
+        SharedPreferences settings;
+        int numberOfMinutes = 0;
+        settings = context.getSharedPreferences(NumberOfMinutes, Context.MODE_PRIVATE);
+        if (settings.contains(NumberOfMinutes))
+        {
+            numberOfMinutes = settings.getInt(NumberOfMinutes, 0);
+        }
+        else
+            numberOfMinutes = 0;
+
+        return numberOfMinutes;
+    }
+    // endregion
 
 }
