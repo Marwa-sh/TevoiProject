@@ -857,9 +857,9 @@ public class MyStorage
     }
     //endregion
 
-    // region shared preference for List Tracks
+    // region shared preference for Notification
 
-    public void storeNotificationtList(Context context, List userList)
+    public void storeNotificationtList(Context context, List notificationList)
     {
         // used for store arrayList in json format
         SharedPreferences settings;
@@ -871,7 +871,7 @@ public class MyStorage
         builder.excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC);
         builder.excludeFieldsWithoutExposeAnnotation();
         Gson sExposeGson = builder.create();
-        String jsonFavorites = sExposeGson.toJson(userList);
+        String jsonFavorites = sExposeGson.toJson(notificationList);
         editor.putString(ArrayNotificationList + Suffix, jsonFavorites);
         editor.commit();
     }
