@@ -38,7 +38,7 @@ public class HelperFunctions
             if(currentIndex > lst.size())
                 return  l;
             else
-                return lst.subList(currentIndex, lst.size()-1);
+                return lst.subList(currentIndex, lst.size());
         }
         else
             return lst.subList(currentIndex, currentIndex + size);

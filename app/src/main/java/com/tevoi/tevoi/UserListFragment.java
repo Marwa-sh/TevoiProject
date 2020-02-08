@@ -391,37 +391,10 @@ public class UserListFragment extends Fragment
         adapter.addAll(lstFirstPage);
         //adapter.addAll(lstTracks);
 
-        if (currentPage <= TOTAL_PAGES) adapter.addLoadingFooter();
-        else isLastPage = true;
+        /*if (currentPage <= TOTAL_PAGES) adapter.addLoadingFooter();
+        else isLastPage = true;*/
 
 
-      /*  currentPage = 1;
-        isLastPage = false;
-        isLoading = false;
-
-        if(Userlst.size() <= PAGE_SIZE)
-        {
-            TOTAL_PAGES = 1;
-        }
-        else
-        {
-            TOTAL_PAGES = Userlst.size() / PAGE_SIZE;
-        }
-
-        if(Userlst.size() == 0)
-        {
-            View v = rootView.findViewById(R.id.partners_list_empty);
-            //TODO replace tabId Marwa
-//            recyclerViews[tabId].setEmptyView(v);
-        }
-        progressBar.setVisibility(View.GONE);
-
-        List<UserListObject> lstFirstPage = HelperFunctions.getPageUserList(Userlst, 0 , PAGE_SIZE );
-        adapter.addAll(lstFirstPage);
-
-        if (currentPage <= TOTAL_PAGES) adapter.addLoadingFooter();
-        else isLastPage = true;
-     */
     }
 
     private void loadNextPage() {
@@ -435,29 +408,8 @@ public class UserListFragment extends Fragment
         adapter.addAll(Userlst);
         //adapter.addAll(lstTracks);
 
-        if (currentPage != TOTAL_PAGES) adapter.addLoadingFooter();
-        else isLastPage = true;
-
-    /*
-        adapter.removeLoadingFooter();
-        isLoading = false;
-        List<UserListObject> lstNextPage = new ArrayList<>();
-
-        // this means that all data in list is already exists
-        // because the the array list size is less than one page size
-        if(Userlst.size() < PAGE_SIZE)
-        {
-
-        }
-        else
-        {
-            lstNextPage = HelperFunctions.getPageUserList(Userlst, currentPage , PAGE_SIZE );
-        }
-        adapter.addAll(lstNextPage);
-
-        if ( currentPage !=  TOTAL_PAGES) adapter.addLoadingFooter();
+        /*if (currentPage != TOTAL_PAGES) adapter.addLoadingFooter();
         else isLastPage = true;*/
-
 
     }
 
