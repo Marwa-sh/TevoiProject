@@ -1659,6 +1659,11 @@ public class SideMenu extends AppCompatActivity
         return  isDemoUser;
     }
     @Override
+    public void AddtoHistory (int Id)
+    {
+        storageManager.Addtohistory(this,Id);
+    }
+    @Override
     public boolean isExceedsQuotaDemoUser()
     {
         return  isExceedsQuotaDemoUser;

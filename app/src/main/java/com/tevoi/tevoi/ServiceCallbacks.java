@@ -17,6 +17,7 @@ public interface ServiceCallbacks
     public void showLoaderMediaPlayer();
     public void hideLoaderMediaPlayer();
     public boolean isLoaderVisible();
+    public void AddtoHistory(int Id);
 
     public void setFlagUserExceedsDailyUsageListen();
     //public void playBtn();

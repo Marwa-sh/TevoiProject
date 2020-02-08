@@ -12,6 +12,8 @@ public class LoginResponse  extends IResponse{
     private String AboutUs;
     @SerializedName("UserId")
     private int UserId;
+    @SerializedName("NumberOfMinutes")
+    private int NumberOfMinutes;
     @SerializedName("lstTracks")
     private List<TrackObject> lstTracks;
     @SerializedName("lstPartners")
@@ -25,6 +27,21 @@ public class LoginResponse  extends IResponse{
     @SerializedName("lstSubscripedPartners")
     public List<SubscipedPartnersObject> lstSubscripedPartners;
 
+    public void setAboutUs(String aboutUs) {
+        AboutUs = aboutUs;
+    }
+
+    public void setNumberOfMinutes(int numberOfMinutes) {
+        NumberOfMinutes = numberOfMinutes;
+    }
+
+    public String getAboutUs() {
+        return AboutUs;
+    }
+
+    public int getNumberOfMinutes() {
+        return NumberOfMinutes;
+    }
 
     public void setAboutUS(String aboutUs) {
         AboutUs = aboutUs;

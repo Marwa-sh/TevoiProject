@@ -549,6 +549,7 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                         {
                             case Global.HistoryFragmentName:
                                 {
+                                activity.storageManager.removeFromHistory(activity,selectedTrack.getId());
                                 Toast.makeText(activity, "HistoryFragmentName", Toast.LENGTH_SHORT).show();
                                 Call<IResponse> call = Global.client.RemoveFromHistory(selectedTrack.getId());
                                 call.enqueue(new Callback<IResponse>() {
@@ -576,6 +577,7 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                             }
                             case Global.FavouriteFragmentName: {
                                 //Toast.makeText(context, "FavouriteFragmentName", Toast.LENGTH_SHORT).show();
+                                activity.storageManager.LikeFunction(activity,selectedTrack.getId());
                                 Call<IResponse> call = Global.client.RemoveTrackFromFavourite(selectedTrack.getId());
                                 call.enqueue(new Callback<IResponse>() {
                                     @Override

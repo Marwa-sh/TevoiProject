@@ -1034,6 +1034,7 @@ public class CustomMediaPlayerService extends Service implements MediaPlayer.OnC
             int remainingSeconds = numberOfListenedSeconds - numOfUnits * Global.ListenUnitInSeconds;
 
             if (remainingSeconds > 0) {
+                serviceCallbacks.AddtoHistory(TrackId);
                 Call<UserSubscriptionInfoResponse> call = Global.client.AddUnitUsageForUser(TrackId, 0, numberOfCurrentSecondsInTrack);
                 call.enqueue(new Callback<UserSubscriptionInfoResponse>() {
                     public void onResponse(Call<UserSubscriptionInfoResponse> call, Response<UserSubscriptionInfoResponse> response) {

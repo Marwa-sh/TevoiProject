@@ -639,6 +639,76 @@ public class MyStorage
         storeListTracks(context,listTracks);
     }
     //endregion
+    // used for retrieving History lsit
+
+    public ArrayList<TrackObject> loadHistoryListTracks(Context context)
+    {
+        // used for retrieving arraylist from json formatted string
+        SharedPreferences settings;
+        ArrayList<TrackObject> listTracks;
+        settings = context.getSharedPreferences(PREFS_NAME + Suffix, Context.MODE_PRIVATE);
+        if (settings.contains(ArrayListTrack + Suffix)) {
+            String jsonPlayNowTracks = settings.getString(ArrayListTrack + Suffix, null);
+
+            GsonBuilder builder = new GsonBuilder();
+            builder.excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC);
+            builder.excludeFieldsWithoutExposeAnnotation();
+            Gson sExposeGson = builder.create();
+            TrackObject[] trackItems = sExposeGson.fromJson(jsonPlayNowTracks, TrackObject[].class);
+
+            listTracks = new ArrayList( Arrays.asList(trackItems));
+            ArrayList<TrackObject> lstHistory = new ArrayList<>();
+            for (int j=0;j<listTracks.size();j++)
+            {
+                if (listTracks.get(j).isListen())
+                    lstHistory.add(listTracks.get(j));
+            }
+            return lstHistory;
+        } else
+            return new ArrayList<>();
+
+    }
+    public void clearHistoryListTracks(Context context)
+    {
+        // used for retrieving arraylist from json formatted string
+        SharedPreferences settings;
+        ArrayList<TrackObject> listTracks = loadListTracks(context);
+
+        for (int j=0;j<listTracks.size();j++)
+        {
+            listTracks.get(j).setListen(false);
+        }
+        storeListTracks(context,listTracks);
+    }
+    public void Addtohistory(Context context,int Id)
+{
+    ArrayList<TrackObject> listTracks = loadListTracks(context);
+
+    for(int j=0 ; j<listTracks.size();j++)
+    {
+        if(listTracks.get(j).getId()== Id)
+        {
+            listTracks.get(j).setListen(true);
+            break;
+        }
+    }
+    storeListTracks(context,listTracks);
+}
+    public void removeFromHistory(Context context,int Id)
+    {
+        ArrayList<TrackObject> listTracks = loadListTracks(context);
+
+        for(int j=0 ; j<listTracks.size();j++)
+        {
+            if(listTracks.get(j).getId()== Id)
+            {
+                listTracks.get(j).setListen(false);
+                break;
+            }
+        }
+        storeListTracks(context,listTracks);
+    }
+    //endregion
 
    /* public String addTrack(Context context, TrackSerializableObject myModel)
     {
