@@ -8,8 +8,8 @@ public class LoginResponse  extends IResponse{
 
     @SerializedName("Token")
     private String Token;
-    @SerializedName("AboutUS")
-    private String AboutUS;
+    @SerializedName("AboutUs")
+    private String AboutUs;
     @SerializedName("UserId")
     private int UserId;
     @SerializedName("lstTracks")
@@ -26,12 +26,12 @@ public class LoginResponse  extends IResponse{
     public List<SubscipedPartnersObject> lstSubscripedPartners;
 
 
-    public void setAboutUS(String aboutUS) {
-        AboutUS = aboutUS;
+    public void setAboutUS(String aboutUs) {
+        AboutUs = aboutUs;
     }
 
     public String getAboutUS() {
-        return AboutUS;
+        return AboutUs;
     }
 
     public int getUserId() {
