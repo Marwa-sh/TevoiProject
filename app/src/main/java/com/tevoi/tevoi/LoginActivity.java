@@ -167,7 +167,6 @@ public class LoginActivity extends AppCompatActivity
                                 storageManager.storeNotificationtList(LoginActivity.this, login.getLstNotificationTypes());
                                 storageManager.storeAboutUs(LoginActivity.this,login.getAboutUS());
 //                                storageManager.storenumberOfMinutes(LoginActivity.this,login.getNumberOfMinutes());
-//                                storageManager.storeHistoryListTracks(LoginActivity.this,login.getLstHistoryTracks());
 
 
                                 Intent i = new Intent(getApplicationContext(),SideMenu.class);

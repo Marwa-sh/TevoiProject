@@ -6,8 +6,10 @@ import android.content.SharedPreferences.Editor;
 import android.text.BoringLayout;
 
 import com.tevoi.tevoi.R;
+import com.tevoi.tevoi.model.MainTopic;
 import com.tevoi.tevoi.model.NotificationTypeObject;
 import com.tevoi.tevoi.model.PartnerObject;
+import com.tevoi.tevoi.model.SubscipedPartnersObject;
 import com.tevoi.tevoi.model.TrackObject;
 import com.tevoi.tevoi.model.TrackSerializableObject;
 import com.google.gson.Gson;
@@ -39,6 +41,8 @@ public class MyStorage
     public static final String ArrayListTrack = "ArrayListTrack";
     public static final String ArrayListPartners = "ArrayListPartners";
     public static final String ArrayUserList = "ArrayUserList";
+    public static final String ArrayListMainTopic = "ArrayListMainTopic";
+    public static final String ArrayListSubscripedPartner = "ArrayListSubscripedPartner";
     public static final String ArrayNotificationList = " ArrayNotificationList";
     public static final String AboutUs = " AboutUs";
     public static final String NumberOfMinutes = "NumberOfMinutes";
@@ -926,6 +930,7 @@ public class MyStorage
         storePlayNowTracks(context, playNowTracks);
     }*/
     //endregion
+
     // region shared preference for List Tracks
 
     public void storeUsetList(Context context, List userList)
@@ -1061,5 +1066,92 @@ public class MyStorage
         return numberOfMinutes;
     }
     // endregion
+
+
+    // region shared preference for List Main Topic
+
+    public void storeListMainTopicFilter(Context context, List listMainTopic)
+    {
+        // used for store arrayList in json format
+        SharedPreferences settings;
+        Editor editor;
+        settings = context.getSharedPreferences(PREFS_NAME + Suffix, Context.MODE_PRIVATE);
+        editor = settings.edit();
+
+        GsonBuilder builder = new GsonBuilder();
+        builder.excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC);
+        builder.excludeFieldsWithoutExposeAnnotation();
+        Gson sExposeGson = builder.create();
+        String jsonFavorites = sExposeGson.toJson(listMainTopic);
+        editor.putString(ArrayListMainTopic + Suffix, jsonFavorites);
+        editor.commit();
+    }
+
+    public ArrayList<MainTopic> loadListMainTopicFilter(Context context)
+    {
+        // used for retrieving arraylist from json formatted string
+        SharedPreferences settings;
+        ArrayList<MainTopic> listMainTopic;
+        settings = context.getSharedPreferences(PREFS_NAME + Suffix, Context.MODE_PRIVATE); ////ask marwa
+        if (settings.contains(ArrayListMainTopic + Suffix)) {
+            String jsonPlayNowTracks = settings.getString(ArrayListMainTopic + Suffix, null);
+
+            GsonBuilder builder = new GsonBuilder();
+            builder.excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC);
+            builder.excludeFieldsWithoutExposeAnnotation();
+            Gson sExposeGson = builder.create();
+            MainTopic[] mainTopicItems = sExposeGson.fromJson(jsonPlayNowTracks, MainTopic[].class);
+
+            listMainTopic = new ArrayList( Arrays.asList(mainTopicItems));
+        } else
+            return new ArrayList<>();
+        return listMainTopic;
+    }
+
+    //endregion
+
+// region shared preference for List Subscriped Partners
+
+    public void storeListSubscripedPartnerFilter(Context context, List listSubscripedPartner)
+    {
+        // used for store arrayList in json format
+        SharedPreferences settings;
+        Editor editor;
+        settings = context.getSharedPreferences(PREFS_NAME + Suffix, Context.MODE_PRIVATE);
+        editor = settings.edit();
+
+        GsonBuilder builder = new GsonBuilder();
+        builder.excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC);
+        builder.excludeFieldsWithoutExposeAnnotation();
+        Gson sExposeGson = builder.create();
+        String jsonFavorites = sExposeGson.toJson(listSubscripedPartner);
+        editor.putString(ArrayListSubscripedPartner + Suffix, jsonFavorites);
+        editor.commit();
+    }
+
+    public ArrayList<SubscipedPartnersObject> loadListSubscripedPartnerFilter(Context context)
+    {
+        // used for retrieving arraylist from json formatted string
+        SharedPreferences settings;
+        ArrayList<SubscipedPartnersObject> listSubscripedPartner;
+        settings = context.getSharedPreferences(PREFS_NAME + Suffix, Context.MODE_PRIVATE); ////ask marwa
+        if (settings.contains(ArrayListSubscripedPartner + Suffix)) {
+            String jsonPlayNowTracks = settings.getString(ArrayListSubscripedPartner + Suffix, null);
+
+            GsonBuilder builder = new GsonBuilder();
+            builder.excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC);
+            builder.excludeFieldsWithoutExposeAnnotation();
+            Gson sExposeGson = builder.create();
+            SubscipedPartnersObject[] subscripedPartnerItems = sExposeGson.fromJson(jsonPlayNowTracks, SubscipedPartnersObject[].class);
+
+            listSubscripedPartner = new ArrayList( Arrays.asList(subscripedPartnerItems));
+        } else
+            return new ArrayList<>();
+        return listSubscripedPartner;
+    }
+
+    //endregion
+
+
 
 }

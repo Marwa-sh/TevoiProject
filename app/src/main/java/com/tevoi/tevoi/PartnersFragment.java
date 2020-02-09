@@ -238,8 +238,8 @@ public class PartnersFragment extends Fragment
         List<PartnerObject> lstFirstPage = HelperFunctions.getPagePartners(lstPartners, 0 , PAGE_SIZE );
         adapter.addAll(lstFirstPage);
 
-        if (currentPage <= TOTAL_PAGES) adapter.addLoadingFooter();
-        else isLastPage = true;
+        /*if (currentPage <= TOTAL_PAGES) adapter.addLoadingFooter();
+        else isLastPage = true;*/
 
         /*currentPage = 1;
         isLastPage = false;
@@ -279,8 +279,8 @@ public class PartnersFragment extends Fragment
         adapter.addAll(lstNextPage);
         //adapter.addAll(lstTracks);
 
-        if (currentPage != TOTAL_PAGES) adapter.addLoadingFooter();
-        else isLastPage = true;
+       /* if (currentPage != TOTAL_PAGES) adapter.addLoadingFooter();
+        else isLastPage = true;*/
 
       /*  adapter.removeLoadingFooter();
         isLoading = false;

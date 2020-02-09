@@ -31,10 +31,10 @@ public class DownloadFragment extends Fragment
         seekbar = rootView.findViewById(R.id.seekbar_download_limits);
 
 
-/*        int progress = activity.storageManager.getnumberOfMinutes(activity) / 60;
-        seekbar.setProgress(progress);*/
+        int progress = activity.storageManager.getnumberOfMinutes(activity) / 60;
+        seekbar.setProgress(progress);
 
-        activity.mProgressDialog.setMessage(getResources().getString( R.string.loader_msg)); activity.mProgressDialog.show();
+        /*activity.mProgressDialog.setMessage(getResources().getString( R.string.loader_msg)); activity.mProgressDialog.show();
 
         Call<GetDownloadLimitResponse> call = Global.client.GetDownloadLimit();
         call.enqueue(new Callback<GetDownloadLimitResponse>(){
@@ -58,7 +58,7 @@ public class DownloadFragment extends Fragment
                 activity.mProgressDialog.dismiss();
                 seekbar.setProgress(0);
             }
-        });
+        });*/
 
         seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
