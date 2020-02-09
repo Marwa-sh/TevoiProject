@@ -194,11 +194,11 @@ public class TracksList extends Fragment
 
                     activity.mediaPlayerFragment.currentTrack = activity.CurrentTrackInPlayer;
 
-                    ft.replace(R.id.content_frame, activity.mediaPlayerFragment);
+                    /*ft.replace(R.id.content_frame, activity.mediaPlayerFragment);
                     ft.addToBackStack("mediaPlayerFragment");
                     // or ft.add(R.id.your_placeholder, new FooFragment());
                     // Complete the changes added above
-                    ft.commit();
+                    ft.commit();*/
 
 
                     activity.CurrentFragmentName = Global.MediaPlayerFragmentName;
@@ -717,6 +717,7 @@ public class TracksList extends Fragment
         }
         filter.TrackTypeId =1; filter.ListTypeEnum = active_tab;
         filter.Index = 0; filter.Size = 0;
+
         Log.d("ResultTracks Next ", filter.getStringFilter());
 
         //Call<TrackResponseList> call = ((CustomApp) activity.getApplication()).getApiService().getListMainTrack(filter);

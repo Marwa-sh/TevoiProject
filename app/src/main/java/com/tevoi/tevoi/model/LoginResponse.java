@@ -27,12 +27,23 @@ public class LoginResponse  extends IResponse{
     @SerializedName("lstSubscripedPartners")
     public List<SubscipedPartnersObject> lstSubscripedPartners;
 
+    @SerializedName("isShowHeardTracks")
+    public boolean isShowHeardTracks;
+
     public void setAboutUs(String aboutUs) {
         AboutUs = aboutUs;
     }
 
     public void setNumberOfMinutes(int numberOfMinutes) {
         NumberOfMinutes = numberOfMinutes;
+    }
+
+    public boolean isShowHeardTracks() {
+        return isShowHeardTracks;
+    }
+
+    public void setShowHeardTracks(boolean showHeardTracks) {
+        isShowHeardTracks = showHeardTracks;
     }
 
     public String getAboutUs() {

@@ -1,15 +1,20 @@
 package com.tevoi.tevoi.model;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class SubscipedPartnersObject
 {
+    @Expose
     @SerializedName("Id")
     private int Id;
+    @Expose
     @SerializedName("PartnerId")
     private  int PartnerId;
+    @Expose
     @SerializedName("Name")
     private String Name;
+    @Expose
     @SerializedName("FilterValue")
     private boolean FilterValue;
 

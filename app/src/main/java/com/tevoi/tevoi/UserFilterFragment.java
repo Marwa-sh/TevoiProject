@@ -23,6 +23,7 @@ import com.tevoi.tevoi.filter.SwitchMainTopicAdapter;
 import com.tevoi.tevoi.model.CategoryFilter;
 import com.tevoi.tevoi.model.CategoryObject;
 import com.tevoi.tevoi.model.IResponse;
+import com.tevoi.tevoi.model.MainTopic;
 import com.tevoi.tevoi.model.SubscipedPartnersObject;
 import com.tevoi.tevoi.model.UserFiltersResponse;
 
@@ -69,10 +70,33 @@ public class UserFilterFragment extends Fragment
         View rootView = inflater.inflate(R.layout.fragment_accordion, container, false);
         activity = (SideMenu) getActivity();
 
+        List<MainTopic> lstMainTopics = activity.storageManager.loadListMainTopicFilter(activity);
+        List<SubscipedPartnersObject> lstSubscripedPartners = activity.storageManager.loadListSubscripedPartnerFilter(activity);
+
+
         isShowHeardTracks = true;
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
         layoutManager = new LinearLayoutManager(activity);
+        mainTopics = new ArrayList<MultiCheckMainTopic>();
+        for (int i =0; i< lstMainTopics.size(); i++)
+        {
+            List<CategoryObject> categories = lstMainTopics.get(i).CategoriesList;
+            List<CategoryFilter> ct = new ArrayList<>();
+            for(int k =0; k < categories.size(); k++)
+            {
+                CategoryFilter f = new CategoryFilter(categories.get(k).getId(), categories.get(k).getName(), categories.get(k).isFilterValue());
+                ct.add(f);
+            }
+            MultiCheckMainTopic temp =
+                    new MultiCheckMainTopic(lstMainTopics.get(i).Id, lstMainTopics.get(i).Name, ct,
+                            lstMainTopics.get(i).FilterValue , 1);
+            mainTopics.add(temp);
+        }
+        adapter = new SwitchMainTopicAdapter(mainTopics, activity);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
+
 
         btnShowHeardTracks =  (ImageView) rootView.findViewById(R.id.switch_show_history_listen);
         btnShowHeardTracks.setOnClickListener(new View.OnClickListener() {
@@ -104,10 +128,19 @@ public class UserFilterFragment extends Fragment
             }
         });
 
+        // region Subscriped Partners
         subscripedPartnersRecyclerView = (RecyclerView) rootView.findViewById(R.id.subscriped_partners);
         final LinearLayoutManager layoutManagerPartners = new LinearLayoutManager(getContext());
         layoutManagerPartners.setOrientation(LinearLayoutManager.VERTICAL);
         subscripedPartnersRecyclerView.setLayoutManager(layoutManagerPartners);
+
+        adapterPartners = new SubscripedPartnersAdapter(lstSubscripedPartners, activity);
+        subscripedPartnersRecyclerView.setAdapter(adapterPartners);
+        DividerItemDecoration itemDecorPartner = new DividerItemDecoration(getContext(), VERTICAL);
+        subscripedPartnersRecyclerView.addItemDecoration(itemDecorPartner);
+
+        //endregion
+
 
         ImageButton clear = (ImageButton) rootView.findViewById(R.id.clear_button);
         clear.setOnClickListener(new View.OnClickListener() {
@@ -119,16 +152,18 @@ public class UserFilterFragment extends Fragment
             }
         });
 
-        /*Button check = (Button) rootView.findViewById(R.id.check_first_child);
+        /*
+        Button check = (Button) rootView.findViewById(R.id.check_first_child);
         check.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 adapter.checkChild(true, 0, 3);
             }
         });
-*/
-        mainTopics = new ArrayList<MultiCheckMainTopic>();
-        activity.mProgressDialog.setMessage(getResources().getString( R.string.loader_msg)); activity.mProgressDialog.show();
+        */
+
+
+        /*activity.mProgressDialog.setMessage(getResources().getString( R.string.loader_msg)); activity.mProgressDialog.show();
 
         Call<UserFiltersResponse> call = Global.client.GetUserFilters();
         call.enqueue(new Callback<UserFiltersResponse>()
@@ -154,8 +189,8 @@ public class UserFilterFragment extends Fragment
                 recyclerView.setLayoutManager(layoutManager);
                 recyclerView.setAdapter(adapter);
 
-               /* adapterCategories = new CategoriesAdapter(filters.getMainTopicList(), activity);
-                categoriesRecyclerView.setAdapter(adapterCategories);*/
+               *//* adapterCategories = new CategoriesAdapter(filters.getMainTopicList(), activity);
+                categoriesRecyclerView.setAdapter(adapterCategories);*//*
                 DividerItemDecoration itemDecor = new DividerItemDecoration(getContext(), VERTICAL);
                 //categoriesRecyclerView.addItemDecoration(itemDecor);
 
@@ -175,7 +210,7 @@ public class UserFilterFragment extends Fragment
             public void onFailure(Call<UserFiltersResponse> call, Throwable t) {
                 activity.mProgressDialog.dismiss();
             }
-        });
+        });*/
 
         //Animation slide = AnimationUtils.loadAnimation(activity, R.anim.slide_down_from_top);
         //rootView.startAnimation(slide);
