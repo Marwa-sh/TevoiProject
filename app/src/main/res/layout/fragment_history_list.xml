@@ -59,6 +59,10 @@
             android:textColor="@color/fontColor"
             android:onClick="changeToPopularHistory"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/main_swiperefresh_history_tracks"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <com.tevoi.tevoi.model.RecyclerViewEmptySupport
         android:id="@+id/history_tracks_recycler_View"
@@ -66,6 +70,8 @@
         android:layout_height="match_parent"
         >
     </com.tevoi.tevoi.model.RecyclerViewEmptySupport>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
     <TextView android:id="@+id/history_list_empty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
