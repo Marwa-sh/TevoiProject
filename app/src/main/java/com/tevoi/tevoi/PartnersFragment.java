@@ -224,11 +224,9 @@ public class PartnersFragment extends Fragment
 
         // TODO: Check if data is stale.
         //  Execute network request if cache is expired; otherwise do not update data.
-        adapter.clear();
-        adapter.notifyDataSetChanged();
+
         //TODO loadfirstpage
 //        loadFirstPage(k);
-        swipeRefreshLayout.setRefreshing(false);
     }
 
     private void loadFirstPage(final int tabId)
@@ -348,9 +346,12 @@ public class PartnersFragment extends Fragment
                 activity.storageManager.storeListPartners(activity, lstPartners);
                 // TODO order by active tab
                 loadFirstPage(active_tab);
+
+                swipeRefreshLayout.setRefreshing(false);
             }
             public void onFailure(Call<PartnerListResponse> call, Throwable t)
             {
+                swipeRefreshLayout.setRefreshing(false);
                 //activity.mProgressDialog.dismiss();
             }
         });

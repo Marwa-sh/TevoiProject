@@ -378,9 +378,7 @@ public class UserListFragment extends Fragment
 
         // TODO: Check if data is stale.
         //  Execute network request if cache is expired; otherwise do not update data.
-        adapter.clear();
-        adapter.notifyDataSetChanged();
-        swipeRefreshLayout.setRefreshing(false);
+
     }
 
 
@@ -462,9 +460,12 @@ public class UserListFragment extends Fragment
                 Userlst = UserList.getLstUserList();
                 activity.storageManager.storeUsetList(activity, Userlst);
                 loadFirstPage();
+
+                swipeRefreshLayout.setRefreshing(false);
             }
             public void onFailure(Call<UserListResponse> call, Throwable t)
             {
+                swipeRefreshLayout.setRefreshing(false);
                 //activity.mProgressDialog.dismiss();
             }
         });

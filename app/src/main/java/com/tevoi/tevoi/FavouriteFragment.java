@@ -394,7 +394,8 @@ public class FavouriteFragment extends Fragment {
         return errorMsg;
     }
 
-    public void doRefresh() {
+    public void doRefresh()
+    {
         progressBar.setVisibility(View.VISIBLE);
         //  Execute network request if cache is expired; otherwise do not update data.
         adapter.getTracksList().clear();

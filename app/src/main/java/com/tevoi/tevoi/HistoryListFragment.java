@@ -270,12 +270,16 @@ public class HistoryListFragment extends Fragment
 
     private void loadFirstPage()
     {
-
         currentPage = 0;
         progressBar.setVisibility(View.GONE);
         List<TrackObject> lstFirstPage = getPage(lstHistoryTracks, 0 , PAGE_SIZE );
         adapter.addAll(lstFirstPage);
-        //activity.mProgressDialog.setMessage("Loading1");
+
+        if(lstFirstPage.size() == 0) {
+            View v = rootView.findViewById(R.id.favourite_list_empty);
+            v.setVisibility(View.VISIBLE);
+        }
+            //activity.mProgressDialog.setMessage("Loading1");
         //activity.mProgressDialog.show();
       /*  currentPage = 0;
         Call<TrackResponseList> call = Global.client.getHistoryList(currentPage, PAGE_SIZE);

@@ -589,10 +589,10 @@ public class TracksList extends Fragment
     {
         Log.d("First", "loadFirstPage: ");
         currentPage = 0;
-        progressBar.setVisibility(View.GONE);
         List<TrackObject> lstFirstPage = getPage(lstTracks, 0 , PAGE_SIZE );
         adapter.addAll(lstFirstPage);
         //adapter.addAll(lstTracks);
+        progressBar.setVisibility(View.GONE);
 
         /*if ( currentPage <= TOTAL_PAGES) adapter.addLoadingFooter();
         else isLastPage = true;*/
@@ -685,8 +685,9 @@ public class TracksList extends Fragment
         //adapter.clear();
         //adapter.notifyDataSetChanged();
         //TODO loadfirstpage
-//        loadFirstPage(k);
-        swipeRefreshLayout.setRefreshing(false);
+        //loadFirstPage(k);
+        //swipeRefreshLayout.setRefreshing(false);
+
     }
 
     private void getRefreshListTrack()
@@ -734,10 +735,12 @@ public class TracksList extends Fragment
                 activity.storageManager.storeListTracks(activity, lstTracks);
                 // TODO order by active tab
                 loadFirstPage(active_tab);
+                swipeRefreshLayout.setRefreshing(false);
             }
             public void onFailure(Call<TrackResponseList> call, Throwable t)
             {
                 //activity.mProgressDialog.dismiss();
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
     }
