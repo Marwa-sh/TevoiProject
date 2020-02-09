@@ -192,4 +192,14 @@
 
     <string name="track_removed_from_favourite">تم حذف المقالة من قائمة المفضلة بنجاح</string>
 
+    <string name="user_name_is_required">اسم المستخدم مطلوب</string>
+    <string name="e_mail_is_required">البريد الإلكتروني مطلوب</string>
+    <string name="password_is_required">كلمة السر مطلوبة</string>
+    <string name="confirm_your_password">تأكيد كلمة المرور مطلوب</string>
+    <string name="age_is_required">العمر مطلوب</string>
+    <string name="occupation_is_required">المهنة مطلوبة</string>
+    <string name="passwords_dont_match">كلمة السر غير متطابقة مع تأكيد كلمة السر</string>
+    <string name="invalide_email_format">صيغة البريد الإلكتروني غير صالحة</string>
+    <string name="password_should_not_be_empty">كلمة المرور لايجب أن تكون فارغة</string>
+
 </resources>

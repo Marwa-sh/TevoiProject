@@ -335,41 +335,41 @@ public class RegisterActivity extends AppCompatActivity implements SpinnerAdapte
         boolean res = false;
         if(etUserName.getText().toString().equals(""))
         {
-            etUserName.setError("User name is required");
+            etUserName.setError(getResources().getString(R.string.user_name_is_required));
             etUserName.requestFocus();
             return false;
         }
         if(etEmail.getText().toString().equals(""))
         {
-            etEmail.setError("e-mail is required");
+            etEmail.setError(getResources().getString(R.string.e_mail_is_required));
             etEmail.requestFocus();
             return false;
 
         }
         if(etPassword.getText().toString().equals(""))
         {
-            etPassword.setError("Password is required");
+            etPassword.setError(getResources().getString(R.string.password_is_required));
             etPassword.requestFocus();
             return false;
         }
         if(etPasswordConfirmation.getText().toString().equals(""))
         {
-            etPasswordConfirmation.setError("confirm your password");
+            etPasswordConfirmation.setError(getResources().getString(R.string.confirm_password));
             etPasswordConfirmation.requestFocus();
             return false;
         }
-        if(etAge.getText().toString().equals(""))
+/*        if(etAge.getText().toString().equals(""))
         {
-            etAge.setError("Age is required");
+            etAge.setError(getResources().getString(R.string.age_is_required));
             etAge.requestFocus();
             return false;
         }
         if(etOccupation.getText().toString().equals(""))
         {
-            etOccupation.setError("Occupation is required");
+            etOccupation.setError(getResources().getString(R.string.occupation_is_required));
             etOccupation.requestFocus();
             return false;
-        }
+        }*/
         return true;
     }
     boolean checkPasswordsMatching()
@@ -378,7 +378,7 @@ public class RegisterActivity extends AppCompatActivity implements SpinnerAdapte
             return true;
         else
         {
-            etPasswordConfirmation.setError("passwords don't match");
+            etPasswordConfirmation.setError(getResources().getString(R.string.passwords_dont_match));
             etPasswordConfirmation.requestFocus();
             return false;
         }
@@ -392,7 +392,7 @@ public class RegisterActivity extends AppCompatActivity implements SpinnerAdapte
             return  true;
         else
         {
-            etEmail.setError("Invalide email format");
+            etEmail.setError(getResources().getString(R.string.invalide_email_format));
             etEmail.requestFocus();
             return  false;
         }
