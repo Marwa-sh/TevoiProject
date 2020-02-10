@@ -606,16 +606,23 @@ public class MediaPlayerFragment extends Fragment {
         {
             Toast.makeText(activity, R.string.demo_user_need_to_register, Toast.LENGTH_SHORT).show();
         }
-        else {
-            if (hasText) {
-                FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
-                TrackText textFargment = TrackText.newInstance(activity.CurrentTrackInPlayer.getId(), Global.MediaPlayerFragmentName);
-                ft.replace(R.id.content_frame, textFargment);
-                ft.addToBackStack("TrackText");
-                // or ft.add(R.id.your_placeholder, new FooFragment());
-                // Complete the changes added above
-                ft.commit();
-
+        else
+        {
+            if (hasText)
+            {
+                if(activity.IsReadDailyLimitsExceeded)
+                {
+                    Toast.makeText(activity, R.string.no_quota_for_text_today, Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
+                    TrackText textFargment = TrackText.newInstance(activity.CurrentTrackInPlayer.getId(), Global.MediaPlayerFragmentName);
+                    ft.replace(R.id.content_frame, textFargment);
+                    ft.addToBackStack("TrackText");
+                    // or ft.add(R.id.your_placeholder, new FooFragment());
+                    // Complete the changes added above
+                    ft.commit();
+                }
             /*FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
 
             ft.replace(R.id.content_frame, textFargment);

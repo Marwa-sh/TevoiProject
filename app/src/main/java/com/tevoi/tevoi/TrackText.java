@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.tevoi.tevoi.TextPagination.PaginationController;
 import com.tevoi.tevoi.Utils.Global;
@@ -93,13 +94,6 @@ public class TrackText extends Fragment {
         TextView tv = rootView.findViewById(R.id.text_track);
 
         SideMenu activity = ((SideMenu) getActivity());
-        int remainingWord = 0;
-
-        if(activity.IsReadDailyLimitsExceeded)
-        {
-
-        }
-
 
         // here we need to open maps app
         progressBar.setVisibility(View.VISIBLE);
@@ -130,7 +124,7 @@ public class TrackText extends Fragment {
         });
 
 
-        mController = new PaginationController(tv, (SideMenu) getActivity());
+        mController = new PaginationController(tv, activity);
 
         ImageButton imgNext = rootView.findViewById((R.id.imgNext));
         ImageButton imgPrevious = rootView.findViewById((R.id.imgPreviuos));

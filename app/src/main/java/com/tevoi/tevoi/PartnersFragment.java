@@ -199,13 +199,14 @@ public class PartnersFragment extends Fragment
             }
         });
 
-        // mocking network delay for API call
+        loadFirstPage(k);
+        /*// mocking network delay for API call
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 loadFirstPage(k);
             }
-        }, 1000);
+        }, 1000);*/
 
     }
 
@@ -218,6 +219,7 @@ public class PartnersFragment extends Fragment
 
     @Override
     public void onRefresh() {
+
         progressBar.setVisibility(View.VISIBLE);
 
         getRefreshListPartners();
