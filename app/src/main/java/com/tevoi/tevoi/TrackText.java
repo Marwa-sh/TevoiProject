@@ -3,14 +3,18 @@ package com.tevoi.tevoi;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.tevoi.tevoi.TextPagination.PaginationController;
 import com.tevoi.tevoi.Utils.Global;
 import com.tevoi.tevoi.model.TrackTextResponse;
 
@@ -25,6 +29,8 @@ public class TrackText extends Fragment {
     String PreviousFragmentName;
     ProgressBar progressBar;
     LinearLayout linearLayout;
+
+    private PaginationController mController;
 
     public static TrackText newInstance(int trackId, String previousFragmentName )
     {
@@ -83,8 +89,17 @@ public class TrackText extends Fragment {
         progressBar = rootView.findViewById(R.id.loader_text);
         linearLayout = rootView.findViewById(R.id.linear_layout_text);
 
+        TextView tv = rootView.findViewById(R.id.text_track);
 
-        SideMenu a = ((SideMenu) getActivity());
+        SideMenu activity = ((SideMenu) getActivity());
+        int remainingWord = 0;
+
+        if(activity.IsReadDailyLimitsExceeded)
+        {
+
+        }
+
+
         // here we need to open maps app
         progressBar.setVisibility(View.VISIBLE);
         linearLayout.setVisibility(View.INVISIBLE);
@@ -96,24 +111,59 @@ public class TrackText extends Fragment {
                 TrackTextResponse text = response.body();
                 if(text.TrackText != null)
                 {
-                    //
-                    TextView tv = rootView.findViewById(R.id.text_track);
-                    tv.setText(text.TrackText);
+                    tv.setText(Html.fromHtml(text.TrackText));
+                    onTextLoaded(Html.fromHtml(text.TrackText).toString());
                 }
                 progressBar.setVisibility(View.INVISIBLE);
                 linearLayout.setVisibility(View.VISIBLE);
             }
             public void onFailure(Call<TrackTextResponse> call, Throwable t)
             {
-                TextView tv = rootView.findViewById(R.id.text_track);
+
                 tv.setText("No Text");
+                onTextLoaded("");
                 progressBar.setVisibility(View.INVISIBLE);
                 linearLayout.setVisibility(View.VISIBLE);
             }
         });
 
+
+        mController = new PaginationController(tv, (SideMenu) getActivity());
+
+        ImageButton imgNext = rootView.findViewById((R.id.imgNext));
+        ImageButton imgPrevious = rootView.findViewById((R.id.imgPreviuos));
+        imgNext.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                mController.next();
+            }
+        });
+
+        imgPrevious.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                mController.previous();
+            }
+        });
+
+
         return  rootView;
 
     }
 
+    void onTextLoaded(String text) {
+        // start displaying loading here
+        mController.onTextLoaded(text, new PaginationController.OnInitializedListener() {
+            @Override
+            public void onInitialized()
+            {
+                // stop displaying loading here
+                // enable buttons
+            }
+        });
+    }
 }

@@ -70,6 +70,7 @@ public class Global {
     public final static ApiInterfaceDnn clientDnn = ApiClientDnn.getClientDnn().create(ApiInterfaceDnn.class);
 
     public static final int ListenUnitInSeconds = 60;
+    public static final int ReadUnitInWords = 100;
 
     public static String UserToken = "";
     public static final String DefaultUILanguage = "en";

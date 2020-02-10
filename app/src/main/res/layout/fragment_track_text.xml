@@ -4,9 +4,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
+    android:fillViewport="true"
     android:id="@+id/scrollTextTrack">
-
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:isScrollContainer="true"
+        android:scrollbars="vertical"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -18,69 +28,106 @@
             android:visibility="invisible"
             android:layout_centerInParent="true"
             />
+
         <LinearLayout
-            android:id="@+id/linear_layout_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:isScrollContainer="true"
-            android:scrollbars="vertical"
-            tools:context=".TrackText"
-            android:background="@color/white"
-            android:weightSum="6"
-            android:visibility="visible"
-            >
-
-            <!-- TODO: Update blank fragment layout -->
-            <TextView
+            android:orientation="vertical"
+            android:weightSum="10">
+            <LinearLayout
+                android:id="@+id/linear_layout_text"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/text_track"
-                android:text=""
-                android:layout_weight="6"
-                android:paddingLeft="20dp"
-                android:paddingTop="20dp"
-                />
+                android:orientation="horizontal"
+                android:isScrollContainer="true"
+                android:scrollbars="vertical"
+                tools:context=".TrackText"
+                android:background="@color/white"
+                android:layout_weight="9"
+                android:weightSum="6"
+                android:visibility="visible"
+                >
+
+                <!-- TODO: Update blank fragment layout -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/text_track"
+                    android:text=""
+                    android:layout_weight="6"
+                    android:paddingLeft="20dp"
+                    android:paddingTop="20dp"
+                    />
+                <LinearLayout
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    >
+                    <!-- <ImageView
+                         android:id="@+id/imgBtnCloseText"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:clickable="true"
+                         android:src="@mipmap/close_button_normal"
+                         android:layout_gravity="center_horizontal"
+                         />-->
+                    <ImageButton
+                        android:id="@+id/imgBtnCloseText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:clickable="true"
+                        android:src="@mipmap/more_arrow_light_grey"
+                        android:layout_gravity="center_horizontal"
+                        />
+                    <SeekBar
+                        android:id="@+id/seekBar"
+                        android:layout_width="600dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="350dp"
+                        android:progress="10"
+                        android:rotation="90"
+                        android:layout_gravity="center_horizontal"
+                        android:visibility="invisible"
+                        android:progressBackgroundTint="@color/tevoiBlueSecondary"
+                        android:progressTint="@color/tevoiBluePrimary"
+                        android:thumbTint="@color/thumbgrey"
+
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
             <LinearLayout
-                android:layout_width="50dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_weight="1"
                 >
-               <!-- <ImageView
-                    android:id="@+id/imgBtnCloseText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:clickable="true"
-                    android:src="@mipmap/close_button_normal"
-                    android:layout_gravity="center_horizontal"
-                    />-->
                 <ImageButton
-                    android:id="@+id/imgBtnCloseText"
+                    android:id="@+id/imgPreviuos"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:clickable="true"
+                    android:rotation="90"
                     android:src="@mipmap/more_arrow_light_grey"
                     android:layout_gravity="center_horizontal"
                     />
-                <SeekBar
-                    android:id="@+id/seekBar"
-                    android:layout_width="600dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="350dp"
-                    android:progress="10"
-                    android:rotation="90"
+                <ImageButton
+                    android:id="@+id/imgNext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:clickable="true"
+                    android:rotation="-90"
+                    android:src="@mipmap/more_arrow_light_grey"
                     android:layout_gravity="center_horizontal"
-                    android:visibility="invisible"
-                    android:progressBackgroundTint="@color/tevoiBlueSecondary"
-                    android:progressTint="@color/tevoiBluePrimary"
-                    android:thumbTint="@color/thumbgrey"
-
                     />
-
             </LinearLayout>
-
         </LinearLayout>
+
     </RelativeLayout>
+    </LinearLayout>
 </ScrollView>
+

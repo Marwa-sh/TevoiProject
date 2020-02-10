@@ -73,6 +73,8 @@ public class SideMenu extends AppCompatActivity
     // region subscription Information
     public UserSubscriptionInfoResponse userSubscriptionInfo = new UserSubscriptionInfoResponse();
     public boolean IsListenDailyLimitsExceeded = false;
+    public boolean IsReadDailyLimitsExceeded = false;
+    public int numberOfTextUnitsConsumed = 0;
     // endregion
 
     public ProgressDialog mProgressDialog;
@@ -80,7 +82,8 @@ public class SideMenu extends AppCompatActivity
     // region user usage from quota
     int numberOfTotalSeconds;
     int numberOfCurrentSeconds;
-    int numberOfUnitsSendToServer;
+    public int numberOfUnitsSendToServer;
+    public int numberOfReadUnitsSendToServer;
     int userUsageFromServer;
 
 
@@ -689,7 +692,8 @@ public class SideMenu extends AppCompatActivity
                         seekBarMainPlayer.setProgress(mCurrentPosition);
                         String timeFormat = HelperFunctions.GetTimeFormat(mCurrentPosition);
                         txtCurrentTime.setText(timeFormat);
-                    } else {
+                    } else
+                    {
                         if (serviceBound && player != null && player.mMediaPlayer != null)
                             player.mMediaPlayer.pause();
                         if (btnPausePlayMainMediaPlayer != null)
