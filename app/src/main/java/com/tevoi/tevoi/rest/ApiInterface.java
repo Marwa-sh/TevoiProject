@@ -165,7 +165,7 @@ public interface ApiInterface {
     Call<IResponse> UpdateNotificationType(@Query("notificationFilterId") int notificationFilterId);
 
     @GET("api/Services/UpdateAllNotificationType")
-    Call<ListNotificationTypesResponse> UpdateAllNotificationType();
+    Call<ListNotificationTypesResponse> UpdateAllNotificationType(@Query("allnotificationStatus") boolean allnotificationStatus);
 
     @GET("api/User/GetRegisterInformation")
     Call<RegisterDataResponse> GetRegisterInformation();
