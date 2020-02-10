@@ -27,6 +27,8 @@ public class LoginResponse  extends IResponse{
 
     @SerializedName("lstHistoryTracks")
     private List<TrackObject> lstHistoryTracks;
+    @SerializedName("lstFavouriteTracks")
+    private List<TrackObject> lstFavouriteTracks;
     @SerializedName("lstPartners")
     private List<PartnerObject> lstPartners;
     @SerializedName("lstUserLists")
@@ -71,6 +73,14 @@ public class LoginResponse  extends IResponse{
 
     public String getAboutUS() {
         return AboutUs;
+    }
+
+    public List<TrackObject> getLstFavouriteTracks() {
+        return lstFavouriteTracks;
+    }
+
+    public void setLstFavouriteTracks(List<TrackObject> lstFavouriteTracks) {
+        this.lstFavouriteTracks = lstFavouriteTracks;
     }
 
     public int getUserId() {

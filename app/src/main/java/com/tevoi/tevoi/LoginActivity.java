@@ -167,7 +167,8 @@ public class LoginActivity extends AppCompatActivity
                                 storageManager.storeNotificationtList(LoginActivity.this, login.getLstNotificationTypes());
                                 storageManager.storeAboutUs(LoginActivity.this,login.getAboutUS());
 //                                storageManager.storenumberOfMinutes(LoginActivity.this,login.getNumberOfMinutes());
-
+                                storageManager.storeListMainTopicFilter(LoginActivity.this, login.getLstMainTopic());
+                                storageManager.storeListSubscripedPartnerFilter(LoginActivity.this, login.getLstSubscripedPartners());
 
                                 Intent i = new Intent(getApplicationContext(),SideMenu.class);
                                 startActivity(i);
@@ -176,7 +177,7 @@ public class LoginActivity extends AppCompatActivity
                             }
                             else
                             {
-                                Toast.makeText(getBaseContext(),"G+ " +login.Message,Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getBaseContext(),login.Message,Toast.LENGTH_SHORT).show();
                                 mProgressDialog.dismiss();
                             }
                         }
@@ -218,7 +219,7 @@ public class LoginActivity extends AppCompatActivity
         });
 
 
-        etUserName.setText("marosh");
+        etUserName.setText("ma");
         etPassword.setText("Host123");
        // btnLogin.performClick();
 
