@@ -99,7 +99,7 @@ public class FeedbackFragment extends Fragment
                         }
                         public void onFailure(Call<IResponse> call, Throwable t)
                         {
-                            Toast.makeText(activity,"something went wrong", Toast.LENGTH_LONG).show();
+                            Toast.makeText(activity,R.string.general_error, Toast.LENGTH_LONG).show();
                             activity.mProgressDialog.dismiss();
                         }
                     });

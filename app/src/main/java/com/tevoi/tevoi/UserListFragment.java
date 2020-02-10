@@ -246,18 +246,20 @@ public class UserListFragment extends Fragment
         View emptyView = rootView.findViewById(R.id.user_lists_empty);
 
         recyclerView = rootView.findViewById(R.id.user_list_recycler_View);
+
         linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
-        //recyclerView.setEmptyView(emptyView);
+        recyclerView.setEmptyView(emptyView);
+        emptyView.setVisibility(View.INVISIBLE);
 
 
         List<UserListObject> lists = new ArrayList<>();
         adapter = new UserListAdapter(lists, activity);
 
+
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
-        emptyView.setVisibility(View.GONE);
 
         recyclerView.addOnScrollListener(new PaginationScrollListener(linearLayoutManager)
         {
@@ -285,14 +287,14 @@ public class UserListFragment extends Fragment
             }
         });
 
-        // mocking network delay for API call
+        /*// mocking network delay for API call
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 loadFirstPage();
             }
-        }, 1000);
-
+        }, 1000);*/
+        loadFirstPage();
         isFirtsTime = false;
        /* activity.mProgressDialog.setMessage("Loading");
         activity.mProgressDialog.show();
@@ -388,7 +390,11 @@ public class UserListFragment extends Fragment
         List<UserListObject> lstFirstPage =  HelperFunctions.getPageUserList(Userlst, 0 , PAGE_SIZE );
         adapter.addAll(lstFirstPage);
         //adapter.addAll(lstTracks);
-
+        /*if(lstFirstPage.size() == 0) {
+            View v = rootView.findViewById(R.id.user_lists_empty);
+            v.setVisibility(View.VISIBLE);
+            recyclerView.setEmptyView(v);
+        }*/
         /*if (currentPage <= TOTAL_PAGES) adapter.addLoadingFooter();
         else isLastPage = true;*/
 
@@ -396,14 +402,11 @@ public class UserListFragment extends Fragment
     }
 
     private void loadNextPage() {
-
-
-
         adapter.removeLoadingFooter();
         isLoading = false;
 
         List<UserListObject> lstNextPage = HelperFunctions.getPageUserList(Userlst, currentPage , PAGE_SIZE );
-        adapter.addAll(Userlst);
+        adapter.addAll(lstNextPage);
         //adapter.addAll(lstTracks);
 
         /*if (currentPage != TOTAL_PAGES) adapter.addLoadingFooter();

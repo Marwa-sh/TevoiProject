@@ -163,14 +163,14 @@ public class HistoryListFragment extends Fragment
             }
         });
 
-        // mocking network delay for API call
+       /* // mocking network delay for API call
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 loadFirstPage();
             }
-        }, 1000);
-
+        }, 1000);*/
+        loadFirstPage();
 
         /*activity.mProgressDialog.setMessage("Loading"); activity.mProgressDialog.show();
 
@@ -291,7 +291,7 @@ public class HistoryListFragment extends Fragment
         adapter.addAll(lstFirstPage);
 
         if(lstFirstPage.size() == 0) {
-            View v = rootView.findViewById(R.id.favourite_list_empty);
+            View v = rootView.findViewById(R.id.history_list_empty);
             v.setVisibility(View.VISIBLE);
         }
             //activity.mProgressDialog.setMessage("Loading1");
