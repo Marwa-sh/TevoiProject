@@ -85,7 +85,7 @@ public class RegisterActivity extends AppCompatActivity implements SpinnerAdapte
         if (language == null)
             language = "en";
         //Toast.makeText(this, "Lang " + language, Toast.LENGTH_SHORT).show();
-        //Global.UserUILanguage = language;
+        Global.UserUILanguage = language;
         Resources res = getBaseContext().getResources();
         // Change locale settings in the app.
         DisplayMetrics dm = res.getDisplayMetrics();

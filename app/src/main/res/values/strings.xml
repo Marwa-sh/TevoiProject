@@ -76,7 +76,7 @@
     <string name="country">Country</string>
     <string name="register">Register</string>
     <string name="cancel">Cancel</string>
-    <string name="visit_website">Please visite our website for more info about our services</string>
+    <string name="visit_website">Please visite our website for more info about our services.</string>
     <string name="your_name">Your Name</string>
     <string name="your_email">Your Email</string>
     <string name="your_message">Your Message</string>
@@ -250,6 +250,7 @@
     <string name="passwords_dont_match">Passwords don\'t match</string>
     <string name="invalide_email_format">Invalide email format</string>
     <string name="password_should_not_be_empty">Password should not be empty</string>
+    <string name="something_went_wrong">Something went wrong please try again</string>
 
     <string name="no_quota_for_text_today">You\'re Quota is finished for reading.</string>
 

@@ -21,6 +21,7 @@ public class DownloadFragment extends Fragment
 {
     SeekBar seekbar;
     SideMenu activity;
+    int numberOfMinutes = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -73,7 +74,6 @@ public class DownloadFragment extends Fragment
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 //Toast.makeText(getContext(), "onProgressChanged=" + progress, Toast.LENGTH_LONG).show();
-                int numberOfMinutes = 0;
                 switch (progress)
                 {
                     case 0:
@@ -113,7 +113,6 @@ public class DownloadFragment extends Fragment
                     }
                 }
 
-//                activity.storageManager.storenumberOfMinutes(activity,numberOfMinutes);
 
                 activity.mProgressDialog.setMessage(getResources().getString( R.string.loader_msg)); activity.mProgressDialog.show();
 
@@ -126,6 +125,8 @@ public class DownloadFragment extends Fragment
                         {
                             activity.mProgressDialog.dismiss();
                             Toast.makeText(activity, getResources().getString( R.string.download_limit_update_sucessfully), Toast.LENGTH_SHORT).show();
+                            activity.storageManager.storenumberOfMinutes(activity,numberOfMinutes);
+
                         }
                         else
                         {
@@ -135,7 +136,7 @@ public class DownloadFragment extends Fragment
                     }
                     public void onFailure(Call<IResponse> call, Throwable t)
                     {
-                        //Toast.makeText(activity,"something went wrong", Toast.LENGTH_LONG).show();
+                        Toast.makeText(activity,getResources().getString( R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                         activity.mProgressDialog.dismiss();
                     }
                 });

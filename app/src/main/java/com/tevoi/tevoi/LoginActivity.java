@@ -60,7 +60,7 @@ public class LoginActivity extends AppCompatActivity
         String language = storageManager.getLanguageUIPreference(this);
         if (language == null)
             language = "en";
-        //Global.UserUILanguage = language;
+        Global.UserUILanguage = language;
         Resources res = getBaseContext().getResources();
         // Change locale settings in the app.
         DisplayMetrics dm = res.getDisplayMetrics();
@@ -166,9 +166,11 @@ public class LoginActivity extends AppCompatActivity
                                 storageManager.storeUsetList(LoginActivity.this, login.getUserlst());
                                 storageManager.storeNotificationtList(LoginActivity.this, login.getLstNotificationTypes());
                                 storageManager.storeAboutUs(LoginActivity.this,login.getAboutUS());
-//                                storageManager.storenumberOfMinutes(LoginActivity.this,login.getNumberOfMinutes());
+                                storageManager.storenumberOfMinutes(LoginActivity.this,login.getNumberOfMinutes());
                                 storageManager.storeListMainTopicFilter(LoginActivity.this, login.getLstMainTopic());
                                 storageManager.storeListSubscripedPartnerFilter(LoginActivity.this, login.getLstSubscripedPartners());
+//                                storageManager.storeFavoriteListTracks(LoginActivity.this, login.getLstFavouriteTracks());
+//                                storageManager.storeHistoryListTracks(LoginActivity.this, login.getLstHistoryTracks());
 
                                 Intent i = new Intent(getApplicationContext(),SideMenu.class);
                                 startActivity(i);
