@@ -123,7 +123,7 @@ public class SideMenu extends AppCompatActivity
             player = binder.getService();
             serviceBound = true;
             player.setCallbacks(SideMenu.this); // register
-            Toast.makeText(SideMenu.this, "Service Bound", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(SideMenu.this, "Service Bound", Toast.LENGTH_SHORT).show();
         }
 
         @Override

@@ -47,6 +47,7 @@ public class MyStorage
     public static final String AboutUs = " AboutUs";
     public static final String NumberOfMinutes = "NumberOfMinutes";
     public static final String ArrayHistoryListTrack = "ArrayHistoryListTrack";
+    public static final String ArrayFavoriteListTrack = "ArrayFavoriteListTrack";
 
 
     private  String Suffix =  "_" + USER_ID;
@@ -589,6 +590,7 @@ public class MyStorage
             return new ArrayList<>();
         return listTracks;
     }
+    //region favorite
 
     public ArrayList<TrackObject> loadFavoriteListTracks(Context context)
 {
@@ -642,6 +644,44 @@ public class MyStorage
             }
         }
         storeListTracks(context,listTracks);
+    }
+
+    public void storeFavoriteListTracks(Context context, List favoriteListTracks)
+    {
+        // used for store arrayList in json format
+        SharedPreferences settings;
+        Editor editor;
+        settings = context.getSharedPreferences(PREFS_NAME + Suffix, Context.MODE_PRIVATE);
+        editor = settings.edit();
+
+        GsonBuilder builder = new GsonBuilder();
+        builder.excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC);
+        builder.excludeFieldsWithoutExposeAnnotation();
+        Gson sExposeGson = builder.create();
+        String jsonFavorites = sExposeGson.toJson(favoriteListTracks);
+        editor.putString(ArrayFavoriteListTrack + Suffix, jsonFavorites);
+        editor.commit();
+    }
+
+    public ArrayList<TrackObject> loadFavoriteListTracksnew(Context context)
+    {
+        // used for retrieving arraylist from json formatted string
+        SharedPreferences settings;
+        ArrayList<TrackObject> favoriteListTracks;
+        settings = context.getSharedPreferences(PREFS_NAME + Suffix, Context.MODE_PRIVATE);
+        if (settings.contains(ArrayFavoriteListTrack + Suffix)) {
+            String jsonPlayNowTracks = settings.getString(ArrayFavoriteListTrack + Suffix, null);
+
+            GsonBuilder builder = new GsonBuilder();
+            builder.excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC);
+            builder.excludeFieldsWithoutExposeAnnotation();
+            Gson sExposeGson = builder.create();
+            TrackObject[] trackItems = sExposeGson.fromJson(jsonPlayNowTracks, TrackObject[].class);
+
+            favoriteListTracks = new ArrayList( Arrays.asList(trackItems));
+        } else
+            return new ArrayList<>();
+        return favoriteListTracks;
     }
     //endregion
     // used for retrieving History lsit

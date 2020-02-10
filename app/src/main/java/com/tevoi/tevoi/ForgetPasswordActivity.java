@@ -3,8 +3,11 @@ package com.tevoi.tevoi;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -17,6 +20,8 @@ import com.tevoi.tevoi.Utils.Global;
 import com.tevoi.tevoi.Utils.MyStorage;
 import com.tevoi.tevoi.model.IResponse;
 import com.tevoi.tevoi.model.LoginResponse;
+
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -33,6 +38,20 @@ public class ForgetPasswordActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forget_password);
+
+        MyStorage storageManager = new MyStorage();
+        String language = storageManager.getLanguageUIPreference(this);
+        if (language == null)
+            language = "en";
+        //Toast.makeText(this, "Lang " + language, Toast.LENGTH_SHORT).show();
+        Global.UserUILanguage = language;
+        Resources res = getBaseContext().getResources();
+        // Change locale settings in the app.
+        DisplayMetrics dm = res.getDisplayMetrics();
+        android.content.res.Configuration conf = res.getConfiguration();
+        conf.setLocale(new Locale(language)); // API 17+ only.
+        // Use conf.locale = new Locale(...) if targeting lower versions
+        res.updateConfiguration(conf, dm);
 
         mProgressDialog = new ProgressDialog(this,R.style.AppCompatAlertDialogStyle);
         mProgressDialog.setCancelable(false);
