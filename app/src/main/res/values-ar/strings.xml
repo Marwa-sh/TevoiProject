@@ -201,5 +201,6 @@
     <string name="passwords_dont_match">كلمة السر غير متطابقة مع تأكيد كلمة السر</string>
     <string name="invalide_email_format">صيغة البريد الإلكتروني غير صالحة</string>
     <string name="password_should_not_be_empty">كلمة المرور لايجب أن تكون فارغة</string>
+    <string name="something_went_wrong">لقد حدث خطأ يرجى المحاولة مرة أخرى</string>
 
 </resources>

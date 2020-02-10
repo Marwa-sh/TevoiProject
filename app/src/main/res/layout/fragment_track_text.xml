@@ -47,17 +47,24 @@
                 android:weightSum="6"
                 android:visibility="visible"
                 >
-
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="6"
+                    android:paddingTop="20dp"
+                    android:paddingEnd="20dp"
+                    android:paddingStart="20dp"
+                    android:paddingBottom="20dp"
+                    >
                 <!-- TODO: Update blank fragment layout -->
-                <TextView
+                <me.biubiubiu.justifytext.library.JustifyTextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/text_track"
                     android:text=""
-                    android:layout_weight="6"
-                    android:paddingLeft="20dp"
-                    android:paddingTop="20dp"
                     />
+                </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="50dp"
                     android:layout_height="wrap_content"
@@ -89,7 +96,7 @@
                         android:progress="10"
                         android:rotation="90"
                         android:layout_gravity="center_horizontal"
-                        android:visibility="invisible"
+                        android:visibility="gone"
                         android:progressBackgroundTint="@color/tevoiBlueSecondary"
                         android:progressTint="@color/tevoiBluePrimary"
                         android:thumbTint="@color/thumbgrey"

@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.text.Html;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -112,6 +113,7 @@ public class TrackText extends Fragment {
                 if(text.TrackText != null)
                 {
                     tv.setText(Html.fromHtml(text.TrackText));
+//                    tv.setJustificationMode(Layout.JUSTIFICATION_MODE_INTER_WORD);
                     onTextLoaded(Html.fromHtml(text.TrackText).toString());
                 }
                 progressBar.setVisibility(View.INVISIBLE);

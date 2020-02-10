@@ -166,7 +166,7 @@ public class LoginActivity extends AppCompatActivity
                                 storageManager.storeUsetList(LoginActivity.this, login.getUserlst());
                                 storageManager.storeNotificationtList(LoginActivity.this, login.getLstNotificationTypes());
                                 storageManager.storeAboutUs(LoginActivity.this,login.getAboutUS());
-//                                storageManager.storenumberOfMinutes(LoginActivity.this,login.getNumberOfMinutes());
+                                storageManager.storenumberOfMinutes(LoginActivity.this,login.getNumberOfMinutes());
 
 
                                 Intent i = new Intent(getApplicationContext(),SideMenu.class);
@@ -176,7 +176,7 @@ public class LoginActivity extends AppCompatActivity
                             }
                             else
                             {
-                                Toast.makeText(getBaseContext(),"G+ " +login.Message,Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getBaseContext(),login.Message,Toast.LENGTH_SHORT).show();
                                 mProgressDialog.dismiss();
                             }
                         }

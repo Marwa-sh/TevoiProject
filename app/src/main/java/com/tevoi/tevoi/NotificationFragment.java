@@ -73,7 +73,7 @@ public class NotificationFragment extends Fragment {
                         public void onFailure(Call<ListNotificationTypesResponse> call, Throwable t)
                         {
                             activity.mProgressDialog.dismiss();
-                            Toast.makeText(getContext(),"something went wrong", Toast.LENGTH_SHORT);
+                            Toast.makeText(getContext(),getResources().getString( R.string.something_went_wrong), Toast.LENGTH_SHORT);
                         }
                     });
                 }
@@ -97,7 +97,7 @@ public class NotificationFragment extends Fragment {
                         public void onFailure(Call<ListNotificationTypesResponse> call, Throwable t)
                         {
                             activity.mProgressDialog.dismiss();
-                            Toast.makeText(getContext(),"something went wrong", Toast.LENGTH_SHORT);
+                            Toast.makeText(getContext(),getResources().getString( R.string.something_went_wrong), Toast.LENGTH_SHORT);
                         }
                     });
                 }
