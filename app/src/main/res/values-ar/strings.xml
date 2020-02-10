@@ -202,4 +202,7 @@
     <string name="invalide_email_format">صيغة البريد الإلكتروني غير صالحة</string>
     <string name="password_should_not_be_empty">كلمة المرور لايجب أن تكون فارغة</string>
 
+    <string name="no_quota_for_text_today">لقد انتهت الباقة المسموحة لك للقراءة اليوم.</string>
+
+
 </resources>

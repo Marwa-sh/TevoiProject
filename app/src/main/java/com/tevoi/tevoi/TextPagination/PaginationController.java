@@ -29,6 +29,7 @@ public class PaginationController {
     int totalUnitsInText;
     int localUnitsConsumed;
 
+    boolean isNextClick = false;
 
     public PaginationController(@NonNull TextView textView, SideMenu activity) {
         mTextView = textView;
@@ -102,8 +103,22 @@ public class PaginationController {
                 activity.numberOfTextUnitsConsumed += numOfUnitsInPage;
                 localUnitsConsumed += numOfUnitsInPage;
                 remainingWordsCount = countNumber - numOfUnitsInPage*Global.ReadUnitInWords;
-                // todo: send to server
+
             }
+
+            if(mLastPageIndex != -1)
+            {
+                if(remainingWordsCount != 0)
+                {
+                    activity.numberOfTextUnitsConsumed += 1;
+                    localUnitsConsumed += 1;
+                    numOfUnitsInPage += 1;
+                }
+            }
+            // todo: send to server
+            Log.d(TAG, "UnitsSendToServer" + numOfUnitsInPage);
+
+
 
             mTextView.setText(displayedText);
             Log.v(TAG, "Existing[" + pageIndex + "]: " + displayedText);
@@ -168,32 +183,33 @@ public class PaginationController {
         String displayedText = mText.substring(start, end);
         Log.v(TAG, "Added to Cache[" + pageIndex + "](symbols={" + start + "," + end + "}): " + displayedText);
 
+        if(isNextClick) {
+
+            int countNumber = countWords(displayedText);
+            countNumber += remainingWordsCount;
+            int numOfUnitsInPage = countNumber / Global.ReadUnitInWords;
+
+            Log.d(TAG, "Units In:[" + pageIndex + "]: " + numOfUnitsInPage
+                    + ", Number Of words" + countNumber
+                    + "remaining=" + remainingWordsCount);
+
+            Log.d(TAG, "Last Index=" + mLastPageIndex);
+            if (activity.numberOfReadUnitsSendToServer > activity.userSubscriptionInfo.FreeSubscriptionLimit.DailyReadMaxUnits) {
+                activity.IsReadDailyLimitsExceeded = true;
+            } else {
+                activity.numberOfTextUnitsConsumed += numOfUnitsInPage;
+                remainingWordsCount = countNumber - numOfUnitsInPage * Global.ReadUnitInWords;
+                // todo: send to server
+            }
+        }
         //correct visible text
-        int countNumber = countWords(displayedText);
-        countNumber += remainingWordsCount;
-        int numOfUnitsInPage = countNumber / Global.ReadUnitInWords;
-
-        Log.d(TAG, "Units In:[" + pageIndex + "]: " + numOfUnitsInPage
-        + ", Number Of words" + countNumber
-        + "remaining=" + remainingWordsCount);
-
-        Log.d(TAG, "Last Index="+ mLastPageIndex );
-        if(activity.numberOfReadUnitsSendToServer > activity.userSubscriptionInfo.FreeSubscriptionLimit.DailyReadMaxUnits)
-        {
-            activity.IsReadDailyLimitsExceeded = true;
-        }
-        else
-        {
-            activity.numberOfTextUnitsConsumed += numOfUnitsInPage;
-            remainingWordsCount = countNumber - numOfUnitsInPage*Global.ReadUnitInWords;
-            // todo: send to server
-        }
         mTextView.setText(displayedText);
 
         mBoundaries.put(pageIndex, new Boundary(start, end));
     }
 
     public boolean next() {
+        isNextClick = true;
         throwIfNotInitialized();
         if (isNextEnabled()) {
             selectPage(++mPageIndex);
@@ -203,6 +219,7 @@ public class PaginationController {
     }
 
     public boolean previous() {
+        isNextClick = false;
         throwIfNotInitialized();
         if (isPreviousEnabled()) {
             selectPage(--mPageIndex);
