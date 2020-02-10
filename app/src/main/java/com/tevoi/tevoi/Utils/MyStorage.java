@@ -46,6 +46,7 @@ public class MyStorage
     public static final String ArrayNotificationList = " ArrayNotificationList";
     public static final String AboutUs = " AboutUs";
     public static final String NumberOfMinutes = "NumberOfMinutes";
+    public static final String ArrayHistoryListTrack = "ArrayHistoryListTrack";
 
 
     private  String Suffix =  "_" + USER_ID;
@@ -698,6 +699,45 @@ public class MyStorage
     }
     storeListTracks(context,listTracks);
 }
+
+    public void storeHistoryListTracks(Context context, List historyListTracks)
+    {
+        // used for store arrayList in json format
+        SharedPreferences settings;
+        Editor editor;
+        settings = context.getSharedPreferences(PREFS_NAME + Suffix, Context.MODE_PRIVATE);
+        editor = settings.edit();
+
+        GsonBuilder builder = new GsonBuilder();
+        builder.excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC);
+        builder.excludeFieldsWithoutExposeAnnotation();
+        Gson sExposeGson = builder.create();
+        String jsonFavorites = sExposeGson.toJson(historyListTracks);
+        editor.putString(ArrayHistoryListTrack + Suffix, jsonFavorites);
+        editor.commit();
+    }
+
+    public ArrayList<TrackObject> loadHistoryListTracksnew(Context context)
+    {
+        // used for retrieving arraylist from json formatted string
+        SharedPreferences settings;
+        ArrayList<TrackObject> historyListTracks;
+        settings = context.getSharedPreferences(PREFS_NAME + Suffix, Context.MODE_PRIVATE);
+        if (settings.contains(ArrayHistoryListTrack + Suffix)) {
+            String jsonPlayNowTracks = settings.getString(ArrayHistoryListTrack + Suffix, null);
+
+            GsonBuilder builder = new GsonBuilder();
+            builder.excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC);
+            builder.excludeFieldsWithoutExposeAnnotation();
+            Gson sExposeGson = builder.create();
+            TrackObject[] trackItems = sExposeGson.fromJson(jsonPlayNowTracks, TrackObject[].class);
+
+            historyListTracks = new ArrayList( Arrays.asList(trackItems));
+        } else
+            return new ArrayList<>();
+        return historyListTracks;
+    }
+
     public void removeFromHistory(Context context,int Id)
     {
         ArrayList<TrackObject> listTracks = loadListTracks(context);

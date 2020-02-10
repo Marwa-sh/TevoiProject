@@ -7,10 +7,16 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.appcompat.widget.Toolbar;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -23,6 +29,7 @@ import com.tevoi.tevoi.adapter.TracksAdapter;
 import com.tevoi.tevoi.model.IResponse;
 import com.tevoi.tevoi.model.PaginationScrollListener;
 import com.tevoi.tevoi.model.RecyclerViewEmptySupport;
+import com.tevoi.tevoi.model.TrackFilter;
 import com.tevoi.tevoi.model.TrackObject;
 import com.tevoi.tevoi.model.TrackResponseList;
 import com.tevoi.tevoi.model.UserListObject;
@@ -30,12 +37,15 @@ import com.tevoi.tevoi.model.UserListObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class FavouriteFragment extends Fragment {
+public class FavouriteFragment extends Fragment
+        implements SwipeRefreshLayout.OnRefreshListener
+{
 
     // region pagination properties
     LinearLayoutManager linearLayoutManager;
@@ -51,12 +61,15 @@ public class FavouriteFragment extends Fragment {
     int PAGE_SIZE = Global.PAGE_SIZE;
     // endregion
     List<TrackObject> lstFavouriteTracks = new ArrayList<TrackObject>();
+    List<TrackObject> lstTracks = new ArrayList<TrackObject>();
 
     TracksAdapter adapter ;
     RecyclerViewEmptySupport recyclerView;
     SideMenu activity;
     View rootView;
     ImageButton btnClearFavourite;
+
+    SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,6 +81,9 @@ public class FavouriteFragment extends Fragment {
 
         recyclerView = rootView.findViewById(R.id.favourite_tracks_recycler_View);
         initiatePagination();
+
+        swipeRefreshLayout = rootView.findViewById(R.id.main_swiperefresh_favorite_tracks);
+        swipeRefreshLayout.setOnRefreshListener(this);
 
         lstFavouriteTracks = activity.storageManager.loadFavoriteListTracks(activity);
         TOTAL_PAGES = lstFavouriteTracks.size()/ PAGE_SIZE;
@@ -394,12 +410,76 @@ public class FavouriteFragment extends Fragment {
         return errorMsg;
     }
 
-    public void doRefresh()
-    {
+    public void doRefresh() {
         progressBar.setVisibility(View.VISIBLE);
         //  Execute network request if cache is expired; otherwise do not update data.
         adapter.getTracksList().clear();
         adapter.notifyDataSetChanged();
         loadFirstPage();
+    }
+    @Override
+    public void onRefresh() {
+        progressBar.setVisibility(View.VISIBLE);
+
+        getRefreshListHistoryTrack();
+
+        // TODO: Check if data is stale.
+        //  Execute network request if cache is expired; otherwise do not update data.
+        //adapter.clear();
+        //adapter.notifyDataSetChanged();
+        //TODO loadfirstpage
+//        loadFirstPage(k);
+        swipeRefreshLayout.setRefreshing(false);
+    }
+    private void getRefreshListHistoryTrack()
+    {
+        EditText txtFilter = rootView.findViewById(R.id.txt_search_filter_value);
+        CheckBox chkIsLocationEnabled = rootView.findViewById(R.id.checkBoxLocationEnable);
+
+
+        TrackFilter filter =  new TrackFilter();
+        LinearLayout layout = activity.findViewById(R.id.test_linear);
+        if (layout != null)
+        {
+            if (layout.getVisibility() == View.GONE)
+            {
+                filter.SearchKey = "";
+                filter.IsLocationEnabled = false;
+            }
+            else {
+                filter.SearchKey = txtFilter.getText().toString();
+                filter.IsLocationEnabled = chkIsLocationEnabled.isChecked();
+            }
+        }
+        else {
+            filter.SearchKey = "";
+            filter.IsLocationEnabled = false;
+        }
+        filter.TrackTypeId =1;
+        filter.Index = 0; filter.Size = 0;
+        Log.d("ResultTracks Next ", filter.getStringFilter());
+
+        //Call<TrackResponseList> call = ((CustomApp) activity.getApplication()).getApiService().getListMainTrack(filter);
+        Call<TrackResponseList> call = Global.client.getListMainTrack(filter);
+        call.enqueue(new Callback<TrackResponseList>() {
+            public void onResponse(Call<TrackResponseList> call, Response<TrackResponseList> response)
+            {
+                // replace old list tracks with new one from server
+                TrackResponseList tracks = response.body();
+
+                adapter.clear();
+                adapter.notifyDataSetChanged();
+                lstTracks = tracks.getLstTrack();
+                activity.storageManager.storeListTracks(activity, lstTracks);
+                lstFavouriteTracks = activity.storageManager.loadFavoriteListTracks(activity);
+                TOTAL_PAGES = lstFavouriteTracks.size()/ PAGE_SIZE;
+                // TODO order by active tab
+                loadFirstPage();
+            }
+            public void onFailure(Call<TrackResponseList> call, Throwable t)
+            {
+                //activity.mProgressDialog.dismiss();
+            }
+        });
     }
 }

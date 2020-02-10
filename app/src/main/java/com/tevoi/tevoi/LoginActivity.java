@@ -166,10 +166,7 @@ public class LoginActivity extends AppCompatActivity
                                 storageManager.storeUsetList(LoginActivity.this, login.getUserlst());
                                 storageManager.storeNotificationtList(LoginActivity.this, login.getLstNotificationTypes());
                                 storageManager.storeAboutUs(LoginActivity.this,login.getAboutUS());
-                                storageManager.storenumberOfMinutes(LoginActivity.this,login.getNumberOfMinutes());
-                                storageManager.storeListSubscripedPartnerFilter(LoginActivity.this, login.getLstSubscripedPartners());
-                                storageManager.storeListMainTopicFilter(LoginActivity.this, login.getLstMainTopic());
-                                //storageManager.storeIsShowHeardTracksPreference(LoginActivity.this, login.isShowHeardTracks());
+//                                storageManager.storenumberOfMinutes(LoginActivity.this,login.getNumberOfMinutes());
 
 
                                 Intent i = new Intent(getApplicationContext(),SideMenu.class);
@@ -179,7 +176,7 @@ public class LoginActivity extends AppCompatActivity
                             }
                             else
                             {
-                                Toast.makeText(getBaseContext(), login.Message, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getBaseContext(),"G+ " +login.Message,Toast.LENGTH_SHORT).show();
                                 mProgressDialog.dismiss();
                             }
                         }
@@ -221,7 +218,7 @@ public class LoginActivity extends AppCompatActivity
         });
 
 
-        etUserName.setText("ma");
+        etUserName.setText("marosh");
         etPassword.setText("Host123");
        // btnLogin.performClick();
 

@@ -5,10 +5,16 @@ import android.os.Handler;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -21,18 +27,21 @@ import com.tevoi.tevoi.adapter.TracksAdapter;
 import com.tevoi.tevoi.model.IResponse;
 import com.tevoi.tevoi.model.PaginationScrollListener;
 import com.tevoi.tevoi.model.RecyclerViewEmptySupport;
+import com.tevoi.tevoi.model.TrackFilter;
 import com.tevoi.tevoi.model.TrackObject;
 import com.tevoi.tevoi.model.TrackResponseList;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class HistoryListFragment extends Fragment
+        implements SwipeRefreshLayout.OnRefreshListener
 {
     // region pagination properties
     LinearLayoutManager linearLayoutManager;
@@ -49,12 +58,15 @@ public class HistoryListFragment extends Fragment
     int PAGE_SIZE = Global.PAGE_SIZE;;
     // endregion
     List<TrackObject> lstHistoryTracks = new ArrayList<TrackObject>();
+    List<TrackObject> lstTracks = new ArrayList<TrackObject>();
 
     TracksAdapter adapter ;
     RecyclerViewEmptySupport recyclerView;
     //RecyclerView recyclerView;
     View rootView;
     SideMenu activity;
+    SwipeRefreshLayout swipeRefreshLayout;
+
 
     ImageButton btnClearHistory;
     @Override
@@ -68,6 +80,9 @@ public class HistoryListFragment extends Fragment
 
         recyclerView = rootView.findViewById(R.id.history_tracks_recycler_View);
         initiatePagination();
+
+        swipeRefreshLayout = rootView.findViewById(R.id.main_swiperefresh_history_tracks);
+        swipeRefreshLayout.setOnRefreshListener(this);
 
         lstHistoryTracks = activity.storageManager.loadHistoryListTracks(activity);
         TOTAL_PAGES = lstHistoryTracks.size()/ PAGE_SIZE;
@@ -394,5 +409,69 @@ public class HistoryListFragment extends Fragment
         adapter.getTracksList().clear();
         adapter.notifyDataSetChanged();
         loadFirstPage();
+    }
+
+    @Override
+    public void onRefresh() {
+        progressBar.setVisibility(View.VISIBLE);
+
+        getRefreshListTrack();
+
+        swipeRefreshLayout.setRefreshing(false);
+    }
+
+    private void getRefreshListTrack()
+    {
+        EditText txtFilter = rootView.findViewById(R.id.txt_search_filter_value);
+        CheckBox chkIsLocationEnabled = rootView.findViewById(R.id.checkBoxLocationEnable);
+
+        /*activity.mProgressDialog.setMessage(getResources().getString( R.string.loader_msg));
+        activity.mProgressDialog.show();
+        */
+        TrackFilter filter =  new TrackFilter();
+        LinearLayout layout = activity.findViewById(R.id.test_linear);
+        if (layout != null)
+        {
+            if (layout.getVisibility() == View.GONE)
+            {
+                filter.SearchKey = "";
+                filter.IsLocationEnabled = false;
+            }
+            else {
+                filter.SearchKey = txtFilter.getText().toString();
+                filter.IsLocationEnabled = chkIsLocationEnabled.isChecked();
+            }
+        }
+        else {
+            filter.SearchKey = "";
+            filter.IsLocationEnabled = false;
+        }
+        filter.TrackTypeId =1;
+        filter.Index = 0; filter.Size = 0;
+        Log.d("ResultTracks Next ", filter.getStringFilter());
+
+        //Call<TrackResponseList> call = ((CustomApp) activity.getApplication()).getApiService().getListMainTrack(filter);
+        Call<TrackResponseList> call = Global.client.getListMainTrack(filter);
+        call.enqueue(new Callback<TrackResponseList>() {
+            public void onResponse(Call<TrackResponseList> call, Response<TrackResponseList> response)
+            {
+                // replace old list tracks with new one from server
+                TrackResponseList tracks = response.body();
+
+                adapter.clear();
+                adapter.notifyDataSetChanged();
+                lstTracks = tracks.getLstTrack();
+                activity.storageManager.storeListTracks(activity, lstTracks);
+                lstHistoryTracks = activity.storageManager.loadHistoryListTracks(activity);
+                TOTAL_PAGES = lstHistoryTracks.size()/ PAGE_SIZE;
+
+                // TODO order by active tab
+                loadFirstPage();
+            }
+            public void onFailure(Call<TrackResponseList> call, Throwable t)
+            {
+                //activity.mProgressDialog.dismiss();
+            }
+        });
     }
 }

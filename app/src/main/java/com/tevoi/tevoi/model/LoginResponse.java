@@ -16,6 +16,17 @@ public class LoginResponse  extends IResponse{
     private int NumberOfMinutes;
     @SerializedName("lstTracks")
     private List<TrackObject> lstTracks;
+
+    public void setLstHistoryTracks(List<TrackObject> lstHistoryTracks) {
+        this.lstHistoryTracks = lstHistoryTracks;
+    }
+
+    public List<TrackObject> getLstHistoryTracks() {
+        return lstHistoryTracks;
+    }
+
+    @SerializedName("lstHistoryTracks")
+    private List<TrackObject> lstHistoryTracks;
     @SerializedName("lstPartners")
     private List<PartnerObject> lstPartners;
     @SerializedName("lstUserLists")

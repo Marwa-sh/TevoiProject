@@ -61,6 +61,10 @@
                 android:onClick="changeToPopularFavourite"/>
         </androidx.appcompat.widget.LinearLayoutCompat>
 
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/main_swiperefresh_favorite_tracks"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
         <com.tevoi.tevoi.model.RecyclerViewEmptySupport
             android:id="@+id/favourite_tracks_recycler_View"
@@ -68,6 +72,8 @@
             android:layout_height="match_parent"
             >
         </com.tevoi.tevoi.model.RecyclerViewEmptySupport>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
         <TextView android:id="@+id/favourite_list_empty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
