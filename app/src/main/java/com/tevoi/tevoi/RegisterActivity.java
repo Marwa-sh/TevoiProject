@@ -358,7 +358,7 @@ public class RegisterActivity extends AppCompatActivity implements SpinnerAdapte
             etPasswordConfirmation.requestFocus();
             return false;
         }
-/*        if(etAge.getText().toString().equals(""))
+        if(etAge.getText().toString().equals(""))
         {
             etAge.setError(getResources().getString(R.string.age_is_required));
             etAge.requestFocus();
@@ -369,7 +369,7 @@ public class RegisterActivity extends AppCompatActivity implements SpinnerAdapte
             etOccupation.setError(getResources().getString(R.string.occupation_is_required));
             etOccupation.requestFocus();
             return false;
-        }*/
+        }
         return true;
     }
     boolean checkPasswordsMatching()

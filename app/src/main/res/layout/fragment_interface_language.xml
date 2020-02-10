@@ -150,6 +150,7 @@
             android:text="@string/show_default_audio_language"
             android:textColor="@color/fontColor"
             android:layout_gravity="center_vertical"
+            android:layout_marginEnd="30dp"
             />
 
     </LinearLayout>

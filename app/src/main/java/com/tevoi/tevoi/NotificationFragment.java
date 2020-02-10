@@ -58,7 +58,7 @@ public class NotificationFragment extends Fragment {
                     activity.mProgressDialog.setMessage(getResources().getString( R.string.loader_msg));
                     activity.mProgressDialog.show();
 
-                    Call<ListNotificationTypesResponse> call = Global.client.UpdateAllNotificationType();
+                    Call<ListNotificationTypesResponse> call = Global.client.UpdateAllNotificationType(true);
                     call.enqueue(new Callback<ListNotificationTypesResponse>(){
                         public void onResponse(Call<ListNotificationTypesResponse> call, Response<ListNotificationTypesResponse> response) {
                             //generateDataList(response.body());
@@ -78,7 +78,28 @@ public class NotificationFragment extends Fragment {
                     });
                 }
                 else {
+                    // set all types to true and refresh adapter
+                    activity.mProgressDialog.setMessage(getResources().getString( R.string.loader_msg));
+                    activity.mProgressDialog.show();
 
+                    Call<ListNotificationTypesResponse> call = Global.client.UpdateAllNotificationType(false);
+                    call.enqueue(new Callback<ListNotificationTypesResponse>(){
+                        public void onResponse(Call<ListNotificationTypesResponse> call, Response<ListNotificationTypesResponse> response) {
+                            //generateDataList(response.body());
+                            ListNotificationTypesResponse notificationTypes =response.body();
+
+                            recyclerView.setAdapter(adapter);
+                            SideMenu activity = (SideMenu)getActivity();
+                            adapter = new NotificationTypeAdapter(notificationTypes.getLstNotiicationTypes(),activity);
+                            recyclerView.setAdapter(adapter);
+                            activity.mProgressDialog.dismiss();
+                        }
+                        public void onFailure(Call<ListNotificationTypesResponse> call, Throwable t)
+                        {
+                            activity.mProgressDialog.dismiss();
+                            Toast.makeText(getContext(),"something went wrong", Toast.LENGTH_SHORT);
+                        }
+                    });
                 }
             }
         });

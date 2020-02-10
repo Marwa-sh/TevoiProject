@@ -68,7 +68,7 @@ public class MyProfileFragment extends Fragment {
 
         }
 
- /*       if (etAge.getText().toString().equals("")) {
+        if (etAge.getText().toString().equals("")) {
             etAge.setError(getResources().getString(R.string.age_is_required));
             etAge.requestFocus();
             return false;
@@ -77,7 +77,7 @@ public class MyProfileFragment extends Fragment {
             etOccupation.setError(getResources().getString(R.string.occupation_is_required));
             etOccupation.requestFocus();
             return false;
-        }*/
+        }
         return true;
     }
     boolean PasswordFieldFilled() {
