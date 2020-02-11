@@ -278,7 +278,8 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             });*/
 
             //--------//
-            String lang = activity.storageManager.getLanguageUIPreference(activity);
+//            String lang = activity.storageManager.getLanguageUIPreference(activity);
+              String lang = Global.UserNewUILanguage;
 
             //abd
   /*          layoutHistory.setOnClickListener(new View.OnClickListener() {

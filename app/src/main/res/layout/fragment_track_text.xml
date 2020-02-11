@@ -57,7 +57,7 @@
                     android:paddingBottom="20dp"
                     >
                 <!-- TODO: Update blank fragment layout -->
-                <me.biubiubiu.justifytext.library.JustifyTextView
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/text_track"
