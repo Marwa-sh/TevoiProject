@@ -53,6 +53,8 @@ public class LoginActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.fragment_login);
+
 
         //region detect language
         MyStorage storageManager = new MyStorage();
@@ -69,8 +71,6 @@ public class LoginActivity extends AppCompatActivity
         res.updateConfiguration(conf, dm);
 
         // endregion
-        setContentView(R.layout.fragment_login);
-
 
 
         /*
