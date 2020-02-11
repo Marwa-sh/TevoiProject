@@ -82,18 +82,29 @@ public class SubscripedPartnersAdapter extends RecyclerView.Adapter<SubscripedPa
                 @Override
                 public void onClick(View v) {
                     //change filtering state
-                    activity.mProgressDialog.setMessage(activity.getResources().getString( R.string.loader_msg));
-                    activity.mProgressDialog.show();
 
                     int i = getPosition();
                     final SubscipedPartnersObject partner = partners.get(i);
+
+                    isChecked = !isChecked;
+                    partner.setFilterValue(isChecked);
+                    if(isChecked)
+                    {
+                        checkBoxFilterState.setImageResource(R.mipmap.golden_button_on);
+                    }
+                    else
+                    {
+                        checkBoxFilterState.setImageResource(R.mipmap.grey_button_off);
+                    }
+                    //activity.mProgressDialog.setMessage(activity.getResources().getString( R.string.loader_msg));
+                    //activity.mProgressDialog.show();
 
                     Call<IResponse> call = Global.client.UpdateFollowshipToPartner(partner.getId());
                     call.enqueue(new Callback<IResponse>() {
                         @Override
                         public void onResponse(Call<IResponse> call, Response<IResponse> response) {
                             IResponse res = response.body();
-                            if(res.getNumber()==0)
+                            /*if(res.getNumber()==0)
                             {
                                 isChecked = !isChecked;
                                 partner.setFilterValue(isChecked);
@@ -111,11 +122,11 @@ public class SubscripedPartnersAdapter extends RecyclerView.Adapter<SubscripedPa
                             {
                                 checkBoxFilterState.setImageResource(R.mipmap.grey_button_off);
                             }
-                            activity.mProgressDialog.dismiss();
+                            activity.mProgressDialog.dismiss();*/
                         }
                         @Override
                         public void onFailure(Call<IResponse> call, Throwable t) {
-                            activity.mProgressDialog.dismiss();
+                            //activity.mProgressDialog.dismiss();
                         }
                     });
                 }

@@ -41,7 +41,8 @@ public class MainTopicViewHolder extends GroupViewHolder
   private boolean isChecked;
   private SideMenu activity;
 
-  public MainTopicViewHolder(View itemView, final List<MultiCheckMainTopic> groups) {
+  public MainTopicViewHolder(View itemView, final List<MultiCheckMainTopic> groups)
+  {
     super(itemView);
     genreName = (TextView) itemView.findViewById(R.id.list_item_genre_name);
     arrow = (ImageView) itemView.findViewById(R.id.list_item_genre_arrow);
@@ -50,12 +51,31 @@ public class MainTopicViewHolder extends GroupViewHolder
           @Override
           public void onClick(View v) {
               //change filtering state
-              activity.mProgressDialog.setMessage(activity.getResources().getString( R.string.loader_msg));
-              activity.mProgressDialog.show();
-              activity.mProgressDialog.setCancelable(false);
+              //activity.mProgressDialog.setMessage(activity.getResources().getString( R.string.loader_msg));
+              //activity.mProgressDialog.show();
+              //activity.mProgressDialog.setCancelable(false);
               int i = getPosition();
               final MultiCheckMainTopic mainTopic = groups.get(i);
 
+              isChecked = !isChecked;
+              if(isChecked)
+              {
+                  sw.setImageResource(R.mipmap.golden_button_on);
+              }
+              else
+              {
+                  sw.setImageResource(R.mipmap.grey_button_off);
+              }
+
+              // check if we need to deactivate its children
+              if(!isChecked)
+              {
+                  List<CategoryFilter> lst = mainTopic.getLstChildren();
+                  for (CategoryFilter ob: lst)
+                  {
+                        ob.setFavorite(false);
+                  }
+              }
               Log.println(Log.DEBUG, "mainTopic i = ", ""+ mainTopic.getId() +","+ mainTopic.getTitle());
               Call<IResponse> call = Global.client.UpdateCategoryPreference(mainTopic.getId());
               call.enqueue(new Callback<IResponse>()
@@ -64,15 +84,7 @@ public class MainTopicViewHolder extends GroupViewHolder
                   public void onResponse(Call<IResponse> call, Response<IResponse> response)
                   {
                       IResponse res = response.body();
-                      isChecked = !isChecked;
-                      if(isChecked)
-                      {
-                          sw.setImageResource(R.mipmap.golden_button_on);
-                      }
-                      else
-                      {
-                          sw.setImageResource(R.mipmap.grey_button_off);
-                      }
+
                       Log.println(Log.DEBUG, "Result i = ", "Done");
 
                       /*if(!isChecked)
@@ -86,21 +98,20 @@ public class MainTopicViewHolder extends GroupViewHolder
 
                       }*/
 
-                      if(activity != null)
+                     /* if(activity != null)
                       {
                           activity.userFilterFragment.reloadFilter();
                           Log.println(Log.DEBUG, "Refresh ", "Refresh");
 
                       }
-                      activity.mProgressDialog.dismiss();
+                      activity.mProgressDialog.dismiss();*/
                   }
                   @Override
                   public void onFailure(Call<IResponse> call, Throwable t) {
                       Log.println(Log.DEBUG, "Result i = ", "fail");
-                      activity.mProgressDialog.dismiss();
+                      //activity.mProgressDialog.dismiss();
                   }
               });
-
 
           }
       });

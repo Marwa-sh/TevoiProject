@@ -46,6 +46,16 @@ public class SwitchCategoryViewHolder extends CheckableChildViewHolder
             @Override
             public void onClick(View v)
             {
+                isChecked = !isChecked;
+                if(isChecked)
+                {
+                    childCheckedSwitch.setImageResource(R.mipmap.golden_button_on);
+                }
+                else
+                {
+                    childCheckedSwitch.setImageResource(R.mipmap.grey_button_off);
+                }
+
                 Log.println(Log.DEBUG, "childSwitch is clicked=" + isChecked, "Done");
 
                 Call<IResponse> call = Global.client.UpdateCategoryPreference(id);
@@ -56,7 +66,7 @@ public class SwitchCategoryViewHolder extends CheckableChildViewHolder
                     {
                         IResponse res = response.body();
                         Log.println(Log.DEBUG, "Result i = ", "Done");
-                        isChecked = !isChecked;
+                        /*isChecked = !isChecked;
                         if(isChecked)
                         {
                             childCheckedSwitch.setImageResource(R.mipmap.golden_button_on);
@@ -64,7 +74,7 @@ public class SwitchCategoryViewHolder extends CheckableChildViewHolder
                         else
                         {
                             childCheckedSwitch.setImageResource(R.mipmap.grey_button_off);
-                        }
+                        }*/
 
                         /*if(isChecked)
                         {
@@ -75,11 +85,12 @@ public class SwitchCategoryViewHolder extends CheckableChildViewHolder
                             }
                             mainTopic.notifyAll();
                         }*/
-                        if(activity != null)
+                        /*if(activity != null)
                         {
+                            // TODO: update just the main list tracks
                             activity.userFilterFragment.reloadFilter();
                             Log.println(Log.DEBUG, "Refresh ", "Refresh");
-                        }
+                        }*/
                     }
                     @Override
                     public void onFailure(Call<IResponse> call, Throwable t) {

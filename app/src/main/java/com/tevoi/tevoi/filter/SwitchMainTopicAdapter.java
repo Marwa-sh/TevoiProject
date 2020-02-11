@@ -58,4 +58,6 @@ public class SwitchMainTopicAdapter extends
     //holder.setGenreTitle(group);
     //holder.setSwitchStatus(group);
   }
+
+
 }

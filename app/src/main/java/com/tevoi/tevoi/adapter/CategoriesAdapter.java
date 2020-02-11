@@ -1,4 +1,4 @@
-package com.tevoi.tevoi.accordion;
+package com.tevoi.tevoi.adapter;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -65,13 +65,15 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
 
             this.checkBoxFilterState.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
-                public void onCheckedChanged(CompoundButton buttonView,final boolean isChecked) {
-                    activity.mProgressDialog.setMessage(activity.getResources().getString( R.string.loader_msg));
-                    activity.mProgressDialog.show();
-                    activity.mProgressDialog.setCancelable(false);
-
+                public void onCheckedChanged(CompoundButton buttonView,final boolean isChecked)
+                {
                     int i = getPosition();
                     final CategoryObject category = categories.get(i);
+                    category.setFilterValue(isChecked);
+
+                    //activity.mProgressDialog.setMessage(activity.getResources().getString( R.string.loader_msg));
+                   // activity.mProgressDialog.show();
+                   // activity.mProgressDialog.setCancelable(false);
 
                     Call<IResponse> call = Global.client.UpdateCategoryPreference(category.getId());
                     call.enqueue(new Callback<IResponse>() {
@@ -81,17 +83,17 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
                             if(res.getNumber()==0)
                             {
                                 category.setFilterValue(isChecked);
-                                Toast.makeText(activity,res.getMessage(),Toast.LENGTH_LONG).show();
+                                //Toast.makeText(activity,res.getMessage(),Toast.LENGTH_LONG).show();
                             }
                             else
                             {
-                                Toast.makeText(activity,res.getMessage(),Toast.LENGTH_LONG).show();
+                                //Toast.makeText(activity,res.getMessage(),Toast.LENGTH_LONG).show();
                             }
-                            activity.mProgressDialog.dismiss();
+                            //activity.mProgressDialog.dismiss();
                         }
                         @Override
                         public void onFailure(Call<IResponse> call, Throwable t) {
-                            activity.mProgressDialog.dismiss();
+                           // activity.mProgressDialog.dismiss();
                         }
                     });
                 }
