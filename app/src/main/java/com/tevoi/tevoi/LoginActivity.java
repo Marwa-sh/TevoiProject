@@ -128,12 +128,12 @@ public class LoginActivity extends AppCompatActivity
             public void onClick(View v) {
                 if(isUserNameFieldEmpty())
                 {
-                    etUserName.setError("user name missing");
+                    etUserName.setError(getResources().getString( R.string.user_name_missing));
                     etUserName.requestFocus();
                 }
                 else if(isPasswordFieldEmpty())
                 {
-                    etPassword.setError("password missing");
+                    etPassword.setError(getResources().getString( R.string.password_missing));
                     etPassword.requestFocus();
                 }
                 else
@@ -168,8 +168,8 @@ public class LoginActivity extends AppCompatActivity
                                 storageManager.storenumberOfMinutes(LoginActivity.this,login.getNumberOfMinutes());
                                 storageManager.storeListMainTopicFilter(LoginActivity.this, login.getLstMainTopic());
                                 storageManager.storeListSubscripedPartnerFilter(LoginActivity.this, login.getLstSubscripedPartners());
-//                                storageManager.storeFavoriteListTracks(LoginActivity.this, login.getLstFavouriteTracks());
-//                                storageManager.storeHistoryListTracks(LoginActivity.this, login.getLstHistoryTracks());
+                                storageManager.storeFavoriteListTracks(LoginActivity.this, login.getLstFavouriteTracks());
+                                storageManager.storeHistoryListTracks(LoginActivity.this, login.getLstHistoryTracks());
 
                                 Intent i = new Intent(getApplicationContext(),SideMenu.class);
                                 startActivity(i);

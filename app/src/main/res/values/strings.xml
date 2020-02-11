@@ -254,4 +254,8 @@
 
     <string name="no_quota_for_text_today">You\'re Quota is finished for reading.</string>
 
+    <string name="password_missing">Password missing</string>
+    <string name="user_name_missing">User name missing</string>
+
+
 </resources>

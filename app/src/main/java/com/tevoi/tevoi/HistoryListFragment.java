@@ -84,7 +84,7 @@ public class HistoryListFragment extends Fragment
         swipeRefreshLayout = rootView.findViewById(R.id.main_swiperefresh_history_tracks);
         swipeRefreshLayout.setOnRefreshListener(this);
 
-        lstHistoryTracks = activity.storageManager.loadHistoryListTracks(activity);
+        lstHistoryTracks = activity.storageManager.loadHistoryListTracksnew(activity);
         TOTAL_PAGES = lstHistoryTracks.size()/ PAGE_SIZE;
 
         btnClearHistory.setOnClickListener(new View.OnClickListener()
@@ -422,12 +422,12 @@ public class HistoryListFragment extends Fragment
 
     private void getRefreshListTrack()
     {
-        EditText txtFilter = rootView.findViewById(R.id.txt_search_filter_value);
+       /* EditText txtFilter = rootView.findViewById(R.id.txt_search_filter_value);
         CheckBox chkIsLocationEnabled = rootView.findViewById(R.id.checkBoxLocationEnable);
 
-        /*activity.mProgressDialog.setMessage(getResources().getString( R.string.loader_msg));
+        *//*activity.mProgressDialog.setMessage(getResources().getString( R.string.loader_msg));
         activity.mProgressDialog.show();
-        */
+        *//*
         TrackFilter filter =  new TrackFilter();
         LinearLayout layout = activity.findViewById(R.id.test_linear);
         if (layout != null)
@@ -471,6 +471,27 @@ public class HistoryListFragment extends Fragment
             public void onFailure(Call<TrackResponseList> call, Throwable t)
             {
                 //activity.mProgressDialog.dismiss();
+            }
+        });*/
+        currentPage = 0;
+        Call<TrackResponseList> call = Global.client.getHistoryList(currentPage, PAGE_SIZE);
+        call.enqueue(new Callback <TrackResponseList>(){
+            public void onResponse(Call<TrackResponseList> call, Response<TrackResponseList> response) {
+                //generateDataList(response.body());
+                TrackResponseList tracks = response.body();
+
+                adapter.clear();
+                adapter.notifyDataSetChanged();
+                lstHistoryTracks = tracks.getLstTrack();
+                activity.storageManager.storeHistoryListTracks(activity, lstHistoryTracks);
+                TOTAL_PAGES = lstHistoryTracks.size()/ PAGE_SIZE;
+
+                loadFirstPage();
+            }
+            public void onFailure(Call<TrackResponseList> call, Throwable t)
+            {
+                //activity.mProgressDialog.dismiss();
+                Toast.makeText(getContext(),activity.getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -205,5 +205,7 @@
 
     <string name="no_quota_for_text_today">لقد انتهت الباقة المسموحة لك للقراءة اليوم.</string>
 
+    <string name="password_missing">يرجى ادخال كلمة المرور</string>
+    <string name="user_name_missing">يرجى ادخال اسم المستخدم</string>
 
 </resources>

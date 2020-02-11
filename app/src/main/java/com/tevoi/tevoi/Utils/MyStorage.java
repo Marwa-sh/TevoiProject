@@ -277,10 +277,10 @@ public class MyStorage
     {
         SharedPreferences settings;
         Editor editor;
-        settings = context.getSharedPreferences(PreferenceUILanguage + Suffix, Context.MODE_PRIVATE);
+        settings = context.getSharedPreferences(PreferenceUILanguage, Context.MODE_PRIVATE);
         editor = settings.edit();
 
-        editor.putString(PreferenceUILanguage + Suffix, language);
+        editor.putString(PreferenceUILanguage, language);
         editor.commit();
     }
 
@@ -288,10 +288,10 @@ public class MyStorage
     {
         SharedPreferences settings;
         String language = "";
-        settings = context.getSharedPreferences(PreferenceUILanguage + Suffix, Context.MODE_PRIVATE);
-        if (settings.contains(PreferenceUILanguage + Suffix))
+        settings = context.getSharedPreferences(PreferenceUILanguage, Context.MODE_PRIVATE);
+        if (settings.contains(PreferenceUILanguage))
         {
-            language = settings.getString(PreferenceUILanguage + Suffix, null);
+            language = settings.getString(PreferenceUILanguage, null);
         }
         else
             language = Global.DefaultUILanguage;
