@@ -20,8 +20,15 @@ public class HelperFunctions
     public static List<TrackObject> getPage(List<TrackObject> lst , int index, int size)
     {
         int currentIndex = (index * size);
-        if( currentIndex + size > lst.size())
-            return lst.subList(index, lst.size());
+        List<TrackObject> l = new ArrayList<>();
+        if(lst.size() == 0)
+            return l;
+        if( currentIndex + size > lst.size()) {
+            if(currentIndex > lst.size()-1)
+                return  l;
+            else
+                return lst.subList(currentIndex, lst.size());
+        }
         else
             return lst.subList(currentIndex, currentIndex + size);
     }

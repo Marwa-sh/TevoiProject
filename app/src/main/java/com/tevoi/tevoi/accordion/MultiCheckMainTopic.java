@@ -12,6 +12,7 @@ public class MultiCheckMainTopic extends MultiCheckExpandableGroup
   private int iconResId;
   private int id;
   private boolean filterValue;
+  private List<CategoryFilter> lstChildren;
 
   public MultiCheckMainTopic(int id, String title, List<CategoryFilter> items, boolean filtervalue,  int iconResId)
   {
@@ -19,6 +20,7 @@ public class MultiCheckMainTopic extends MultiCheckExpandableGroup
     this.iconResId = iconResId;
     this.id = id;
     this.filterValue = filtervalue;
+    this.lstChildren = items;
   }
 
   public int getIconResId() {
@@ -29,5 +31,11 @@ public class MultiCheckMainTopic extends MultiCheckExpandableGroup
     }
     public  boolean getFilterValue()
     { return  filterValue;}
+
+
+
+  public List<CategoryFilter> getLstChildren() {
+    return lstChildren;
+  }
 }
 

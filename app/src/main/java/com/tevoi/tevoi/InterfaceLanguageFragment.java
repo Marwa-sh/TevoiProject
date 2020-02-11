@@ -4,6 +4,7 @@ package com.tevoi.tevoi;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,15 +88,17 @@ public class InterfaceLanguageFragment extends Fragment {
                     activity.storageManager.storeLanguageTrackPreference(activity, "ar");
                     LanguageId = Global.Arabic;
                 }
+                Log.d("Languages0", "LangId=" + LanguageId);
                 Call<IResponse> call = Global.client.UpdateUIDefaultLanguage(LanguageId);
                 call.enqueue(new Callback<IResponse>() {
                     @Override
                     public void onResponse(Call<IResponse> call, Response<IResponse> response) {
-
+                        IResponse r = response.body();
+                        Log.d("Languages2 success", "=" + r.getMessage());
                     }
                     @Override
                     public void onFailure(Call<IResponse> call, Throwable t) {
-
+                        Log.d("Languages0 error", "=" + t.getMessage());
                     }
                 });
                 Toast.makeText(activity, R.string.restart_app_for_apply_language, Toast.LENGTH_SHORT).show();
@@ -126,16 +129,17 @@ public class InterfaceLanguageFragment extends Fragment {
                     activity.storageManager.storeLanguageTrackPreference(activity, "en");
                     LanguageId = Global.English;
                 }
-
+                Log.d("Languages1", "LangId=" + LanguageId);
                 Call<IResponse> call = Global.client.UpdateUIDefaultLanguage(LanguageId);
                 call.enqueue(new Callback<IResponse>() {
                     @Override
                     public void onResponse(Call<IResponse> call, Response<IResponse> response) {
-
+                        IResponse r = response.body();
+                        Log.d("Languages1 success", "=" + r.getMessage());
                     }
                     @Override
                     public void onFailure(Call<IResponse> call, Throwable t) {
-
+                        Log.d("Languages1 error", "=" + t.getMessage());
                     }
                 });
                 Toast.makeText(activity, R.string.restart_app_for_apply_language, Toast.LENGTH_SHORT).show();
@@ -168,16 +172,17 @@ public class InterfaceLanguageFragment extends Fragment {
                     activity.storageManager.storeLanguageUIPreference(activity, "ar");
                     LanguageId = Global.Arabic;
                 }
-
+                Log.d("Languages2", "LangId=" + LanguageId);
                 Call<IResponse> call = Global.client.UpdateTrackDefaultLanguage(LanguageId);
                 call.enqueue(new Callback<IResponse>() {
                     @Override
                     public void onResponse(Call<IResponse> call, Response<IResponse> response) {
-
+                        IResponse r = response.body();
+                        Log.d("Languages2 success", "=" + r.getMessage());
                     }
                     @Override
                     public void onFailure(Call<IResponse> call, Throwable t) {
-
+                        Log.d("Languages2 error", "=" + t.getMessage());
                     }
                 });
                 Toast.makeText(activity, R.string.restart_app_for_apply_language, Toast.LENGTH_SHORT).show();
@@ -208,16 +213,17 @@ public class InterfaceLanguageFragment extends Fragment {
                     activity.storageManager.storeLanguageUIPreference(activity, "en");
                     LanguageId = Global.English;
                 }
-
+                Log.d("Languages3", "LangId=" + LanguageId);
                 Call<IResponse> call = Global.client.UpdateTrackDefaultLanguage(LanguageId);
                 call.enqueue(new Callback<IResponse>() {
                     @Override
                     public void onResponse(Call<IResponse> call, Response<IResponse> response) {
-
+                        IResponse r = response.body();
+                        Log.d("Languages3 success", "=" + r.getMessage());
                     }
                     @Override
                     public void onFailure(Call<IResponse> call, Throwable t) {
-
+                        Log.d("Languages3 error", "=" + t.getMessage());
                     }
                 });
                 Toast.makeText(activity, R.string.restart_app_for_apply_language, Toast.LENGTH_SHORT).show();

@@ -83,7 +83,7 @@ public class Global {
     public static final String Licence = "";
     public static int CurrentUserId = 0;
 
-    public static int PAGE_SIZE = 2;
+    public static int PAGE_SIZE = 10;
 
     // region media player constants
 
