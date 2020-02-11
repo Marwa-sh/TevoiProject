@@ -41,7 +41,6 @@ public class LoginActivity extends AppCompatActivity
 {
     TextView txtRegister;
     TextView txtForgetPassword;
-
     Button btnLogin;
     ImageButton btnRegister;
     EditText etUserName,etPassword,etEmail;
