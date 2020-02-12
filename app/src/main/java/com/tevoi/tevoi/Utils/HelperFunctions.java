@@ -58,6 +58,8 @@ public class HelperFunctions
         List<UserListObject> l = new ArrayList<>();
         if(lst.size() == 0)
             return l;
+        if(lst.size() == 1)
+            return  lst;
         if( currentIndex + size > lst.size())
             return lst.subList(index, lst.size());
         else

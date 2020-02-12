@@ -75,6 +75,8 @@ public class UserListFragment extends Fragment
     ImageButton imgBtnAddUserList;
     boolean isFirtsTime = true;
 
+    private SwipeRefreshLayout mEmptyViewContainer;
+
     View rootView;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -88,6 +90,8 @@ public class UserListFragment extends Fragment
         TOTAL_PAGES = Userlst.size()/ PAGE_SIZE;
 
 
+        mEmptyViewContainer = rootView.findViewById(R.id.swipeRefreshLayout_emptyView);
+        onCreateSwipeToRefresh(mEmptyViewContainer);
 
         swipeRefreshLayout = rootView.findViewById(R.id.main_swiperefresh_userlist);
         swipeRefreshLayout.setOnRefreshListener(this);
@@ -193,7 +197,7 @@ public class UserListFragment extends Fragment
 
 
 
-                                            Call<AddUserListResponse> call = Global.client.AddUserListResponse(listName);
+                                            Call<AddUserListResponse> call = Global.client.AddGetUserList(listName);
                                             call.enqueue(new Callback<AddUserListResponse>(){
                                                 public void onResponse(Call<AddUserListResponse> call, Response<AddUserListResponse> response) {
                                                     AddUserListResponse result = response.body();
@@ -250,8 +254,9 @@ public class UserListFragment extends Fragment
         linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setEmptyView(emptyView);
-        emptyView.setVisibility(View.INVISIBLE);
+
+        recyclerView.setEmptyView(mEmptyViewContainer);
+        //emptyView.setVisibility(View.INVISIBLE);
 
 
         List<UserListObject> lists = new ArrayList<>();
@@ -323,6 +328,17 @@ public class UserListFragment extends Fragment
 
         return rootView;
     }
+    private void onCreateSwipeToRefresh(SwipeRefreshLayout refreshLayout) {
+
+        refreshLayout.setOnRefreshListener(this);
+
+        refreshLayout.setColorScheme(
+                android.R.color.holo_blue_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_green_light,
+                android.R.color.holo_red_light);
+
+    }
 
     public  void GetUserLists()
     {
@@ -390,11 +406,12 @@ public class UserListFragment extends Fragment
         List<UserListObject> lstFirstPage =  HelperFunctions.getPageUserList(Userlst, 0 , PAGE_SIZE );
         adapter.addAll(lstFirstPage);
         //adapter.addAll(lstTracks);
-        /*if(lstFirstPage.size() == 0) {
-            View v = rootView.findViewById(R.id.user_lists_empty);
-            v.setVisibility(View.VISIBLE);
-            recyclerView.setEmptyView(v);
-        }*/
+        if(lstFirstPage.size() == 0) {
+
+            recyclerView.setEmptyView(mEmptyViewContainer);
+        }
+        recyclerView.triggerObserver();
+        //mEmptyViewContainer.setRefreshing(false);
         /*if (currentPage <= TOTAL_PAGES) adapter.addLoadingFooter();
         else isLastPage = true;*/
 
@@ -465,6 +482,7 @@ public class UserListFragment extends Fragment
                 loadFirstPage();
 
                 swipeRefreshLayout.setRefreshing(false);
+                mEmptyViewContainer.setRefreshing(false);
             }
             public void onFailure(Call<UserListResponse> call, Throwable t)
             {

@@ -5,6 +5,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.tevoi.tevoi.R;
+
 public class RecyclerViewEmptySupport extends RecyclerView {
     private View emptyView;
 
@@ -55,6 +57,12 @@ public class RecyclerViewEmptySupport extends RecyclerView {
     }
 
     public void setEmptyView(View emptyView) {
+        //View emptyViewText = emptyView.findViewById(R.id.user_lists_empty);
         this.emptyView = emptyView;
+    }
+
+    public void  triggerObserver()
+    {
+        emptyObserver.onChanged();
     }
 }
