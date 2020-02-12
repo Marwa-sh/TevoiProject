@@ -14,6 +14,7 @@ import com.tevoi.tevoi.model.UserListObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class HelperFunctions
 {
@@ -87,6 +88,10 @@ public class HelperFunctions
         {
             Toast.makeText(activity, R.string.play_now_list_isempty, Toast.LENGTH_SHORT).show();
         }
+        else if(listSize == 1)
+        {
+            Toast.makeText(activity, R.string.there_is_only_one_track_in_the_list, Toast.LENGTH_SHORT).show();
+        }
         else
         {
                 //activity.isPlayingFromPlayNowList = true;
@@ -119,6 +124,10 @@ public class HelperFunctions
         {
             Toast.makeText(activity, R.string.play_now_list_isempty, Toast.LENGTH_SHORT).show();
         }
+        else if(listSize == 1)
+        {
+            Toast.makeText(activity, R.string.there_is_only_one_track_in_the_list, Toast.LENGTH_SHORT).show();
+        }
         else
         {
                 //activity.isPlayingFromPlayNowList = true;
@@ -144,6 +153,50 @@ public class HelperFunctions
                     Toast.makeText(activity, R.string.no_track_to_play, Toast.LENGTH_SHORT).show();
                 }
                 //activity.player.updateStatusBarInfo(activity.CurrentTrackInPlayer.getName(),activity.CurrentTrackInPlayer.getAuthors());
+        }
+    }
+    public  static  void  getShuffleTrack(SideMenu activity, int currentTrackId)
+    {
+        int listSize = activity.lstTracks.size();
+        if(listSize == 0)
+        {
+            Toast.makeText(activity, R.string.there_is_only_one_track_in_the_list, Toast.LENGTH_SHORT).show();
+        }
+        else if(listSize == 1)
+        {
+            Toast.makeText(activity, R.string.there_is_only_one_track_in_the_list, Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            int random = new Random().nextInt(listSize);
+            //activity.isPlayingFromPlayNowList = true;
+            activity.indexCurrentTrackInPlayList = random;
+            while (activity.lstTracks.get(activity.indexCurrentTrackInPlayList).getId() == currentTrackId)
+            {
+                random = new Random().nextInt(listSize);
+                activity.indexCurrentTrackInPlayList = random;
+            }
+            if(activity.indexCurrentTrackInPlayList >= listSize)
+                activity.indexCurrentTrackInPlayList = 0;
+
+            if(activity.indexCurrentTrackInPlayList < listSize )
+            {
+                TrackObject t = activity.lstTracks.get(activity.indexCurrentTrackInPlayList);
+                activity.mediaPlayerFragment.currentTrack = t;
+                activity.CurrentTrackInPlayer = activity.mediaPlayerFragment.currentTrack;
+                activity.mediaPlayerFragment.url = Global.BASE_AUDIO_URL + activity.lstTracks.get(activity.indexCurrentTrackInPlayList).getId();
+                activity.playAudio(activity.mediaPlayerFragment.url,
+                        activity.CurrentTrackInPlayer.getName(),
+                        activity.CurrentTrackInPlayer.getAuthors(),
+                        activity.CurrentTrackInPlayer.getId());
+                //if(activity.isPlaying && !activity.isPaused)
+                //    playAudio(activity.mediaPlayerFragment.url, activity);
+            }
+            else
+            {
+                Toast.makeText(activity, R.string.no_track_to_play, Toast.LENGTH_SHORT).show();
+            }
+            //activity.player.updateStatusBarInfo(activity.CurrentTrackInPlayer.getName(),activity.CurrentTrackInPlayer.getAuthors());
         }
     }
 

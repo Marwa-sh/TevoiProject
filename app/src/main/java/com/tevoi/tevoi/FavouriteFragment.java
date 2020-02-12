@@ -86,6 +86,8 @@ public class FavouriteFragment extends Fragment
         swipeRefreshLayout.setOnRefreshListener(this);
 
         lstFavouriteTracks = activity.storageManager.loadFavoriteListTracks(activity);
+        activity.lstTracks = activity.storageManager.loadFavoriteListTracks(activity);
+
         TOTAL_PAGES = lstFavouriteTracks.size()/ PAGE_SIZE;
 
         btnClearFavourite =rootView.findViewById(R.id.btn_clear_favourite);
@@ -460,7 +462,7 @@ public class FavouriteFragment extends Fragment
         Log.d("ResultTracks Next ", filter.getStringFilter());
 
         //Call<TrackResponseList> call = ((CustomApp) activity.getApplication()).getApiService().getListMainTrack(filter);
-        Call<TrackResponseList> call = Global.client.getFavouriteList(currentPage, PAGE_SIZE);
+        Call<TrackResponseList> call = Global.client.getFavouriteList(0, 0);
         call.enqueue(new Callback<TrackResponseList>() {
             public void onResponse(Call<TrackResponseList> call, Response<TrackResponseList> response)
             {
@@ -470,6 +472,7 @@ public class FavouriteFragment extends Fragment
                 adapter.clear();
                 adapter.notifyDataSetChanged();
                 lstTracks = tracks.getLstTrack();
+                activity.lstTracks = tracks.getLstTrack();
                 activity.storageManager.storeFavoriteListTracks(activity, lstTracks);
                 TOTAL_PAGES = lstFavouriteTracks.size()/ PAGE_SIZE;
 

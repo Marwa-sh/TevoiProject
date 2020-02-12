@@ -1363,6 +1363,11 @@ public class SideMenu extends AppCompatActivity
         mediaPlayerFragment.imgBtnNextClick(view);
     }
 
+    public void imgBtnShuffleClick(View view) {
+        mediaPlayerFragment.imgBtnShuffleClick(view);
+    }
+
+
     public void imgBtnAddtoListClick(View view) {
         mediaPlayerFragment.imgBtnAddtoListClick(view);
     }
