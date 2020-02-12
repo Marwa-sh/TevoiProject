@@ -36,6 +36,9 @@
                 android:paddingTop="4dp"
                 android:src="@mipmap/white_add_to_filter" />
         </LinearLayout>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/main_swiperefresh_userlist"
             android:layout_width="match_parent"
@@ -46,17 +49,31 @@
             android:layout_height="match_parent"
             >
         </com.tevoi.tevoi.model.RecyclerViewEmptySupport>
+
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-        <TextView android:id="@+id/user_lists_empty"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout_emptyView"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:layout_gravity="center"
-            android:textSize="16dp"
-            android:paddingTop="@dimen/text_empty_list"
-            android:text="@string/empty_list"
-            />
+            android:layout_height="wrap_content">
+
+            <ScrollView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView android:id="@+id/user_lists_empty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:layout_gravity="center"
+                    android:textSize="16dp"
+                    android:paddingTop="@dimen/text_empty_list"
+                    android:text="@string/empty_list"
+                    />
+
+            </ScrollView>
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        </RelativeLayout>
         <ProgressBar
             android:id="@+id/main_progress_list_tracks"
             android:layout_width="wrap_content"

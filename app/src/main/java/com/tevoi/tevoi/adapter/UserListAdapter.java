@@ -249,6 +249,7 @@ public class UserListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     alertDialog.show();*/
                     //endregion
 
+                    final int i = getAdapterPosition();
 
                     LayoutInflater layoutInflater = LayoutInflater.from(activity);
                     View promptView = layoutInflater.inflate(R.layout.layout_user_list_remove, null);
@@ -266,7 +267,6 @@ public class UserListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                             activity.mProgressDialog.setMessage(activity.getResources().getString( R.string.loader_msg));
                             activity.mProgressDialog.show();
                             // btnAdd1 has been clicked
-                            final int i = getAdapterPosition();
 
                             Call<IResponse> call = Global.client.DeleteUserList(userLists.get(i).getId());
                             call.enqueue(new Callback<IResponse>(){

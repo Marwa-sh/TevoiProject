@@ -107,8 +107,8 @@ public interface ApiInterface {
     @GET("api/Services/AddUserList")
     Call<IResponse> AddUserList(@Query("ListName") String ListName);
 
-    @GET("api/Services/AddUserListResponse")
-    Call<AddUserListResponse> AddUserListResponse(@Query("ListName") String ListName);
+    @GET("api/Services/AddGetUserList")
+    Call<AddUserListResponse> AddGetUserList(@Query("ListName") String ListName);
 
     @GET("api/Services/EditUserList")
     Call<IResponse> EditUserList(@Query("ListId") int ListId, @Query("NewListName") String NewListName);
