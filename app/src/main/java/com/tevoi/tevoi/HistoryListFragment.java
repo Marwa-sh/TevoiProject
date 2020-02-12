@@ -487,10 +487,12 @@ public class HistoryListFragment extends Fragment
                 TOTAL_PAGES = lstHistoryTracks.size()/ PAGE_SIZE;
 
                 loadFirstPage();
-            }
+                swipeRefreshLayout.setRefreshing(false);
+                }
             public void onFailure(Call<TrackResponseList> call, Throwable t)
             {
                 //activity.mProgressDialog.dismiss();
+                swipeRefreshLayout.setRefreshing(false);
                 Toast.makeText(getContext(),activity.getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
             }
         });

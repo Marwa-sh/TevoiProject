@@ -78,6 +78,7 @@ public class Global {
 
     public static String UserUILanguage = "en";
     public static String UserTrackLanguage = "en-US";
+    public static String UserNewUILanguage = "en";
 
 
     public static final String Licence = "";
