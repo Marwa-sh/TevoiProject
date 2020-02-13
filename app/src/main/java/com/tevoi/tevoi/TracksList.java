@@ -48,6 +48,7 @@ import android.animation.Animator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.SortedMap;
 import java.util.concurrent.TimeoutException;
@@ -487,8 +488,12 @@ public class TracksList extends Fragment
             {
                 if(o1.getCreationDate()== null && o2.getCreationDate() == null )
                     return  0;
-                else
-                    return o1.getCreationDate().compareTo(o2.getCreationDate());
+                else {
+                    Date d1 = new Date(o1.getCreationDate());
+                    Date d2 = new Date(o2.getCreationDate());
+                    int d =  d1.compareTo(d2);
+                    return d;
+                }
                 //Integer.compare((int)o1.getRate(), (int)o2.getRate());
             }
 

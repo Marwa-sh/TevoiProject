@@ -20,7 +20,17 @@ public class PartnerObject
     @Expose
     @SerializedName("Logo")
     private String Logo;
+    @Expose
+    @SerializedName("CreationDate")
+    private String CreationDate;
 
+    public String getCreationDate() {
+        return CreationDate;
+    }
+
+    public void setCreationDate(String creationDate) {
+        CreationDate = creationDate;
+    }
 
     public int getNumberOfTracks() {
         return NumberOfTracks;
