@@ -259,7 +259,6 @@ public class UserListFragment extends Fragment
         recyclerView.setEmptyView(mEmptyViewContainer);
         //emptyView.setVisibility(View.INVISIBLE);
 
-
         List<UserListObject> lists = new ArrayList<>();
 
 
