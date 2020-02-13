@@ -127,7 +127,7 @@ public class NotificationFragment extends Fragment {
             }
         });*/
 
-        recyclerView.setAdapter(adapter);
+        //recyclerView.setAdapter(adapter);
         SideMenu activity = (SideMenu)getActivity();
         adapter = new NotificationTypeAdapter(lstNotification,activity);
         recyclerView.setAdapter(adapter);
