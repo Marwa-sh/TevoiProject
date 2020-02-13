@@ -35,6 +35,7 @@
     <string name="quick_tour">Quick tour</string>
     <string name="under_construction">This page is under construction</string>
     <string name="play_now_list_isempty">Play Next List Is Empty</string>
+    <string name="there_is_only_one_track_in_the_list">There is only one track in these list</string>
     <string name="track_in_media_player_now">Track already in media player now</string>
     <string name="no_track_to_play">No track to play</string>
     <string name="track_has_no_text">Track has no text</string>

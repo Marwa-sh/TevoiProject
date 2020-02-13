@@ -157,8 +157,9 @@
             android:layout_height="match_parent"
             android:background="@null"
             android:src="@mipmap/car_shffle"
-            android:layout_marginVertical="1dp"
             android:layout_weight="1"
+            android:layout_marginVertical="1dp"
+            android:onClick="imgBtnShuffleClick"
             android:tint="@color/tevoiBrownDark"
             />
 

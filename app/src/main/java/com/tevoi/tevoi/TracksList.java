@@ -150,6 +150,7 @@ public class TracksList extends Fragment
         swipeRefreshLayout.setOnRefreshListener(this);
 
 
+        activity.lstTracks = activity.storageManager.loadListTracks(activity);
         lstTracks = activity.storageManager.loadListTracks(activity);
         TOTAL_PAGES = lstTracks.size()/ PAGE_SIZE;
 
@@ -478,6 +479,7 @@ public class TracksList extends Fragment
 
     public void changeTabToNew(View view) {
         active_tab = 0;
+
         Collections.sort(lstTracks, new Comparator<TrackObject>() {
             @Override
             public int compare(TrackObject o1, TrackObject o2)
@@ -732,6 +734,7 @@ public class TracksList extends Fragment
                 adapter.clear();
                 adapter.notifyDataSetChanged();
                 lstTracks = tracks.getLstTrack();
+                activity.lstTracks = tracks.getLstTrack();
                 activity.storageManager.storeListTracks(activity, lstTracks);
                 // TODO order by active tab
                 loadFirstPage(active_tab);

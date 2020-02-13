@@ -511,7 +511,7 @@ public class MediaPlayerFragment extends Fragment {
             String timeFormat = GetTimeFormat(activity.player.mMediaPlayer.getDuration()/ 1000);
             fullTime.setText(timeFormat);
             activity.isPlaying = true; activity.isPaused = false;
-            playButton.setImageResource(R.drawable.baseline_pause_24);
+            playButton.setImageResource(R.mipmap.car_pause_normal_white);
         }
         refreshCurrentTrackInfo();
     }
@@ -520,6 +520,20 @@ public class MediaPlayerFragment extends Fragment {
     {
         SideMenu activity =  (SideMenu) getContext();
         HelperFunctions.getNextTrack(activity, currentTrack.getId());
+        if(activity.player != null)
+        {
+            seekBar.setMax(activity.player.mMediaPlayer.getDuration()/ 1000);
+            String timeFormat = GetTimeFormat(activity.player.mMediaPlayer.getDuration()/ 1000);
+            fullTime.setText(timeFormat);
+            activity.isPlaying = true; activity.isPaused = false;
+            playButton.setImageResource(R.mipmap.car_pause_normal_white);
+        }
+        refreshCurrentTrackInfo();
+    }
+    public  void imgBtnShuffleClick(View view)
+    {
+        SideMenu activity =  (SideMenu) getContext();
+        HelperFunctions.getShuffleTrack(activity, currentTrack.getId());
         if(activity.player != null)
         {
             seekBar.setMax(activity.player.mMediaPlayer.getDuration()/ 1000);

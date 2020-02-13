@@ -60,7 +60,7 @@ dependencies {
 
     // add SDKs for any other desired Firebase products
     // https://firebase.google.com/docs/android/setup#available-libraries
-    compile 'me.biubiubiu.justifytext:library:1.1'
+//    compile 'me.biubiubiu.justifytext:library:1.1'
 }
 // Add the following line to the bottom of the file:
 //apply plugin: 'com.google.gms.google-services'  // Google Play services Gradle plugin

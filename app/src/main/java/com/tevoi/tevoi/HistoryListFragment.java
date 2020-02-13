@@ -85,6 +85,8 @@ public class HistoryListFragment extends Fragment
         swipeRefreshLayout.setOnRefreshListener(this);
 
         lstHistoryTracks = activity.storageManager.loadHistoryListTracksnew(activity);
+        activity.lstTracks = activity.storageManager.loadHistoryListTracksnew(activity);
+
         TOTAL_PAGES = lstHistoryTracks.size()/ PAGE_SIZE;
 
         btnClearHistory.setOnClickListener(new View.OnClickListener()
@@ -474,7 +476,7 @@ public class HistoryListFragment extends Fragment
             }
         });*/
         currentPage = 0;
-        Call<TrackResponseList> call = Global.client.getHistoryList(currentPage, PAGE_SIZE);
+        Call<TrackResponseList> call = Global.client.getHistoryList(0, 0);
         call.enqueue(new Callback <TrackResponseList>(){
             public void onResponse(Call<TrackResponseList> call, Response<TrackResponseList> response) {
                 //generateDataList(response.body());
@@ -483,6 +485,7 @@ public class HistoryListFragment extends Fragment
                 adapter.clear();
                 adapter.notifyDataSetChanged();
                 lstHistoryTracks = tracks.getLstTrack();
+                activity.lstTracks = tracks.getLstTrack();
                 activity.storageManager.storeHistoryListTracks(activity, lstHistoryTracks);
                 TOTAL_PAGES = lstHistoryTracks.size()/ PAGE_SIZE;
 
