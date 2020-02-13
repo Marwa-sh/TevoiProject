@@ -59,6 +59,7 @@
             android:textColor="@color/fontColor"
             android:onClick="changeToPopularHistory"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/main_swiperefresh_history_tracks"
         android:layout_width="match_parent"
