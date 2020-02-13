@@ -490,7 +490,9 @@ public class TracksList extends Fragment
                     return o1.getCreationDate().compareTo(o2.getCreationDate());
                 //Integer.compare((int)o1.getRate(), (int)o2.getRate());
             }
+
         });
+        activity.lstTracks = lstTracks;
         activateTab(0);
     }
 
@@ -500,9 +502,12 @@ public class TracksList extends Fragment
             @Override
             public int compare(TrackObject o1, TrackObject o2) {
                 return Integer.compare((int)o1.getRate(), (int)o2.getRate());
+
                 //Integer.compare((int)o1.getRate(), (int)o2.getRate());
             }
+
         });
+        activity.lstTracks = lstTracks;
         activateTab(1);
     }
 
@@ -515,6 +520,7 @@ public class TracksList extends Fragment
                 //Integer.compare((int)o1.getRate(), (int)o2.getRate());
             }
         });
+        activity.lstTracks = lstTracks;
         activateTab(2);
     }
 

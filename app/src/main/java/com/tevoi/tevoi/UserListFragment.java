@@ -53,6 +53,7 @@ public class UserListFragment extends Fragment
     LinearLayoutManager linearLayoutManager;
     ProgressBar progressBar;
     SwipeRefreshLayout swipeRefreshLayout;
+    private SwipeRefreshLayout mEmptyViewContainer;
 
     LinearLayout errorLayout;
     TextView txtError;
@@ -75,7 +76,6 @@ public class UserListFragment extends Fragment
     ImageButton imgBtnAddUserList;
     boolean isFirtsTime = true;
 
-    private SwipeRefreshLayout mEmptyViewContainer;
 
     View rootView;
     @Override
@@ -203,6 +203,8 @@ public class UserListFragment extends Fragment
                                         {
                                             activity.mProgressDialog.setMessage(getResources().getString(R.string.loader_msg));
                                             activity.mProgressDialog.show();
+
+
 
                                             Call<AddUserListResponse> call = Global.client.AddGetUserList(listName);
                                             call.enqueue(new Callback<AddUserListResponse>(){
@@ -349,12 +351,12 @@ public class UserListFragment extends Fragment
 
         refreshLayout.setOnRefreshListener(this);
 
-        refreshLayout.setColorScheme(
+        /*refreshLayout.setColorScheme(
                 android.R.color.holo_blue_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_green_light,
                 android.R.color.holo_red_light);
-
+*/
     }
 
     public  void GetUserLists()
@@ -423,17 +425,15 @@ public class UserListFragment extends Fragment
         progressBar.setVisibility(View.GONE);
         List<UserListObject> lstFirstPage =  HelperFunctions.getPageUserList(Userlst, 0 , PAGE_SIZE );
         adapter.addAll(lstFirstPage);
+        recyclerView.triggerObserver();
+
         //adapter.addAll(lstTracks);
         /*if(lstFirstPage.size() == 0) {
-
             recyclerView.setEmptyView(mEmptyViewContainer);
         }*/
-        recyclerView.triggerObserver();
         //mEmptyViewContainer.setRefreshing(false);
         /*if (currentPage <= TOTAL_PAGES) adapter.addLoadingFooter();
         else isLastPage = true;*/
-
-
     }
 
     private void loadNextPage() {
@@ -497,6 +497,8 @@ public class UserListFragment extends Fragment
                 //adapter.notifyDataSetChanged();
                 Userlst = UserList.getLstUserList();
                 activity.storageManager.storeUsetList(activity, Userlst);
+                TOTAL_PAGES = Userlst.size()/ PAGE_SIZE;
+
                 loadFirstPage();
 
                 swipeRefreshLayout.setRefreshing(false);
@@ -505,6 +507,7 @@ public class UserListFragment extends Fragment
             public void onFailure(Call<UserListResponse> call, Throwable t)
             {
                 swipeRefreshLayout.setRefreshing(false);
+                mEmptyViewContainer.setRefreshing(false);
                 //activity.mProgressDialog.dismiss();
             }
         });
