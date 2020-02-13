@@ -53,6 +53,7 @@ public class UserListFragment extends Fragment
     LinearLayoutManager linearLayoutManager;
     ProgressBar progressBar;
     SwipeRefreshLayout swipeRefreshLayout;
+    private SwipeRefreshLayout mEmptyViewContainer;
 
     LinearLayout errorLayout;
     TextView txtError;
@@ -75,7 +76,6 @@ public class UserListFragment extends Fragment
     ImageButton imgBtnAddUserList;
     boolean isFirtsTime = true;
 
-    private SwipeRefreshLayout mEmptyViewContainer;
 
     View rootView;
     @Override
@@ -332,12 +332,12 @@ public class UserListFragment extends Fragment
 
         refreshLayout.setOnRefreshListener(this);
 
-        refreshLayout.setColorScheme(
+        /*refreshLayout.setColorScheme(
                 android.R.color.holo_blue_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_green_light,
                 android.R.color.holo_red_light);
-
+*/
     }
 
     public  void GetUserLists()
@@ -406,10 +406,7 @@ public class UserListFragment extends Fragment
         List<UserListObject> lstFirstPage =  HelperFunctions.getPageUserList(Userlst, 0 , PAGE_SIZE );
         adapter.addAll(lstFirstPage);
         //adapter.addAll(lstTracks);
-        if(lstFirstPage.size() == 0) {
 
-            recyclerView.setEmptyView(mEmptyViewContainer);
-        }
         recyclerView.triggerObserver();
         //mEmptyViewContainer.setRefreshing(false);
         /*if (currentPage <= TOTAL_PAGES) adapter.addLoadingFooter();
