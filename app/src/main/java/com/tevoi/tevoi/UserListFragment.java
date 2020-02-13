@@ -126,15 +126,23 @@ public class UserListFragment extends Fragment
                             alertD.cancel();
                             activity.mProgressDialog.setMessage(activity.getResources().getString( R.string.loader_msg));
                             activity.mProgressDialog.show();
-                            activity.storageManager.deleteUserList(activity);
-                            adapter.clear();
+
                             Call<IResponse> call = Global.client.ClearUserList();
                             call.enqueue(new Callback<IResponse>() {
                                 public void onResponse(Call<IResponse> call, Response<IResponse> response) {
                                     //generateDataList(response.body());
                                     SideMenu activity = (SideMenu) getActivity();
                                     IResponse result = response.body();
-                                    Toast.makeText(activity,activity.getResources().getString(R.string.cleared_successfully), Toast.LENGTH_SHORT).show();
+                                    if(result.getNumber()==0)
+                                    {
+                                        activity.storageManager.deleteUserList(activity);
+                                        adapter.clear();
+                                        Toast.makeText(activity,activity.getResources().getString(R.string.cleared_successfully), Toast.LENGTH_SHORT).show();
+                                    }
+                                    else
+                                    {
+                                        Toast.makeText(activity,activity.getResources().getString(R.string.general_error), Toast.LENGTH_SHORT).show();
+                                    }
                                     activity.mProgressDialog.dismiss();
                             }
 
