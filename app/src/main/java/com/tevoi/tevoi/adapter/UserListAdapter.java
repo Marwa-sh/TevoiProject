@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +23,7 @@ import com.tevoi.tevoi.UserListTracksFragment;
 import com.tevoi.tevoi.Utils.Global;
 import com.tevoi.tevoi.model.IResponse;
 import com.tevoi.tevoi.model.LoadingVH;
+import com.tevoi.tevoi.model.RecyclerViewEmptySupport;
 import com.tevoi.tevoi.model.UserListObject;
 
 import java.util.List;
@@ -44,14 +47,17 @@ public class UserListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private List<UserListObject> userLists;
     private SideMenu activity;
 
+    RecyclerViewEmptySupport recyclerView;
+
     public List<UserListObject> getUserLists()
     {
         return  userLists;
     }
 
-    public UserListAdapter(List<UserListObject> userLists, SideMenu activity) {
+    public UserListAdapter(List<UserListObject> userLists, SideMenu activity,RecyclerViewEmptySupport recyclerView) {
         this.userLists = userLists;
         this.activity = activity;
+        this.recyclerView = recyclerView;
     }
 
     @Override
@@ -267,7 +273,7 @@ public class UserListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                             activity.mProgressDialog.setMessage(activity.getResources().getString( R.string.loader_msg));
                             activity.mProgressDialog.show();
                             // btnAdd1 has been clicked
-
+                            Log.d("UserListId", "" +userLists.get(i).getId());
                             Call<IResponse> call = Global.client.DeleteUserList(userLists.get(i).getId());
                             call.enqueue(new Callback<IResponse>(){
                                 public void onResponse(Call<IResponse> call, Response<IResponse> response) {
@@ -278,8 +284,9 @@ public class UserListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                                         Toast.makeText(activity,activity.getResources().getString(R.string.deleted_successfully), Toast.LENGTH_SHORT).show();
                                         userLists.remove(i);
                                         activity.storageManager.storeUsetList(activity,userLists);
+                                        recyclerView.triggerObserver();
 //                                        activity.storageManager.removeUserList(activity,userLists.get(i));
-                                        activity.notifyUserListAdapter();
+                                        //activity.notifyUserListAdapter();
 
                                     }
                                     else

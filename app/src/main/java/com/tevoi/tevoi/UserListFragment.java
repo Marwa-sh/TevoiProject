@@ -137,6 +137,7 @@ public class UserListFragment extends Fragment
                                     {
                                         activity.storageManager.deleteUserList(activity);
                                         adapter.clear();
+                                        recyclerView.triggerObserver();
                                         Toast.makeText(activity,activity.getResources().getString(R.string.cleared_successfully), Toast.LENGTH_SHORT).show();
                                     }
                                     else
@@ -271,7 +272,7 @@ public class UserListFragment extends Fragment
 
         //List<UserListObject> lstFirstPage =  HelperFunctions.getPageUserList(Userlst, 0 , PAGE_SIZE );
 
-        adapter = new UserListAdapter(lists, activity);
+        adapter = new UserListAdapter(lists, activity, recyclerView);
 
 
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -364,7 +365,7 @@ public class UserListFragment extends Fragment
                 //generateDataList(response.body());
                 UserListResponse userLists =response.body();
                 int x=userLists.getLstUserList().size();
-                adapter = new UserListAdapter(userLists.getLstUserList(), activity);
+                adapter = new UserListAdapter(userLists.getLstUserList(), activity,recyclerView);
                 recyclerView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
                 activity.mProgressDialog.dismiss();
