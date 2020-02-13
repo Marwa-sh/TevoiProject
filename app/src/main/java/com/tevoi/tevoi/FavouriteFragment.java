@@ -1,6 +1,7 @@
 
 package com.tevoi.tevoi;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import androidx.fragment.app.Fragment;
@@ -70,6 +71,8 @@ public class FavouriteFragment extends Fragment
     ImageButton btnClearFavourite;
 
     SwipeRefreshLayout swipeRefreshLayout;
+    private SwipeRefreshLayout EmptyViewswipeRefreshLayout;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -85,8 +88,11 @@ public class FavouriteFragment extends Fragment
         swipeRefreshLayout = rootView.findViewById(R.id.main_swiperefresh_favorite_tracks);
         swipeRefreshLayout.setOnRefreshListener(this);
 
-        lstFavouriteTracks = activity.storageManager.loadFavoriteListTracks(activity);
-        activity.lstTracks = activity.storageManager.loadFavoriteListTracks(activity);
+        EmptyViewswipeRefreshLayout = rootView.findViewById(R.id.swipeRefreshLayout_emptyView_favourite);
+        onCreateSwipeToRefresh(EmptyViewswipeRefreshLayout);
+
+        lstFavouriteTracks = activity.storageManager.loadFavoriteListTracksnew(activity);
+        activity.lstTracks = activity.storageManager.loadFavoriteListTracksnew(activity);
 
         TOTAL_PAGES = lstFavouriteTracks.size()/ PAGE_SIZE;
 
@@ -98,6 +104,76 @@ public class FavouriteFragment extends Fragment
             @Override
             public void onClick(View v)
             {
+
+                if(adapter.getTracksList().size() == 0)
+                {
+                    Toast.makeText(activity, R.string.empty_list, Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    LayoutInflater layoutInflater = LayoutInflater.from(activity);
+                    View promptView = layoutInflater.inflate(R.layout.layout_favourite_clear_favourite, null);
+
+                    final AlertDialog alertD = new AlertDialog.Builder(activity).create();
+
+                    ImageButton btnYes = (ImageButton) promptView.findViewById(R.id.imgBtnYes);
+
+                    ImageButton btnNo = (ImageButton) promptView.findViewById(R.id.imgBtnNo);
+
+                    btnYes.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {
+
+                            alertD.cancel();
+                            activity.mProgressDialog.setMessage(activity.getResources().getString( R.string.loader_msg));
+                            activity.mProgressDialog.show();
+
+                            Call<IResponse> call = Global.client.RemoveAllFavourite();
+                            call.enqueue(new Callback <IResponse>(){
+                                public void onResponse(Call<IResponse> call, Response<IResponse> response) {
+//                        generateDataList(response.body());
+                                    SideMenu activity = (SideMenu) getActivity();
+                                    IResponse result = response.body();
+                                    if(result.getNumber()==0)
+                                    {
+                                        activity.storageManager.clearFavoriteListTracks(activity);
+                                        Toast.makeText(activity, activity.getResources().getString(R.string.cleared_successfully), Toast.LENGTH_SHORT).show();
+                                        adapter.clear();
+                                        recyclerView.triggerObserver();
+                                        activity.lstTracks =  new ArrayList<TrackObject>();
+                                        //activity.storageManager.clearFavoriteListTracks(activity);
+                                    }
+                                    else {
+
+                                        Toast.makeText(activity,activity.getResources().getString(R.string.general_error), Toast.LENGTH_SHORT).show();
+
+                                    }
+                                    activity.mProgressDialog.dismiss();
+//                        doRefresh();
+                                }
+                                public void onFailure(Call<IResponse> call, Throwable t)
+                                {
+                                    activity.mProgressDialog.dismiss();
+                                    Toast.makeText(getContext(),"something went wrong", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    });
+                    btnNo.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {
+
+                            // btnAdd2 has been clicked
+                            alertD.cancel();
+                        }
+                    });
+                    alertD.setView(promptView);
+                    alertD.show();
+                }
+            }
+            //////////////////////
+            /*@Override
+            public void onClick(View v)
+            {
+
                 int size = lstFavouriteTracks.size();
                //activity.mProgressDialog.setMessage(getResources().getString( R.string.loader_msg)); activity.mProgressDialog.show();
 
@@ -109,10 +185,10 @@ public class FavouriteFragment extends Fragment
 
                 adapter.notifyDataSetChanged();
                 activity.storageManager.clearFavoriteListTracks(activity);
-/*                adapter.notifyDataSetChanged();
-                adapter.notifyItemRangeRemoved(0, size);*/
+*//*                adapter.notifyDataSetChanged();
+                adapter.notifyItemRangeRemoved(0, size);*//*
 
-               /* Call<IResponse> call = Global.client.RemoveAllFavourite();
+               *//* Call<IResponse> call = Global.client.RemoveAllFavourite();
                 call.enqueue(new Callback <IResponse>(){
                     public void onResponse(Call<IResponse> call, Response<IResponse> response) {
 //                        generateDataList(response.body());
@@ -121,10 +197,10 @@ public class FavouriteFragment extends Fragment
                         Toast.makeText(activity, activity.getResources().getString(R.string.cleared_successfully), Toast.LENGTH_SHORT).show();
                         activity.mProgressDialog.dismiss();
                         // TODO ask marwa
-*//*                        adapter.getTracksList().clear();
+*//**//*                        adapter.getTracksList().clear();
                         adapter.clear();
                         adapter.notifyDataSetChanged();
-                        adapter.notifyItemRangeRemoved(0, size);*//*
+                        adapter.notifyItemRangeRemoved(0, size);*//**//*
                         //activity.storageManager.clearFavoriteListTracks(activity);
 
 //                        doRefresh();
@@ -134,10 +210,10 @@ public class FavouriteFragment extends Fragment
                         activity.mProgressDialog.dismiss();
                         Toast.makeText(getContext(),"something went wrong", Toast.LENGTH_SHORT).show();
                     }
-                });*/
+                });*//*
 
 
-            }
+            }*/
         });
 
         //abd
@@ -153,7 +229,9 @@ public class FavouriteFragment extends Fragment
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
         recyclerView.setAdapter(adapter);
-        emptyView.setVisibility(View.INVISIBLE);
+        recyclerView.setEmptyView(EmptyViewswipeRefreshLayout);
+//        emptyView.setVisibility(View.INVISIBLE);
+
 
         recyclerView.addOnScrollListener(new PaginationScrollListener(linearLayoutManager)
         {
@@ -180,6 +258,8 @@ public class FavouriteFragment extends Fragment
             }
         });
         loadFirstPage();
+
+
         /*// mocking network delay for API call
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -215,6 +295,17 @@ public class FavouriteFragment extends Fragment
         return  rootView;
     }
 
+    private void onCreateSwipeToRefresh(SwipeRefreshLayout refreshLayout) {
+
+        refreshLayout.setOnRefreshListener(this);
+
+        /*refreshLayout.setColorScheme(
+                android.R.color.holo_blue_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_green_light,
+                android.R.color.holo_red_light);
+*/
+    }
     public void changeTabToNewFavourite(View view)
     {
         SideMenu activity = (SideMenu) getActivity();
@@ -280,16 +371,17 @@ public class FavouriteFragment extends Fragment
 
     private void loadFirstPage()
     {
-
+        currentPage = 0;
         progressBar.setVisibility(View.GONE);
         List<TrackObject> lstFirstPage =  HelperFunctions.getPage(lstFavouriteTracks, 0 , PAGE_SIZE );
         adapter.addAll(lstFirstPage);
+        recyclerView.triggerObserver();
 
-        if(lstFirstPage.size() == 0) {
+/*        if(lstFirstPage.size() == 0) {
             View v = rootView.findViewById(R.id.favourite_list_empty);
             v.setVisibility(View.VISIBLE);
             recyclerView.setEmptyView(v);
-        }
+        }*/
         //adapter.addAll(lstTracks);
 
         /*if (currentPage <= TOTAL_PAGES) adapter.addLoadingFooter();
@@ -346,6 +438,7 @@ public class FavouriteFragment extends Fragment
 
         List<TrackObject> lstNextPage = HelperFunctions.getPage(lstFavouriteTracks, currentPage , PAGE_SIZE );
         adapter.addAll(lstNextPage);
+        Log.d("","");
       /*  adapter.addAll(lstTracks);*/
         /*if (currentPage != TOTAL_PAGES) adapter.addLoadingFooter();
         else isLastPage = true;*/
@@ -434,7 +527,7 @@ public class FavouriteFragment extends Fragment
     }
     private void getRefreshListHistoryTrack()
     {
-        EditText txtFilter = rootView.findViewById(R.id.txt_search_filter_value);
+       /* EditText txtFilter = rootView.findViewById(R.id.txt_search_filter_value);
         CheckBox chkIsLocationEnabled = rootView.findViewById(R.id.checkBoxLocationEnable);
 
 
@@ -458,7 +551,7 @@ public class FavouriteFragment extends Fragment
         }
         filter.TrackTypeId =1;
         filter.Index = 0; filter.Size = 0;
-        Log.d("ResultTracks Next ", filter.getStringFilter());
+        Log.d("ResultTracks Next ", filter.getStringFilter());*/
 
         //Call<TrackResponseList> call = ((CustomApp) activity.getApplication()).getApiService().getListMainTrack(filter);
         Call<TrackResponseList> call = Global.client.getFavouriteList(0, 0);
@@ -477,10 +570,13 @@ public class FavouriteFragment extends Fragment
 
                 loadFirstPage();
                 swipeRefreshLayout.setRefreshing(false);
+                EmptyViewswipeRefreshLayout.setRefreshing(false);
             }
             public void onFailure(Call<TrackResponseList> call, Throwable t)
             {
                 swipeRefreshLayout.setRefreshing(false);
+                EmptyViewswipeRefreshLayout.setRefreshing(false);
+
             }
         });
     }
