@@ -195,8 +195,6 @@ public class UserListFragment extends Fragment
                                             activity.mProgressDialog.setMessage(getResources().getString(R.string.loader_msg));
                                             activity.mProgressDialog.show();
 
-
-
                                             Call<AddUserListResponse> call = Global.client.AddGetUserList(listName);
                                             call.enqueue(new Callback<AddUserListResponse>(){
                                                 public void onResponse(Call<AddUserListResponse> call, Response<AddUserListResponse> response) {
@@ -207,6 +205,7 @@ public class UserListFragment extends Fragment
                                                         Toast.makeText(getContext(),R.string.user_list_added_successfully, Toast.LENGTH_LONG).show();
                                                         adapter.add(result.getUserList());
                                                         recyclerView.triggerObserver();
+                                                        //adapter.notifyDataSetChanged();
                                                         activity.mProgressDialog.dismiss();
                                                     } else {
                                                         Toast.makeText(activity, "Error", Toast.LENGTH_LONG).show();
