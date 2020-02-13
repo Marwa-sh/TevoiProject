@@ -431,7 +431,6 @@ public class FavouriteFragment extends Fragment
         //adapter.notifyDataSetChanged();
         //TODO loadfirstpage
 //        loadFirstPage(k);
-        swipeRefreshLayout.setRefreshing(false);
     }
     private void getRefreshListHistoryTrack()
     {

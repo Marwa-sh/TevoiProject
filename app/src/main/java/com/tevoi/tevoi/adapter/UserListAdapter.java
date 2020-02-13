@@ -249,7 +249,7 @@ public class UserListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     alertDialog.show();*/
                     //endregion
 
-                    final int i = getAdapterPosition();
+                    final int i = getPosition();
 
                     LayoutInflater layoutInflater = LayoutInflater.from(activity);
                     View promptView = layoutInflater.inflate(R.layout.layout_user_list_remove, null);

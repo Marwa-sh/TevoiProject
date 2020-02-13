@@ -76,6 +76,7 @@ public class UserListFragment extends Fragment
     ImageButton imgBtnAddUserList;
     boolean isFirtsTime = true;
 
+    private SwipeRefreshLayout mEmptyViewContainer;
 
     View rootView;
     @Override
@@ -126,15 +127,23 @@ public class UserListFragment extends Fragment
                             alertD.cancel();
                             activity.mProgressDialog.setMessage(activity.getResources().getString( R.string.loader_msg));
                             activity.mProgressDialog.show();
-                            activity.storageManager.deleteUserList(activity);
-                            adapter.clear();
+
                             Call<IResponse> call = Global.client.ClearUserList();
                             call.enqueue(new Callback<IResponse>() {
                                 public void onResponse(Call<IResponse> call, Response<IResponse> response) {
                                     //generateDataList(response.body());
                                     SideMenu activity = (SideMenu) getActivity();
                                     IResponse result = response.body();
-                                    Toast.makeText(activity,activity.getResources().getString(R.string.cleared_successfully), Toast.LENGTH_SHORT).show();
+                                    if(result.getNumber()==0)
+                                    {
+                                        activity.storageManager.deleteUserList(activity);
+                                        adapter.clear();
+                                        Toast.makeText(activity,activity.getResources().getString(R.string.cleared_successfully), Toast.LENGTH_SHORT).show();
+                                    }
+                                    else
+                                    {
+                                        Toast.makeText(activity,activity.getResources().getString(R.string.general_error), Toast.LENGTH_SHORT).show();
+                                    }
                                     activity.mProgressDialog.dismiss();
                             }
 
@@ -206,6 +215,8 @@ public class UserListFragment extends Fragment
                                                     {
                                                         Toast.makeText(getContext(),R.string.user_list_added_successfully, Toast.LENGTH_LONG).show();
                                                         adapter.add(result.getUserList());
+                                                        recyclerView.triggerObserver();
+                                                        //adapter.notifyDataSetChanged();
                                                         activity.mProgressDialog.dismiss();
                                                     } else {
                                                         Toast.makeText(activity, "Error", Toast.LENGTH_LONG).show();
@@ -258,13 +269,18 @@ public class UserListFragment extends Fragment
         recyclerView.setEmptyView(mEmptyViewContainer);
         //emptyView.setVisibility(View.INVISIBLE);
 
-
         List<UserListObject> lists = new ArrayList<>();
+
+
+        //List<UserListObject> lstFirstPage =  HelperFunctions.getPageUserList(Userlst, 0 , PAGE_SIZE );
+
         adapter = new UserListAdapter(lists, activity);
 
 
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
+        //emptyView.setVisibility(View.INVISIBLE);
+
 
         recyclerView.addOnScrollListener(new PaginationScrollListener(linearLayoutManager)
         {
@@ -402,11 +418,15 @@ public class UserListFragment extends Fragment
 
     private void loadFirstPage()
     {
+        currentPage = 0;
         progressBar.setVisibility(View.GONE);
         List<UserListObject> lstFirstPage =  HelperFunctions.getPageUserList(Userlst, 0 , PAGE_SIZE );
         adapter.addAll(lstFirstPage);
         //adapter.addAll(lstTracks);
+        /*if(lstFirstPage.size() == 0) {
 
+            recyclerView.setEmptyView(mEmptyViewContainer);
+        }*/
         recyclerView.triggerObserver();
         //mEmptyViewContainer.setRefreshing(false);
         /*if (currentPage <= TOTAL_PAGES) adapter.addLoadingFooter();
@@ -473,7 +493,7 @@ public class UserListFragment extends Fragment
                 UserListResponse UserList = response.body();
 
                 adapter.clear();
-                adapter.notifyDataSetChanged();
+                //adapter.notifyDataSetChanged();
                 Userlst = UserList.getLstUserList();
                 activity.storageManager.storeUsetList(activity, Userlst);
                 loadFirstPage();
