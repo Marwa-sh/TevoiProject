@@ -49,6 +49,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.SortedMap;
 import java.util.concurrent.TimeoutException;
 
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -501,7 +502,7 @@ public class TracksList extends Fragment
         Collections.sort(lstTracks, new Comparator<TrackObject>() {
             @Override
             public int compare(TrackObject o1, TrackObject o2) {
-                return Integer.compare((int)o1.getRate(), (int)o2.getRate());
+                return -1*(Integer.compare((int)o1.getRate(), (int)o2.getRate()));
 
                 //Integer.compare((int)o1.getRate(), (int)o2.getRate());
             }
@@ -516,7 +517,7 @@ public class TracksList extends Fragment
         Collections.sort(lstTracks, new Comparator<TrackObject>() {
             @Override
             public int compare(TrackObject o1, TrackObject o2) {
-                return Integer.compare((int)o1.getListenCount(), (int)o2.getListenCount());
+                return -1*(Integer.compare((int)o1.getListenCount(), (int)o2.getListenCount()));
                 //Integer.compare((int)o1.getRate(), (int)o2.getRate());
             }
         });
