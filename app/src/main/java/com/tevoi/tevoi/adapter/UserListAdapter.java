@@ -273,7 +273,7 @@ public class UserListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                             activity.mProgressDialog.setMessage(activity.getResources().getString( R.string.loader_msg));
                             activity.mProgressDialog.show();
                             // btnAdd1 has been clicked
-                            Log.d("UserListId", "" +userLists.get(i).getId());
+                            Log.d("UserListId", "Delete=" +userLists.get(i).getId());
                             Call<IResponse> call = Global.client.DeleteUserList(userLists.get(i).getId());
                             call.enqueue(new Callback<IResponse>(){
                                 public void onResponse(Call<IResponse> call, Response<IResponse> response) {

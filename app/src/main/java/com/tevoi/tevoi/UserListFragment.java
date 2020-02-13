@@ -214,6 +214,9 @@ public class UserListFragment extends Fragment
                                                         Toast.makeText(getContext(),R.string.user_list_added_successfully, Toast.LENGTH_LONG).show();
                                                         adapter.add(result.getUserList());
                                                         recyclerView.triggerObserver();
+
+
+                                                        Log.d("UserListId=", "New=" + result.getUserList().getId());
                                                         //adapter.notifyDataSetChanged();
                                                         activity.mProgressDialog.dismiss();
                                                     } else {
@@ -434,7 +437,7 @@ public class UserListFragment extends Fragment
     }
 
     private void loadNextPage() {
-        adapter.removeLoadingFooter();
+        //adapter.removeLoadingFooter();
         isLoading = false;
 
         List<UserListObject> lstNextPage = HelperFunctions.getPageUserList(Userlst, currentPage , PAGE_SIZE );
