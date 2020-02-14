@@ -171,6 +171,9 @@ public class LoginActivity extends AppCompatActivity
                                 storageManager.storeFavoriteListTracks(LoginActivity.this, login.getLstFavouriteTracks());
                                 storageManager.storeHistoryListTracks(LoginActivity.this, login.getLstHistoryTracks());
                                 Global.UserNewUILanguage = storageManager.getLanguageUIPreference(LoginActivity.this);
+
+                                storageManager.storeBanner(LoginActivity.this, login.getBanner());
+
                                 Intent i = new Intent(getApplicationContext(),SideMenu.class);
                                 startActivity(i);
                                 setContentView(R.layout.activity_side_menu);

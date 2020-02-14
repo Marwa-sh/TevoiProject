@@ -16,15 +16,6 @@ public class LoginResponse  extends IResponse{
     private int NumberOfMinutes;
     @SerializedName("lstTracks")
     private List<TrackObject> lstTracks;
-
-    public void setLstHistoryTracks(List<TrackObject> lstHistoryTracks) {
-        this.lstHistoryTracks = lstHistoryTracks;
-    }
-
-    public List<TrackObject> getLstHistoryTracks() {
-        return lstHistoryTracks;
-    }
-
     @SerializedName("lstHistoryTracks")
     private List<TrackObject> lstHistoryTracks;
     @SerializedName("lstFavouriteTracks")
@@ -39,9 +30,26 @@ public class LoginResponse  extends IResponse{
     public List<MainTopic> lstMainTopic;
     @SerializedName("lstSubscripedPartners")
     public List<SubscipedPartnersObject> lstSubscripedPartners;
-
     @SerializedName("isShowHeardTracks")
     public boolean isShowHeardTracks;
+    @SerializedName("Banner")
+    private ListBannerResponse Banner;
+
+    public void setLstHistoryTracks(List<TrackObject> lstHistoryTracks) {
+        this.lstHistoryTracks = lstHistoryTracks;
+    }
+
+    public ListBannerResponse getBanner() {
+        return Banner;
+    }
+
+    public void setBanner(ListBannerResponse banner) {
+        Banner = banner;
+    }
+
+    public List<TrackObject> getLstHistoryTracks() {
+        return lstHistoryTracks;
+    }
 
     public void setAboutUs(String aboutUs) {
         AboutUs = aboutUs;

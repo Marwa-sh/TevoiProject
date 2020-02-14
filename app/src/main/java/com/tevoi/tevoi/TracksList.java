@@ -34,6 +34,7 @@ import com.tevoi.tevoi.Utils.HelperFunctions;
 import com.tevoi.tevoi.adapter.TracksAdapter;
 import com.tevoi.tevoi.listener.OnSwipeTouchListener;
 import com.tevoi.tevoi.model.CustomApp;
+import com.tevoi.tevoi.model.ListBannerResponse;
 import com.tevoi.tevoi.model.PaginationScrollListener;
 import com.tevoi.tevoi.model.RecyclerViewEmptySupport;
 import com.tevoi.tevoi.model.TrackFilter;
@@ -605,13 +606,27 @@ public class TracksList extends Fragment
         currentPage = 0;
         List<TrackObject> lstFirstPage = getPage(lstTracks, 0 , PAGE_SIZE );
         adapter.addAll(lstFirstPage);
-        //adapter.addAll(lstTracks);
         progressBar.setVisibility(View.GONE);
 
         /*if ( currentPage <= TOTAL_PAGES) adapter.addLoadingFooter();
         else isLastPage = true;*/
-
-
+        //ListBannerResponse banner = activity.storageManager.loadBanner(activity);
+        //showListBanner(banner.BannerImagePath, banner.BannerLink);
+// todo : show banner
+        Call<ListBannerResponse> call = Global.client.GetBannerRandomly();
+        call.enqueue(new Callback<ListBannerResponse>() {
+            public void onResponse(Call<ListBannerResponse> call, Response<ListBannerResponse> response)
+            {
+                // replace old list tracks with new one from server
+                ListBannerResponse banner = response.body();
+                if(banner != null) {
+                    showListBanner(banner.BannerImagePath, banner.BannerLink);
+                }
+            }
+            public void onFailure(Call<ListBannerResponse> call, Throwable t)
+            {
+            }
+        });
     }
     private List<TrackObject> getPage(List<TrackObject> lst , int pageIndex, int size)
     {
@@ -643,6 +658,20 @@ public class TracksList extends Fragment
         progressBar.setVisibility(View.GONE);
 
         // todo : show banner
+        Call<ListBannerResponse> call = Global.client.GetBannerRandomly();
+        call.enqueue(new Callback<ListBannerResponse>() {
+            public void onResponse(Call<ListBannerResponse> call, Response<ListBannerResponse> response)
+            {
+                // replace old list tracks with new one from server
+                ListBannerResponse banner = response.body();
+                if(banner != null) {
+                    showListBanner(banner.BannerImagePath, banner.BannerLink);
+                }
+            }
+            public void onFailure(Call<ListBannerResponse> call, Throwable t)
+            {
+            }
+        });
         //showListBanner(tracks.getBanner().BannerImagePath, tracks.getBanner().BannerLink);
 
 
@@ -748,7 +777,8 @@ public class TracksList extends Fragment
                 lstTracks = tracks.getLstTrack();
                 activity.lstTracks = tracks.getLstTrack();
                 activity.storageManager.storeListTracks(activity, lstTracks);
-                // TODO order by active tab
+                showListBanner(tracks.getBanner().BannerImagePath, tracks.getBanner().BannerLink);
+
                 loadFirstPage(active_tab);
                 swipeRefreshLayout.setRefreshing(false);
             }

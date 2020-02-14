@@ -11,6 +11,7 @@ import com.tevoi.tevoi.model.GetPartnerTracksResponse;
 import com.tevoi.tevoi.model.GetSubscripedPartnersResponse;
 import com.tevoi.tevoi.model.GetUserListTracksResponse;
 import com.tevoi.tevoi.model.IResponse;
+import com.tevoi.tevoi.model.ListBannerResponse;
 import com.tevoi.tevoi.model.ListNotificationTypesResponse;
 import com.tevoi.tevoi.model.MainSponsoreLogoResponse;
 import com.tevoi.tevoi.model.PartnerListResponse;
@@ -50,6 +51,8 @@ public interface ApiInterface {
     @GET("api/Services/GetMainSponsoreLogo")
     Call<MainSponsoreLogoResponse> GetMainSponsoreLogo();
 
+    @GET("api/Services/GetBannerRandomly")
+    Call<ListBannerResponse> GetBannerRandomly();
 
     @POST("api/Services/ListMainTrack")
     Call<TrackResponseList> getListMainTrack(@Body TrackFilter model);

@@ -6,6 +6,7 @@ import android.content.SharedPreferences.Editor;
 import android.text.BoringLayout;
 
 import com.tevoi.tevoi.R;
+import com.tevoi.tevoi.model.ListBannerResponse;
 import com.tevoi.tevoi.model.MainTopic;
 import com.tevoi.tevoi.model.NotificationTypeObject;
 import com.tevoi.tevoi.model.PartnerObject;
@@ -49,6 +50,7 @@ public class MyStorage
     public static final String ArrayHistoryListTrack = "ArrayHistoryListTrack";
     public static final String ArrayFavoriteListTrack = "ArrayFavoriteListTrack";
 
+    public static  final String BannerLink = "BannerLink";
 
     private  String Suffix =  "_" + USER_ID;
 
@@ -1150,7 +1152,7 @@ public class MyStorage
 
     //endregion
 
-// region shared preference for List Subscriped Partners
+    // region shared preference for List Subscriped Partners
 
     public void storeListSubscripedPartnerFilter(Context context, List listSubscripedPartner)
     {
@@ -1192,6 +1194,43 @@ public class MyStorage
 
     //endregion
 
+    // region Banner info
+    public void storeBanner(Context context, ListBannerResponse banner)
+    {
+        // used for store arrayList in json format
+        SharedPreferences settings;
+        Editor editor;
+        settings = context.getSharedPreferences(PREFS_NAME + Suffix, Context.MODE_PRIVATE);
+        editor = settings.edit();
 
+        GsonBuilder builder = new GsonBuilder();
+        builder.excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC);
+        builder.excludeFieldsWithoutExposeAnnotation();
+        Gson sExposeGson = builder.create();
+        String jsonBanner = sExposeGson.toJson(banner);
+        editor.putString(BannerLink, jsonBanner);
+        editor.commit();
+    }
+
+    public ListBannerResponse loadBanner(Context context)
+    {
+        // used for retrieving arraylist from json formatted string
+        SharedPreferences settings;
+        ListBannerResponse banner;
+        settings = context.getSharedPreferences(PREFS_NAME + Suffix, Context.MODE_PRIVATE); ////ask marwa
+        if (settings.contains(BannerLink)) {
+            String jsonBanner = settings.getString(BannerLink , null);
+
+            GsonBuilder builder = new GsonBuilder();
+            builder.excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC);
+            builder.excludeFieldsWithoutExposeAnnotation();
+            Gson sExposeGson = builder.create();
+            banner = sExposeGson.fromJson(jsonBanner, ListBannerResponse.class);
+        } else
+            return new ListBannerResponse();
+        return banner;
+    }
+
+    //endregion
 
 }

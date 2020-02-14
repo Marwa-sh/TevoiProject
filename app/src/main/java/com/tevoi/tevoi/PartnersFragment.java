@@ -34,6 +34,7 @@ import com.tevoi.tevoi.model.TrackResponseList;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -119,12 +120,29 @@ public class PartnersFragment extends Fragment
         Collections.sort(lstPartners, new Comparator<PartnerObject>() {
         @Override
         public int compare(PartnerObject o1, PartnerObject o2) {
-            return o1.getName().compareToIgnoreCase(o2.getName());
+            return -1*(o1.getName().compareToIgnoreCase(o2.getName()));
         }
     });
         activateTab(0);
     }
     public void changeTabToNewListPartners(View view) {
+        Collections.sort(lstPartners, new Comparator<PartnerObject>() {
+            @Override
+            public int compare(PartnerObject o1, PartnerObject o2)
+            {
+                if(o1.getCreationDate()== null && o2.getCreationDate() == null )
+                    return  0;
+                else {
+                    Date d1 = new Date(o1.getCreationDate());
+                    Date d2 = new Date(o2.getCreationDate());
+                    int d =  d1.compareTo(d2);
+                    return d;
+                }
+                //Integer.compare((int)o1.getRate(), (int)o2.getRate());
+            }
+
+        });
+
         activateTab(1);
     }
 
