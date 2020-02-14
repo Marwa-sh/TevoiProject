@@ -772,10 +772,16 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
                                                         Call<IResponse> call = Global.client.AddTrackToUserList(trackSelected.getId(), selectedList.getId());
                                                         call.enqueue(new Callback<IResponse>() {
-                                                            public void onResponse(Call<IResponse> call, Response<IResponse> response) {
+                                                            public void onResponse(Call<IResponse> call, Response<IResponse> response)
+                                                            {
                                                                 IResponse result = response.body();
-                                                                Toast.makeText(activity, result.getMessage(), Toast.LENGTH_SHORT).show();
 
+                                                                // TODO: make sure to display the error message from server. it's better.
+
+                                                                if(result.getNumber() == 0)
+                                                                    Toast.makeText(activity, R.string.track_added_to_list_successfully, Toast.LENGTH_SHORT).show();
+                                                                else
+                                                                    Toast.makeText(activity, R.string.general_error, Toast.LENGTH_SHORT).show();
                                                             }
 
                                                             public void onFailure(Call<IResponse> call, Throwable t) {

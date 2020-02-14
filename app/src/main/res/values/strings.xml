@@ -41,7 +41,7 @@
     <string name="track_has_no_text">Track has no text</string>
     <string name="track_has_no_location">Track has no location</string>
     <string name="add_new_list">Add New List</string>
-    <string name="track_added_to_list_successfully">track added to list successfully</string>
+    <string name="track_added_to_list_successfully">Track added to list successfully</string>
     <string name="general_error">Something went wrong, please try again later</string>
 
     <!-- App name -->

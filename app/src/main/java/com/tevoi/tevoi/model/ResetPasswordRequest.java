@@ -7,6 +7,17 @@ public class ResetPasswordRequest {
     @SerializedName("Password")
     public String Password;
 
+    @SerializedName("Token")
+    public String Token;
+
+    public String getToken() {
+        return Token;
+    }
+
+    public void setToken(String token) {
+        Token = token;
+    }
+
     public void setPassword(String password) {
         Password = password;
     }

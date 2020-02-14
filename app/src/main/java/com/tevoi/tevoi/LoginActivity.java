@@ -224,7 +224,7 @@ public class LoginActivity extends AppCompatActivity
 
 
         etUserName.setText("ma");
-        etPassword.setText("Host123");
+        etPassword.setText("A@123456");
        // btnLogin.performClick();
 
     }

@@ -252,6 +252,7 @@ public class MyProfileFragment extends Fragment {
                      activity.mProgressDialog.setMessage(getResources().getString(R.string.loader_msg));
                      activity.mProgressDialog.setCancelable(false);
                      activity.mProgressDialog.show();
+                     resetpassword.Token = Global.UserToken;
 
                      Call<IResponse> call = Global.clientDnn.ResetPassword(resetpassword);
                      call.enqueue(new Callback<IResponse>() {
