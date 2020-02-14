@@ -4,6 +4,7 @@ package com.tevoi.tevoi;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.hardware.camera2.TotalCaptureResult;
 import android.os.Bundle;
 import android.os.Handler;
 import androidx.fragment.app.Fragment;
@@ -290,9 +291,14 @@ public class UserListFragment extends Fragment
             @Override
             protected void loadMoreItems() {
                 isLoading = true;
-                currentPage += 1;
+                if(currentPage <TOTAL_PAGES)
+                { currentPage += 1;
 
-                loadNextPage();
+                loadNextPage();}
+                /*else if(currentPage == TOTAL_PAGES)
+                {
+                    loadNextPage();
+                }*/
             }
 
             @Override
