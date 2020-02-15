@@ -59,7 +59,10 @@ public class TrackText extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
       final View rootView = inflater.inflate(R.layout.fragment_track_text, container, false);
+
+
         ImageView iv = rootView.findViewById(R.id.imgBtnCloseText);
         iv.setOnClickListener(new View.OnClickListener()
         {
@@ -94,7 +97,16 @@ public class TrackText extends Fragment {
         TextView tv = rootView.findViewById(R.id.text_track);
 
         SideMenu activity = ((SideMenu) getActivity());
+        ImageButton imgNext = rootView.findViewById((R.id.imgNext));
+        ImageButton imgPrevious = rootView.findViewById((R.id.imgPreviuos));
 
+        String lang = Global.UserNewUILanguage;
+
+        if(lang.equals("ar"))
+        {
+            imgNext.setRotation(90);
+            imgPrevious.setRotation(-90);
+        }
         // here we need to open maps app
         progressBar.setVisibility(View.VISIBLE);
         linearLayout.setVisibility(View.INVISIBLE);
@@ -126,8 +138,7 @@ public class TrackText extends Fragment {
 
         mController = new PaginationController(tv, activity);
 
-        ImageButton imgNext = rootView.findViewById((R.id.imgNext));
-        ImageButton imgPrevious = rootView.findViewById((R.id.imgPreviuos));
+
         imgNext.setOnClickListener(new View.OnClickListener()
         {
             @Override

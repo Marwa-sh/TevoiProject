@@ -144,9 +144,10 @@ public class HistoryListFragment extends Fragment
             @Override
             protected void loadMoreItems() {
                 isLoading = true;
-                currentPage += 1;
-
-                loadNextPage();
+                if(currentPage <TOTAL_PAGES) {
+                    currentPage += 1;
+                    loadNextPage();
+                }
             }
 
             @Override

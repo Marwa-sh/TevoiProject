@@ -110,8 +110,9 @@ public class MediaPlayerFragment extends Fragment {
         imgBtnForword = rootView.findViewById(R.id.imgBtnForword);
         playButton = rootView.findViewById(R.id.imageButtonPlay);
 
+        String lang = Global.UserNewUILanguage;
 
-        if(activity.storageManager.getLanguageUIPreference(activity).equals("ar"))
+        if(lang.equals("ar"))
         {
             imgBtnNext.setScaleX(-1);
             imgBtnPrev.setScaleX(-1);
