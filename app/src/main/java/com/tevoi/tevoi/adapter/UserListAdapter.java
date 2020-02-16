@@ -286,7 +286,7 @@ public class UserListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                                         activity.storageManager.storeUsetList(activity,userLists);
                                         recyclerView.triggerObserver();
 //                                        activity.storageManager.removeUserList(activity,userLists.get(i));
-                                        //activity.notifyUserListAdapter();
+                                        activity.notifyUserListAdapter();
 
                                     }
                                     else
