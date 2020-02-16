@@ -1,5 +1,7 @@
 package com.tevoi.tevoi;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import androidx.fragment.app.Fragment;
@@ -87,6 +89,7 @@ public class TracksList extends Fragment
     public int defaultTab;
     SideMenu activity;
     ImageButton btnSearch;
+    ListBannerResponse banner;
     public FragmentManager fm;
     //public ScrollView scrollViewListTracks;
     public LinearLayout linearLayoutListTracks;
@@ -173,7 +176,13 @@ public class TracksList extends Fragment
             public void onClick(View v)
             {
                 // todo: open the link
-                Toast.makeText(activity, "", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                String link = banner.getBannerLink();
+                intent.setData(Uri.parse(link));
+                startActivity(intent);
+                Toast.makeText(activity, link, Toast.LENGTH_LONG).show();
             }
         });
 
@@ -563,8 +572,10 @@ public class TracksList extends Fragment
             @Override
             protected void loadMoreItems() {
                 isLoading = true;
-                currentPage += 1;
-                loadNextPage(k);
+                if(currentPage <TOTAL_PAGES) {
+                    currentPage += 1;
+                    loadNextPage(k);
+                }
                 // mocking network delay for API call
                 /*new Handler().postDelayed(new Runnable() {
                     @Override
@@ -618,8 +629,10 @@ public class TracksList extends Fragment
             public void onResponse(Call<ListBannerResponse> call, Response<ListBannerResponse> response)
             {
                 // replace old list tracks with new one from server
-                ListBannerResponse banner = response.body();
+                banner = response.body();
+
                 if(banner != null) {
+                    Toast.makeText(activity, banner.getBannerLink(), Toast.LENGTH_LONG).show();
                     showListBanner(banner.BannerImagePath, banner.BannerLink);
                 }
             }
@@ -663,8 +676,9 @@ public class TracksList extends Fragment
             public void onResponse(Call<ListBannerResponse> call, Response<ListBannerResponse> response)
             {
                 // replace old list tracks with new one from server
-                ListBannerResponse banner = response.body();
+                banner = response.body();
                 if(banner != null) {
+                    Toast.makeText(activity, banner.getBannerLink(), Toast.LENGTH_LONG).show();
                     showListBanner(banner.BannerImagePath, banner.BannerLink);
                 }
             }
@@ -775,6 +789,7 @@ public class TracksList extends Fragment
                 adapter.clear();
                 adapter.notifyDataSetChanged();
                 lstTracks = tracks.getLstTrack();
+                banner = tracks.getBanner();
                 activity.lstTracks = tracks.getLstTrack();
                 activity.storageManager.storeListTracks(activity, lstTracks);
                 showListBanner(tracks.getBanner().BannerImagePath, tracks.getBanner().BannerLink);

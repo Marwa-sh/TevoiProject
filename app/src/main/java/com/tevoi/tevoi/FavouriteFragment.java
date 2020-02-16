@@ -238,8 +238,10 @@ public class FavouriteFragment extends Fragment
             @Override
             protected void loadMoreItems() {
                 isLoading = true;
-                currentPage += 1;
-                loadNextPage();
+                if (currentPage < TOTAL_PAGES) {
+                    currentPage += 1;
+                    loadNextPage();
+                }
             }
 
             @Override
@@ -433,7 +435,7 @@ public class FavouriteFragment extends Fragment
         //activity.mProgressDialog.show();
 
 
-        adapter.removeLoadingFooter();
+//        adapter.removeLoadingFooter();
         isLoading = false;
 
         List<TrackObject> lstNextPage = HelperFunctions.getPage(lstFavouriteTracks, currentPage , PAGE_SIZE );
