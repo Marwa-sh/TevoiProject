@@ -16,6 +16,7 @@ import com.tevoi.tevoi.model.TrackSerializableObject;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.tevoi.tevoi.model.UserListObject;
+import com.tevoi.tevoi.model.UserProfileResponse;
 
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -49,6 +50,7 @@ public class MyStorage
     public static final String NumberOfMinutes = "NumberOfMinutes";
     public static final String ArrayHistoryListTrack = "ArrayHistoryListTrack";
     public static final String ArrayFavoriteListTrack = "ArrayFavoriteListTrack";
+    public static final String UserInfo = "UserInfo";
 
     public static  final String BannerLink = "BannerLink";
 
@@ -1229,6 +1231,46 @@ public class MyStorage
         } else
             return new ListBannerResponse();
         return banner;
+    }
+
+    //endregion
+
+
+    // region UserInfo
+    public void storeUserInfo(Context context, UserProfileResponse userInfo)
+    {
+        // used for store arrayList in json format
+        SharedPreferences settings;
+        Editor editor;
+        settings = context.getSharedPreferences(PREFS_NAME + Suffix, Context.MODE_PRIVATE);
+        editor = settings.edit();
+
+        GsonBuilder builder = new GsonBuilder();
+        builder.excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC);
+        builder.excludeFieldsWithoutExposeAnnotation();
+        Gson sExposeGson = builder.create();
+        String jsonFavorites = sExposeGson.toJson(userInfo);
+        editor.putString(UserInfo + Suffix, jsonFavorites);
+        editor.commit();
+    }
+
+    public UserProfileResponse loadUserInfo(Context context)
+    {
+        // used for retrieving arraylist from json formatted string
+        SharedPreferences settings;
+        UserProfileResponse userInfo;
+        settings = context.getSharedPreferences(PREFS_NAME + Suffix, Context.MODE_PRIVATE); ////ask marwa
+        if (settings.contains(UserInfo)) {
+            String jsonBanner = settings.getString(UserInfo , null);
+
+            GsonBuilder builder = new GsonBuilder();
+            builder.excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC);
+            builder.excludeFieldsWithoutExposeAnnotation();
+            Gson sExposeGson = builder.create();
+            userInfo = sExposeGson.fromJson(jsonBanner, UserProfileResponse.class);
+        } else
+            return new UserProfileResponse();
+        return userInfo;
     }
 
     //endregion

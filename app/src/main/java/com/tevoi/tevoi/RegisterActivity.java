@@ -64,7 +64,7 @@ public class RegisterActivity extends AppCompatActivity implements SpinnerAdapte
     ImageButton imgbtnRegisterCancel;
     Button imgbtnRegister;
     ImageView imgProfilePicture;
-
+    TextView txtRegisterCancel;
     byte [] profile_image;
     static int GALLERY_REQUEST_CODE = 1;
 
@@ -130,6 +130,8 @@ public class RegisterActivity extends AppCompatActivity implements SpinnerAdapte
         imgProfilePicture = findViewById(R.id.img_upload_profile_picture);
 
         imgbtnRegisterCancel = findViewById(R.id.imgbtn_register_cancel);
+        txtRegisterCancel = findViewById(R.id.txt_register_cancel);
+
 
         spnrCountries = findViewById(R.id.spnrCountries);
 
@@ -249,6 +251,24 @@ public class RegisterActivity extends AppCompatActivity implements SpinnerAdapte
                         }
                     }
 
+            }
+        });
+
+        imgbtnRegisterCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(i);
+            }
+        });
+
+        txtRegisterCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(i);
             }
         });
     }

@@ -136,6 +136,46 @@ public class MyProfileFragment extends Fragment {
         imgbtnSaveChanges = rootView.findViewById(R.id.imgbtn_myprofile_save_changes);
         imgbtnResetPassword = rootView.findViewById(R.id.imgbtn_myprofile_reset_password);
 
+        //after marwa edits
+        /*UserProfileResponse profile = activity.storageManager.loadUserInfo(activity);
+        etUserNameMyprofile.setText(profile.getUserName());
+        etEmail.setText(profile.getEmail());
+        etOccupation.setText(profile.getOccupation());
+        etAge.setText(""+profile.getAge());
+        //ask marwa
+        countries = profile.getLstCountry();
+        genders = profile.getLstGender();
+
+        spnrCountriesAdapter = new ArrayAdapter(activity,R.layout.spinner,countries);
+        spnrGendersAdapter = new ArrayAdapter(activity, R.layout.spinner,genders);
+
+        spnrCountries.setAdapter(spnrCountriesAdapter);
+        spnrGender.setAdapter(spnrGendersAdapter);
+
+        /// int posiotion = spnrCountriesAdapter.getPosition(profile.Country);
+        int indexOfCountry = 0;
+        for (int i =0; i< countries.size(); i++)
+        {
+            if(countries.get(i).getId() == profile.getCountry())
+            {
+                indexOfCountry = i;
+                break;
+            }
+        }
+        int indexOfGender = 0;
+        for (int i =0; i< genders.size(); i++)
+        {
+            if(genders.get(i).getId() == profile.getGender())
+            {
+                indexOfGender = i;
+                break;
+            }
+        }
+        spnrCountries.setSelection(indexOfCountry);
+        spnrGender.setSelection(indexOfGender);
+        */
+        //after maraw edits
+
         activity.mProgressDialog.setMessage(getResources().getString( R.string.loader_msg));
         activity.mProgressDialog.show();
 

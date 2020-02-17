@@ -36,15 +36,16 @@
             android:src="@drawable/facebook" />-->
 
         <ImageButton
-            android:id="@+id/imgBtnShareFB"
+            android:id="@+id/imgBtnfollowUsFb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/tevoiBrownDark"
             android:src="@mipmap/facebook"
-            android:onClick="shareClick" />
+            android:onClick="shareClick"
+            />
 
         <ImageButton
-            android:id="@+id/imgBtnShareIN"
+            android:id="@+id/imgBtnfollowUsIN"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="22dp"
@@ -54,6 +55,7 @@
             />
 
         <ImageButton
+            android:id="@+id/imgBtnfollowUsWhatsup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="22dp"
@@ -62,6 +64,7 @@
             />
 
         <ImageButton
+            android:id="@+id/imgBtnfollowUsYoutube"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="22dp"

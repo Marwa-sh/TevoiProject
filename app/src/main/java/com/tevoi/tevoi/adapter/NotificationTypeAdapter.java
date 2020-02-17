@@ -70,8 +70,8 @@ public class NotificationTypeAdapter extends RecyclerView.Adapter<NotificationTy
 
                     int i = getAdapterPosition();
 
-                    activity.mProgressDialog.setMessage(activity.getResources().getString( R.string.loader_msg));
-                    activity.mProgressDialog.show();
+/*                    activity.mProgressDialog.setMessage(activity.getResources().getString( R.string.loader_msg));
+                    activity.mProgressDialog.show();*/
 
                     Call<IResponse> call = Global.client.UpdateNotificationType(notificationTypes.get(i).getId());
                     call.enqueue(new Callback<IResponse>(){
@@ -79,12 +79,12 @@ public class NotificationTypeAdapter extends RecyclerView.Adapter<NotificationTy
                             //generateDataList(response.body());
                             IResponse notificationTypes =response.body();
 
-                            activity.mProgressDialog.dismiss();
+//                            activity.mProgressDialog.dismiss();
 
                         }
                         public void onFailure(Call<IResponse> call, Throwable t)
                         {
-                            activity.mProgressDialog.dismiss();
+//                            activity.mProgressDialog.dismiss();
                         }
                     });
 

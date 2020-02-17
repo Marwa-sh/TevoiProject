@@ -123,7 +123,7 @@
             android:scaleType="fitXY"
             android:src="@mipmap/accept_button_normal"
             android:layout_gravity="center_vertical"
-
+            android:id="@+id/save_changes_download_limits"
             />
 
         <TextView
@@ -133,6 +133,7 @@
             android:textColor="@color/fontColor"
             android:layout_marginStart="7dp"
             android:layout_gravity="center_vertical"
+            android:id="@+id/txt_save_changes_download_limits"
             />
 
         <ImageButton
