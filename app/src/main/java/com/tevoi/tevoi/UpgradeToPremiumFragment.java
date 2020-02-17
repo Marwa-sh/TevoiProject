@@ -65,6 +65,7 @@ public class UpgradeToPremiumFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        activity = (SideMenu)getActivity();
         View rootView = inflater.inflate(R.layout.fragment_upgrade_to_premium, container, false);
 
         txtCoupon = rootView.findViewById(R.id.txtCoupon);

@@ -210,5 +210,6 @@
     <string name="user_name_missing">يرجى ادخال اسم المستخدم</string>
 
     <string name="there_is_only_one_track_in_the_list">يوجد مقالة واحدة فقط في هذه القائمة</string>
-
+    <string name="list_has_no_tracks">لايوجد تسجيلات في القائمة.</string>
+<string name="email_required">البريد الالكتروني مطلوب</string>
 </resources>

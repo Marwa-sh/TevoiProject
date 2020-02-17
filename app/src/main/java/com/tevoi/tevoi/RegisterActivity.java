@@ -179,22 +179,23 @@ public class RegisterActivity extends AppCompatActivity implements SpinnerAdapte
             }
         });
 
-        imgProfilePicture.setOnClickListener(
+
+        /*imgProfilePicture.setOnClickListener(
                 new View.OnClickListener()
                 {
                     @Override
                     public void onClick(View v)
                     {
                         pickFromGallery();
-                        /*Intent intent = new Intent();
+                        *//*Intent intent = new Intent();
                         intent.setType("image/*");
                         intent.setAction(Intent.ACTION_GET_CONTENT);
-                        startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1);*/
+                        startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1);*//*
 
                     }
 
                 }
-        );
+        );*/
 
         imgbtnRegister = findViewById(R.id.btn_Register);
         imgbtnRegister.setOnClickListener(new View.OnClickListener() {

@@ -32,6 +32,8 @@ public class TrackText extends Fragment {
     ProgressBar progressBar;
     LinearLayout linearLayout;
 
+    TextView txtPageNumber;
+
     private PaginationController mController;
 
     public static TrackText newInstance(int trackId, String previousFragmentName )
@@ -60,8 +62,8 @@ public class TrackText extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-      final View rootView = inflater.inflate(R.layout.fragment_track_text, container, false);
-
+        final View rootView = inflater.inflate(R.layout.fragment_track_text, container, false);
+        txtPageNumber = rootView.findViewById(R.id.page_number);
 
         ImageView iv = rootView.findViewById(R.id.imgBtnCloseText);
         iv.setOnClickListener(new View.OnClickListener()
@@ -127,7 +129,6 @@ public class TrackText extends Fragment {
             }
             public void onFailure(Call<TrackTextResponse> call, Throwable t)
             {
-
                 tv.setText("No Text");
                 onTextLoaded("");
                 progressBar.setVisibility(View.INVISIBLE);
@@ -136,27 +137,39 @@ public class TrackText extends Fragment {
         });
 
 
-        mController = new PaginationController(tv, activity);
+        mController = new PaginationController(tv,txtPageNumber, activity);
 
+        /*if(lang.equals("ar")) {
+            imgNext.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mController.previous();
+                }
+            });
 
-        imgNext.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                mController.next();
-            }
-        });
+            imgPrevious.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mController.next();
+                }
+            });
+        }
+        else
+        {*/
+            imgNext.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mController.next();
+                }
+            });
 
-        imgPrevious.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                mController.previous();
-            }
-        });
-
+            imgPrevious.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mController.previous();
+                }
+            });
+        //}
 
         return  rootView;
 
