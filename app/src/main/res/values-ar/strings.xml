@@ -163,7 +163,7 @@
     <string name="enable_location_for_nearby_tracks">تمكين الموقع لإيجاد المقالات القريبة</string>
     <string name="search">بحث</string>
 
-    <string name="submit">݀إرسال</string>
+    <string name="submit">إرسال</string>
 
     <string name="please_check_internet">يرجى التحقق من الاتصال بالإنترنت والمحاولة مرة أخرى.</string>
     <string name="the_server_took_too_long">لقد استغرق الخادم وقتا طويلاً للإستجابة.</string>

@@ -41,10 +41,12 @@ Button butTevoiLink;
 
         if(loadtxt.equals(""))
         {
-            txt.setText(R.string.visit_website);
+//            txt.setText(R.string.visit_website);
+            txt.setText("");
         }
         else
             txt.setText(loadtxt);
+
 /*
         Call<AboutUsResponse> call = Global.client.GetAboutUs();
         call.enqueue(new Callback<AboutUsResponse>() {
