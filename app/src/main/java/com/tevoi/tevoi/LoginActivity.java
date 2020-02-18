@@ -171,6 +171,8 @@ public class LoginActivity extends AppCompatActivity
                                 storageManager.storeFavoriteListTracks(LoginActivity.this, login.getLstFavouriteTracks());
                                 storageManager.storeHistoryListTracks(LoginActivity.this, login.getLstHistoryTracks());
                                 Global.UserNewUILanguage = storageManager.getLanguageUIPreference(LoginActivity.this);
+//                                storageManager.storeUserInfo(LoginActivity.this,login.getUserInfo());
+
 
                                 storageManager.storeBanner(LoginActivity.this, login.getBanner());
 

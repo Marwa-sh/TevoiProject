@@ -15,9 +15,9 @@
     <string name="confirm_password">تأكيد كلمة المرور*</string>
     <string name="we_need_info">نحتاج البيانات التالية لنستطيع أختيار التسجيلات المناسبة لك</string>
     <string name="age">العمر*</string>
-    <string name="gender">الجنس</string>
+    <string name="gender">الجنس*</string>
     <string name="occupation">المهنة*</string>
-    <string name="country">البلد</string>
+    <string name="country">البلد*</string>
     <string name="register">تسجيل</string>
     <string name="cancel">إلغاء الأمر</string>
     <string name="visit_website">يرجى زيارة موقعنا الإلكتروني لمزيد من المعلومات حول خدماتنا</string>
