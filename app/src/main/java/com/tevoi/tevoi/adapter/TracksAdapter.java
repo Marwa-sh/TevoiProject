@@ -785,7 +785,7 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                                                             }
 
                                                             public void onFailure(Call<IResponse> call, Throwable t) {
-                                                                Toast.makeText(activity, "You have to lists", Toast.LENGTH_LONG).show();
+                                                                Toast.makeText(activity, R.string.something_went_wrong, Toast.LENGTH_LONG).show();
                                                             }
                                                         });
                                                     }
@@ -793,7 +793,7 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                                         .setNegativeButton(activity.getResources().getString(R.string.cancel),
                                                 new DialogInterface.OnClickListener() {
                                                     public void onClick(DialogInterface dialog, int id) {
-                                                        Toast.makeText(activity, "No Select", Toast.LENGTH_SHORT).show();
+//                                                        Toast.makeText(activity, "No Select", Toast.LENGTH_SHORT).show();
                                                         dialog.cancel();
                                                     }
                                                 })

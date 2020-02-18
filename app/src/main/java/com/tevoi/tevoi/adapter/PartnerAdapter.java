@@ -218,6 +218,7 @@ public class PartnerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 public void onClick(View v) {
 
                     int i  = getPosition();
+                    // TODO Marwa
                     PartnerObject p = partners.get(i);
 
                     activity.partnerNameFragment = PartnerNameFragment.newInstance(p.getId(), p.getName(), p.getDescripton(),p.getLogo());

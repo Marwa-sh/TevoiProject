@@ -79,7 +79,7 @@ public class TrackAddToList extends Fragment {
                         // set dialog message
                         alertDialogBuilder
                                 .setCancelable(false)
-                                .setPositiveButton("OK",
+                                .setPositiveButton(activity.getResources().getText(R.string.Yes),
                                         new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog,int id) {
                                                 UserListObject selectedList = (UserListObject) ( ((Spinner) promptsView.findViewById(R.id.user_lists_spinner) ).getSelectedItem());
@@ -90,20 +90,20 @@ public class TrackAddToList extends Fragment {
                                                     public void onResponse(Call<IResponse> call, Response<IResponse> response)
                                                     {
                                                         IResponse result = response.body();
-                                                        Toast.makeText(activity, result.getMessage(), Toast.LENGTH_SHORT).show();
+                                                        Toast.makeText(activity,R.string.track_added_to_list_successfully, Toast.LENGTH_SHORT).show();
 
                                                     }
                                                     public void onFailure(Call<IResponse> call, Throwable t)
                                                     {
-                                                        Toast.makeText(activity, "You have to lists", Toast.LENGTH_LONG).show();
+                                                        Toast.makeText(activity, R.string.something_went_wrong, Toast.LENGTH_LONG).show();
                                                     }
                                                 });
                                             }
                                         })
-                                .setNegativeButton("Cancel",
+                                .setNegativeButton(activity.getResources().getText(R.string.cancel),
                                         new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog,int id) {
-                                                Toast.makeText(activity, "No Select", Toast.LENGTH_SHORT).show();
+//                                                Toast.makeText(activity, "No Select", Toast.LENGTH_SHORT).show();
                                                 dialog.cancel();
                                             }
                                         });
@@ -111,11 +111,18 @@ public class TrackAddToList extends Fragment {
                         // create alert dialog
                         AlertDialog alertDialog = alertDialogBuilder.create();
                         // show it
+                        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                            @Override
+                            public void onShow(DialogInterface arg0) {
+                                alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(activity.getResources().getColor(R.color.tevoiBrownDark));
+                                alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(activity.getResources().getColor(R.color.tevoiBrownDark));
+                            }
+                        });
                         alertDialog.show();
                     }
                     public void onFailure(Call<UserListResponse> call, Throwable t)
                     {
-                        Toast.makeText(activity, "You have to lists", Toast.LENGTH_LONG).show();
+                        Toast.makeText(activity, R.string.something_went_wrong, Toast.LENGTH_LONG).show();
                     }
                 });
 
