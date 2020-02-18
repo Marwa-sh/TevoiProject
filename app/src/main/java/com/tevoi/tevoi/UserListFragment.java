@@ -256,6 +256,8 @@ public class UserListFragment extends Fragment
                     @Override
                     public void onShow(DialogInterface arg0) {
                         alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(activity.getResources().getColor(R.color.tevoiBrownDark));
+                        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(activity.getResources().getColor(R.color.tevoiBrownDark));
+
                     }
                 });
                 alertDialog.show();

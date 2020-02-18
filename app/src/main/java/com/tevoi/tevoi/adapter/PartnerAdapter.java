@@ -172,23 +172,29 @@ public class PartnerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 public void onClick(View v) {
                     int i = getAdapterPosition();
                     PartnerObject selectedpartner = partners.get(i);
-                     Call<IResponse> call = Global.client.AddFollowshipToPartner(selectedpartner.getId());
+                    activity.mProgressDialog.setMessage(activity.getString(R.string.loader_msg));
+                    activity.mProgressDialog.show();
+
+                    Call<IResponse> call = Global.client.AddFollowshipToPartner(selectedpartner.getId());
                     call.enqueue(new Callback<IResponse>() {
                         @Override
                         public void onResponse(Call<IResponse> call, Response<IResponse> response) {
                             IResponse res = response.body();
                             if(res.getNumber()==0)
                             {
+                                activity.mProgressDialog.dismiss();
                                 Toast.makeText(activity,activity.getResources().getString( R.string.partner_add_to_filter),Toast.LENGTH_LONG).show();
                             }
                             else
                             {
+                                activity.mProgressDialog.dismiss();
                                 Toast.makeText(activity,res.getMessage(),Toast.LENGTH_LONG).show();
                             }
                             hoverLayout.setVisibility(View.INVISIBLE);
                         }
                         @Override
                         public void onFailure(Call<IResponse> call, Throwable t) {
+                            activity.mProgressDialog.dismiss();
                             hoverLayout.setVisibility(View.INVISIBLE);
                         }
                     });

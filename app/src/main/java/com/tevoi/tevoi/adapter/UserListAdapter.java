@@ -424,6 +424,14 @@ public class UserListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     // create alert dialog
                     AlertDialog alertDialog = alertDialogBuilder.create();
                     // show it
+                    alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                        @Override
+                        public void onShow(DialogInterface arg0) {
+                            alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(activity.getResources().getColor(R.color.tevoiBrownDark));
+                            alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(activity.getResources().getColor(R.color.tevoiBrownDark));
+
+                        }
+                    });
                     alertDialog.show();
                 }
             });

@@ -210,5 +210,7 @@
     <string name="user_name_missing">يرجى ادخال اسم المستخدم</string>
 
     <string name="there_is_only_one_track_in_the_list">يوجد مقالة واحدة فقط في هذه القائمة</string>
+    <string name="msg_play_now_deleted_successfully">تم مسح القائمة بنجاح</string>
+
 
 </resources>
