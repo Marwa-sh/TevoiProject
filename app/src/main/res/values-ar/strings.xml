@@ -163,7 +163,7 @@
     <string name="enable_location_for_nearby_tracks">تمكين الموقع لإيجاد المقالات القريبة</string>
     <string name="search">بحث</string>
 
-    <string name="submit">݀إرسال</string>
+    <string name="submit">إرسال</string>
 
     <string name="please_check_internet">يرجى التحقق من الاتصال بالإنترنت والمحاولة مرة أخرى.</string>
     <string name="the_server_took_too_long">لقد استغرق الخادم وقتا طويلاً للإستجابة.</string>
@@ -210,6 +210,9 @@
     <string name="user_name_missing">يرجى ادخال اسم المستخدم</string>
 
     <string name="there_is_only_one_track_in_the_list">يوجد مقالة واحدة فقط في هذه القائمة</string>
+    <string name="msg_play_now_deleted_successfully">تم مسح القائمة بنجاح</string>
+
+
     <string name="list_has_no_tracks">لايوجد تسجيلات في القائمة.</string>
 <string name="email_required">البريد الالكتروني مطلوب</string>
 </resources>

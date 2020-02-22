@@ -764,7 +764,7 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                                 // set dialog message
                                 alertDialogBuilder
                                         .setCancelable(false)
-                                        .setPositiveButton("OK",
+                                        .setPositiveButton(activity.getResources().getString(R.string.Yes),
                                                 new DialogInterface.OnClickListener() {
                                                     public void onClick(DialogInterface dialog, int id) {
                                                         UserListObject selectedList = (UserListObject) (((Spinner) promptsView.findViewById(R.id.user_lists_spinner)).getSelectedItem());
@@ -790,7 +790,7 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                                                         });
                                                     }
                                                 })
-                                        .setNegativeButton("Cancel",
+                                        .setNegativeButton(activity.getResources().getString(R.string.cancel),
                                                 new DialogInterface.OnClickListener() {
                                                     public void onClick(DialogInterface dialog, int id) {
                                                         Toast.makeText(activity, "No Select", Toast.LENGTH_SHORT).show();
@@ -818,7 +818,7 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                                                         // set dialog message
                                                         alertDialogBuilder
                                                                 .setCancelable(false)
-                                                                .setPositiveButton("OK",
+                                                                .setPositiveButton(activity.getResources().getString(R.string.Yes),
                                                                         new DialogInterface.OnClickListener() {
                                                                             public void onClick(DialogInterface dialog,int id) {
                                                                                 // get user input and set it to result
@@ -848,7 +848,7 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                                                                                 }
                                                                             }
                                                                         })
-                                                                .setNegativeButton("Cancel",
+                                                                .setNegativeButton(activity.getResources().getString(R.string.cancel),
                                                                         new DialogInterface.OnClickListener() {
                                                                             public void onClick(DialogInterface dialog,int id) {
                                                                                 dialog.cancel();
@@ -858,6 +858,14 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                                                         // create alert dialog
                                                         AlertDialog alertDialog = alertDialogBuilder.create();
                                                         // show it
+                                                        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                                                            @Override
+                                                            public void onShow(DialogInterface arg0) {
+                                                                alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(activity.getResources().getColor(R.color.tevoiBrownDark));
+                                                                alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(activity.getResources().getColor(R.color.tevoiBrownDark));
+                                                                alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(activity.getResources().getColor(R.color.tevoiBrownDark));
+                                                            }
+                                                        });
                                                         alertDialog.show();
 
                                                     }

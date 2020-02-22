@@ -179,7 +179,9 @@ public class TracksList extends Fragment
                 Intent intent = new Intent();
                 intent.setAction(Intent.ACTION_VIEW);
                 intent.addCategory(Intent.CATEGORY_BROWSABLE);
-                String link = banner.getBannerLink();
+                String link =  banner.getBannerLink();
+                if(!link.contains("http://"))
+                    link = "https://"+link;
                 intent.setData(Uri.parse(link));
                 startActivity(intent);
                 Toast.makeText(activity, link, Toast.LENGTH_LONG).show();
