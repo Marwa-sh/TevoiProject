@@ -1,25 +1,34 @@
 package com.tevoi.tevoi.model;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
 public class UserProfileResponse extends IResponse{
 
+    @Expose
     @SerializedName("UserName")
     public String UserName;
+    @Expose
     @SerializedName("Email")
     public String Email;
+    @Expose
     @SerializedName("Age")
     public int Age;
+    @Expose
     @SerializedName("Gender")
     public int Gender;
+    @Expose
     @SerializedName("Occupation")
     public String Occupation;
+    @Expose
     @SerializedName("Country")
     public int Country;
 
+    @Expose
     List<CountryObject> lstCountry;
+    @Expose
     List<GenderObject> lstGender;
 
     public List<CountryObject> getLstCountry() {

@@ -1,7 +1,14 @@
 package com.tevoi.tevoi.model;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class CountryObject {
+    @Expose
+    @SerializedName("Id")
     public int Id;
+    @Expose
+    @SerializedName("Name")
     public String Name;
 
     @Override
