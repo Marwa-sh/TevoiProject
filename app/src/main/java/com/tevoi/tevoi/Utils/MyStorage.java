@@ -1249,8 +1249,8 @@ public class MyStorage
         builder.excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC);
         builder.excludeFieldsWithoutExposeAnnotation();
         Gson sExposeGson = builder.create();
-        String jsonFavorites = sExposeGson.toJson(userInfo);
-        editor.putString(UserInfo + Suffix, jsonFavorites);
+        String jsonUserInfo = sExposeGson.toJson(userInfo);
+        editor.putString(UserInfo + Suffix, jsonUserInfo);
         editor.commit();
     }
 
@@ -1260,14 +1260,14 @@ public class MyStorage
         SharedPreferences settings;
         UserProfileResponse userInfo;
         settings = context.getSharedPreferences(PREFS_NAME + Suffix, Context.MODE_PRIVATE); ////ask marwa
-        if (settings.contains(UserInfo)) {
-            String jsonBanner = settings.getString(UserInfo , null);
+        if (settings.contains(UserInfo + Suffix)) {
+            String jsonUserInfo = settings.getString(UserInfo + Suffix , null);
 
             GsonBuilder builder = new GsonBuilder();
             builder.excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC);
             builder.excludeFieldsWithoutExposeAnnotation();
             Gson sExposeGson = builder.create();
-            userInfo = sExposeGson.fromJson(jsonBanner, UserProfileResponse.class);
+            userInfo = sExposeGson.fromJson(jsonUserInfo, UserProfileResponse.class);
         } else
             return new UserProfileResponse();
         return userInfo;

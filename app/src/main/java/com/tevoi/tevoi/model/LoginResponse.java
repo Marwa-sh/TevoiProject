@@ -36,10 +36,6 @@ public class LoginResponse  extends IResponse{
     private ListBannerResponse Banner;
     @SerializedName("UserInfo")
     private UserProfileResponse UserInfo;
-    @SerializedName("UserName")
-    public String UserName;
-    @SerializedName("Email")
-    public String Email;
 
     public void setUserInfo(UserProfileResponse userInfo) {
         UserInfo = userInfo;
@@ -48,63 +44,6 @@ public class LoginResponse  extends IResponse{
     public UserProfileResponse getUserInfo() {
         return UserInfo;
     }
-
-    public void setUserName(String userName) {
-        UserName = userName;
-    }
-
-    public void setEmail(String email) {
-        Email = email;
-    }
-
-    public void setAge(int age) {
-        Age = age;
-    }
-
-    public void setGender(int gender) {
-        Gender = gender;
-    }
-
-    public void setOccupation(String occupation) {
-        Occupation = occupation;
-    }
-
-    public void setCountry(int country) {
-        Country = country;
-    }
-
-    public String getUserName() {
-        return UserName;
-    }
-
-    public String getEmail() {
-        return Email;
-    }
-
-    public int getAge() {
-        return Age;
-    }
-
-    public int getGender() {
-        return Gender;
-    }
-
-    public String getOccupation() {
-        return Occupation;
-    }
-
-    public int getCountry() {
-        return Country;
-    }
-
-    @SerializedName("Age")
-    public int Age;
-    @SerializedName("Gender")
-    public int Gender;
-    @SerializedName("Occupation")
-    public String Occupation;
-    @SerializedName("Country")
-    public int Country;
 
 
     public void setLstHistoryTracks(List<TrackObject> lstHistoryTracks) {
