@@ -498,7 +498,7 @@ public class ListTracksFragment extends Fragment
                                int pos, long id) {
         // An item was selected. You can retrieve the selected item using
         // parent.getItemAtPosition(pos)
-        Toast.makeText(getContext(), "Hiii there I'm marwa", Toast.LENGTH_LONG).show();
+//        Toast.makeText(getContext(), "Hiii there I'm marwa", Toast.LENGTH_LONG).show();
     }
 
     public void onNothingSelected(AdapterView<?> parent) {

@@ -184,7 +184,7 @@ public class TracksList extends Fragment
                     link = "https://"+link;
                 intent.setData(Uri.parse(link));
                 startActivity(intent);
-                Toast.makeText(activity, link, Toast.LENGTH_LONG).show();
+//                Toast.makeText(activity, link, Toast.LENGTH_LONG).show();
             }
         });
 
@@ -452,7 +452,7 @@ public class TracksList extends Fragment
                         }
                         public void onFailure(Call<TrackResponseList> call, Throwable t)
                         {
-                            Toast.makeText(activity,"something went wrong", Toast.LENGTH_LONG).show();
+                            Toast.makeText(activity,R.string.something_went_wrong, Toast.LENGTH_LONG).show();
                             activity.mProgressDialog.dismiss();
                         }
                     });
@@ -634,7 +634,7 @@ public class TracksList extends Fragment
                 banner = response.body();
 
                 if(banner != null) {
-                    Toast.makeText(activity, banner.getBannerLink(), Toast.LENGTH_LONG).show();
+//                    Toast.makeText(activity, banner.getBannerLink(), Toast.LENGTH_LONG).show();
                     showListBanner(banner.BannerImagePath, banner.BannerLink);
                 }
             }
@@ -680,7 +680,7 @@ public class TracksList extends Fragment
                 // replace old list tracks with new one from server
                 banner = response.body();
                 if(banner != null) {
-                    Toast.makeText(activity, banner.getBannerLink(), Toast.LENGTH_LONG).show();
+//                    Toast.makeText(activity, banner.getBannerLink(), Toast.LENGTH_LONG).show();
                     showListBanner(banner.BannerImagePath, banner.BannerLink);
                 }
             }
@@ -720,7 +720,7 @@ public class TracksList extends Fragment
                                int pos, long id) {
         // An item was selected. You can retrieve the selected item using
         // parent.getItemAtPosition(pos)
-        Toast.makeText(getContext(), "Hiii there I'm marwa", Toast.LENGTH_LONG).show();
+//        Toast.makeText(getContext(), "Hiii there I'm marwa", Toast.LENGTH_LONG).show();
     }
 
     public void onNothingSelected(AdapterView<?> parent) {
