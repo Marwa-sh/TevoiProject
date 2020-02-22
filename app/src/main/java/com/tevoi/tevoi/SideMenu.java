@@ -1828,7 +1828,7 @@ public class SideMenu extends AppCompatActivity
     public void hideLoaderMediaPlayer()
     {
         btnPausePlayMainMediaPlayer.setVisibility(View.VISIBLE);
-        playerLoader.setVisibility(View.INVISIBLE);
+        playerLoader.setVisibility(View.GONE);
         //mProgressDialog.dismiss();
         //isLoaderVisible =  false;
     }

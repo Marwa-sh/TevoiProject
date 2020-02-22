@@ -137,7 +137,7 @@ public class MyProfileFragment extends Fragment {
         imgbtnResetPassword = rootView.findViewById(R.id.imgbtn_myprofile_reset_password);
 
         //after marwa edits
-        /*UserProfileResponse profile = activity.storageManager.loadUserInfo(activity);
+        UserProfileResponse profile = activity.storageManager.loadUserInfo(activity);
         etUserNameMyprofile.setText(profile.getUserName());
         etEmail.setText(profile.getEmail());
         etOccupation.setText(profile.getOccupation());
@@ -173,10 +173,9 @@ public class MyProfileFragment extends Fragment {
         }
         spnrCountries.setSelection(indexOfCountry);
         spnrGender.setSelection(indexOfGender);
-        */
         //after maraw edits
 
-        activity.mProgressDialog.setMessage(getResources().getString( R.string.loader_msg));
+/*        activity.mProgressDialog.setMessage(getResources().getString( R.string.loader_msg));
         activity.mProgressDialog.show();
 
         Call<UserProfileResponse> call = Global.client.GetUserProfile();
@@ -229,7 +228,7 @@ public class MyProfileFragment extends Fragment {
             public void onFailure(Call<UserProfileResponse> call, Throwable t) {
                 activity.mProgressDialog.dismiss();
             }
-        });
+        });*/
 
         imgbtnSaveChanges.setOnClickListener(new View.OnClickListener() {
             @Override

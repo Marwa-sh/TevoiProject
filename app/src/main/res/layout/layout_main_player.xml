@@ -19,7 +19,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 >
-                <ImageButton
+<!--                <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="18dp"
@@ -28,23 +28,16 @@
                     android:background="@null"
                     android:visibility="visible"
                     android:id="@+id/img_btn_pause_main_player"
-                    />
-                <ProgressBar
-                    android:id="@+id/load_more_player"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="15dp"
-                    android:paddingTop="15dp"
-                    android:visibility="gone"
-                    android:layout_gravity="center"/>
+                    />-->
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Track  name"
-                    android:paddingTop="15dp"
+                    android:paddingTop="5dp"
                     android:layout_gravity="center_vertical"
                     android:textColor="@color/fontColor"
-                    android:layout_marginStart="27dp"
+                    android:layout_marginStart="50dp"
                     android:id="@+id/txt_track_name_main_player"
                     />
                <!-- <ImageButton
@@ -62,6 +55,26 @@
                     tools:targetApi="lollipop"/>-->
 
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ProgressBar
+                    android:id="@+id/load_more_player"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:layout_gravity="center"/>
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginStart="10dp"
+                    android:src="@mipmap/pause_normal_white"
+                    android:background="@null"
+                    android:visibility="visible"
+                    android:id="@+id/img_btn_pause_main_player"
+                    />
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -121,7 +134,7 @@
                     />
 
             </RelativeLayout>
-
+            </LinearLayout>
         </LinearLayout>
 
 

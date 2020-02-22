@@ -31,6 +31,7 @@
     <color name="tevoiBrownLight">#AD9960</color>
     <color name="tevoiOutLine">#C7C7CC</color>
     <color name="tevoiSwitchBlackLight">#535353</color>
+    <color name="tevoitracktextcolor">#37393F</color>
 
     <!-- A transparent black -->
     <color name="transparent_black">#aa000000</color>

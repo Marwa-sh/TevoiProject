@@ -247,7 +247,7 @@ public class UserListFragment extends Fragment
                                                 }
                                                 public void onFailure(Call<AddUserListResponse> call, Throwable t)
                                                 {
-                                                    Toast.makeText(getContext(),"something went wrong check your connection", Toast.LENGTH_LONG).show();
+                                                    Toast.makeText(getContext(),R.string.something_went_wrong, Toast.LENGTH_LONG).show();
                                                     activity.mProgressDialog.dismiss();
                                                 }
                                             });
