@@ -241,12 +241,15 @@ public class MyProfileFragment extends Fragment {
 
 
                 boolean status = allRequiredFieldsFilled();
-                if (status == true) {
-                    if (validateEmail()) {
+                if (status == true)
+                {
+                    if (validateEmail())
+                    {
                         newprofile.setCountry(countryObject.getId());
                         newprofile.setGender(genderObject.getId());
                         int age = Integer.parseInt(etAge.getText().toString());
                         newprofile.setAge(age);
+
                         newprofile.setEmail(etEmail.getText().toString());
                         newprofile.setUserName(etUserNameMyprofile.getText().toString());
                         newprofile.setOccupation(etOccupation.getText().toString());

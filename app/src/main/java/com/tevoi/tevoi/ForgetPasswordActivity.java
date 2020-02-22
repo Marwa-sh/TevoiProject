@@ -64,7 +64,7 @@ public class ForgetPasswordActivity extends AppCompatActivity
              public void onClick(View v) {
                  if(isUserEmailFieldEmpty())
                  {
-                     etEmail.setError("email missing");
+                     etEmail.setError(getResources().getString(R.string.email_required));
                  }
                  else
                  {
@@ -84,10 +84,12 @@ public class ForgetPasswordActivity extends AppCompatActivity
                              {
                                  Toast.makeText(ForgetPasswordActivity.this, result.getMessage(), Toast.LENGTH_SHORT).show();
                              }
+                             mProgressDialog.dismiss();
                          }
                          @Override
                          public void onFailure(Call<IResponse> call, Throwable t)
                          {
+                             mProgressDialog.dismiss();
                              Toast.makeText(ForgetPasswordActivity.this, "", Toast.LENGTH_SHORT).show();
                          }
                      });

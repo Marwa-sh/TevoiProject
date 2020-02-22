@@ -103,7 +103,7 @@ public class PartnerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 PartnerObject partner=partners.get(i);
                 viewHolder.tvPartnerName.setText(partner.getName());
                 viewHolder.tvDescription.setText(partner.getDescripton());
-                viewHolder.tvNumOfTracks.setText("Number Of Tracks: "+ partner.getNumberOfTracks());
+                viewHolder.tvNumOfTracks.setText(activity.getResources().getString(R.string.number_of_tracks) + " : " + partner.getNumberOfTracks());
                 break;
             case LOADING:
             {

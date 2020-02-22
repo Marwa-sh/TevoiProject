@@ -213,4 +213,6 @@
     <string name="msg_play_now_deleted_successfully">تم مسح القائمة بنجاح</string>
 
 
+    <string name="list_has_no_tracks">لايوجد تسجيلات في القائمة.</string>
+<string name="email_required">البريد الالكتروني مطلوب</string>
 </resources>

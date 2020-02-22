@@ -19,6 +19,7 @@ public class PaginationController {
     private static final String TAG = PaginationController.class.getSimpleName();
 
     private final TextView mTextView;
+    private final TextView mPageNumber;
 
     private int mPageIndex;
     private String mText;
@@ -31,12 +32,12 @@ public class PaginationController {
 
     boolean isNextClick = false;
 
-    public PaginationController(@NonNull TextView textView, SideMenu activity) {
+    public PaginationController(@NonNull TextView textView,@NonNull TextView textPageNumber, SideMenu activity) {
         mTextView = textView;
         mBoundaries = new HashMap<>();
         mLastPageIndex = -1;
         this.activity = activity;
-
+        mPageNumber = textPageNumber;
         remainingWordsCount = 0;
         totalUnitsInText =0;
         localUnitsConsumed = 0;
@@ -118,9 +119,8 @@ public class PaginationController {
             // todo: send to server
             Log.d(TAG, "UnitsSendToServer" + numOfUnitsInPage);
 
-
-
             mTextView.setText(displayedText);
+            mPageNumber.setText("" + (pageIndex +1));
             Log.v(TAG, "Existing[" + pageIndex + "]: " + displayedText);
 
         } else if (mBoundaries.containsKey(pageIndex - 1)) {
@@ -204,6 +204,7 @@ public class PaginationController {
         }
         //correct visible text
         mTextView.setText(displayedText);
+        mPageNumber.setText("" + (pageIndex +1));
 
         mBoundaries.put(pageIndex, new Boundary(start, end));
     }

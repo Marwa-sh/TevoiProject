@@ -286,7 +286,7 @@ public class UserListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                                         activity.storageManager.storeUsetList(activity,userLists);
                                         recyclerView.triggerObserver();
 //                                        activity.storageManager.removeUserList(activity,userLists.get(i));
-                                        //activity.notifyUserListAdapter();
+                                        activity.notifyUserListAdapter();
 
                                     }
                                     else
@@ -341,12 +341,18 @@ public class UserListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 public void onClick(View v) {
                     int i  = getPosition();
                     UserListObject p = userLists.get(i);
-                    activity.userListTracksFragment = UserListTracksFragment.newInstance(0, p.getId(), p.getName());
-                    //UserListTracksFragment fragment = UserListTracksFragment.newInstance(0, p.getId());
-                    androidx.fragment.app.FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.content_frame, activity.userListTracksFragment);
-                    fragmentTransaction.commit();
-                    //Toast.makeText(activity, "tvUserListName", Toast.LENGTH_SHORT).show();
+                    if(p.getDuration() == "00:00")
+                    {
+                        Toast.makeText(activity, R.string.list_has_no_tracks, Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        activity.userListTracksFragment = UserListTracksFragment.newInstance(0, p.getId(), p.getName());
+                        //UserListTracksFragment fragment = UserListTracksFragment.newInstance(0, p.getId());
+                        androidx.fragment.app.FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.content_frame, activity.userListTracksFragment);
+                        fragmentTransaction.commit();
+                        //Toast.makeText(activity, "tvUserListName", Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
 

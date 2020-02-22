@@ -39,6 +39,9 @@ import com.tevoi.tevoi.model.UserListResponse;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 
@@ -204,9 +207,6 @@ public class UserListFragment extends Fragment
                                         {
                                             activity.mProgressDialog.setMessage(getResources().getString(R.string.loader_msg));
                                             activity.mProgressDialog.show();
-
-
-
                                             Call<AddUserListResponse> call = Global.client.AddGetUserList(listName);
                                             call.enqueue(new Callback<AddUserListResponse>(){
                                                 public void onResponse(Call<AddUserListResponse> call, Response<AddUserListResponse> response) {
@@ -216,8 +216,25 @@ public class UserListFragment extends Fragment
                                                     {
                                                         Toast.makeText(getContext(),R.string.user_list_added_successfully, Toast.LENGTH_LONG).show();
                                                         adapter.add(result.getUserList());
-                                                        recyclerView.triggerObserver();
 
+                                                        Collections.sort(adapter.getUserLists(), new Comparator<UserListObject>() {
+                                                            @Override
+                                                            public int compare(UserListObject o1, UserListObject o2)
+                                                            {
+                                                                if(o1.getCreationDate()== null && o2.getCreationDate() == null )
+                                                                    return  0;
+                                                                else {
+                                                                    Date d1 = new Date(o1.getCreationDate());
+                                                                    Date d2 = new Date(o2.getCreationDate());
+                                                                    int d =  d1.compareTo(d2);
+                                                                    return d;
+                                                                }
+                                                                //Integer.compare((int)o1.getRate(), (int)o2.getRate());
+                                                            }
+
+                                                        });
+                                                        adapter.notifyDataSetChanged();
+                                                        recyclerView.triggerObserver();
 
                                                         Log.d("UserListId=", "New=" + result.getUserList().getId());
                                                         //adapter.notifyDataSetChanged();
@@ -226,7 +243,6 @@ public class UserListFragment extends Fragment
                                                         Toast.makeText(activity, "Error", Toast.LENGTH_LONG).show();
                                                         activity.mProgressDialog.dismiss();
                                                     }
-
 //                                                    doRefresh();
                                                 }
                                                 public void onFailure(Call<AddUserListResponse> call, Throwable t)
