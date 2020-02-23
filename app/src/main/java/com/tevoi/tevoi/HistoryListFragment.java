@@ -66,7 +66,7 @@ public class HistoryListFragment extends Fragment
     View rootView;
     SideMenu activity;
     SwipeRefreshLayout swipeRefreshLayout;
-
+    private SwipeRefreshLayout mEmptyViewContainer;
 
     ImageButton btnClearHistory;
     @Override
@@ -81,8 +81,11 @@ public class HistoryListFragment extends Fragment
         recyclerView = rootView.findViewById(R.id.history_tracks_recycler_View);
         initiatePagination();
 
-        swipeRefreshLayout = rootView.findViewById(R.id.main_swiperefresh_history_tracks);
+        swipeRefreshLayout = rootView.findViewById(R.id.swipeRefreshLayout_emptyView_history);
         swipeRefreshLayout.setOnRefreshListener(this);
+
+        mEmptyViewContainer = rootView.findViewById(R.id.swipeRefreshLayout_emptyView_history);
+        onCreateSwipeToRefresh(mEmptyViewContainer);
 
         lstHistoryTracks = activity.storageManager.loadHistoryListTracksnew(activity);
         activity.lstTracks = activity.storageManager.loadHistoryListTracksnew(activity);
@@ -94,14 +97,14 @@ public class HistoryListFragment extends Fragment
             @Override
             public void onClick(View v)
             {
-                adapter.getTracksList().clear();
+
+                /*adapter.getTracksList().clear();
                 View vw = rootView.findViewById(R.id.history_list_empty);
                 vw.setVisibility(View.VISIBLE);
                 recyclerView.setEmptyView(vw);
 
-                adapter.notifyDataSetChanged();
-                activity.storageManager.clearHistoryListTracks(activity);
-/*
+                adapter.notifyDataSetChanged();*/
+
                 activity.mProgressDialog.setMessage(getResources().getString( R.string.loader_msg)); activity.mProgressDialog.show();
 
                 Call<IResponse> call = Global.client.RemoveAllHistory();
@@ -110,16 +113,26 @@ public class HistoryListFragment extends Fragment
                         //generateDataList(response.body());
                         SideMenu activity = (SideMenu) getActivity();
                         IResponse result = response.body();
-                        Toast.makeText(activity, result.getMessage(), Toast.LENGTH_SHORT).show();
+                        if(result.Number ==0)
+                        {
+                            adapter.clear();
+                            recyclerView.triggerObserver();
+                            activity.storageManager.clearHistoryListTracks(activity);
+
+                        }else
+                        {
+                            Toast.makeText(activity,activity.getResources().getString(R.string.general_error), Toast.LENGTH_SHORT).show();
+                        }
+                        //Toast.makeText(activity, result.getMessage(), Toast.LENGTH_SHORT).show();
                         activity.mProgressDialog.dismiss();
-                        doRefresh();
+                        //doRefresh();
                     }
                     public void onFailure(Call<IResponse> call, Throwable t)
                     {
                         activity.mProgressDialog.dismiss();
                         Toast.makeText(getContext(),"something went wrong", Toast.LENGTH_SHORT).show();
                     }
-                });*/
+                });
             }
         });
         View emptyView = rootView.findViewById(R.id.history_list_empty);
@@ -129,6 +142,7 @@ public class HistoryListFragment extends Fragment
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
 //        recyclerView.setEmptyView(emptyView);
+        recyclerView.setEmptyView(mEmptyViewContainer);
 
         List<TrackObject> trs = new ArrayList<>();
         adapter = new TracksAdapter(trs, activity, Global.HistoryFragmentName, recyclerView);
@@ -137,7 +151,7 @@ public class HistoryListFragment extends Fragment
 
         recyclerView.setAdapter(adapter);
 
-        emptyView.setVisibility(View.INVISIBLE);
+        //emptyView.setVisibility(View.INVISIBLE);
 
         recyclerView.addOnScrollListener(new PaginationScrollListener(linearLayoutManager)
         {
@@ -149,7 +163,6 @@ public class HistoryListFragment extends Fragment
                     loadNextPage();
                 }
             }
-
             @Override
             public int getTotalPageCount() {
                 return TOTAL_PAGES;
@@ -292,11 +305,12 @@ public class HistoryListFragment extends Fragment
         progressBar.setVisibility(View.GONE);
         List<TrackObject> lstFirstPage = getPage(lstHistoryTracks, 0 , PAGE_SIZE );
         adapter.addAll(lstFirstPage);
+        recyclerView.triggerObserver();
 
-        if(lstFirstPage.size() == 0) {
+        /*if(lstFirstPage.size() == 0) {
             View v = rootView.findViewById(R.id.history_list_empty);
             v.setVisibility(View.VISIBLE);
-        }
+        }*/
             //activity.mProgressDialog.setMessage("Loading1");
         //activity.mProgressDialog.show();
       /*  currentPage = 0;
@@ -340,6 +354,7 @@ public class HistoryListFragment extends Fragment
 
         //activity.mProgressDialog.setMessage("Loading");
         //activity.mProgressDialog.show();
+        isLoading = false;
 
         progressBar.setVisibility(View.VISIBLE);
 
@@ -383,7 +398,11 @@ public class HistoryListFragment extends Fragment
         });*/
 
     }
+    private void onCreateSwipeToRefresh(SwipeRefreshLayout refreshLayout) {
 
+        refreshLayout.setOnRefreshListener(this);
+
+    }
     private void showErrorView(Throwable throwable) {
         if (errorLayout.getVisibility() == View.GONE) {
             errorLayout.setVisibility(View.VISIBLE);
@@ -420,7 +439,7 @@ public class HistoryListFragment extends Fragment
 
         getRefreshListTrack();
 
-        swipeRefreshLayout.setRefreshing(false);
+
     }
 
     private void getRefreshListTrack()
@@ -484,7 +503,7 @@ public class HistoryListFragment extends Fragment
                 TrackResponseList tracks = response.body();
 
                 adapter.clear();
-                adapter.notifyDataSetChanged();
+                //adapter.notifyDataSetChanged();
                 lstHistoryTracks = tracks.getLstTrack();
                 activity.lstTracks = tracks.getLstTrack();
                 activity.storageManager.storeHistoryListTracks(activity, lstHistoryTracks);
@@ -492,7 +511,8 @@ public class HistoryListFragment extends Fragment
 
                 loadFirstPage();
                 swipeRefreshLayout.setRefreshing(false);
-                }
+                mEmptyViewContainer.setRefreshing(false);
+            }
             public void onFailure(Call<TrackResponseList> call, Throwable t)
             {
                 //activity.mProgressDialog.dismiss();

@@ -120,7 +120,7 @@
     <string name="show_default_audio_language">إظهار المقالات الصوتية باللغة المحددة فقط.</string>
 
     <string name="continue_as_guest">المتابعة كضيف</string>
-    <string name="continue_as_guest_text">إذا قمت بالمتابعة كضيف فإن بعض الخواص لت تكون متاحة</string>
+    <string name="continue_as_guest_text">إذا قمت بالمتابعة كضيف فإن بعض الخواص لن تكون متاحة</string>
 
     <string name="error_msg">عذراً! لم يتم تحميل هذه الصفحة.</string>
     <string name="tap_to_reload">إضغط لإعادة التحميل</string>

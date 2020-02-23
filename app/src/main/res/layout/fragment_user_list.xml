@@ -55,8 +55,6 @@
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-
-
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipeRefreshLayout_emptyView"
             android:layout_width="wrap_content"

@@ -625,7 +625,7 @@ public class TracksList extends Fragment
         else isLastPage = true;*/
         //ListBannerResponse banner = activity.storageManager.loadBanner(activity);
         //showListBanner(banner.BannerImagePath, banner.BannerLink);
-// todo : show banner
+        // todo : show banner
         Call<ListBannerResponse> call = Global.client.GetBannerRandomly();
         call.enqueue(new Callback<ListBannerResponse>() {
             public void onResponse(Call<ListBannerResponse> call, Response<ListBannerResponse> response)
@@ -634,7 +634,7 @@ public class TracksList extends Fragment
                 banner = response.body();
 
                 if(banner != null) {
-//                    Toast.makeText(activity, banner.getBannerLink(), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(activity, banner.getBannerLink(), Toast.LENGTH_LONG).show();
                     showListBanner(banner.BannerImagePath, banner.BannerLink);
                 }
             }
@@ -674,7 +674,8 @@ public class TracksList extends Fragment
 
         // todo : show banner
         Call<ListBannerResponse> call = Global.client.GetBannerRandomly();
-        call.enqueue(new Callback<ListBannerResponse>() {
+        call.enqueue(new Callback<ListBannerResponse>()
+        {
             public void onResponse(Call<ListBannerResponse> call, Response<ListBannerResponse> response)
             {
                 // replace old list tracks with new one from server
