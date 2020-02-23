@@ -648,10 +648,18 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 @Override
                 public void onClick(View v) {
                     //Like or dislike this track.
-                    int i = getPosition();
+                    int i = getAdapterPosition();
                    final TrackObject t = tracks.get(i);
                     if(!t.isFavourite())
                     {
+
+                        btnLike.setText(activity.getResources().getText(R.string.dilike));
+                        btnLike.setCompoundDrawablesWithIntrinsicBounds(null,activity.getResources().getDrawable(R.mipmap.dislike_hover),null,null);
+                        btnLike.refreshDrawableState();
+                        Log.d("Favourite :", "onResponse: track liked ");
+                        Log.d("Favourite :", "onResponse: track liked ");
+                        Log.d("Favourite :", "onResponse: track liked ");
+
                         Call<IResponse> call = Global.client.AddTrackToFavourite(t.getId());
                         call.enqueue(new Callback<IResponse>() {
                             @Override
@@ -660,14 +668,17 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                                 if (res.getNumber() == 0)
                                 {
                                     t.setFavourite(true);
-                                    btnLike.setText(activity.getResources().getText(R.string.dilike));
+                                   /* btnLike.setText(activity.getResources().getText(R.string.dilike));
                                     btnLike.setCompoundDrawablesWithIntrinsicBounds(null,activity.getResources().getDrawable(R.mipmap.dislike_hover),null,null);
-                                    btnLike.refreshDrawableState();
+                                    btnLike.refreshDrawableState();*/
                                     activity.storageManager.LikeFunction(activity, t.getId());
                                     recyclerVw.triggerObserver();
                                     Log.d("Favourite :", "onResponse: track liked ");
                                     Toast.makeText(activity,activity.getResources().getString(R.string.track_added_to_favourite), Toast.LENGTH_LONG).show();
                                 } else {
+                                    btnLike.setText(activity.getResources().getText(R.string.like));
+                                    btnLike.setCompoundDrawablesWithIntrinsicBounds(null,activity.getResources().getDrawable(R.mipmap.like_normal_white),null,null);
+                                    btnLike.refreshDrawableState();
                                     Log.d("Favourite Error", "onResponse: " + res.getMessage());
                                     Toast.makeText(activity, "Error Like", Toast.LENGTH_LONG).show();
                                 }
@@ -681,6 +692,13 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     else
                     {
                         // unfavourite
+                        btnLike.setText(activity.getResources().getText(R.string.like));
+                        btnLike.setCompoundDrawablesWithIntrinsicBounds(null,activity.getResources().getDrawable(R.mipmap.like_normal_white),null,null);
+                        btnLike.refreshDrawableState();
+                        Log.d("Favourite :", "onResponse: track liked ");
+                        Log.d("Favourite :", "onResponse: track liked ");
+                        Log.d("Favourite :", "onResponse: track liked ");
+
                         Call<IResponse> call = Global.client.RemoveTrackFromFavourite(t.getId());
                         call.enqueue(new Callback<IResponse>() {
                             @Override
@@ -689,9 +707,9 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                                 if (res.getNumber() == 0)
                                 {
                                     t.setFavourite(false);
-                                    btnLike.setText(activity.getResources().getText(R.string.like));
+/*                                    btnLike.setText(activity.getResources().getText(R.string.like));
                                     btnLike.setCompoundDrawablesWithIntrinsicBounds(null,activity.getResources().getDrawable(R.mipmap.like_normal_white),null,null);
-                                    btnLike.refreshDrawableState();
+                                    btnLike.refreshDrawableState();*/
                                     recyclerVw.triggerObserver();
                                     activity.storageManager.LikeFunction(activity, t.getId());
                                     Log.d("Favourite :", "onResponse: track liked ");
@@ -705,6 +723,9 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                                     }
                                     //Toast.makeText(activity, "Remove Like", Toast.LENGTH_LONG).show();
                                 } else {
+                                    btnLike.setText(activity.getResources().getText(R.string.dilike));
+                                    btnLike.setCompoundDrawablesWithIntrinsicBounds(null,activity.getResources().getDrawable(R.mipmap.dislike_hover),null,null);
+                                    btnLike.refreshDrawableState();
                                     Log.d("Favourite Error", "onResponse: " + res.getMessage());
                                     //Toast.makeText(activity, "Error Remove Like", Toast.LENGTH_LONG).show();
                                 }
