@@ -222,14 +222,14 @@ public class FavouriteFragment extends Fragment
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
 //        recyclerView.setEmptyView(emptyView);
-
+        recyclerView.setEmptyView(EmptyViewswipeRefreshLayout);
         List<TrackObject> trs = new ArrayList<>();
         adapter = new TracksAdapter(trs, activity, Global.FavouriteFragmentName, recyclerView);
 
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
         recyclerView.setAdapter(adapter);
-        recyclerView.setEmptyView(EmptyViewswipeRefreshLayout);
+
 //        emptyView.setVisibility(View.INVISIBLE);
 
 
@@ -507,11 +507,16 @@ public class FavouriteFragment extends Fragment
         return errorMsg;
     }
 
-    public void doRefresh() {
+    public void doRefresh()
+    {
         progressBar.setVisibility(View.VISIBLE);
         //  Execute network request if cache is expired; otherwise do not update data.
-        adapter.getTracksList().clear();
-        adapter.notifyDataSetChanged();
+        //adapter.getTracksList().clear();
+        //adapter.notifyDataSetChanged();
+        adapter.clear();
+        lstFavouriteTracks = activity.storageManager.loadFavoriteListTracksnew(activity);
+        activity.lstTracks = activity.storageManager.loadFavoriteListTracksnew(activity);
+
         loadFirstPage();
     }
     @Override
@@ -564,7 +569,7 @@ public class FavouriteFragment extends Fragment
                 TrackResponseList tracks = response.body();
 
                 adapter.clear();
-                adapter.notifyDataSetChanged();
+                //adapter.notifyDataSetChanged();
                 lstTracks = tracks.getLstTrack();
                 activity.lstTracks = tracks.getLstTrack();
                 activity.storageManager.storeFavoriteListTracks(activity, lstTracks);

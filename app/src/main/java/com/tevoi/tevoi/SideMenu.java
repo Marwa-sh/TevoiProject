@@ -333,6 +333,7 @@ public class SideMenu extends AppCompatActivity
                     {
                         drawer.closeDrawer(GravityCompat.START);
                     }
+                    mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
                     mSubTitle.setText(R.string.title_list_tracks);
                     fragTransaction.replace(R.id.content_frame, lisTracksFragment);
                     fragTransaction.addToBackStack(getResources().getString(R.string.title_list_tracks));

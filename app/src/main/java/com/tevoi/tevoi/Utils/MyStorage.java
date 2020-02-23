@@ -730,19 +730,19 @@ public class MyStorage
         storeListTracks(context,listTracks);
     }
     public void Addtohistory(Context context,int Id)
-{
-    ArrayList<TrackObject> listTracks = loadListTracks(context);
-
-    for(int j=0 ; j<listTracks.size();j++)
     {
-        if(listTracks.get(j).getId()== Id)
+        ArrayList<TrackObject> listTracks = loadListTracks(context);
+
+        for(int j=0 ; j<listTracks.size();j++)
         {
-            listTracks.get(j).setListen(true);
-            break;
+            if(listTracks.get(j).getId()== Id)
+            {
+                listTracks.get(j).setListen(true);
+                break;
+            }
         }
+        storeListTracks(context,listTracks);
     }
-    storeListTracks(context,listTracks);
-}
 
     public void storeHistoryListTracks(Context context, List historyListTracks)
     {
