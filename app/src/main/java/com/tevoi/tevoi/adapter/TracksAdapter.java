@@ -712,7 +712,7 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                                     recyclerVw.triggerObserver();
                                     activity.storageManager.LikeFunction(activity, t.getId());
                                     Log.d("Favourite :", "onResponse: track liked ");
-                                    Toast.makeText(activity,activity.getResources().getString(R.string.track_removed_from_favourite), Toast.LENGTH_LONG).show();
+                                    //Toast.makeText(activity,activity.getResources().getString(R.string.track_removed_from_favourite), Toast.LENGTH_LONG).show();
 
                                     if(fragmentName.equals(Global.FavouriteFragmentName) && tracks.size()==0)
                                     {
