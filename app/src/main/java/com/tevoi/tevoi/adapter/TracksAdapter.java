@@ -731,7 +731,10 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                             }
                             @Override
                             public void onFailure(Call<IResponse> call, Throwable t) {
-
+                                btnLike.setText(activity.getResources().getText(R.string.dilike));
+                                btnLike.setCompoundDrawablesWithIntrinsicBounds(null,activity.getResources().getDrawable(R.mipmap.dislike_hover),null,null);
+                                btnLike.refreshDrawableState();
+                                Toast.makeText(activity, "Error Remove Like", Toast.LENGTH_LONG).show();
                             }
                         });
                     }
