@@ -652,7 +652,6 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                    final TrackObject t = tracks.get(i);
                     if(!t.isFavourite())
                     {
-
                         btnLike.setText(activity.getResources().getText(R.string.dilike));
                         btnLike.setCompoundDrawablesWithIntrinsicBounds(null,activity.getResources().getDrawable(R.mipmap.dislike_hover),null,null);
                         btnLike.refreshDrawableState();
@@ -680,7 +679,7 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                                     btnLike.setCompoundDrawablesWithIntrinsicBounds(null,activity.getResources().getDrawable(R.mipmap.like_normal_white),null,null);
                                     btnLike.refreshDrawableState();
                                     Log.d("Favourite Error", "onResponse: " + res.getMessage());
-                                    Toast.makeText(activity, "Error Like", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(activity, R.string.general_error, Toast.LENGTH_LONG).show();
                                 }
                             }
                             @Override
@@ -713,7 +712,7 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                                     recyclerVw.triggerObserver();
                                     activity.storageManager.LikeFunction(activity, t.getId());
                                     Log.d("Favourite :", "onResponse: track liked ");
-                                    Toast.makeText(activity,activity.getResources().getString(R.string.track_removed_from_favourite), Toast.LENGTH_LONG).show();
+                                    //Toast.makeText(activity,activity.getResources().getString(R.string.track_removed_from_favourite), Toast.LENGTH_LONG).show();
 
                                     if(fragmentName.equals(Global.FavouriteFragmentName) && tracks.size()==0)
                                     {
@@ -732,7 +731,10 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                             }
                             @Override
                             public void onFailure(Call<IResponse> call, Throwable t) {
-
+                                btnLike.setText(activity.getResources().getText(R.string.dilike));
+                                btnLike.setCompoundDrawablesWithIntrinsicBounds(null,activity.getResources().getDrawable(R.mipmap.dislike_hover),null,null);
+                                btnLike.refreshDrawableState();
+                                Toast.makeText(activity, "Error Remove Like", Toast.LENGTH_LONG).show();
                             }
                         });
                     }
@@ -746,7 +748,7 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     }
                     else if(fragmentName.equals(Global.ListTracksFragmentName))
                     {
-                        activity.notifyTarcksListAdapter();
+                        //activity.notifyTarcksListAdapter();
                     }
                     //hoverLayout.setVisibility(View.INVISIBLE);
                 }
