@@ -628,25 +628,45 @@ public class MyStorage
         // used for retrieving arraylist from json formatted string
         SharedPreferences settings;
         ArrayList<TrackObject> listTracks = loadListTracks(context);
+        ArrayList<TrackObject> favoritelistTracks = loadFavoriteListTracksnew(context);
 
         for (int j=0;j<listTracks.size();j++)
         {
                 listTracks.get(j).setFavourite(false);
         }
+        for (int i=0;i<favoritelistTracks.size();i++)
+        {
+            favoritelistTracks.get(i).setFavourite(false);
+        }
+        storeFavoriteListTracks(context,favoritelistTracks);
         storeListTracks(context,listTracks);
+
     }
     public void LikeFunction(Context context,int Id)
     {
         ArrayList<TrackObject> listTracks = loadListTracks(context);
+        ArrayList<TrackObject> favoritelistTracks = loadFavoriteListTracksnew(context);
+
 
         for(int j=0 ; j<listTracks.size();j++)
         {
             if(listTracks.get(j).getId()== Id)
             {
                 listTracks.get(j).setFavourite(!listTracks.get(j).isFavourite());
+                if(listTracks.get(j).isFavourite())
+                    favoritelistTracks.add(listTracks.get(j));
                 break;
             }
         }
+        for(int j=0 ; j<favoritelistTracks.size();j++)
+        {
+            if(favoritelistTracks.get(j).getId()== Id)
+            {
+                favoritelistTracks.get(j).setFavourite(!favoritelistTracks.get(j).isFavourite());
+                break;
+            }
+        }
+        storeFavoriteListTracks(context,favoritelistTracks);
         storeListTracks(context,listTracks);
     }
 

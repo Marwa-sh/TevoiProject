@@ -570,9 +570,10 @@ public class FavouriteFragment extends Fragment
 
                 adapter.clear();
                 //adapter.notifyDataSetChanged();
-                lstTracks = tracks.getLstTrack();
+//                lstTracks = tracks.getLstTrack();
                 activity.lstTracks = tracks.getLstTrack();
-                activity.storageManager.storeFavoriteListTracks(activity, lstTracks);
+                lstFavouriteTracks = tracks.getLstTrack();
+                activity.storageManager.storeFavoriteListTracks(activity, lstFavouriteTracks);
                 TOTAL_PAGES = lstFavouriteTracks.size()/ PAGE_SIZE;
 
                 loadFirstPage();
