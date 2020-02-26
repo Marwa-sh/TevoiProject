@@ -16,6 +16,7 @@
 <!--
         android:layout_height="?attr/actionBarSize"
 -->
+
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
@@ -28,20 +29,20 @@
                 android:orientation="vertical">
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="20dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginEnd="35dp"
                     >
-                <ImageView
-                    android:id="@+id/tevoi_logo_img"
-                    android:layout_width="40dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_centerHorizontal="true"
-                    android:layout_alignParentTop="true"
-                    android:src="@drawable/logo"
-                    android:scaleType="fitXY"
-                    />
 
+                    <ImageView
+                        android:id="@+id/tevoi_logo_img"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="-1dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/logo_normal_32"
+                        android:layout_centerHorizontal="true"
+                        />
                 </RelativeLayout>
                 <RelativeLayout
                 android:layout_width="match_parent"
