@@ -1,6 +1,8 @@
 package com.tevoi.tevoi.model;
 
-public class CommentObject {
+public class CommentObject
+{
     public long Id;
     public String Text;
+    public String UserName;
 }

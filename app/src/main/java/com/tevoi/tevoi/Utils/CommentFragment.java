@@ -135,9 +135,9 @@ public class CommentFragment extends Fragment
         //recyclerView = (RecyclerView) rootView.findViewById(R.id.comments_recycler_View);
         //recyclerView.setAdapter(adapter);
 
-        TrackCommentRequest requestData = new TrackCommentRequest();
+        /*TrackCommentRequest requestData = new TrackCommentRequest();
         requestData.TrackId = TrackId; requestData.Language = "ar-SY";
-        requestData.UserId = 1;
+        requestData.UserId = 1;*/
 
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);

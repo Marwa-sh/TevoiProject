@@ -103,8 +103,7 @@ public class PaginationController {
             {
                 activity.numberOfTextUnitsConsumed += numOfUnitsInPage;
                 localUnitsConsumed += numOfUnitsInPage;
-                remainingWordsCount = countNumber - numOfUnitsInPage*Global.ReadUnitInWords;
-
+                remainingWordsCount = countNumber - numOfUnitsInPage * Global.ReadUnitInWords;
             }
 
             if(mLastPageIndex != -1)

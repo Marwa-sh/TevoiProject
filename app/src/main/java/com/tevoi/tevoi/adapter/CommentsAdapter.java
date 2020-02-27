@@ -33,7 +33,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
         CommentObject comment =  comments.get(i);
         viewHolder.tvCommentText.setText(comment.Text);
         viewHolder.id = comment.Id;
-
+        viewHolder.txtUserName .setText(comment.UserName);
     }
 
     @Override
@@ -44,11 +44,14 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
     {
         public  View view;
         TextView tvCommentText;
+        TextView txtUserName;
         long id;
         public CommentViewHolder(@NonNull View itemView) {
             super(itemView);
             //this.view=itemView.findViewWithTag(R.id.track_row_layout);
             tvCommentText = itemView.findViewById(R.id.comment_text);
+            txtUserName = itemView.findViewById(R.id.et_User_Name);
+
             //imgBtnPlay.setOnClickListener();
         }
     }

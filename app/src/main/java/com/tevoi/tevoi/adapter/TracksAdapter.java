@@ -180,7 +180,7 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 viewHolder.ratingBar.setRating(track.getRate());
                 viewHolder.tvCategories.setText(track.getCategories());
                 viewHolder.tvDuration.setText(track.getDuration());
-
+                viewHolder.hoverLayout.setVisibility(View.INVISIBLE);
                 break;
             case LOADING:
             {
@@ -673,7 +673,7 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                                     activity.storageManager.LikeFunction(activity, t.getId());
                                     recyclerVw.triggerObserver();
                                     Log.d("Favourite :", "onResponse: track liked ");
-                                    Toast.makeText(activity,activity.getResources().getString(R.string.track_added_to_favourite), Toast.LENGTH_LONG).show();
+                                    //Toast.makeText(activity,activity.getResources().getString(R.string.track_added_to_favourite), Toast.LENGTH_LONG).show();
                                 } else {
                                     btnLike.setText(activity.getResources().getText(R.string.like));
                                     btnLike.setCompoundDrawablesWithIntrinsicBounds(null,activity.getResources().getDrawable(R.mipmap.like_normal_white),null,null);
