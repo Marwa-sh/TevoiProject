@@ -36,7 +36,11 @@
                 android:paddingTop="4dp"
                 android:src="@mipmap/white_add_to_filter" />
         </LinearLayout>
-
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/tevoiOutLine"
+            />
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"    >
