@@ -260,4 +260,6 @@
     <string name="user_name_missing">User name missing</string>
     <string name="list_has_no_tracks">List has no tracks</string>
     <string name="email_required">Email is missing</string>
+
+    <string name="need_select_supscriped_period">You need to select Subscription period</string>
 </resources>

@@ -87,7 +87,42 @@ public class UpgradeToPremiumFragment extends Fragment {
                 }
                 else
                 {
-                    // check coupon validity
+                    // TODO: check coupon validity
+                    try {
+                        if (chk1Month.isChecked()) {
+                            mHelper.launchPurchaseFlow(activity,
+                                    SKU_One_Month,
+                                    IabHelper.ITEM_TYPE_SUBS,
+                                    RC_REQUEST,
+                                    mPurchaseFinishedListener,
+                                    "");
+                        } else if (chk3Month.isChecked()) {
+                            mHelper.launchPurchaseFlow(activity,
+                                    SKU_Three_Months,
+                                    IabHelper.ITEM_TYPE_SUBS,
+                                    RC_REQUEST,
+                                    mPurchaseFinishedListener,
+                                    "");
+                        } else if (chk12Month.isChecked()) {
+                            mHelper.launchPurchaseFlow(activity,
+                                    SKU_YEARLY,
+                                    IabHelper.ITEM_TYPE_SUBS,
+                                    RC_REQUEST,
+                                    mPurchaseFinishedListener,
+                                    "");
+                        } else {
+                            // You need to select
+                            Toast.makeText(activity, R.string.need_select_supscriped_period, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    catch (IllegalStateException exc)
+                    {
+                        Toast.makeText(activity, exc.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                    catch (Exception exc)
+                    {
+                        Toast.makeText(activity, R.string.general_error, Toast.LENGTH_SHORT).show();
+                    }
 
                 }
             }

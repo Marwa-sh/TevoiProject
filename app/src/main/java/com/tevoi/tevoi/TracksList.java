@@ -157,7 +157,8 @@ public class TracksList extends Fragment
 
 
         if(activity.IsFilterChanged)
-        {
+        {progressBar.setVisibility(View.VISIBLE);
+
             getRefreshListTrack();
         }
         else
@@ -745,7 +746,7 @@ public class TracksList extends Fragment
 
     @Override
     public void onRefresh() {
-        progressBar.setVisibility(View.VISIBLE);
+
 
         getRefreshListTrack();
 
@@ -759,8 +760,12 @@ public class TracksList extends Fragment
 
     }
 
-    private void getRefreshListTrack()
+    public void getRefreshListTrack()
     {
+        progressBar.setVisibility(View.VISIBLE);
+        //if(!swipeRefreshLayout.isRefreshing())
+        swipeRefreshLayout.setRefreshing(true);
+
         EditText txtFilter = rootView.findViewById(R.id.txt_search_filter_value);
         CheckBox chkIsLocationEnabled = rootView.findViewById(R.id.checkBoxLocationEnable);
 
