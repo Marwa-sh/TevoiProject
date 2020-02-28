@@ -191,8 +191,12 @@ public class PartnersFragment extends Fragment
             @Override
             protected void loadMoreItems() {
                 isLoading = true;
-                currentPage += 1;
-                loadNextPage(k);
+                if(currentPage <TOTAL_PAGES) {
+                    currentPage += 1;
+                    loadNextPage(k);
+                }
+                //currentPage += 1;
+                //loadNextPage(k);
                 /*new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {

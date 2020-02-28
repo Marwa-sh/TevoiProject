@@ -104,6 +104,7 @@ public class PartnerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 viewHolder.tvPartnerName.setText(partner.getName());
                 viewHolder.tvDescription.setText(partner.getDescripton());
                 viewHolder.tvNumOfTracks.setText(activity.getResources().getString(R.string.number_of_tracks) + " : " + partner.getNumberOfTracks());
+                viewHolder.hoverLayout.setVisibility(View.INVISIBLE);
                 break;
             case LOADING:
             {

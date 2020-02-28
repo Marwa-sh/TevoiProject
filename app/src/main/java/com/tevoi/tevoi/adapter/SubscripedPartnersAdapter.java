@@ -104,6 +104,8 @@ public class SubscripedPartnersAdapter extends RecyclerView.Adapter<SubscripedPa
                         @Override
                         public void onResponse(Call<IResponse> call, Response<IResponse> response) {
                             IResponse res = response.body();
+                            activity.IsFilterChanged = true;
+
                             /*if(res.getNumber()==0)
                             {
                                 isChecked = !isChecked;

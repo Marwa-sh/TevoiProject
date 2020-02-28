@@ -31,7 +31,6 @@ public class SwitchCategoryViewHolder extends CheckableChildViewHolder
     private boolean isChecked;
     private SideMenu activity;
 
-
     int id;
 
     public SwitchCategoryViewHolder(View itemView)
@@ -66,6 +65,9 @@ public class SwitchCategoryViewHolder extends CheckableChildViewHolder
                     {
                         IResponse res = response.body();
                         Log.println(Log.DEBUG, "Result i = ", "Done");
+                        activity.IsFilterChanged = true;
+
+                        activity.storageManager.updateCategoryFilter(activity, id, isChecked);
                         /*isChecked = !isChecked;
                         if(isChecked)
                         {

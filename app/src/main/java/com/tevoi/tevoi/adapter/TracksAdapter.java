@@ -180,7 +180,7 @@ public class TracksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 viewHolder.ratingBar.setRating(track.getRate());
                 viewHolder.tvCategories.setText(track.getCategories());
                 viewHolder.tvDuration.setText(track.getDuration());
-
+                viewHolder.hoverLayout.setVisibility(View.INVISIBLE);
                 break;
             case LOADING:
             {

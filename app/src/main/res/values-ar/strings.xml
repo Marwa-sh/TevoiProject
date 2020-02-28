@@ -215,4 +215,6 @@
 
     <string name="list_has_no_tracks">لايوجد تسجيلات في القائمة.</string>
 <string name="email_required">البريد الالكتروني مطلوب</string>
+
+    <string name="need_select_supscriped_period">عليك اختيار إحدى فترات الاشتراك</string>
 </resources>

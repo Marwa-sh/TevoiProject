@@ -84,6 +84,8 @@ public class TrackText extends Fragment {
                     ft.replace(R.id.content_frame, activity.userListsFragment);
                 else if(PreviousFragmentName.equals(Global.PlayNextListFragment))
                     ft.replace(R.id.content_frame, activity.playingNowFragment);
+                else if(PreviousFragmentName.equals(Global.FavouriteFragmentName))
+                    ft.replace(R.id.content_frame, activity.favouriteFragment);
                 else
                     ft.replace(R.id.content_frame, activity.mediaPlayerFragment);
                 // or ft.add(R.id.your_placeholder, new FooFragment());

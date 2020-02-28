@@ -9,6 +9,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -26,7 +27,9 @@ import com.tevoi.tevoi.Utils.MyStorage;
 import com.tevoi.tevoi.model.InternetConnectionListener;
 import com.tevoi.tevoi.model.LoginRequestModel;
 import com.tevoi.tevoi.model.LoginResponse;
+import com.tevoi.tevoi.model.TrackFilter;
 import com.tevoi.tevoi.model.TrackObject;
+import com.tevoi.tevoi.model.TrackResponseList;
 import com.tevoi.tevoi.rest.ApiClient;
 
 import java.util.List;
@@ -109,14 +112,45 @@ public class LoginActivity extends AppCompatActivity
         btnGuest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                TrackFilter filter =  new TrackFilter();
 
-                Intent i = new Intent(getApplicationContext(),SideMenu.class);
-                Bundle b = new Bundle();
-                b.putBoolean("IsDemoUser", true); //Your id
-                i.putExtras(b); //Put your id to your next Intent
+                filter.SearchKey = "";
+                filter.IsLocationEnabled = false;
 
-                startActivity(i);
-                setContentView(R.layout.activity_side_menu);
+                filter.TrackTypeId =1; filter.ListTypeEnum = 0;
+                filter.Index = 0; filter.Size = 0;
+
+                Log.d("ResultTracks Next ", filter.getStringFilter());
+
+                //Call<TrackResponseList> call = ((CustomApp) activity.getApplication()).getApiService().getListMainTrack(filter);
+                Call<TrackResponseList> call = Global.client.getListMainTrack(filter);
+                call.enqueue(new Callback<TrackResponseList>() {
+                    public void onResponse(Call<TrackResponseList> call, Response<TrackResponseList> response)
+                    {
+                        // replace old list tracks with new one from server
+                        TrackResponseList tracks = response.body();
+
+                        MyStorage storageManager = new MyStorage(0);
+
+                        storageManager.storeListTracks(LoginActivity.this, tracks.getLstTrack());
+                        storageManager.storeDemoUsagePreference(LoginActivity.this, 0);
+                       // activity.storageManager.storeListTracks(activity, lstTracks);
+                       // showListBanner(tracks.getBanner().BannerImagePath, tracks.getBanner().BannerLink);
+                        //activity.mProgressDialog.dismiss();
+                        Intent i = new Intent(getApplicationContext(),SideMenu.class);
+                        Bundle b = new Bundle();
+                        b.putBoolean("IsDemoUser", true); //Your id
+                        i.putExtras(b); //Put your id to your next Intent
+
+                        startActivity(i);
+                        setContentView(R.layout.activity_side_menu);
+                    }
+                    public void onFailure(Call<TrackResponseList> call, Throwable t)
+                    {
+                        //activity.mProgressDialog.dismiss();
+                        //swipeRefreshLayout.setRefreshing(false);
+                    }
+                });
             }
         });
 

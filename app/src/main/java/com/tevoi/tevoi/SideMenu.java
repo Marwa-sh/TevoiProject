@@ -210,7 +210,7 @@ public class SideMenu extends AppCompatActivity
     // endregion
 
     SlidingUpPanelLayout mLayout;
-
+    public boolean IsFilterChanged = false;
     //ListTracksFragment listTracksFragment = new ListTracksFragment();
 
     //
@@ -624,6 +624,13 @@ public class SideMenu extends AppCompatActivity
                 {
                     CurrentFragmentName = PreviousFragmentName;
                     mSubTitle.setText(CurrentFragmentName);
+                    if(CurrentFragmentName.equals(Global.ListTracksFragmentName))
+                    {
+                        if(IsFilterChanged)
+                        {
+                            lisTracksFragment.getRefreshListTrack();
+                        }
+                    }
                 }
             }
         });
