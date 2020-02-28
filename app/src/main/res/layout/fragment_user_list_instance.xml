@@ -172,7 +172,6 @@
             android:clickable="true"
             android:layout_weight="1"
             android:id="@+id/btn_user_list_drawer"
-            android:rotation="90"
             />
 
     </LinearLayout>
