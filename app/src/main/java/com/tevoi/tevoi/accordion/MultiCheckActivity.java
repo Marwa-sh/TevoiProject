@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.tevoi.tevoi.R;
 import com.tevoi.tevoi.SideMenu;
@@ -40,7 +41,7 @@ public class MultiCheckActivity extends Fragment
     recyclerView.setLayoutManager(layoutManager);
     recyclerView.setAdapter(adapter);
 
-    Button clear = (Button) rootView.findViewById(R.id.clear_button);
+    ImageButton clear = (ImageButton) rootView.findViewById(R.id.clear_button);
     clear.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
