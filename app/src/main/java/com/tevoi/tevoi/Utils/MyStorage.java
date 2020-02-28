@@ -6,6 +6,8 @@ import android.content.SharedPreferences.Editor;
 import android.text.BoringLayout;
 
 import com.tevoi.tevoi.R;
+import com.tevoi.tevoi.model.CategoryFilter;
+import com.tevoi.tevoi.model.CategoryObject;
 import com.tevoi.tevoi.model.ListBannerResponse;
 import com.tevoi.tevoi.model.MainTopic;
 import com.tevoi.tevoi.model.NotificationTypeObject;
@@ -1172,6 +1174,68 @@ public class MyStorage
         return listMainTopic;
     }
 
+    public void updateCategoryFilter(Context context, int Id, boolean newStatus)
+    {
+        SharedPreferences settings;
+        ArrayList<MainTopic> listMainTopic;
+        settings = context.getSharedPreferences(PREFS_NAME + Suffix, Context.MODE_PRIVATE); ////ask marwa
+        if (settings.contains(ArrayListMainTopic + Suffix)) {
+            String jsonPlayNowTracks = settings.getString(ArrayListMainTopic + Suffix, null);
+
+            GsonBuilder builder = new GsonBuilder();
+            builder.excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC);
+            builder.excludeFieldsWithoutExposeAnnotation();
+            Gson sExposeGson = builder.create();
+            MainTopic[] mainTopicItems = sExposeGson.fromJson(jsonPlayNowTracks, MainTopic[].class);
+
+            listMainTopic = new ArrayList( Arrays.asList(mainTopicItems));
+            for (int i=0; i<listMainTopic.size(); i++)
+            {
+                List<CategoryObject> childList = listMainTopic.get(i).CategoriesList;
+                for (int j=0; i<childList.size(); j++)
+                {
+                    if(childList.get(j).getId() == Id)
+                    {
+                        childList.get(j).setFilterValue(newStatus);
+                    }
+                }
+            }
+            storeListMainTopicFilter(context,listMainTopic);
+
+        } else
+        {
+
+        }
+    }
+    public void updateMainTopicFilter(Context context, int Id, boolean newStatus)
+    {
+        SharedPreferences settings;
+        ArrayList<MainTopic> listMainTopic;
+        settings = context.getSharedPreferences(PREFS_NAME + Suffix, Context.MODE_PRIVATE); ////ask marwa
+        if (settings.contains(ArrayListMainTopic + Suffix)) {
+            String jsonPlayNowTracks = settings.getString(ArrayListMainTopic + Suffix, null);
+
+            GsonBuilder builder = new GsonBuilder();
+            builder.excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC);
+            builder.excludeFieldsWithoutExposeAnnotation();
+            Gson sExposeGson = builder.create();
+            MainTopic[] mainTopicItems = sExposeGson.fromJson(jsonPlayNowTracks, MainTopic[].class);
+
+            listMainTopic = new ArrayList( Arrays.asList(mainTopicItems));
+            for (int i=0; i<listMainTopic.size(); i++)
+            {
+                if(listMainTopic.get(i).Id == Id)
+                {
+                    listMainTopic.get(i).FilterValue= newStatus;
+                }
+            }
+            storeListMainTopicFilter(context,listMainTopic);
+
+        } else
+        {
+
+        }
+    }
     //endregion
 
     // region shared preference for List Subscriped Partners
@@ -1214,6 +1278,35 @@ public class MyStorage
         return listSubscripedPartner;
     }
 
+    public void updatePartnerFilter(Context context, int Id, boolean newStatus)
+    {
+        SharedPreferences settings;
+        ArrayList<SubscipedPartnersObject> listSubscripedPartner;
+        settings = context.getSharedPreferences(PREFS_NAME + Suffix, Context.MODE_PRIVATE); ////ask marwa
+        if (settings.contains(ArrayListSubscripedPartner + Suffix)) {
+            String jsonPlayNowTracks = settings.getString(ArrayListSubscripedPartner + Suffix, null);
+
+            GsonBuilder builder = new GsonBuilder();
+            builder.excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC);
+            builder.excludeFieldsWithoutExposeAnnotation();
+            Gson sExposeGson = builder.create();
+            SubscipedPartnersObject[] subscripedPartnerItems = sExposeGson.fromJson(jsonPlayNowTracks, SubscipedPartnersObject[].class);
+
+            listSubscripedPartner = new ArrayList( Arrays.asList(subscripedPartnerItems));
+            for (int i=0; i<listSubscripedPartner.size(); i++)
+            {
+                if(listSubscripedPartner.get(i).getPartnerId() == Id)
+                {
+                    listSubscripedPartner.get(i).setFilterValue(newStatus);
+                }
+            }
+            storeListSubscripedPartnerFilter(context,listSubscripedPartner);
+
+        } else
+        {
+
+        }
+    }
     //endregion
 
     // region Banner info

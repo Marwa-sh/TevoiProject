@@ -156,9 +156,18 @@ public class TracksList extends Fragment
         swipeRefreshLayout.setOnRefreshListener(this);
 
 
-        activity.lstTracks = activity.storageManager.loadListTracks(activity);
-        lstTracks = activity.storageManager.loadListTracks(activity);
-        TOTAL_PAGES = lstTracks.size()/ PAGE_SIZE;
+        if(activity.IsFilterChanged)
+        {
+            getRefreshListTrack();
+        }
+        else
+        {
+            activity.lstTracks = activity.storageManager.loadListTracks(activity);
+            lstTracks = activity.storageManager.loadListTracks(activity);
+            TOTAL_PAGES = lstTracks.size()/ PAGE_SIZE;
+        }
+
+
 
         active_tab = defaultTab;
         btnSearch = rootView.findViewById(R.id.btn_search);
@@ -795,6 +804,7 @@ public class TracksList extends Fragment
                 banner = tracks.getBanner();
                 activity.lstTracks = tracks.getLstTrack();
                 activity.storageManager.storeListTracks(activity, lstTracks);
+                TOTAL_PAGES = lstTracks.size()/ PAGE_SIZE;
                 showListBanner(tracks.getBanner().BannerImagePath, tracks.getBanner().BannerLink);
 
                 loadFirstPage(active_tab);

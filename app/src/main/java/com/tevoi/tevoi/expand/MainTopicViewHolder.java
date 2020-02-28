@@ -23,6 +23,7 @@ import com.tevoi.tevoi.model.SubscipedPartnersObject;
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup;
 import com.thoughtbot.expandablerecyclerview.viewholders.GroupViewHolder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -41,9 +42,12 @@ public class MainTopicViewHolder extends GroupViewHolder
   private boolean isChecked;
   private SideMenu activity;
 
+  List<CategoryFilter> childrenList = new ArrayList<>();
+
   public MainTopicViewHolder(View itemView, final List<MultiCheckMainTopic> groups)
   {
     super(itemView);
+
     genreName = (TextView) itemView.findViewById(R.id.list_item_genre_name);
     arrow = (ImageView) itemView.findViewById(R.id.list_item_genre_arrow);
     sw = (ImageView) itemView.findViewById(R.id.list_item_genre_switch);
@@ -56,7 +60,7 @@ public class MainTopicViewHolder extends GroupViewHolder
               //activity.mProgressDialog.setCancelable(false);
               int i = getPosition();
               final MultiCheckMainTopic mainTopic = groups.get(i);
-
+              childrenList = mainTopic.getLstChildren();
               isChecked = !isChecked;
               if(isChecked)
               {
@@ -84,9 +88,9 @@ public class MainTopicViewHolder extends GroupViewHolder
                   public void onResponse(Call<IResponse> call, Response<IResponse> response)
                   {
                       IResponse res = response.body();
-
+                      activity.IsFilterChanged = true;
                       Log.println(Log.DEBUG, "Result i = ", "Done");
-
+                      activity.storageManager.updateMainTopicFilter(activity, mainTopic.getId(), isChecked);
                       /*if(!isChecked)
                       {
                           for (int i = 0; i < mainTopic.getItems().size(); i++)
@@ -195,12 +199,18 @@ public class MainTopicViewHolder extends GroupViewHolder
 
   @Override
   public void expand() {
-    animateExpand();
+    if(childrenList.size() > 0)
+      animateExpand();
+    else
+    {
+
+    }
   }
 
   @Override
   public void collapse() {
-    animateCollapse();
+      if(childrenList.size() > 0)
+        animateCollapse();
   }
 
   private void animateExpand() {
