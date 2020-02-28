@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:weightSum="10"
     android:orientation="vertical"
     android:background="@color/white"
     >
@@ -14,7 +15,10 @@
     android:background="@color/white"
     android:id="@+id/user_list_row_layout"
     >
-
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
     <ImageButton
         android:id="@+id/btn_play_pause_user_list"
         android:layout_width="wrap_content"
@@ -24,8 +28,13 @@
         android:layout_weight="1"
         android:onClick="startMediaplayer"
         android:src="@mipmap/play_normal_list"
-
+        android:padding="15dp"
+        android:scaleType="fitCenter"
+        android:scaleY="0.8"
+        android:scaleX="0.8"
         />
+    </LinearLayout>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
@@ -42,6 +51,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_weight="8"
                 android:id="@+id/layout_user_list_details"
                 android:layout_marginHorizontal="5dp"
                 android:background="@android:color/white"
@@ -53,6 +65,13 @@
                     android:text="List Name"
                     android:textColor="@color/tevoiBrownDark"
                     android:textSize="@dimen/txt_user_list"
+                    android:layout_marginTop="5dp"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:singleLine="true"
+                    android:scrollHorizontally="true"
+                    android:ellipsize="marquee"
+                    android:marqueeRepeatLimit ="marquee_forever"
                     />
                 <TextView
                     android:layout_width="wrap_content"
@@ -61,7 +80,13 @@
                     android:text="Creation Date"
                     android:textSize="@dimen/txt_user_list_medium"
                     android:textColor="@color/tevoitracktextcolor"
+                    android:focusableInTouchMode="true"
+                    android:singleLine="true"
+                    android:scrollHorizontally="true"
+                    android:ellipsize="marquee"
+                    android:marqueeRepeatLimit ="marquee_forever"
                     />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -69,6 +94,12 @@
                     android:id="@+id/tv_duration_user_list"
                     android:textSize="@dimen/txt_user_list_small"
                     android:textColor="@color/tevoitracktextcolor"
+                    android:layout_marginBottom="5dp"
+                    android:focusableInTouchMode="true"
+                    android:singleLine="true"
+                    android:scrollHorizontally="true"
+                    android:ellipsize="marquee"
+                    android:marqueeRepeatLimit ="marquee_forever"
                     />
             </LinearLayout>
             <LinearLayout
@@ -77,7 +108,6 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="end"
                 android:visibility="visible"
-                android:layout_alignParentRight="true"
                 android:clickable="true"
                 android:focusable="true"
                 android:weightSum="2"
@@ -122,23 +152,25 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:orientation="horizontal">
+        android:layout_weight="1">
         <TextView
             android:layout_width="1dp"
             android:layout_height="match_parent"
             android:background="@color/tevoiBrownDark"
             />
         <ImageButton
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:background="@null"
+            android:background="@color/white"
             android:scaleType="fitCenter"
-            android:src="@drawable/outline_reorder_rotated_24"
+            android:src="@mipmap/right_menu_normal"
+            android:paddingStart="@dimen/padding_list_tracks"
+            android:paddingEnd="@dimen/padding_list_tracks"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
             android:clickable="true"
             android:layout_weight="1"
             android:id="@+id/btn_user_list_drawer"
-            android:rotation="90"
             />
 
     </LinearLayout>
