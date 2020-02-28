@@ -17,16 +17,14 @@ android:orientation="vertical">
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:weightSum="8"
         >
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/dont_show_heard_tracks"
-            android:layout_weight="7"
             android:textColor="@color/black"
             android:layout_centerVertical="true"
             android:layout_marginStart="27dp"
@@ -38,12 +36,12 @@ android:orientation="vertical">
             android:id="@+id/switch_show_history_listen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginTop="5dp"
             android:layout_centerVertical="true"
             android:layout_alignParentEnd="true"
+            android:layout_marginEnd="10dp"
             android:src="@mipmap/golden_button_on" />
-    </LinearLayout>
+    </RelativeLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"

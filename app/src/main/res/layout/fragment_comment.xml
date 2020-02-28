@@ -11,8 +11,8 @@
 
     <ImageView
         android:id="@+id/imageView_close"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="top|right"
         android:clickable="true"
         android:src="@mipmap/close_button_normal" />

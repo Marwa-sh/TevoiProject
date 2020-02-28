@@ -9,7 +9,8 @@
             android:id="@+id/myAccountGroup">
             <item
                 android:id="@+id/my_account"
-                android:title="My Account"/>
+                android:title="@string/title_my_account"
+                />
 
             <item android:id="@+id/upgrade_to_premium"
                 app:actionLayout="@layout/drawer_list_item"
@@ -40,7 +41,9 @@
 
         <item
             android:id="@+id/lists"
-            android:title="Lists"/>
+            android:title="@string/title_lists"
+            />
+
         <item android:id="@+id/list_tracks"
             app:actionLayout="@layout/drawer_list_item"
             android:title="@string/title_list_tracks" />
@@ -68,7 +71,8 @@
 -->
         <item
             android:id="@+id/general"
-            android:title="General"/>
+            android:title="@string/title_general"
+            />
 
         <item android:id="@+id/list_partners"
             app:actionLayout="@layout/drawer_list_item"

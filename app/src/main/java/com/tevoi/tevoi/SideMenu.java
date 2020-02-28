@@ -1256,7 +1256,7 @@ public class SideMenu extends AppCompatActivity
                 }
                 else {
                     CurrentFragmentName = Global.MyProfileFragmentName;
-                    mSubTitle.setText("My Profile");
+                    mSubTitle.setText(R.string.title_my_profile);
                     fragmentTransaction.replace(R.id.content_frame, myProfileFragment);
                     fragmentTransaction.addToBackStack(mSubTitle.getText().toString());
                     fragmentTransaction.commit();
