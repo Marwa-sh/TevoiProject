@@ -217,4 +217,5 @@
 <string name="email_required">البريد الالكتروني مطلوب</string>
 
     <string name="need_select_supscriped_period">عليك اختيار إحدى فترات الاشتراك</string>
+    <string name="no_tracks_in_user_list">القائمة فارغة لاتحوي تسجيلات</string>
 </resources>

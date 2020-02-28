@@ -113,7 +113,8 @@ public class UserListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 viewHolder.tvUserListName.setText(userList.getName());
                 viewHolder.tvCreationDate.setText(userList.getCreationDate());
                 viewHolder.tvUserListDuration.setText(userList.getDuration());
-
+                if(userList.getDuration().equals("00:00"))
+                    viewHolder.hasTracks = false;
                 break;
             case LOADING:
             {
@@ -159,6 +160,9 @@ public class UserListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         Button btnRemove;
         LinearLayout hoverLayout;
         LinearLayout userListDetailsLayout;
+
+        boolean hasTracks = true;
+
 
         int id;
         public UserListViewHolder(@NonNull View itemView) {
@@ -329,11 +333,17 @@ public class UserListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 public void onClick(View v) {
                     int i  = getPosition();
                     UserListObject p = userLists.get(i);
-                    activity.userListTracksFragment = UserListTracksFragment.newInstance(0, p.getId(), p.getName());
-                    //UserListTracksFragment fragment = UserListTracksFragment.newInstance(0, p.getId());
-                    androidx.fragment.app.FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.content_frame, activity.userListTracksFragment);
-                    fragmentTransaction.commit();
+                    if(hasTracks) {
+                        activity.userListTracksFragment = UserListTracksFragment.newInstance(0, p.getId(), p.getName());
+                        //UserListTracksFragment fragment = UserListTracksFragment.newInstance(0, p.getId());
+                        androidx.fragment.app.FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.content_frame, activity.userListTracksFragment);
+                        fragmentTransaction.commit();
+                    }
+                    else
+                    {
+                        Toast.makeText(activity, R.string.no_tracks_in_user_list, Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
             tvUserListName.setOnClickListener(new View.OnClickListener() {
