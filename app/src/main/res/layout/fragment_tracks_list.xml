@@ -19,7 +19,8 @@
     android:orientation="vertical"
     android:isScrollContainer="true"
     android:scrollbars="vertical"
-    tools:context=".TracksList">
+    tools:context=".TracksList"
+    >
 
 
 
@@ -101,7 +102,9 @@
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/main_swiperefresh_tracks"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginBottom="70dp"
+            >
             <com.tevoi.tevoi.model.RecyclerViewEmptySupport
                 android:id="@+id/tracks_recycler_View"
                 android:layout_width="match_parent"
