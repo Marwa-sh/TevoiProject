@@ -19,7 +19,9 @@ import com.tevoi.tevoi.Utils.Global;
 import com.tevoi.tevoi.model.IResponse;
 import com.tevoi.tevoi.model.LoadingVH;
 import com.tevoi.tevoi.model.PartnerObject;
+import com.tevoi.tevoi.model.SubscipedPartnersObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -173,6 +175,10 @@ public class PartnerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 public void onClick(View v) {
                     int i = getAdapterPosition();
                     PartnerObject selectedpartner = partners.get(i);
+                    ArrayList<SubscipedPartnersObject> listSubscripedPartner;
+                    listSubscripedPartner = activity.storageManager.loadListSubscripedPartnerFilter(activity);
+                    SubscipedPartnersObject newpartnerfilter = new SubscipedPartnersObject(selectedpartner.getId(),selectedpartner.getName(),true);
+                    listSubscripedPartner.add(newpartnerfilter);
                     activity.mProgressDialog.setMessage(activity.getString(R.string.loader_msg));
                     activity.mProgressDialog.show();
 

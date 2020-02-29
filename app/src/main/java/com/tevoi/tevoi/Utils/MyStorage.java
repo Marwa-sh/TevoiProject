@@ -648,6 +648,7 @@ public class MyStorage
     {
         ArrayList<TrackObject> listTracks = loadListTracks(context);
         ArrayList<TrackObject> favoritelistTracks = loadFavoriteListTracksnew(context);
+        ArrayList<TrackObject> historylistTracks = loadHistoryListTracksnew(context);
 
 
         for(int j=0 ; j<listTracks.size();j++)
@@ -657,19 +658,21 @@ public class MyStorage
                 listTracks.get(j).setFavourite(!listTracks.get(j).isFavourite());
                 if(listTracks.get(j).isFavourite())
                     favoritelistTracks.add(listTracks.get(j));
+                else favoritelistTracks.remove(listTracks.get(j));
                 break;
             }
         }
-        for(int j=0 ; j<favoritelistTracks.size();j++)
+        for(int j=0 ; j<historylistTracks.size();j++)
         {
-            if(favoritelistTracks.get(j).getId()== Id)
+            if(historylistTracks.get(j).getId()== Id)
             {
-                favoritelistTracks.get(j).setFavourite(!favoritelistTracks.get(j).isFavourite());
+                historylistTracks.get(j).setFavourite(!historylistTracks.get(j).isFavourite());
                 break;
             }
         }
         storeFavoriteListTracks(context,favoritelistTracks);
         storeListTracks(context,listTracks);
+        storeHistoryListTracks(context,historylistTracks);
     }
 
     public void storeFavoriteListTracks(Context context, List favoriteListTracks)
