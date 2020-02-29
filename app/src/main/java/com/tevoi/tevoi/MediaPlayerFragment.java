@@ -212,7 +212,7 @@ public class MediaPlayerFragment extends Fragment {
                         @Override
                         public void onResponse(Call<TrackRateResponse> call, Response<TrackRateResponse> response) {
                             TrackRateResponse rating = response.body();
-                            
+
                             // refresh rate for track in shared preference
                             activity.storageManager.updateTrackRate(activity, currentTrack.getId(),rating.Rate);
                         }
