@@ -208,6 +208,7 @@
     <string name="select_list">Select a List :</string>
 
     <string name="partner_add_to_filter">Partner Added To Filter Successfully</string>
+    <string name="partner_already_exist_in_filter">Partner Already Exist In Filter</string>
 
 
     <string name="user_name_cant_be_empty">User Name Can\'t Be Empty!</string>

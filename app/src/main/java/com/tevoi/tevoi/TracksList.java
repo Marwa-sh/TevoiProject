@@ -10,6 +10,8 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
+
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -426,6 +428,18 @@ public class TracksList extends Fragment
                 }
             }
         });
+        CheckBox chkIsLocationEnabled = rootView.findViewById(R.id.checkBoxLocationEnable);
+        chkIsLocationEnabled.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean checked = chkIsLocationEnabled.isChecked();
+                chkIsLocationEnabled.setChecked(checked);
+                if(checked) {
+                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    startActivity(intent);
+                }
+            }
+        });
         if(btnSearch != null)
         {
             btnSearch.setOnClickListener(new View.OnClickListener() {
@@ -435,7 +449,7 @@ public class TracksList extends Fragment
                 activateTab(active_tab);
 
                 EditText txtFilter = rootView.findViewById(R.id.txt_search_filter_value);
-                CheckBox chkIsLocationEnabled = rootView.findViewById(R.id.checkBoxLocationEnable);
+
                 //activity.player.removeNotification();
                 if(!txtFilter.getText().equals(""))
                 {

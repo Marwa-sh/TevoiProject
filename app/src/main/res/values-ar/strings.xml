@@ -155,6 +155,8 @@
     <string name="select_list">اختر قائمة</string>
 
     <string name="partner_add_to_filter">تمت إضافة الشريك إلى خيارات البحث بشكل صحيح</string>
+    <string name="partner_already_exist_in_filter">الشريك موجود من قبل في خيارات البحث</string>
+
     <string name="user_name_cant_be_empty">لايمكن لاسم المستخدم أن يكون فارغ</string>
 
     <string name="message_name_cant_be_empty">لايمكن للرسالة أن تكون فارغة</string>

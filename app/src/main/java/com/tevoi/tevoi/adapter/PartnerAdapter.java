@@ -174,39 +174,49 @@ public class PartnerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 @Override
                 public void onClick(View v) {
                     int i = getAdapterPosition();
+                    boolean partnerinfilter = false;
                     PartnerObject selectedpartner = partners.get(i);
                     ArrayList<SubscipedPartnersObject> listSubscripedPartner;
                     listSubscripedPartner = activity.storageManager.loadListSubscripedPartnerFilter(activity);
-                    SubscipedPartnersObject newpartnerfilter = new SubscipedPartnersObject(selectedpartner.getId(),selectedpartner.getName(),true);
-                    listSubscripedPartner.add(newpartnerfilter);
-                    activity.mProgressDialog.setMessage(activity.getString(R.string.loader_msg));
-                    activity.mProgressDialog.show();
-
-                    Call<IResponse> call = Global.client.AddFollowshipToPartner(selectedpartner.getId());
-                    call.enqueue(new Callback<IResponse>() {
-                        @Override
-                        public void onResponse(Call<IResponse> call, Response<IResponse> response) {
-                            IResponse res = response.body();
-                            if(res.getNumber()==0)
-                            {
-                                activity.mProgressDialog.dismiss();
-                                Toast.makeText(activity,activity.getResources().getString( R.string.partner_add_to_filter),Toast.LENGTH_LONG).show();
-                                // TODO add the partner in the list in shared prefeence
-
-                            }
-                            else
-                            {
-                                activity.mProgressDialog.dismiss();
-                                Toast.makeText(activity,res.getMessage(),Toast.LENGTH_LONG).show();
-                            }
-                            hoverLayout.setVisibility(View.INVISIBLE);
+                    for (int j = 0; j < listSubscripedPartner.size(); j++) {
+                        if (selectedpartner.getId() == listSubscripedPartner.get(j).getPartnerId()){
+                            partnerinfilter = true;
+                             break;
                         }
-                        @Override
-                        public void onFailure(Call<IResponse> call, Throwable t) {
-                            activity.mProgressDialog.dismiss();
-                            hoverLayout.setVisibility(View.INVISIBLE);
-                        }
-                    });
+                    }
+                    if (partnerinfilter)
+                        Toast.makeText(activity, activity.getResources().getString(R.string.partner_already_exist_in_filter), Toast.LENGTH_LONG).show();
+                    else {
+                        SubscipedPartnersObject newpartnerfilter = new SubscipedPartnersObject(selectedpartner.getId(), selectedpartner.getName(), true);
+                        listSubscripedPartner.add(newpartnerfilter);
+                        activity.storageManager.storeListSubscripedPartnerFilter(activity, listSubscripedPartner);
+                        activity.mProgressDialog.setMessage(activity.getString(R.string.loader_msg));
+                        activity.mProgressDialog.show();
+
+                        Call<IResponse> call = Global.client.AddFollowshipToPartner(selectedpartner.getId());
+                        call.enqueue(new Callback<IResponse>() {
+                            @Override
+                            public void onResponse(Call<IResponse> call, Response<IResponse> response) {
+                                IResponse res = response.body();
+                                if (res.getNumber() == 0) {
+                                    activity.mProgressDialog.dismiss();
+                                    Toast.makeText(activity, activity.getResources().getString(R.string.partner_add_to_filter), Toast.LENGTH_LONG).show();
+                                    // TODO add the partner in the list in shared prefeence
+
+                                } else {
+                                    activity.mProgressDialog.dismiss();
+                                    Toast.makeText(activity, res.getMessage(), Toast.LENGTH_LONG).show();
+                                }
+                                hoverLayout.setVisibility(View.INVISIBLE);
+                            }
+
+                            @Override
+                            public void onFailure(Call<IResponse> call, Throwable t) {
+                                activity.mProgressDialog.dismiss();
+                                hoverLayout.setVisibility(View.INVISIBLE);
+                            }
+                        });
+                    }
                 }
             });
 

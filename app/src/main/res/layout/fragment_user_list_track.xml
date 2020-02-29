@@ -65,6 +65,7 @@
         android:id="@+id/user_list_tracks_recycler_View"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="50dp"
         >
     </com.tevoi.tevoi.model.RecyclerViewEmptySupport>
     <TextView android:id="@+id/user_tracks_list_empty"

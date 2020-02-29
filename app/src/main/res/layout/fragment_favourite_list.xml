@@ -67,7 +67,9 @@
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/main_swiperefresh_favorite_tracks"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginBottom="55dp"
+            >
 
         <com.tevoi.tevoi.model.RecyclerViewEmptySupport
             android:id="@+id/favourite_tracks_recycler_View"

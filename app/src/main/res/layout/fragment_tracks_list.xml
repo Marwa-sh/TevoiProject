@@ -103,7 +103,7 @@
             android:id="@+id/main_swiperefresh_tracks"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="70dp"
+            android:layout_marginBottom="75dp"
             >
             <com.tevoi.tevoi.model.RecyclerViewEmptySupport
                 android:id="@+id/tracks_recycler_View"

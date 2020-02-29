@@ -45,6 +45,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import android.content.Intent;
+import android.view.View;
+import android.provider.Settings;
+
 public class ListTracksFragment extends Fragment
         implements AdapterView.OnItemSelectedListener, PaginationAdapterCallback
 {
@@ -279,6 +283,15 @@ public class ListTracksFragment extends Fragment
                 public void onClick(View v) {
                     EditText txtFilter = rootView.findViewById(R.id.txt_search_filter_value);
                     CheckBox chkIsLocationEnabled = rootView.findViewById(R.id.checkBoxLocationEnable);
+                    chkIsLocationEnabled.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            boolean checked = ((CheckBox)v).isChecked();
+                            chkIsLocationEnabled.setChecked(checked);
+                            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                            startActivity(intent);
+                        }
+                    });
                     //activity.player.removeNotification();
                     if (!txtFilter.getText().equals("")) {
                         activity.mProgressDialog.setMessage(getResources().getString( R.string.loader_msg));
