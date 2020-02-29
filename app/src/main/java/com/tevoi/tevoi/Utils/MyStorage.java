@@ -1230,7 +1230,7 @@ public class MyStorage
             for (int i=0; i<listMainTopic.size(); i++)
             {
                 List<CategoryObject> childList = listMainTopic.get(i).CategoriesList;
-                for (int j=0; i<childList.size(); j++)
+                for (int j=0; j<childList.size(); j++)
                 {
                     if(childList.get(j).getId() == Id)
                     {
