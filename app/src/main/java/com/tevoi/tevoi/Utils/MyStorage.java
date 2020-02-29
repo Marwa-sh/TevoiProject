@@ -9,6 +9,7 @@ import com.tevoi.tevoi.R;
 import com.tevoi.tevoi.model.CategoryFilter;
 import com.tevoi.tevoi.model.CategoryObject;
 import com.tevoi.tevoi.model.ListBannerResponse;
+import com.tevoi.tevoi.model.LoadingVH;
 import com.tevoi.tevoi.model.MainTopic;
 import com.tevoi.tevoi.model.NotificationTypeObject;
 import com.tevoi.tevoi.model.PartnerObject;
@@ -596,6 +597,41 @@ public class MyStorage
             return new ArrayList<>();
         return listTracks;
     }
+
+    //region update rate
+
+    public void updateTrackRate(Context context, int TrackId,int Rate)
+    {
+        List<TrackObject> lstTracks = loadListTracks(context);
+        for (int i=0; i< lstTracks.size(); i++)
+        {
+            if(lstTracks.get(i).getId() == TrackId)
+            {
+                lstTracks.get(i).setRate(Rate);
+            }
+        }
+
+        List<TrackObject> lstHistory = loadHistoryListTracks(context);
+        for (int i=0; i< lstHistory.size(); i++)
+        {
+            if(lstHistory.get(i).getId() == TrackId)
+            {
+                lstHistory.get(i).setRate(Rate);
+            }
+        }
+
+        List<TrackObject> lstFavourite = loadFavoriteListTracks(context);
+        for (int i=0; i< lstFavourite.size(); i++)
+        {
+            if(lstFavourite.get(i).getId() == TrackId)
+            {
+                lstFavourite.get(i).setRate(Rate);
+            }
+        }
+    }
+
+    //endregion
+
     //region favorite
 
     public ArrayList<TrackObject> loadFavoriteListTracks(Context context)
@@ -648,7 +684,6 @@ public class MyStorage
     {
         ArrayList<TrackObject> listTracks = loadListTracks(context);
         ArrayList<TrackObject> favoritelistTracks = loadFavoriteListTracksnew(context);
-
 
         for(int j=0 ; j<listTracks.size();j++)
         {

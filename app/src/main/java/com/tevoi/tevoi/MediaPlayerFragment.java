@@ -25,6 +25,7 @@ import com.tevoi.tevoi.Utils.HelperFunctions;
 import com.tevoi.tevoi.model.IResponse;
 import com.tevoi.tevoi.model.RatingResponse;
 import com.tevoi.tevoi.model.TrackObject;
+import com.tevoi.tevoi.model.TrackRateResponse;
 import com.tevoi.tevoi.model.XmlFragementClickable;
 
 import java.net.URL;
@@ -206,15 +207,17 @@ public class MediaPlayerFragment extends Fragment {
                         return;
                     int Rating  = (int)ratingBar.getRating();
                     //Toast.makeText(activity, ""+Rating, Toast.LENGTH_SHORT).show();
-                    Call<IResponse> call=Global.client.SetTrackRating(currentTrack.getId(),Rating);
-                    call.enqueue(new Callback<IResponse>() {
+                    Call<TrackRateResponse> call=Global.client.SetTrackRating(currentTrack.getId(),Rating);
+                    call.enqueue(new Callback<TrackRateResponse>() {
                         @Override
-                        public void onResponse(Call<IResponse> call, Response<IResponse> response) {
-                            IResponse rating = response.body();
-
+                        public void onResponse(Call<TrackRateResponse> call, Response<TrackRateResponse> response) {
+                            TrackRateResponse rating = response.body();
+                            
+                            // refresh rate for track in shared preference
+                            activity.storageManager.updateTrackRate(activity, currentTrack.getId(),rating.Rate);
                         }
                         @Override
-                        public void onFailure(Call<IResponse> call, Throwable t) {
+                        public void onFailure(Call<TrackRateResponse> call, Throwable t) {
                         }
                     });
                 }

@@ -24,6 +24,7 @@ import com.tevoi.tevoi.model.TrackCommentResponse;
 import com.tevoi.tevoi.model.TrackFilter;
 import com.tevoi.tevoi.model.TrackLocationResponse;
 import com.tevoi.tevoi.model.TrackObject;
+import com.tevoi.tevoi.model.TrackRateResponse;
 import com.tevoi.tevoi.model.TrackResponseList;
 import com.tevoi.tevoi.model.TrackTextResponse;
 import com.tevoi.tevoi.model.UserFiltersResponse;
@@ -159,7 +160,7 @@ public interface ApiInterface {
     Call<RatingResponse> GetTrackRating(@Query("TrackId") int TrackId);
 
     @GET("api/Services/SetTrackRating")
-    Call<IResponse> SetTrackRating(@Query("TrackId") int TrackId, @Query("Rating") int Rating);
+    Call<TrackRateResponse> SetTrackRating(@Query("TrackId") int TrackId, @Query("Rating") int Rating);
 
     @GET("api/Services/GetNotificationTypesList")
     Call<ListNotificationTypesResponse> GetNotificationTypesList();

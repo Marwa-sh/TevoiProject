@@ -185,6 +185,8 @@ public class PartnerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                             {
                                 activity.mProgressDialog.dismiss();
                                 Toast.makeText(activity,activity.getResources().getString( R.string.partner_add_to_filter),Toast.LENGTH_LONG).show();
+                                // TODO add the partner in the list in shared prefeence
+
                             }
                             else
                             {
